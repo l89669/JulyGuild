@@ -267,7 +267,7 @@ public class GuildManageGUI extends BaseGUI {
                     });
         } else {
             inventoryBuilder
-                    .item(1, 4, new ItemBuilder()
+                    .item(1, 3, new ItemBuilder()
                                     .material(Material.GOLD_BARDING)
                                     .displayName("&f审批玩家")
                                     .addLore("&b>> &a处理玩家加入宗门的请求")
@@ -278,6 +278,35 @@ public class GuildManageGUI extends BaseGUI {
                                 public void onClicked(InventoryClickEvent event) {
                                     close();
                                     new GuildPlayerRequestGUI(guildPlayer).open();
+                                }
+                            });
+            inventoryBuilder
+                    .item(1, 5, new ItemBuilder()
+                                    .material(Material.IRON_DOOR)
+                                    .displayName("&c退出宗门")
+                                    .colored()
+                                    .build()
+                            , new ItemListener() {
+                                @Override
+                                public void onClicked(InventoryClickEvent event) {
+                                    close();
+                                    Util.sendColoredMessage(bukkitPlayer, "&c如果要退出宗门, 请在聊天栏输入并发送: &econfirm");
+                                    JulyChatFilter.registerChatFilter(bukkitPlayer, new ChatListener() {
+                                        @Override
+                                        public void onChat(AsyncPlayerChatEvent event) {
+                                            event.setCancelled(true);
+
+                                            if (event.getMessage().equals("confirm")) {
+                                                guild.removeMember(guild.getMember(playerName));
+                                                Util.sendColoredMessage(bukkitPlayer, "&d退出宗门成功.");
+                                            } else {
+                                                Util.sendColoredMessage(bukkitPlayer, "&e退出宗门失败.");
+                                            }
+
+                                            JulyChatFilter.unregisterChatFilter(bukkitPlayer);
+                                        }
+                                    });
+
                                 }
                             });
 

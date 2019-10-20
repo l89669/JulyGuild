@@ -62,8 +62,6 @@ public class GuildCreateGUI extends BaseGUI {
                 .addLore(settings.isGuildCreateCostMoneyEnabled() ? "&b>> &a点击支付" : "&b>> &c未启用")
                 .addLore("&e公会名&f: &e" + guildName)
                 .colored()
-                .enchant(Enchantment.DURABILITY, 1)
-                .addItemFlag(ItemFlag.HIDE_ENCHANTS)
                 .build()
                 , settings.isGuildCreateCostMoneyEnabled() ? new ItemListener() {
                     @Override
@@ -94,8 +92,6 @@ public class GuildCreateGUI extends BaseGUI {
                 .displayName("&f使用 &e点券x" + settings.getGuildCreateCostPointsAmount() + " &f支付")
                 .addLore(settings.isGuildCreateCostPointsEnabled() ? "&b>> &a点击支付" : "&b>> &c未启用")
                 .addLore("&e公会名&f: &e" + guildName)
-                .enchant(Enchantment.DURABILITY, 1)
-                .addItemFlag(ItemFlag.HIDE_ENCHANTS)
                 .colored()
                 .build()
                 , settings.isGuildCreateCostPointsEnabled() ? new ItemListener() {
@@ -127,8 +123,7 @@ public class GuildCreateGUI extends BaseGUI {
                 .displayName("&f使用 &e建帮令x" + settings.getGuildCreateCostItemAmount() + " &f支付")
                 .addLore(settings.isGuildCreateCostItemEnabled() ? "&b>> &a点击支付" : "&b>> &c未启用")
                 .addLore("&e公会名&f: &e" + guildName)
-                .enchant(Enchantment.DURABILITY, 1)
-                .addItemFlag(ItemFlag.HIDE_ENCHANTS)
+                .colored()
                 .build()
                 , settings.isGuildCreateCostItemEnabled() ? new ItemListener() {
                     @Override

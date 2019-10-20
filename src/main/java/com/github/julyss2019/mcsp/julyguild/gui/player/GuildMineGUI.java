@@ -3,8 +3,10 @@ package com.github.julyss2019.mcsp.julyguild.gui.player;
 import com.github.julyss2019.mcsp.julyguild.JulyGuild;
 import com.github.julyss2019.mcsp.julyguild.config.MainSettings;
 import com.github.julyss2019.mcsp.julyguild.gui.BaseGUI;
+import com.github.julyss2019.mcsp.julyguild.gui.CommonItem;
 import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
 import com.github.julyss2019.mcsp.julyguild.gui.player.pageable.GuildMemberGUI;
+import com.github.julyss2019.mcsp.julyguild.gui.player.pageable.MainGUI;
 import com.github.julyss2019.mcsp.julyguild.guild.Guild;
 import com.github.julyss2019.mcsp.julyguild.guild.player.GuildAdmin;
 import com.github.julyss2019.mcsp.julyguild.guild.player.GuildMember;
@@ -120,41 +122,45 @@ public class GuildMineGUI extends BaseGUI {
                             new GuildManageGUI(guildPlayer).open();
                         }
                     });
-        }
-
-        Permission permission = member.getPermission();
-
-        if (permission == Permission.MEMBER || permission == Permission.ADMIN) {
+        } else {
             inventoryBuilder
-                    .item(5, permission == Permission.MEMBER ? 0 : 1, new ItemBuilder()
-                            .material(Material.IRON_DOOR)
-                            .displayName("&c退出宗门")
-                            .colored()
-                            .build()
-                    , new ItemListener() {
-                        @Override
-                        public void onClicked(InventoryClickEvent event) {
-                            close();
-                            Util.sendColoredMessage(bukkitPlayer, "&c如果要退出宗门, 请在聊天栏输入并发送: &econfirm");
-                            JulyChatFilter.registerChatFilter(bukkitPlayer, new ChatListener() {
+                    .item(5, 0, new ItemBuilder()
+                                    .material(Material.IRON_DOOR)
+                                    .displayName("&c退出宗门")
+                                    .colored()
+                                    .build()
+                            , new ItemListener() {
                                 @Override
-                                public void onChat(AsyncPlayerChatEvent event) {
-                                    event.setCancelled(true);
+                                public void onClicked(InventoryClickEvent event) {
+                                    close();
+                                    Util.sendColoredMessage(bukkitPlayer, "&c如果要退出宗门, 请在聊天栏输入并发送: &econfirm");
+                                    JulyChatFilter.registerChatFilter(bukkitPlayer, new ChatListener() {
+                                        @Override
+                                        public void onChat(AsyncPlayerChatEvent event) {
+                                            event.setCancelled(true);
 
-                                    if (event.getMessage().equals("confirm")) {
-                                        guild.removeMember(guild.getMember(playerName));
-                                        Util.sendColoredMessage(bukkitPlayer, "&d退出宗门成功.");
-                                    } else {
-                                        Util.sendColoredMessage(bukkitPlayer, "&e退出宗门失败.");
-                                    }
+                                            if (event.getMessage().equals("confirm")) {
+                                                guild.removeMember(guild.getMember(playerName));
+                                                Util.sendColoredMessage(bukkitPlayer, "&d退出宗门成功.");
+                                            } else {
+                                                Util.sendColoredMessage(bukkitPlayer, "&e退出宗门失败.");
+                                            }
 
-                                    JulyChatFilter.unregisterChatFilter(bukkitPlayer);
+                                            JulyChatFilter.unregisterChatFilter(bukkitPlayer);
+                                        }
+                                    });
+
                                 }
                             });
-
-                        }
-                    });
         }
+
+        inventoryBuilder.item(53, CommonItem.BACK, new ItemListener() {
+            @Override
+            public void onClicked(InventoryClickEvent event) {
+                close();
+                new MainGUI(guildPlayer).open();
+            }
+        });
 
         this.inventory = inventoryBuilder.build();
     }

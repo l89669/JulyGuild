@@ -1,13 +1,13 @@
 name: JulyGuild
 main: com.github.julyss2019.mcsp.julyguild.JulyGuild
 author: July_ss
-version: 1.1.9
+version: 1.2.1
 depend:
 - JulyLibrary
 - Vault
+- PlaceholderAPI
 softdepend:
 - PlayerPoints
-- PlaceholderAPI
 commands:
   jguild:
     aliases:

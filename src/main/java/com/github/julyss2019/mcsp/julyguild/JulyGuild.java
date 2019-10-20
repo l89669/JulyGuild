@@ -37,6 +37,7 @@ import java.io.File;
 public class JulyGuild extends JavaPlugin {
     private static JulyGuild instance;
     private static final Gson gson = new Gson();
+
     private GuildManager guildManager;
     private GuildPlayerManager guildPlayerManager;
     private CacheGuildManager cacheGuildManager;
@@ -51,8 +52,8 @@ public class JulyGuild extends JavaPlugin {
     private PlayerPointsAPI playerPointsAPI;
     private Economy vaultAPI;
     private FileLogger fileLogger;
-    private PlaceholderAPIExpansion placeholderAPIExpansion;
     private PluginManager pluginManager;
+    private PlaceholderAPIExpansion placeholderAPIExpansion;
 
     @Override
     public void onEnable() {
@@ -69,6 +70,7 @@ public class JulyGuild extends JavaPlugin {
         this.guildPlayerManager = new GuildPlayerManager();
         this.guildManager = new GuildManager();
         this.cacheGuildManager = new CacheGuildManager();
+        this.placeholderAPIExpansion = new PlaceholderAPIExpansion();
 
         /*
         第三方插件注入
@@ -81,16 +83,12 @@ public class JulyGuild extends JavaPlugin {
             Util.sendColoredConsoleMessage("&eVault: Hook成功.");
         }
 
-        if (pluginManager.isPluginEnabled("PlaceholderAPI")) {
-            this.placeholderAPIExpansion = new PlaceholderAPIExpansion();
-
-            if (!placeholderAPIExpansion.register()) {
-                getLogger().warning("&cPlaceholderAPI: Hook失败.");
-            } else {
-                Util.sendColoredConsoleMessage("&ePlaceholderAPI: Hook成功.");
-            }
+        if (!placeholderAPIExpansion.register()) {
+            getLogger().warning("&cPlaceholderAPI: Hook失败.");
+            setEnabled(false);
+            return;
         } else {
-            Util.sendColoredConsoleMessage("&fPlaceholderAPI: 未启用.");
+            Util.sendColoredConsoleMessage("&ePlaceholderAPI: Hook成功.");
         }
 
         if (pluginManager.isPluginEnabled("PlayerPoints")) {
@@ -114,10 +112,14 @@ public class JulyGuild extends JavaPlugin {
         Util.sendColoredMessage(Bukkit.getConsoleSender(), "插件初始化完毕.");
     }
 
+    public boolean isPlaceHolderAPIEnabled() {
+        return pluginManager.isPluginEnabled("PlaceholderAPI");
+    }
+
     @Override
     public void onDisable() {
-        if (PlaceholderAPI.isRegistered("guild")) {
-            PlaceholderAPI.unregisterExpansion(placeholderAPIExpansion);
+        if (isPlaceHolderAPIEnabled() && PlaceholderAPI.isRegistered("guild")) {
+            PlaceholderAPI.unregisterPlaceholderHook("guild");
         }
 
         for (GuildPlayer guildPlayer : getGuildPlayerManager().getOnlineGuildPlayers()) {

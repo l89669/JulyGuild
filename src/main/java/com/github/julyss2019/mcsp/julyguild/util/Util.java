@@ -24,6 +24,6 @@ public class Util {
     }
 
     public static void sendColoredConsoleMessage(String msg) {
-        sendColoredMessage(Bukkit.getConsoleSender(), msg);
+        JulyMessage.sendColoredMessage(Bukkit.getConsoleSender(), "&a[JulyGuild] &f" + msg);
     }
 }

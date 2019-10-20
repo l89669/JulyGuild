@@ -17,6 +17,7 @@ import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.UUID;
 
@@ -130,10 +131,15 @@ public class GuildDonateGUI extends BaseGUI {
                                     return;
                                 }
 
-                                playerPointsAPI.take(uuid, amount);
-                                guildMember.addDonatedPoints(amount);
-                                guildBank.deposit(GuildBank.BalanceType.POINTS, amount);
-                                guild.broadcastMessage(permission.getColor() + "[" + permission.getChineseName() + "] &e" + guildPlayer.getName() + " &d为宗门赞助了 &e" + amount + "个 &d点券&d!");
+                                new BukkitRunnable() {
+                                    @Override
+                                    public void run() {
+                                        playerPointsAPI.take(uuid, amount);
+                                        guildMember.addDonatedPoints(amount);
+                                        guildBank.deposit(GuildBank.BalanceType.POINTS, amount);
+                                        guild.broadcastMessage(permission.getColor() + "[" + permission.getChineseName() + "] &e" + guildPlayer.getName() + " &d为宗门赞助了 &e" + amount + "个 &d点券&d!");
+                                    }
+                                }.runTask(plugin);
                             }
                         });
                     }
