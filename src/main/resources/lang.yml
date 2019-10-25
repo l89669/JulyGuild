@@ -1,4 +1,6 @@
 VERSION: 1.0.2
+Global:
+  nick_name: '&f[%PERMISSION%&f] &e%NAME%'
 Permission:
   member: '&a成员'
   admin: '&c管理员'
@@ -6,7 +8,7 @@ Permission:
 JulyGuild:
   command_prefix: '&a[公会]'
 MainGUI:
-  title: '&a&l公会(第%page%页)'
+  title: '&a&l公会(第%PAGE%页)'
 GuildIconRepositoryGUI:
   title: '&e&l图标仓库'
   current_use: '&b>> &e当前使用'
@@ -18,7 +20,18 @@ GuildIconShopGUI:
     owned: '&a已拥有'
     buy: '&d点击购买'
 GuildMemberGUI:
-  title: '%name% &7&l- &e&l宗门成员(第%page%页)'
+  title: '%NAME% &7&l- &e&l宗门成员(第%PAGE%页)'
   member:
-    display_name: '&f%name%'
+    display_name: '&f%NAME%'
     money_donate: '&e金币贡献'
+GuildDonateGUI:
+  title: '&a&l捐赠'
+  points:
+    icon:
+      display_name: '&f贡献点券'
+      lore:
+        on: '&a点击贡献点券'
+        off: '&c未启用'
+    message: '&e%NICK_NAME% &d为公会赞助了 &e%AMOUNT%个 &d点券&d!'
+  money:
+    message: '&e%NICK_NAME% &d为公会赞助了 &e%AMOUNT%个 &d金币&d!'

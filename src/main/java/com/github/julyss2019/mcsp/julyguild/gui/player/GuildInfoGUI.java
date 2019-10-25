@@ -3,8 +3,6 @@ package com.github.julyss2019.mcsp.julyguild.gui.player;
 import com.github.julyss2019.mcsp.julyguild.gui.BaseGUI;
 import com.github.julyss2019.mcsp.julyguild.gui.CommonItem;
 import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
-import com.github.julyss2019.mcsp.julyguild.gui.player.pageable.GuildMemberGUI;
-import com.github.julyss2019.mcsp.julyguild.gui.player.pageable.MainGUI;
 import com.github.julyss2019.mcsp.julyguild.guild.Guild;
 import com.github.julyss2019.mcsp.julyguild.guild.player.GuildAdmin;
 import com.github.julyss2019.mcsp.julyguild.guild.player.GuildMember;

@@ -1,5 +1,6 @@
 package com.github.julyss2019.mcsp.julyguild.gui.player;
 
+import com.github.julyss2019.mcsp.julyguild.config.Lang;
 import com.github.julyss2019.mcsp.julyguild.gui.BaseGUI;
 import com.github.julyss2019.mcsp.julyguild.gui.CommonItem;
 import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
@@ -44,7 +45,7 @@ public class GuildDonateGUI extends BaseGUI {
     public void build() {
         super.build();
 
-        this.inventory = new InventoryBuilder().title("&e&l贡献").colored().row(3)
+        this.inventory = new InventoryBuilder().title(Lang.get("GuildDonateGUI.title")).colored().row(3)
                 .item(1, 2, new ItemBuilder()
                         .material(moneyEnabled ? Material.GOLD_INGOT : Material.BARRIER)
                         .displayName("&f贡献金币")
@@ -86,15 +87,15 @@ public class GuildDonateGUI extends BaseGUI {
                                 vault.withdrawPlayer(bukkitPlayer, amount);
                                 guildMember.addDonatedMoney(amount);
                                 guildBank.deposit(GuildBank.BalanceType.MONEY, amount);
-                                guild.broadcastMessage(permission.getColor() + "[" + permission.getChineseName() + "]&e" + guildPlayer.getName() + " &d为宗门赞助了 &e" + amount + "个 &d金币&d!");
+                                guild.broadcastMessage(Lang.get("GuildDonateGUI.money.message", new String[][] {{"%AMOUNT%", String.valueOf(amount)}, {"%NICK_NAME%", Lang.getNickName(guildMember)}}));
                             }
                         });
                     }
                 })
                 .item(1, 6, new ItemBuilder()
                         .material(pointsEnabled ? Material.DIAMOND : Material.BARRIER)
-                        .displayName("&f贡献点券")
-                        .addLore(pointsEnabled ? "&b>> &a点击贡献点券" : "&b>> &c未启用")
+                        .displayName(Lang.get("GuildDonateGUI.points.icon.display_name"))
+                        .addLore(Lang.get(pointsEnabled ? "GuildDonateGUI.points.lore.on" : "GuildDonateGUI.points.lore.off"))
                         .colored().build(), new ItemListener() {
                     @Override
                     public void onClicked(InventoryClickEvent event) {
@@ -137,7 +138,7 @@ public class GuildDonateGUI extends BaseGUI {
                                         playerPointsAPI.take(uuid, amount);
                                         guildMember.addDonatedPoints(amount);
                                         guildBank.deposit(GuildBank.BalanceType.POINTS, amount);
-                                        guild.broadcastMessage(permission.getColor() + "[" + permission.getChineseName() + "] &e" + guildPlayer.getName() + " &d为宗门赞助了 &e" + amount + "个 &d点券&d!");
+                                        guild.broadcastMessage(Lang.get("GuildDonateGUI.points.message", new String[][] {{"%AMOUNT%", String.valueOf(amount)}, {"%NICK_NAME%", Lang.getNickName(guildMember)}}));
                                     }
                                 }.runTask(plugin);
                             }

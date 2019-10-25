@@ -11,6 +11,9 @@ public class MainSettings {
     @Config(path = "prefix")
     private String prefix;
 
+    @Config(path = "metrics_enabled")
+    private boolean metricsEnabled;
+
     @Config(path = "guild.create.name_regex")
     private String guildCreateNameRegex;
 
@@ -296,5 +299,9 @@ public class MainSettings {
 
     public List<String> getMineGUIPlayerInfoLores() {
         return mineGUIPlayerInfoLores;
+    }
+
+    public boolean isMetricsEnabled() {
+        return metricsEnabled;
     }
 }

@@ -46,7 +46,7 @@ public class PlaceholderAPIExpansion extends PlaceholderExpansion {
         }
 
         if (!isInGuild) {
-            return "-";
+            return "无";
         }
 
         GuildBank guildBank = guild.getGuildBank();
@@ -55,7 +55,7 @@ public class PlaceholderAPIExpansion extends PlaceholderExpansion {
             case "name":
                 return guild.getName();
             case "member_per":
-                return Permission.getChineseName();
+                return Permission.getChineseName(guild.getMember(guildPlayer).getPermission());
             case "member_donate_money":
                 return String.valueOf((int) guild.getMember(playerName).getDonatedMoney());
             case "member_donate_points":

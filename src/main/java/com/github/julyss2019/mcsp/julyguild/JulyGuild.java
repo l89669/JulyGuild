@@ -72,10 +72,14 @@ public class JulyGuild extends JavaPlugin {
         instance = this;
         this.pluginManager = Bukkit.getPluginManager();
 
-        new Metrics(this);
         init();
         updateVersionYmlFiles();
         loadConfig();
+
+        if (mainSettings.isMetricsEnabled()) {
+            new Metrics(this);
+            Util.sendColoredConsoleMessage("&e[!] bStats 统计已启用.");
+        }
 
         this.fileLogger = JulyFileLogger.getLogger(new File(getDataFolder(), "logs"), null, 5);
         this.julyCommandExecutor = new JulyCommandExecutor(this);

@@ -1,7 +1,7 @@
 package com.github.julyss2019.mcsp.julyguild.command;
 
 import com.github.julyss2019.mcsp.julyguild.JulyGuild;
-import com.github.julyss2019.mcsp.julyguild.gui.player.pageable.MainGUI;
+import com.github.julyss2019.mcsp.julyguild.gui.player.MainGUI;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayerManager;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;

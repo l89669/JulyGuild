@@ -1,4 +1,4 @@
-package com.github.julyss2019.mcsp.julyguild.gui.player.pageable;
+package com.github.julyss2019.mcsp.julyguild.gui.player;
 
 import com.github.julyss2019.mcsp.julyguild.JulyGuild;
 import com.github.julyss2019.mcsp.julyguild.config.ConfigGuildIcon;
