@@ -14,4 +14,8 @@ public enum Permission {
     public static String getChineseName(Permission permission) {
         return Lang.get("Permission." + permission.name().toLowerCase());
     }
+
+    public int getLevel() {
+        return level;
+    }
 }
