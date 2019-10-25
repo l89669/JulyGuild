@@ -63,7 +63,7 @@ public class GuildManager {
         ownerGuildPlayer.setGuild(getGuild(uuid));
 
         // 更新所有玩家的GUI
-        for (GuildPlayer guildPlayer : guildPlayerManager.getOnlineGuildPlayers()) {
+        for (GuildPlayer guildPlayer : guildPlayerManager.getSortedOnlineGuildPlayers()) {
             guildPlayer.updateGUI(GUIType.MAIN);
         }
 
@@ -94,7 +94,7 @@ public class GuildManager {
         guildMap.remove(guild.getUUID().toString());
         JulyGuild.getInstance().getCacheGuildManager().updateSortedGuilds();
 
-        for (GuildPlayer guildPlayer : guildPlayerManager.getOnlineGuildPlayers()) {
+        for (GuildPlayer guildPlayer : guildPlayerManager.getSortedOnlineGuildPlayers()) {
             guildPlayer.updateGUI(GUIType.MAIN);
         }
     }
@@ -117,7 +117,7 @@ public class GuildManager {
         guild.load();
         JulyGuild.getInstance().getCacheGuildManager().updateSortedGuilds();
 
-        for (GuildPlayer guildPlayer : guildPlayerManager.getOnlineGuildPlayers()) {
+        for (GuildPlayer guildPlayer : guildPlayerManager.getSortedOnlineGuildPlayers()) {
             guildPlayer.updateGUI(GUIType.MAIN);
         }
     }

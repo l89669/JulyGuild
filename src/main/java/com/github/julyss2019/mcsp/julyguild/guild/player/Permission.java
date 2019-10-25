@@ -1,27 +1,17 @@
 package com.github.julyss2019.mcsp.julyguild.guild.player;
 
-public enum Permission {
-    MEMBER("成员", "&a", 0), ADMIN("管理员", "&c",1), OWNER("宗主", "&d",2);
+import com.github.julyss2019.mcsp.julyguild.config.Lang;
 
-    String chineseName;
-    String color;
+public enum Permission {
+    MEMBER(0), ADMIN(1), OWNER(2);
+
     int level;
 
-    Permission(String chineseName, String color, int level) {
-        this.chineseName = chineseName;
-        this.color = color;
+    Permission(int level) {
         this.level = level;
     }
 
-    public String getChineseName() {
-        return chineseName;
-    }
-
-    public int getLevel() {
-        return level;
-    }
-
-    public String getColor() {
-        return color;
+    public static String getChineseName(Permission permission) {
+        return Lang.get("Permission." + permission.name().toLowerCase());
     }
 }

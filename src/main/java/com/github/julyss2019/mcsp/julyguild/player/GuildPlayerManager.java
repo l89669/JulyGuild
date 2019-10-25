@@ -2,9 +2,7 @@ package com.github.julyss2019.mcsp.julyguild.player;
 
 import org.bukkit.entity.Player;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class GuildPlayerManager {
@@ -22,7 +20,11 @@ public class GuildPlayerManager {
         return getGuildPlayer(player.getName());
     }
 
-    public List<GuildPlayer> getOnlineGuildPlayers() {
-        return guildPlayerMap.values().stream().filter(GuildPlayer::isOnline).collect(Collectors.toList());
+    public Collection<GuildPlayer> getOnlineGuildPlayers() {
+        return guildPlayerMap.size() == 0 ? new ArrayList<>() : guildPlayerMap.values();
+    }
+
+    public List<GuildPlayer> getSortedOnlineGuildPlayers() {
+        return guildPlayerMap.size() == 0 ? new ArrayList<>() : guildPlayerMap.values().stream().filter(GuildPlayer::isOnline).collect(Collectors.toList());
     }
 }

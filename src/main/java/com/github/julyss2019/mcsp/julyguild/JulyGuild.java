@@ -12,7 +12,7 @@ import com.github.julyss2019.mcsp.julyguild.listener.TpAllListener;
 import com.github.julyss2019.mcsp.julyguild.log.GuildLog;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayerManager;
-import com.github.julyss2019.mcsp.julyguild.tasks.RequestCleanTask;
+import com.github.julyss2019.mcsp.julyguild.task.RequestCleanTask;
 import com.github.julyss2019.mcsp.julyguild.util.Util;
 import com.github.julyss2019.mcsp.julylibrary.command.JulyCommandExecutor;
 import com.github.julyss2019.mcsp.julylibrary.config.JulyConfig;
@@ -32,7 +32,9 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.File;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 
 public class JulyGuild extends JavaPlugin {
     private static JulyGuild instance;
@@ -46,23 +48,33 @@ public class JulyGuild extends JavaPlugin {
     private IconShopSettings iconShopSettings;
     private GuildShopSettings guildShopSettings;
 
-    private String[] initFolderPaths = new String[] {"players", "guilds", "logs"};
-    private String[] initFilePaths = new String[] {"config.yml", "icon_shop.yml", "guild_shop.yml"};
+    private final String[] VERSION_YML_FILES = new String[] {"config.yml", "lang.yml"};
+    private final String[] DEPEND_PLUGINS = new String[] {"JulyLibrary", "PlaceholderAPI", "Vault"};
+    private final String[] INIT_FOLDERS = new String[] {"players", "guilds", "logs"};
+    private final String[] INIT_FILES = new String[] {"config.yml", "icon_shop.yml", "guild_shop.yml", "lang.yml"};
+
     private JulyCommandExecutor julyCommandExecutor;
     private PlayerPointsAPI playerPointsAPI;
     private Economy vaultAPI;
     private FileLogger fileLogger;
     private PluginManager pluginManager;
-    private PlaceholderAPIExpansion placeholderAPIExpansion;
 
     @Override
     public void onEnable() {
-        new Metrics(this);
+        for (String pluginName : DEPEND_PLUGINS) {
+            if (!Bukkit.getPluginManager().isPluginEnabled(pluginName)) {
+                Util.sendColoredConsoleMessage("&c[!] 硬前置插件 " + pluginName + " 未成功加载, 插件将被卸载.");
+                setEnabled(false);
+                return;
+            }
+        }
 
         instance = this;
         this.pluginManager = Bukkit.getPluginManager();
 
+        new Metrics(this);
         init();
+        updateVersionYmlFiles();
         loadConfig();
 
         this.fileLogger = JulyFileLogger.getLogger(new File(getDataFolder(), "logs"), null, 5);
@@ -70,13 +82,13 @@ public class JulyGuild extends JavaPlugin {
         this.guildPlayerManager = new GuildPlayerManager();
         this.guildManager = new GuildManager();
         this.cacheGuildManager = new CacheGuildManager();
-        this.placeholderAPIExpansion = new PlaceholderAPIExpansion();
+        PlaceholderAPIExpansion placeholderAPIExpansion = new PlaceholderAPIExpansion();
 
         /*
         第三方插件注入
          */
         if (!pluginManager.isPluginEnabled("Vault") || !setupEconomy()) {
-            Util.sendColoredConsoleMessage("&cVault: Hook失败.");
+            Util.sendColoredConsoleMessage("&c[!] Vault: Hook失败, 插件将被卸载.");
             setEnabled(false);
             return;
         } else {
@@ -84,7 +96,7 @@ public class JulyGuild extends JavaPlugin {
         }
 
         if (!placeholderAPIExpansion.register()) {
-            getLogger().warning("&cPlaceholderAPI: Hook失败.");
+            getLogger().warning("&c[!] PlaceholderAPI: Hook失败, 插件将被卸载.");
             setEnabled(false);
             return;
         } else {
@@ -98,7 +110,7 @@ public class JulyGuild extends JavaPlugin {
             Util.sendColoredConsoleMessage("&ePlayerPoints: 未启用.");
         }
 
-        julyCommandExecutor.setPrefix("§a[宗门] §f");
+        julyCommandExecutor.setPrefix(Lang.get("JulyGuild.command_prefix"));
         guildManager.loadGuilds();
         cacheGuildManager.startTask();
 
@@ -128,7 +140,7 @@ public class JulyGuild extends JavaPlugin {
             }
         }
 
-        Util.sendColoredMessage(Bukkit.getConsoleSender(), "插件被卸载.");
+        Util.sendColoredConsoleMessage("插件被卸载.");
     }
 
     public GuildShopSettings getGuildShopSettings() {
@@ -181,18 +193,18 @@ public class JulyGuild extends JavaPlugin {
     }
 
     private void init() {
-        for (String folderPath : initFolderPaths) {
+        for (String folderPath : INIT_FOLDERS) {
             File folder = new File(getDataFolder(), folderPath);
 
             if (!folder.exists()) {
                 if (!folder.mkdirs()) {
                     setEnabled(false);
-                    throw new RuntimeException("&c创建文件夹失败: " + folderPath);
+                    throw new RuntimeException("&c[!] 创建文件夹失败: " + folderPath + ", 插件将被卸载.");
                 }
             }
         }
 
-        for (String filePath : initFilePaths) {
+        for (String filePath : INIT_FILES) {
             File file = new File(getDataFolder(), filePath);
 
             if (!file.exists()) {
@@ -210,38 +222,64 @@ public class JulyGuild extends JavaPlugin {
         JulyConfig.reloadConfig(this, YamlConfiguration.loadConfiguration(new File(getDataFolder(), "icon_shop.yml")), iconShopSettings);
 
         loadSpecialConfig();
+        loadLang();
+    }
+
+    private void updateVersionYmlFiles() {
+        for (String name : VERSION_YML_FILES) {
+            YamlConfiguration yml = YamlConfiguration.loadConfiguration(new File(getDataFolder(), name));
+            String currentVersion = yml.getString("VERSION", "0.0.0");
+            String latestVersion = YamlConfiguration.loadConfiguration(new InputStreamReader(getResource(name))).getString("VERSION");
+
+            if (!currentVersion.equalsIgnoreCase(latestVersion)) {
+                File oldFile = new File(getDataFolder(), name);
+
+                if (!oldFile.renameTo(new File(getDataFolder(), name + "." + currentVersion))) {
+                    throw new RuntimeException("文件更名失败: " + name);
+                }
+
+                try {
+                    Files.copy(getResource(name), oldFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    throw new RuntimeException("文件更新失败: " + name);
+                }
+
+                Util.sendColoredConsoleMessage("文件版本已更新: " + name + "(" + currentVersion + "->" + latestVersion + ").");
+            }
+        }
     }
 
     private void loadConfig() {
-        reloadConfig(); // 必须先重读，否则将发生死循环
         YamlConfiguration configYml = YamlConfiguration.loadConfiguration(new File(getDataFolder(), "config.yml"));
-        String oldConfigVersion = configYml.getString("config_version", "0.0.0");
-        String currentConfigVersion = getConfig().getDefaultSection().getString("config_version"); // 最新版本
-
-
-        // 如果配置版本不一样，重命名文件，创建新的配置
-        if (!currentConfigVersion.equals(oldConfigVersion)) {
-            File configFile = new File(getDataFolder(), "config.yml");
-
-            if (configFile.exists() && !configFile.renameTo(new File(getDataFolder(), "config.yml." + oldConfigVersion))) {
-                throw new RuntimeException("&c配置文件更新失败.");
-            }
-
-            Util.sendColoredConsoleMessage("&e配置文件版本不一致, 将重新生成(" + oldConfigVersion + "->" + currentConfigVersion + ").");
-            saveDefaultConfig();
-            loadConfig();
-            return;
-        }
 
         this.mainSettings = (MainSettings) JulyConfig.loadConfig(this, configYml, MainSettings.class);
         this.iconShopSettings = (IconShopSettings) JulyConfig.loadConfig(this, YamlConfiguration.loadConfiguration(new File(getDataFolder(), "icon_shop.yml")), IconShopSettings.class);
         this.guildShopSettings = new GuildShopSettings();
 
         loadSpecialConfig();
+        loadLang();
     }
 
     public boolean isPlayerPointsHooked() {
         return getPlayerPointsAPI() != null;
+    }
+
+    private void loadLang(ConfigurationSection section) {
+        for (String key : section.getKeys(false)) {
+            // 迭代到类型不是 ConfigurationSection 为止
+            if (section.isConfigurationSection(key)) {
+                loadLang(section.getConfigurationSection(key));
+            } else if (section.isString(key)) {
+                String path = section.getCurrentPath() + "." + key;
+
+                Lang.put(path, section.getString(key));
+            }
+        }
+    }
+
+    private void loadLang() {
+        loadLang(YamlConfiguration.loadConfiguration(new File(getDataFolder(), "lang.yml")));
     }
 
     private void loadSpecialConfig() {
@@ -318,6 +356,4 @@ public class JulyGuild extends JavaPlugin {
     public Economy getVaultAPI() {
         return vaultAPI;
     }
-
-
 }

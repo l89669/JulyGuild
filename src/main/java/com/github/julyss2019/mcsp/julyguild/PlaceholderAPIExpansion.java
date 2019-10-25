@@ -3,6 +3,7 @@ package com.github.julyss2019.mcsp.julyguild;
 import com.github.julyss2019.mcsp.julyguild.guild.CacheGuildManager;
 import com.github.julyss2019.mcsp.julyguild.guild.Guild;
 import com.github.julyss2019.mcsp.julyguild.guild.GuildBank;
+import com.github.julyss2019.mcsp.julyguild.guild.player.Permission;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayerManager;
 import com.github.julyss2019.mcsp.julyguild.util.Util;
@@ -11,7 +12,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 /**
- * PAPI扩张
+ * PAPI扩展
  */
 public class PlaceholderAPIExpansion extends PlaceholderExpansion {
     private static JulyGuild plugin = JulyGuild.getInstance();
@@ -54,7 +55,7 @@ public class PlaceholderAPIExpansion extends PlaceholderExpansion {
             case "name":
                 return guild.getName();
             case "member_per":
-                return guild.getMember(playerName).getPermission().getChineseName();
+                return Permission.getChineseName();
             case "member_donate_money":
                 return String.valueOf((int) guild.getMember(playerName).getDonatedMoney());
             case "member_donate_points":

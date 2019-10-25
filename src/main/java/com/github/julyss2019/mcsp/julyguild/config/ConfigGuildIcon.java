@@ -11,17 +11,7 @@ public class ConfigGuildIcon {
 
     @Deprecated
     public enum CostType {
-        POINTS("点券"), MONEY("金币");
-
-        String chineseName;
-
-        CostType(String chineseName) {
-            this.chineseName = chineseName;
-        }
-
-        public String getChineseName() {
-            return chineseName;
-        }
+        POINTS, MONEY
     }
 
     private org.bukkit.Material material;

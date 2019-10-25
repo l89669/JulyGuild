@@ -1,0 +1,24 @@
+VERSION: 1.0.2
+Permission:
+  member: '&a成员'
+  admin: '&c管理员'
+  owner: '&d主人'
+JulyGuild:
+  command_prefix: '&a[公会]'
+MainGUI:
+  title: '&a&l公会(第%page%页)'
+GuildIconRepositoryGUI:
+  title: '&e&l图标仓库'
+  current_use: '&b>> &e当前使用'
+  set: '&b>> &a点击设置'
+GuildIconShopGUI:
+  title: '&e&l图标商店'
+  already_own: '&cc宗门已经拥有这个图标了.'
+  icon:
+    owned: '&a已拥有'
+    buy: '&d点击购买'
+GuildMemberGUI:
+  title: '%name% &7&l- &e&l宗门成员(第%page%页)'
+  member:
+    display_name: '&f%name%'
+    money_donate: '&e金币贡献'

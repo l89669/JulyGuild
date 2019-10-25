@@ -1,5 +1,6 @@
 package com.github.julyss2019.mcsp.julyguild.gui.player.pageable;
 
+import com.github.julyss2019.mcsp.julyguild.config.Lang;
 import com.github.julyss2019.mcsp.julyguild.gui.BasePageableGUI;
 import com.github.julyss2019.mcsp.julyguild.gui.CommonItem;
 import com.github.julyss2019.mcsp.julyguild.gui.GUI;
@@ -40,7 +41,7 @@ public class GuildMemberGUI extends BasePageableGUI {
     public void setCurrentPage(int page) {
         super.setCurrentPage(page);
 
-        InventoryBuilder inventoryBuilder = new InventoryBuilder().title(guild.getName() + " &7&l- &e&l宗门成员(第" + (getCurrentPage() + 1) + "页)").colored().row(6);
+        InventoryBuilder inventoryBuilder = new InventoryBuilder().title(Lang.get("GuildMemberGUI.title").replace("%name%", guild.getName()).replace("%page%", String.valueOf(page))).colored().row(6);
 
         inventoryBuilder.item(53, CommonItem.BACK, new ItemListener() {
             @Override
@@ -94,8 +95,8 @@ public class GuildMemberGUI extends BasePageableGUI {
 
             inventoryBuilder.item(i, new SkullItemBuilder()
                     .owner(memberName)
-                    .displayName("&f" + memberName)
-                    .addLore(permission.getColor() + permission.getChineseName())
+                    .displayName(Lang.get("GuildMemberGUI.member.display_name"))
+                    .addLore(Permission.getChineseName(permission))
                     .addLore("")
                     .addLore("&e金币贡献 &b▹ &e" + member.getDonatedMoney())
                     .addLore("&d点券贡献 &b▹ &d" + member.getDonatedPoints())

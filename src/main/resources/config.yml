@@ -1,4 +1,4 @@
-config_version: 1.4.2
+VERSION: 1.4.2
 # 前缀
 prefix: '&a[宗门] &f'
 guild:

@@ -1,5 +1,6 @@
-package com.github.julyss2019.mcsp.julyguild;
+package com.github.julyss2019.mcsp.julyguild.request;
 
+import com.github.julyss2019.mcsp.julyguild.JulyGuild;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
 
 import java.util.UUID;
@@ -11,8 +12,7 @@ public class BaseRequest implements Request {
     private long time;
     private UUID uuid;
 
-    public BaseRequest() {
-    }
+    public BaseRequest() {}
 
     public BaseRequest(GuildPlayer requester, long time, UUID uuid) {
         this.requester = requester;
@@ -20,6 +20,10 @@ public class BaseRequest implements Request {
         this.uuid = uuid;
     }
 
+    /**
+     * 设置请求者
+     * @param requester
+     */
     public void setRequester(GuildPlayer requester) {
         this.requester = requester;
     }

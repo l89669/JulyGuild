@@ -1,6 +1,6 @@
 package com.github.julyss2019.mcsp.julyguild.guild.request;
 
-import com.github.julyss2019.mcsp.julyguild.BaseRequest;
+import com.github.julyss2019.mcsp.julyguild.request.BaseRequest;
 
 public class BaseGuildRequest extends BaseRequest implements GuildRequest {
     private GuildRequestType guildRequestType;

@@ -1,5 +1,6 @@
 package com.github.julyss2019.mcsp.julyguild.gui.player.pageable;
 
+import com.github.julyss2019.mcsp.julyguild.config.Lang;
 import com.github.julyss2019.mcsp.julyguild.gui.BasePageableGUI;
 import com.github.julyss2019.mcsp.julyguild.gui.CommonItem;
 import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
@@ -42,7 +43,7 @@ public class GuildIconRepositoryGUI extends BasePageableGUI {
     public void setCurrentPage(int page) {
         super.setCurrentPage(page);
 
-        InventoryBuilder inventoryBuilder = new InventoryBuilder().title("&e&l图标仓库").row(6).colored().listener(new InventoryListener() {
+        InventoryBuilder inventoryBuilder = new InventoryBuilder().title(Lang.get("GuildIconRepositoryGUI.title")).row(6).colored().listener(new InventoryListener() {
             @Override
             public void onClicked(InventoryClickEvent event) {
                 int index = getCurrentPage() * 51 + event.getSlot();
@@ -100,11 +101,11 @@ public class GuildIconRepositoryGUI extends BasePageableGUI {
             ItemBuilder itemBuilder = new ItemBuilder().material(icon.getMaterial()).durability(icon.getDurability()).colored();
 
             if (guild.getCurrentIcon().equals(icon)) {
-                itemBuilder.addLore("&b>> &e当前使用");
+                itemBuilder.addLore(Lang.get("GuildIconRepositoryGUI.current_use"));
                 itemBuilder.enchant(Enchantment.DURABILITY, 1);
                 itemBuilder.addItemFlag(ItemFlag.HIDE_ENCHANTS);
             } else {
-                itemBuilder.addLore("&b>> &a点击设置");
+                itemBuilder.addLore(Lang.get("GuildIconRepositoryGUI.set"));
             }
 
             inventoryBuilder.item(i, itemBuilder.build());

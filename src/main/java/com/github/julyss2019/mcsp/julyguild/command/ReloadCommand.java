@@ -12,13 +12,13 @@ public class ReloadCommand implements Command {
     public boolean onCommand(CommandSender cs, String[] args) {
         plugin.reloadPluginConfig();
 
-        for (GuildPlayer guildPlayer : plugin.getGuildPlayerManager().getOnlineGuildPlayers()) {
+        for (GuildPlayer guildPlayer : plugin.getGuildPlayerManager().getSortedOnlineGuildPlayers()) {
             if (guildPlayer.getUsingGUI() != null) {
                 guildPlayer.getUsingGUI().close();
             }
         }
 
-        Util.sendColoredMessage(cs, "&f重载配置完毕(Beta).");
+        Util.sendColoredMessage(cs, "&f重载配置完毕.");
         return true;
     }
 

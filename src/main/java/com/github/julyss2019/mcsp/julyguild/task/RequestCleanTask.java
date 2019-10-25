@@ -1,4 +1,4 @@
-package com.github.julyss2019.mcsp.julyguild.tasks;
+package com.github.julyss2019.mcsp.julyguild.task;
 
 import com.github.julyss2019.mcsp.julyguild.JulyGuild;
 import com.github.julyss2019.mcsp.julyguild.gui.GUIType;

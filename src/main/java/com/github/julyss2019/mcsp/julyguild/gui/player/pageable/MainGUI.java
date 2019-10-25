@@ -1,6 +1,7 @@
 package com.github.julyss2019.mcsp.julyguild.gui.player.pageable;
 
 import com.github.julyss2019.mcsp.julyguild.JulyGuild;
+import com.github.julyss2019.mcsp.julyguild.config.Lang;
 import com.github.julyss2019.mcsp.julyguild.config.MainSettings;
 import com.github.julyss2019.mcsp.julyguild.gui.BasePageableGUI;
 import com.github.julyss2019.mcsp.julyguild.gui.CommonItem;
@@ -53,7 +54,7 @@ public class MainGUI extends BasePageableGUI {
         InventoryBuilder inventoryBuilder = new InventoryBuilder()
                 .row(6)
                 .colored()
-                .title("&a&l宗门(第" + (getCurrentPage() + 1) + "页)")
+                .title(Lang.get("MainGUI.title").replace("%page%", String.valueOf((getCurrentPage() + 1))))
                 .listener(new InventoryListener() {
                     @Override
                     public void onClicked(InventoryClickEvent event) {

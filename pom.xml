@@ -8,20 +8,16 @@
     <artifactId>JulyGuild</artifactId>
     <version>RELEASE</version>
 
-    <properties>
-        <mac>/Users/user/Desktop/july_ss/code/java_api</mac>
-        <win>G:\july_ss\code\java_api</win>
-        <api_folder>${win}</api_folder>
-    </properties>
-
     <repositories>
         <repository>
             <id>placeholderapi</id>
             <url>http://repo.extendedclip.com/content/repositories/placeholderapi/</url>
         </repository>
+        <repository>
+            <id>spigot-repo</id>
+            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+        </repository>
     </repositories>
-
-
 
 
     <build>
@@ -30,8 +26,8 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>8</source>
-                    <target>8</target>
+                    <source>1.8</source>
+                    <target>1.8</target>
                 </configuration>
             </plugin>
         </plugins>
@@ -43,19 +39,19 @@
             <artifactId>-</artifactId>
             <version>-</version>
             <scope>system</scope>
-            <systemPath>${api_folder}/minecraft/plugins/Vault.jar</systemPath>
+            <systemPath>${basedir}/libs/Vault.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>PlayerPoints</groupId>
             <artifactId>-</artifactId>
             <version>-</version>
             <scope>system</scope>
-            <systemPath>${api_folder}/minecraft/plugins/PlayerPoints.jar</systemPath>
+            <systemPath>${basedir}/libs/PlayerPoints.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>org.spigotmc</groupId>
-            <artifactId>spigot-api</artifactId>
-            <version>1.12.2-R0.1-SNAPSHOT</version>
+            <artifactId>spigot</artifactId>
+            <version>1.8.8-R0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.github.julyss2019.mcsp</groupId>
