@@ -35,6 +35,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
+import java.util.Map;
 
 public class JulyGuild extends JavaPlugin {
     private static JulyGuild instance;
@@ -114,7 +115,7 @@ public class JulyGuild extends JavaPlugin {
             Util.sendColoredConsoleMessage("&ePlayerPoints: 未启用.");
         }
 
-        julyCommandExecutor.setPrefix(Lang.get("JulyGuild.command_prefix"));
+        julyCommandExecutor.setPrefix(Lang.getString("JulyGuild.command_prefix"));
         guildManager.loadGuilds();
         cacheGuildManager.startTask();
 
@@ -126,6 +127,10 @@ public class JulyGuild extends JavaPlugin {
         Util.sendColoredMessage(Bukkit.getConsoleSender(), "载入了 " + iconShopSettings.getConfigGuildIcons().size() + "个 图标商店物品.");
         Util.sendColoredMessage(Bukkit.getConsoleSender(), "载入了 " + guildShopSettings.getConfigGuildShopItems().size() + "个 宗门商店物品.");
         Util.sendColoredMessage(Bukkit.getConsoleSender(), "插件初始化完毕.");
+
+        for (Map.Entry<String, Object> entry : Lang.getAll().entrySet()) {
+            getLogger().info(entry.getKey() + ", " + entry.getValue());
+        }
     }
 
     public boolean isPlaceHolderAPIEnabled() {
@@ -275,9 +280,13 @@ public class JulyGuild extends JavaPlugin {
             if (section.isConfigurationSection(key)) {
                 loadLang(section.getConfigurationSection(key));
             } else if (section.isString(key)) {
-                String path = section.getCurrentPath() + "." + key;
+                String path = section.getParent() == null ? key : section.getCurrentPath() + "." + key;
 
-                Lang.put(path, section.getString(key));
+                Lang.putString(path, section.getString(key));
+            } else if (section.isList(key)) {
+                String path = section.getParent() == null ? key : section.getCurrentPath() + "." + key;
+
+                Lang.putStringList(path, section.getStringList(key));
             }
         }
     }

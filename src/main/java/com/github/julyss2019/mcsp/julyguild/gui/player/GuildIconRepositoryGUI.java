@@ -43,7 +43,7 @@ public class GuildIconRepositoryGUI extends BasePageableGUI {
     public void setCurrentPage(int page) {
         super.setCurrentPage(page);
 
-        InventoryBuilder inventoryBuilder = new InventoryBuilder().title(Lang.get("GuildIconRepositoryGUI.title")).row(6).colored().listener(new InventoryListener() {
+        InventoryBuilder inventoryBuilder = new InventoryBuilder().title(Lang.getString("GuildIconRepositoryGUI.title")).row(6).colored().listener(new InventoryListener() {
             @Override
             public void onClicked(InventoryClickEvent event) {
                 int index = getCurrentPage() * 51 + event.getSlot();
@@ -101,11 +101,11 @@ public class GuildIconRepositoryGUI extends BasePageableGUI {
             ItemBuilder itemBuilder = new ItemBuilder().material(icon.getMaterial()).durability(icon.getDurability()).colored();
 
             if (guild.getCurrentIcon().equals(icon)) {
-                itemBuilder.addLore(Lang.get("GuildIconRepositoryGUI.current_use"));
+                itemBuilder.addLore(Lang.getString("GuildIconRepositoryGUI.current_use"));
                 itemBuilder.enchant(Enchantment.DURABILITY, 1);
                 itemBuilder.addItemFlag(ItemFlag.HIDE_ENCHANTS);
             } else {
-                itemBuilder.addLore(Lang.get("GuildIconRepositoryGUI.set"));
+                itemBuilder.addLore(Lang.getString("GuildIconRepositoryGUI.set"));
             }
 
             inventoryBuilder.item(i, itemBuilder.build());

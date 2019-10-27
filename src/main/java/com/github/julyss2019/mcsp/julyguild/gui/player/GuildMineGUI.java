@@ -1,6 +1,7 @@
 package com.github.julyss2019.mcsp.julyguild.gui.player;
 
 import com.github.julyss2019.mcsp.julyguild.JulyGuild;
+import com.github.julyss2019.mcsp.julyguild.config.Lang;
 import com.github.julyss2019.mcsp.julyguild.config.MainSettings;
 import com.github.julyss2019.mcsp.julyguild.gui.BaseGUI;
 import com.github.julyss2019.mcsp.julyguild.gui.CommonItem;
@@ -50,10 +51,8 @@ public class GuildMineGUI extends BaseGUI {
         Guild.sortMembers(guildMembers);
 
         for (GuildMember guildMember : guild.getMembers()) {
-            Permission permission = guildMember.getPermission();
-
             if (memberLores.size() < 10) {
-                memberLores.add(permission.getColor() + "[" + permission.getChineseName() + "] " + guildMember.getName());
+                memberLores.add(Lang.getNickName(guildMember));
             } else {
                 break;
             }

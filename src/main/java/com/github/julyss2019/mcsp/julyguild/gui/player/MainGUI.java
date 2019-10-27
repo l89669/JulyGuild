@@ -54,7 +54,7 @@ public class MainGUI extends BasePageableGUI {
         InventoryBuilder inventoryBuilder = new InventoryBuilder()
                 .row(6)
                 .colored()
-                .title(Lang.get("MainGUI.title").replace("%page%", String.valueOf((getCurrentPage() + 1))))
+                .title(Lang.getString("MainGUI.title").replace("%page%", String.valueOf((getCurrentPage() + 1))))
                 .listener(new InventoryListener() {
                     @Override
                     public void onClicked(InventoryClickEvent event) {

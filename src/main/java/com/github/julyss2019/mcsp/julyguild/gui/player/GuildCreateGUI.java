@@ -1,6 +1,7 @@
 package com.github.julyss2019.mcsp.julyguild.gui.player;
 
 import com.github.julyss2019.mcsp.julyguild.JulyGuild;
+import com.github.julyss2019.mcsp.julyguild.config.Lang;
 import com.github.julyss2019.mcsp.julyguild.config.MainSettings;
 import com.github.julyss2019.mcsp.julyguild.gui.BaseGUI;
 import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
@@ -47,20 +48,19 @@ public class GuildCreateGUI extends BaseGUI {
     public void build() {
         super.build();
 
-        InventoryBuilder inventoryBuilder = new InventoryBuilder().row(3).title("&e&l请选择支付方式").colored().listener(new InventoryListener() {
+        InventoryBuilder inventoryBuilder = new InventoryBuilder().row(3).title(Lang.getString("GuildCreateGUI.title")).colored().listener(new InventoryListener() {
             @Override
             public void onClose(InventoryCloseEvent event) {
                 if (noAction) {
-                    Util.sendColoredMessage(bukkitPlayer, "&c创建宗门失败!");
+                    Util.sendColoredMessage(bukkitPlayer, Lang.getString("GuildCreateGUI.on_close"));
                 }
             }
         });
 
         inventoryBuilder.item(1, 2, new ItemBuilder()
                 .material(settings.isGuildCreateCostMoneyEnabled() ? Material.GOLD_INGOT : Material.BARRIER)
-                .displayName("&f使用 &e金币x" + settings.getGuildCreateCostMoneyAmount() + " &f支付")
-                .addLore(settings.isGuildCreateCostMoneyEnabled() ? "&b>> &a点击支付" : "&b>> &c未启用")
-                .addLore("&e公会名&f: &e" + guildName)
+                .displayName(Lang.getString("GuildCreateGUI.pay.money").replace("%AMOUNT%", String.valueOf(settings.getGuildCreateCostMoneyAmount())))
+                .lores(Lang.getStringList("GuildCreateGUI.pay.lores", new String[][]{{"%GUILD_NAME%", guildName}, {"%TYPE%", Lang.Global.getMoney()}, {"%COST%", String.valueOf(settings.getGuildCreateCostMoneyAmount())}, {"%IS_ENABLED%", Lang.Global.getEnabled(settings.isGuildCreateCostMoneyEnabled())}}))
                 .colored()
                 .build()
                 , settings.isGuildCreateCostMoneyEnabled() ? new ItemListener() {

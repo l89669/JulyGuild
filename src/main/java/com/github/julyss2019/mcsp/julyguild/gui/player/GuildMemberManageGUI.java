@@ -151,7 +151,7 @@ public class GuildMemberManageGUI extends BasePageableGUI {
             ItemBuilder itemBuilder = new SkullItemBuilder()
                     .owner(memberName)
                     .displayName("&f" + memberName)
-                    .addLore(member.getPermission().getColor() + member.getPermission().getChineseName())
+                    .addLore("---")
                     .addLore("")
                     .addLore("&d左键 &b▹ &d任命管理员")
                     .addLore("&c右键 &b▹ &c移出宗门")

@@ -8,6 +8,8 @@
     <artifactId>JulyGuild</artifactId>
     <version>RELEASE</version>
 
+
+
     <repositories>
         <repository>
             <id>placeholderapi</id>
@@ -51,7 +53,7 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot</artifactId>
-            <version>1.8.8-R0.1-SNAPSHOT</version>
+            <version>1.12.2-R0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.github.julyss2019.mcsp</groupId>

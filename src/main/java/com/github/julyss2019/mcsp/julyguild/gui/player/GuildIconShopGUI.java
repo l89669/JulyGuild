@@ -49,7 +49,7 @@ public class GuildIconShopGUI extends BasePageableGUI {
         icons.clear();
         icons.addAll(iconShopSettings.getConfigGuildIcons());
 
-        InventoryBuilder inventoryBuilder = new InventoryBuilder().title(Lang.get("GuildIconShopGUI.title")).row(6).colored().listener(new InventoryListener() {
+        InventoryBuilder inventoryBuilder = new InventoryBuilder().title(Lang.getString("GuildIconShopGUI.title")).row(6).colored().listener(new InventoryListener() {
             @Override
             public void onClicked(InventoryClickEvent event) {
                 int index = event.getSlot() + getCurrentPage() * 51;
@@ -58,7 +58,7 @@ public class GuildIconShopGUI extends BasePageableGUI {
                     ConfigGuildIcon configGuildIcon = icons.get(index);
 
                     if (guild.isOwnedIcon(configGuildIcon.getMaterial(), configGuildIcon.getDurability())) {
-                        Util.sendColoredMessage(bukkitPlayer, Lang.get("GuildIconShopGUI.already_own"));
+                        Util.sendColoredMessage(bukkitPlayer, Lang.getString("GuildIconShopGUI.already_own"));
                         return;
                     }
 
@@ -110,7 +110,7 @@ public class GuildIconShopGUI extends BasePageableGUI {
                     .material(icon.getMaterial())
                     .durability(icon.getDurability())
                     .displayName(icon.getDisplayName())
-                    .addLore(isOwned ? Lang.get("GuildIconShopGUI.icon.owned") : Lang.get("GuildIconShopGUI.icon.buy"))
+                    .addLore(isOwned ? Lang.getString("GuildIconShopGUI.icon.owned") : Lang.getString("GuildIconShopGUI.icon.buy"))
                     .addLore("")
                     .addLores(ListUtil.replacePlaceholders(icon.getLores(),
                             new MapBuilder<String, String>().put("%money%", String.valueOf(icon.getMoneyCost())).put("%points%", String.valueOf(icon.getPointsCost())).build()))
