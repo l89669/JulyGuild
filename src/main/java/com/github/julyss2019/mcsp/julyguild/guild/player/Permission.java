@@ -1,6 +1,6 @@
 package com.github.julyss2019.mcsp.julyguild.guild.player;
 
-import com.github.julyss2019.mcsp.julyguild.config.Lang;
+import com.github.julyss2019.mcsp.julyguild.JulyGuild;
 
 public enum Permission {
     MEMBER(0), ADMIN(1), OWNER(2);
@@ -12,7 +12,7 @@ public enum Permission {
     }
 
     public static String getChineseName(Permission permission) {
-        return Lang.getString("Permission." + permission.name().toLowerCase());
+        return JulyGuild.getInstance().getLangYamlConfig().getString("Permission." + permission.name().toLowerCase());
     }
 
     public int getLevel() {

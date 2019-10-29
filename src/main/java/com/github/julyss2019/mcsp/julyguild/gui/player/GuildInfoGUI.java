@@ -1,13 +1,11 @@
 package com.github.julyss2019.mcsp.julyguild.gui.player;
 
-import com.github.julyss2019.mcsp.julyguild.config.Lang;
 import com.github.julyss2019.mcsp.julyguild.gui.BaseGUI;
 import com.github.julyss2019.mcsp.julyguild.gui.CommonItem;
 import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
 import com.github.julyss2019.mcsp.julyguild.guild.Guild;
 import com.github.julyss2019.mcsp.julyguild.guild.player.GuildAdmin;
 import com.github.julyss2019.mcsp.julyguild.guild.player.GuildMember;
-import com.github.julyss2019.mcsp.julyguild.guild.player.Permission;
 import com.github.julyss2019.mcsp.julyguild.guild.request.GuildRequestType;
 import com.github.julyss2019.mcsp.julyguild.guild.request.JoinGuildRequest;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
@@ -44,6 +42,7 @@ public class GuildInfoGUI extends BaseGUI {
 
     @Override
     public void build() {
+
         List<String> memberLores = new ArrayList<>();
         List<GuildMember> guildMembers = guild.getMembers();
 
@@ -51,7 +50,7 @@ public class GuildInfoGUI extends BaseGUI {
 
         for (GuildMember guildMember : guildMembers) {
             if (memberLores.size() < 10) {
-                memberLores.add(Lang.getNickName(guildMember));
+                //memberLores.add(ConfigHandler.getNickName(guildMember));
             } else {
                 break;
             }

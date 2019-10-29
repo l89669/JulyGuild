@@ -1,11 +1,9 @@
 package com.github.julyss2019.mcsp.julyguild.gui.player;
 
-import com.github.julyss2019.mcsp.julyguild.config.Lang;
 import com.github.julyss2019.mcsp.julyguild.gui.BasePageableGUI;
 import com.github.julyss2019.mcsp.julyguild.gui.CommonItem;
 import com.github.julyss2019.mcsp.julyguild.gui.GUI;
 import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
-import com.github.julyss2019.mcsp.julyguild.gui.player.GuildInfoGUI;
 import com.github.julyss2019.mcsp.julyguild.guild.Guild;
 import com.github.julyss2019.mcsp.julyguild.guild.player.GuildMember;
 import com.github.julyss2019.mcsp.julyguild.guild.player.Permission;
@@ -41,7 +39,7 @@ public class GuildMemberGUI extends BasePageableGUI {
     public void setCurrentPage(int page) {
         super.setCurrentPage(page);
 
-        InventoryBuilder inventoryBuilder = new InventoryBuilder().title(Lang.getString("GuildMemberGUI.title").replace("%name%", guild.getName()).replace("%page%", String.valueOf(page))).colored().row(6);
+/*        InventoryBuilder inventoryBuilder = new InventoryBuilder().title(ConfigHandler.getString("GuildMemberGUI.title").replace("%name%", guild.getName()).replace("%page%", String.valueOf(page))).colored().row(6);
 
         inventoryBuilder.item(53, CommonItem.BACK, new ItemListener() {
             @Override
@@ -95,7 +93,7 @@ public class GuildMemberGUI extends BasePageableGUI {
 
             inventoryBuilder.item(i, new SkullItemBuilder()
                     .owner(memberName)
-                    .displayName(Lang.getString("GuildMemberGUI.member.display_name"))
+                    .displayName(ConfigHandler.getString("GuildMemberGUI.member.display_name"))
                     .addLore(Permission.getChineseName(permission))
                     .addLore("")
                     .addLore("&e金币贡献 &b▹ &e" + member.getDonatedMoney())
@@ -105,7 +103,7 @@ public class GuildMemberGUI extends BasePageableGUI {
                     .build());
         }
 
-        this.inventory = inventoryBuilder.build();
+        this.inventory = inventoryBuilder.build();*/
     }
 
     @Override

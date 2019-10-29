@@ -1,10 +1,8 @@
 package com.github.julyss2019.mcsp.julyguild.gui.player;
 
-import com.github.julyss2019.mcsp.julyguild.config.Lang;
 import com.github.julyss2019.mcsp.julyguild.gui.BasePageableGUI;
 import com.github.julyss2019.mcsp.julyguild.gui.CommonItem;
 import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
-import com.github.julyss2019.mcsp.julyguild.gui.player.GuildManageGUI;
 import com.github.julyss2019.mcsp.julyguild.guild.Guild;
 import com.github.julyss2019.mcsp.julyguild.guild.OwnedIcon;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
@@ -42,76 +40,76 @@ public class GuildIconRepositoryGUI extends BasePageableGUI {
     @Override
     public void setCurrentPage(int page) {
         super.setCurrentPage(page);
-
-        InventoryBuilder inventoryBuilder = new InventoryBuilder().title(Lang.getString("GuildIconRepositoryGUI.title")).row(6).colored().listener(new InventoryListener() {
-            @Override
-            public void onClicked(InventoryClickEvent event) {
-                int index = getCurrentPage() * 51 + event.getSlot();
-
-                if (index < icons.size()) {
-                    OwnedIcon icon = icons.get(index);
-
-                    if (!guild.getCurrentIcon().equals(icon)) {
-                        guild.setCurrentIcon(icon);
-                        close();
-                        build();
-                        open();
-                    }
-                }
-            }
-        });
-
-        inventoryBuilder.item(53, CommonItem.BACK, new ItemListener() {
-            @Override
-            public void onClicked(InventoryClickEvent event) {
-                close();
-                new GuildManageGUI(guildPlayer).open();
-            }
-        });
-
-        if (getTotalPage() > 1) {
-            inventoryBuilder.item(51, CommonItem.PREVIOUS_PAGE, new ItemListener() {
-                @Override
-                public void onClicked(InventoryClickEvent event) {
-                    if (hasPrecious()) {
-                        close();
-                        previousPage();
-                    }
-                }
-            });
-            inventoryBuilder.item(52, CommonItem.NEXT_PAGE, new ItemListener() {
-                @Override
-                public void onClicked(InventoryClickEvent event) {
-                    if (hasNext()) {
-                        close();
-                        nextPage();
-                    }
-                }
-            });
-        }
-
-        this.icons = guild.getIcons();
-
-        int iconSize = icons.size();
-        int itemCounter = page * 51;
-        int loopCount = iconSize - itemCounter < 51 ? iconSize - itemCounter : 51;
-
-        for (int i = 0; i < loopCount; i++) {
-            OwnedIcon icon = icons.get(itemCounter++);
-            ItemBuilder itemBuilder = new ItemBuilder().material(icon.getMaterial()).durability(icon.getDurability()).colored();
-
-            if (guild.getCurrentIcon().equals(icon)) {
-                itemBuilder.addLore(Lang.getString("GuildIconRepositoryGUI.current_use"));
-                itemBuilder.enchant(Enchantment.DURABILITY, 1);
-                itemBuilder.addItemFlag(ItemFlag.HIDE_ENCHANTS);
-            } else {
-                itemBuilder.addLore(Lang.getString("GuildIconRepositoryGUI.set"));
-            }
-
-            inventoryBuilder.item(i, itemBuilder.build());
-        }
-
-        this.inventory = inventoryBuilder.build();
+//
+//        InventoryBuilder inventoryBuilder = new InventoryBuilder().title(ConfigHandler.getString("GuildIconRepositoryGUI.title")).row(6).colored().listener(new InventoryListener() {
+//            @Override
+//            public void onClicked(InventoryClickEvent event) {
+//                int index = getCurrentPage() * 51 + event.getSlot();
+//
+//                if (index < icons.size()) {
+//                    OwnedIcon icon = icons.get(index);
+//
+//                    if (!guild.getCurrentIcon().equals(icon)) {
+//                        guild.setCurrentIcon(icon);
+//                        close();
+//                        build();
+//                        open();
+//                    }
+//                }
+//            }
+//        });
+//
+//        inventoryBuilder.item(53, CommonItem.BACK, new ItemListener() {
+//            @Override
+//            public void onClicked(InventoryClickEvent event) {
+//                close();
+//                new GuildManageGUI(guildPlayer).open();
+//            }
+//        });
+//
+//        if (getTotalPage() > 1) {
+//            inventoryBuilder.item(51, CommonItem.PREVIOUS_PAGE, new ItemListener() {
+//                @Override
+//                public void onClicked(InventoryClickEvent event) {
+//                    if (hasPrecious()) {
+//                        close();
+//                        previousPage();
+//                    }
+//                }
+//            });
+//            inventoryBuilder.item(52, CommonItem.NEXT_PAGE, new ItemListener() {
+//                @Override
+//                public void onClicked(InventoryClickEvent event) {
+//                    if (hasNext()) {
+//                        close();
+//                        nextPage();
+//                    }
+//                }
+//            });
+//        }
+//
+//        this.icons = guild.getIcons();
+//
+//        int iconSize = icons.size();
+//        int itemCounter = page * 51;
+//        int loopCount = iconSize - itemCounter < 51 ? iconSize - itemCounter : 51;
+//
+//        for (int i = 0; i < loopCount; i++) {
+//            OwnedIcon icon = icons.get(itemCounter++);
+//            ItemBuilder itemBuilder = new ItemBuilder().material(icon.getMaterial()).durability(icon.getDurability()).colored();
+//
+//            if (guild.getCurrentIcon().equals(icon)) {
+//                itemBuilder.addLore(ConfigHandler.getString("GuildIconRepositoryGUI.current_use"));
+//                itemBuilder.enchant(Enchantment.DURABILITY, 1);
+//                itemBuilder.addItemFlag(ItemFlag.HIDE_ENCHANTS);
+//            } else {
+//                itemBuilder.addLore(ConfigHandler.getString("GuildIconRepositoryGUI.set"));
+//            }
+//
+//            inventoryBuilder.item(i, itemBuilder.build());
+//        }
+//
+//        this.inventory = inventoryBuilder.build();
     }
 
     @Override

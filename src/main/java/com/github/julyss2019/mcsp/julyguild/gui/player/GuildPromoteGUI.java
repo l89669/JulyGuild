@@ -1,7 +1,7 @@
 package com.github.julyss2019.mcsp.julyguild.gui.player;
 
 import com.github.julyss2019.mcsp.julyguild.JulyGuild;
-import com.github.julyss2019.mcsp.julyguild.config.MainSettings;
+import com.github.julyss2019.mcsp.julyguild.config.MainConfig;
 import com.github.julyss2019.mcsp.julyguild.gui.BaseGUI;
 import com.github.julyss2019.mcsp.julyguild.gui.CommonItem;
 import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
@@ -22,22 +22,21 @@ import org.bukkit.scheduler.BukkitRunnable;
 import parsii.eval.Parser;
 import parsii.tokenizer.ParseException;
 
-import java.util.Arrays;
-
 public class GuildPromoteGUI extends BaseGUI {
     private Inventory inventory;
     private Guild guild;
     private GuildBank guildBank;
     private boolean moneyEnabled;
     private boolean pointsEnabled;
+    private final JulyGuild plugin = JulyGuild.getInstance();
 
     public GuildPromoteGUI(GuildPlayer guildPlayer) {
         super(GUIType.PROMOTE, guildPlayer);
 
         this.guild = this.guildPlayer.getGuild();
         this.guildBank = guild.getGuildBank();
-        this.moneyEnabled = mainSettings.isPromoteMoneyEnabled();
-        this.pointsEnabled = mainSettings.isPromotePointsEnabled();
+        this.moneyEnabled = MainConfig.isPromoteMoneyEnabled();
+        this.pointsEnabled = MainConfig.isPromotePointsEnabled();
         build();
     }
 
@@ -64,13 +63,13 @@ public class GuildPromoteGUI extends BaseGUI {
 
         int currentMaxMemberCount = guild.getMaxMemberCount();
 
-        if (currentMaxMemberCount + 1 > mainSettings.getPromoteMoneyMaxMemberCount()) {
+        if (currentMaxMemberCount + 1 > MainConfig.getPromoteMoneyMaxMemberCount()) {
             inventoryBuilder.item(1, 3, new ItemBuilder().material(Material.BARRIER).displayName("&f使用金币升级").addLore("&c已封顶").colored().build());
         } else {
             int needMoney;
 
             try {
-                needMoney = (int) Parser.parse(PlaceholderAPI.setPlaceholders(bukkitPlayer, mainSettings.getPromoteMoneyFormula())).evaluate();
+                needMoney = (int) Parser.parse(PlaceholderAPI.setPlaceholders(bukkitPlayer, MainConfig.getPromoteMoneyFormula())).evaluate();
             } catch (ParseException e) {
                 e.printStackTrace();
                 throw new GuildPromoteException("升级公式不合法");
@@ -107,13 +106,13 @@ public class GuildPromoteGUI extends BaseGUI {
                     });
         }
 
-        if (currentMaxMemberCount + 1 > mainSettings.getPromotePointMaxMemberCount()) {
+        if (currentMaxMemberCount + 1 > MainConfig.getPromotePointMaxMemberCount()) {
             inventoryBuilder.item(1, 5, new ItemBuilder().material(Material.BARRIER).displayName("&f使用点券升级").addLore("&c已封顶").colored().build());
         } else {
             int needPoints;
 
             try {
-                needPoints = (int) Parser.parse(PlaceholderAPI.setPlaceholders(bukkitPlayer, mainSettings.getPromotePointFormula())).evaluate();
+                needPoints = (int) Parser.parse(PlaceholderAPI.setPlaceholders(bukkitPlayer, MainConfig.getPromotePointFormula())).evaluate();
             } catch (ParseException e) {
                 e.printStackTrace();
                 throw new GuildPromoteException("升级公式不合法");

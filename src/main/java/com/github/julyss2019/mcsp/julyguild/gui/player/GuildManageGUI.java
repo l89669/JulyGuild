@@ -1,7 +1,7 @@
 package com.github.julyss2019.mcsp.julyguild.gui.player;
 
 import com.github.julyss2019.mcsp.julyguild.JulyGuild;
-import com.github.julyss2019.mcsp.julyguild.config.MainSettings;
+import com.github.julyss2019.mcsp.julyguild.config.MainConfig;
 import com.github.julyss2019.mcsp.julyguild.gui.BaseGUI;
 import com.github.julyss2019.mcsp.julyguild.gui.CommonItem;
 import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
@@ -29,7 +29,6 @@ public class GuildManageGUI extends BaseGUI {
     private Inventory inventory;
     private Guild guild;
     private static JulyGuild plugin = JulyGuild.getInstance();
-    private static MainSettings mainSettings = plugin.getMainSettings();
     private static Map<String, Long> tpAllIntervalMap = new HashMap<>();
 
     public GuildManageGUI(GuildPlayer guildPlayer) {
@@ -81,17 +80,17 @@ public class GuildManageGUI extends BaseGUI {
                         @Override
                         public void onClicked(InventoryClickEvent event) {
                             close();
-                            Util.sendColoredMessage(bukkitPlayer, "&e请在聊天栏输入并发送要设置的公告, 使用符号 &c" + mainSettings.getGuildAnnouncementSplitChar() + " &e来换行, 最多支持 &c" + mainSettings.getGuildAnnouncementMaxCount() + "行&e: ");
+                            Util.sendColoredMessage(bukkitPlayer, "&e请在聊天栏输入并发送要设置的公告, 使用符号 &c" + MainConfig.getGuildAnnouncementSplitChar() + " &e来换行, 最多支持 &c" + MainConfig.getGuildAnnouncementMaxCount() + "行&e: ");
 
                             JulyChatFilter.registerChatFilter(bukkitPlayer, new ChatListener() {
                                 @Override
                                 public void onChat(AsyncPlayerChatEvent event) {
                                     event.setCancelled(true);
 
-                                    String[] messages = event.getMessage().split(mainSettings.getGuildAnnouncementSplitChar());
+                                    String[] messages = event.getMessage().split(MainConfig.getGuildAnnouncementSplitChar());
 
-                                    if (messages.length > mainSettings.getGuildAnnouncementMaxCount()) {
-                                        Util.sendColoredMessage(bukkitPlayer, "&c公告最多能设置 &e" + mainSettings.getGuildAnnouncementMaxCount() + "条&c, 使用分隔符 &e" + mainSettings.getGuildAnnouncementSplitChar() + " &c换行.");
+                                    if (messages.length > MainConfig.getGuildAnnouncementMaxCount()) {
+                                        Util.sendColoredMessage(bukkitPlayer, "&c公告最多能设置 &e" + MainConfig.getGuildAnnouncementMaxCount() + "条&c, 使用分隔符 &e" + MainConfig.getGuildAnnouncementSplitChar() + " &c换行.");
                                         return;
                                     }
 
@@ -220,8 +219,8 @@ public class GuildManageGUI extends BaseGUI {
 
                             long interval = (System.currentTimeMillis() - tpAllIntervalMap.getOrDefault(bukkitPlayer.getName(), 0L)) / 1000L;
 
-                            if (interval < mainSettings.getTpAllInterval()) {
-                                Util.sendColoredMessage(bukkitPlayer, "&c冷却中: &e" + Util.getTimeLeftStr(mainSettings.getTpAllInterval() - interval) + "&c.");
+                            if (interval < MainConfig.getTpAllInterval()) {
+                                Util.sendColoredMessage(bukkitPlayer, "&c冷却中: &e" + Util.getTimeLeftStr(MainConfig.getTpAllInterval() - interval) + "&c.");
                                 return;
                             }
 

@@ -2,27 +2,12 @@ package com.github.julyss2019.mcsp.julyguild.gui.player;
 
 import com.github.julyss2019.mcsp.julyguild.JulyGuild;
 import com.github.julyss2019.mcsp.julyguild.config.ConfigGuildIcon;
-import com.github.julyss2019.mcsp.julyguild.config.IconShopSettings;
-import com.github.julyss2019.mcsp.julyguild.config.Lang;
+import com.github.julyss2019.mcsp.julyguild.config.IconShopConfig;
 import com.github.julyss2019.mcsp.julyguild.gui.BasePageableGUI;
-import com.github.julyss2019.mcsp.julyguild.gui.CommonItem;
 import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
-import com.github.julyss2019.mcsp.julyguild.gui.player.GuildIconBuyGUI;
-import com.github.julyss2019.mcsp.julyguild.gui.player.GuildManageGUI;
 import com.github.julyss2019.mcsp.julyguild.guild.Guild;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
-import com.github.julyss2019.mcsp.julyguild.util.Util;
-import com.github.julyss2019.mcsp.julylibrary.inventory.InventoryBuilder;
-import com.github.julyss2019.mcsp.julylibrary.inventory.InventoryListener;
-import com.github.julyss2019.mcsp.julylibrary.inventory.ItemListener;
-import com.github.julyss2019.mcsp.julylibrary.item.ItemBuilder;
-import com.github.julyss2019.mcsp.julylibrary.map.MapBuilder;
-import com.github.julyss2019.mcsp.julylibrary.utils.ListUtil;
-import com.github.julyss2019.mcsp.julylibrary.utils.StrUtil;
-import org.bukkit.enchantments.Enchantment;
-import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemFlag;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +15,7 @@ import java.util.List;
 public class GuildIconShopGUI extends BasePageableGUI {
     private Inventory inventory;
     private static JulyGuild plugin = JulyGuild.getInstance();
-    private static IconShopSettings iconShopSettings = plugin.getIconShopSettings();
+    private static IconShopConfig iconShopConfig = plugin.getIconShopConfig();
 
     private List<ConfigGuildIcon> icons = new ArrayList<>();
     private Guild guild;
@@ -45,11 +30,11 @@ public class GuildIconShopGUI extends BasePageableGUI {
     @Override
     public void setCurrentPage(int page) {
         super.setCurrentPage(page);
-
+/*
         icons.clear();
-        icons.addAll(iconShopSettings.getConfigGuildIcons());
+        icons.addAll(iconShopConfig.getIcons());
 
-        InventoryBuilder inventoryBuilder = new InventoryBuilder().title(Lang.getString("GuildIconShopGUI.title")).row(6).colored().listener(new InventoryListener() {
+        InventoryBuilder inventoryBuilder = new InventoryBuilder().title(ConfigHandler.getString("GuildIconShopGUI.title")).row(6).colored().listener(new InventoryListener() {
             @Override
             public void onClicked(InventoryClickEvent event) {
                 int index = event.getSlot() + getCurrentPage() * 51;
@@ -58,7 +43,7 @@ public class GuildIconShopGUI extends BasePageableGUI {
                     ConfigGuildIcon configGuildIcon = icons.get(index);
 
                     if (guild.isOwnedIcon(configGuildIcon.getMaterial(), configGuildIcon.getDurability())) {
-                        Util.sendColoredMessage(bukkitPlayer, Lang.getString("GuildIconShopGUI.already_own"));
+                        Util.sendColoredMessage(bukkitPlayer, ConfigHandler.getString("GuildIconShopGUI.already_own"));
                         return;
                     }
 
@@ -110,7 +95,7 @@ public class GuildIconShopGUI extends BasePageableGUI {
                     .material(icon.getMaterial())
                     .durability(icon.getDurability())
                     .displayName(icon.getDisplayName())
-                    .addLore(isOwned ? Lang.getString("GuildIconShopGUI.icon.owned") : Lang.getString("GuildIconShopGUI.icon.buy"))
+                    .addLore(isOwned ? ConfigHandler.getString("GuildIconShopGUI.icon.owned") : ConfigHandler.getString("GuildIconShopGUI.icon.buy"))
                     .addLore("")
                     .addLores(ListUtil.replacePlaceholders(icon.getLores(),
                             new MapBuilder<String, String>().put("%money%", String.valueOf(icon.getMoneyCost())).put("%points%", String.valueOf(icon.getPointsCost())).build()))
@@ -124,7 +109,7 @@ public class GuildIconShopGUI extends BasePageableGUI {
             inventoryBuilder.item(i, itemBuilder.build());
         }
 
-        this.inventory = inventoryBuilder.build();
+        this.inventory = inventoryBuilder.build();*/
     }
 
     @Override

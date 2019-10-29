@@ -7,8 +7,6 @@ import org.bukkit.Material;
 import java.util.List;
 
 public class ConfigGuildIcon {
-    private static JulyGuild plugin = JulyGuild.getInstance();
-
     @Deprecated
     public enum CostType {
         POINTS, MONEY
@@ -56,7 +54,7 @@ public class ConfigGuildIcon {
     }
 
     public boolean isPointsPayEnabled() {
-        return pointsPayEnabled && plugin.isPlayerPointsHooked();
+        return pointsPayEnabled && JulyGuild.getInstance().isPlayerPointsHooked();
     }
 
     public void setPointsPayEnabled(boolean pointsPayEnabled) {

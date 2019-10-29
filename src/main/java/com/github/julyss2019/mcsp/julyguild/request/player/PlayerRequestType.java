@@ -1,5 +1,5 @@
 package com.github.julyss2019.mcsp.julyguild.request.player;
 
-public enum GuildPlayerRequestType {
+public enum PlayerRequestType {
     TP
 }

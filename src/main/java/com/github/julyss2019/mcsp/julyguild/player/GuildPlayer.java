@@ -5,8 +5,8 @@ import com.github.julyss2019.mcsp.julyguild.gui.GUI;
 import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
 import com.github.julyss2019.mcsp.julyguild.guild.Guild;
 import com.github.julyss2019.mcsp.julyguild.guild.GuildManager;
-import com.github.julyss2019.mcsp.julyguild.request.player.GuildPlayerRequest;
-import com.github.julyss2019.mcsp.julyguild.request.player.GuildPlayerRequestType;
+import com.github.julyss2019.mcsp.julyguild.request.player.PlayerRequest;
+import com.github.julyss2019.mcsp.julyguild.request.player.PlayerRequestType;
 import com.github.julyss2019.mcsp.julylibrary.utils.YamlUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -28,7 +28,7 @@ public class GuildPlayer {
     private YamlConfiguration yml;
     private Guild guild;
     private GUI usingGUI;
-    private Map<String, GuildPlayerRequest> requestMap = new HashMap<>();
+    private Map<String, PlayerRequest> requestMap = new HashMap<>();
 
     protected GuildPlayer(String name) {
         this.name = name;
@@ -57,7 +57,7 @@ public class GuildPlayer {
     /**
      * 添加请求，不存储到文件系统
      */
-    public void addRequest(GuildPlayerRequest request) {
+    public void addRequest(PlayerRequest request) {
         requestMap.put(request.getUUID().toString(), request);
     }
 
@@ -65,7 +65,7 @@ public class GuildPlayer {
      * 得到请求
      * @return
      */
-    public Collection<GuildPlayerRequest> getRequests() {
+    public Collection<PlayerRequest> getRequests() {
         return requestMap.values();
     }
 
@@ -91,8 +91,8 @@ public class GuildPlayer {
      * @param type
      * @return
      */
-    public boolean hasRequest(GuildPlayerRequestType type) {
-        for (GuildPlayerRequest request : getRequests()) {
+    public boolean hasRequest(PlayerRequestType type) {
+        for (PlayerRequest request : getRequests()) {
             if (request.getType() == type) {
                 return true;
             }
@@ -101,8 +101,8 @@ public class GuildPlayer {
         return false;
     }
 
-    public GuildPlayerRequest getOnlyOneRequest(GuildPlayerRequestType type) {
-        for (GuildPlayerRequest request : getRequests()) {
+    public PlayerRequest getOnlyOneRequest(PlayerRequestType type) {
+        for (PlayerRequest request : getRequests()) {
             if (request.getType() == type) {
                 return request;
             }

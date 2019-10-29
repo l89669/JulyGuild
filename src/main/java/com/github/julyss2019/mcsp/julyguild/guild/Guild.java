@@ -1,8 +1,8 @@
 package com.github.julyss2019.mcsp.julyguild.guild;
 
 import com.github.julyss2019.mcsp.julyguild.JulyGuild;
-import com.github.julyss2019.mcsp.julyguild.config.MainSettings;
-import com.github.julyss2019.mcsp.julyguild.config.IconShopSettings;
+import com.github.julyss2019.mcsp.julyguild.config.ConfigGuildIcon;
+import com.github.julyss2019.mcsp.julyguild.config.MainConfig;
 import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
 import com.github.julyss2019.mcsp.julyguild.guild.exception.GuildLoadException;
 import com.github.julyss2019.mcsp.julyguild.guild.player.GuildAdmin;
@@ -29,11 +29,8 @@ import java.util.stream.Collectors;
 
 public class Guild {
     private static JulyGuild plugin = JulyGuild.getInstance();
-    private static MainSettings mainSettings = plugin.getMainSettings();
-    private static IconShopSettings iconShopSettings = plugin.getIconShopSettings();
     private static GuildPlayerManager guildPlayerManager = plugin.getGuildPlayerManager();
     private static GuildManager guildManager = plugin.getGuildManager();
-    public static final OwnedIcon DEFAULT_ICON = OwnedIcon.createNew(iconShopSettings.getDefIconMaterial(), iconShopSettings.getDefIconDurability());
 
     private File file;
     private YamlConfiguration yml;
@@ -52,6 +49,8 @@ public class Guild {
     private Map<String, OwnedIcon> iconMap = new HashMap<>();
     private OwnedIcon currentIcon;
     private GuildBank guildBank;
+
+    private final OwnedIcon DEFAULT_ICON = OwnedIcon.createNew(Material.STONE, (short) 0);
 
     protected Guild(File file) {
         this.file = file;
@@ -81,14 +80,14 @@ public class Guild {
 
         this.owner = new GuildOwner(this, guildPlayerManager.getGuildPlayer(yml.getString("owner.name")));
         this.name = yml.getString("name");
-        this.maxMemberCount = yml.getInt("max_member_count", mainSettings.getGuildDefMaxMemberCount());
+        this.maxMemberCount = yml.getInt("max_member_count", MainConfig.getGuildDefMaxMemberCount());
         this.announcements = yml.getStringList("announcements");
         this.guildBank = new GuildBank(this).load();
 
         if (yml.isConfigurationSection("icon"))
 
         if (announcements.size() == 0) {
-            announcements.addAll(mainSettings.getAnnouncementDef());
+            announcements.addAll(MainConfig.getAnnouncementDef());
         }
 
         this.creationTime = yml.getLong("creation_time");
@@ -142,8 +141,6 @@ public class Guild {
             }
         }
 
-        iconMap.put(DEFAULT_ICON.getUuid().toString(), DEFAULT_ICON);
-        this.currentIcon = iconMap.get(yml.getString("current_icon", DEFAULT_ICON.getUuid().toString()));
         return this;
     }
 
@@ -576,7 +573,7 @@ public class Guild {
 
     public int getRank() {
         try {
-            return (int) Parser.parse(mainSettings.getRankingListFormula()
+            return (int) Parser.parse(MainConfig.getRankingListFormula()
                     .replace("%GUILD_MONEY%", String.valueOf(getGuildBank().getBalance(GuildBank.BalanceType.MONEY)))
                     .replace("%GUILD_POINTS%", String.valueOf(getGuildBank().getBalance(GuildBank.BalanceType.POINTS)))
                     .replace("%GUILD_MEMBER_COUNT%", String.valueOf(getMemberCount()))
@@ -584,7 +581,7 @@ public class Guild {
                     .evaluate();
         } catch (ParseException e) {
             e.printStackTrace();
-            throw new RuntimeException("宗门等级计算公式不合法");
+            throw new RuntimeException("公会等级计算公式不合法");
         }
     }
 

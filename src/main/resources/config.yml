@@ -2,15 +2,15 @@ VERSION: 1.4.2
 # 是否开启数据统计
 metrics_enabled: true
 # 前缀
-prefix: '&a[宗门] &f'
+prefix: '&a[公会] &f'
 guild:
   # 排行榜
   ranking_list:
     # 计算公式，可用变量：
-    # %GUILD_MONEY% 宗门金币
-    # %GUILD_POINTS% 宗门点券
-    # %GUILD_MEMBER_COUNT% 宗门成员数
-    # %GUILD_MAX_MEMBER_COUNT% 宗门最大成员数
+    # %GUILD_MONEY% 公会金币
+    # %GUILD_POINTS% 公会点券
+    # %GUILD_MEMBER_COUNT% 公会成员数
+    # %GUILD_MAX_MEMBER_COUNT% 公会最大成员数
     formula: '%GUILD_MONEY%*0.3+%GUILD_POINTS%*0.5+%GUILD_MEMBER_COUNT%*0.2'
   # 全员传送
   tp_all:
@@ -28,7 +28,7 @@ guild:
     shift_count_interval: 1000
     # 触发次数
     shift_count: 3
-    # 消耗宗门银行金币
+    # 消耗公会银行金币
     cost:
       money: 500
       enabled: true
@@ -54,76 +54,37 @@ guild:
       enabled: true
       min: 10000
   # 默认最大管理员数量
-  def_max_admin_count: 3
+  default_max_admin_count: 3
   # 默认最大成员数
-  def_max_member_count: 5
+  default_max_member_count: 5
   # 请求
   request:
     join:
       timeout: 3600 # 秒，请求加入超时
   # 公告
   announcement:
-    def:
-      - '&d欢迎加入本宗门~'
+    default:
+      - '&d欢迎加入本公会~'
     # 换行符
     split_char: '#'
     # 最大公告数量
     max_count: 5
   # 创建
   create:
-    # 宗门名正则表达式
+    # 公会名正则表达式
     name_regex: '[\u4e00-\u9fa5_a-zA-Z0-9_§]{1,10}'
-    # 未通过表达式提示消息
-    name_not_valid_msg: '&c宗门名只能由中文英文数字组成, 且长度大于1小于10个字符.'
-    #
-    colored_no_per_msg: "&c你没有权限使用彩色代码作为宗门名."
     # 消费
     cost:
+      # 金币
       money:
         amount: 1000
         enabled: true
+      # 点券
       points:
         amount: 100
         enabled: true
+      # 物品
       item:
         enabled: true
-        amount: 1
-        key_lore: '&a创建宗门'
-  gui:
-    # 全局
-    global:
-      # 宗门信息
-      guild_info:
-        display_name: '&f宗门信息'
-        lores:
-          - '&b『Top.%GUILD_RANKING%&b』'
-          - ' '
-          - '&d宗主&f: &d%GUILD_OWNER%'
-          - '&a人数&f: &a%GUILD_MEMBER_COUNT%/%GUILD_MAX_MEMBER_COUNT%'
-          - '&e金币储备&f: &e%GUILD_MONEY%'
-          - '&e点券储备&f: &e%GUILD_POINTS%'
-          - '&9创建时间&f: &9%GUILD_CREATION_TIME%'
-    main_gui:
-      # 排行榜
-      ranking_list:
-        display_name: '&f%GUILD_NAME%'
-        lores:
-          - '&b『&bTop.%GUILD_RANKING%&b』'
-          - ' '
-          - '&d宗主&f: &d%GUILD_OWNER%'
-          - '&a人数&f: &a%GUILD_MEMBER_COUNT%/%GUILD_MAX_MEMBER_COUNT%'
-          - '&e金币储备&f: &e%GUILD_MONEY%'
-          - '&e点券储备&f: &e%GUILD_POINTS%'
-          - '&9创建时间&f: &9%GUILD_CREATION_TIME%'
-    mine_gui:
-      # 个人信息
-      player_info:
-        display_name: '&f个人信息'
-        lores:
-          - '&b• &7%player_name%&b •'
-          - ' '
-          - '&a所在宗门&f: &a%GUILD_NAME%'
-          - '&d职务&f: &d%GUILD_MEMBER_PER%'
-          - '&e金币贡献&f: &e%GUILD_MEMBER_DONATE_MONEY%'
-          - '&e点券贡献&f: &e%GUILD_MEMBER_DONATE_POINTS%'
-          - '&9入宗时间&f: &9%GUILD_MEMBER_JOIN_TIME%'
+        amount: 1 # 数量
+        key_lore: '&a创建公会'

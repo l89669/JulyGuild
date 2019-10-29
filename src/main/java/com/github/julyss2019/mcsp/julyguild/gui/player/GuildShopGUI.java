@@ -17,7 +17,6 @@ import java.util.List;
 
 public class GuildShopGUI extends BasePageableGUI {
     private Inventory inventory;
-    private List<ConfigGuildShopItem> shopItems = guildShopSettings.getConfigGuildShopItems();
 
     public GuildShopGUI(GuildPlayer guildPlayer) {
         super(GUIType.SHOP, guildPlayer);
@@ -27,7 +26,7 @@ public class GuildShopGUI extends BasePageableGUI {
 
     @Override
     public void setCurrentPage(int page) {
-        super.setCurrentPage(page);
+  /*      super.setCurrentPage(page);
 
         InventoryBuilder inventoryBuilder = new InventoryBuilder().title("&e&l宗门商店(" + (page + 1) + ")").colored().row(6).listener(new InventoryListener() {
             @Override
@@ -81,14 +80,15 @@ public class GuildShopGUI extends BasePageableGUI {
             inventoryBuilder.item(i, shopItem.getItemBuilder().build());
         }
 
-        this.inventory = inventoryBuilder.build();
+        this.inventory = inventoryBuilder.build();*/
     }
 
     @Override
     public int getTotalPage() {
-        int size = shopItems.size();
+/*        int size = shopItems.size();
 
-        return size == 0 ? 1 : size % 51 == 0 ? size / 51 : size / 51 + 1;
+        return size == 0 ? 1 : size % 51 == 0 ? size / 51 : size / 51 + 1;*/
+return 0;
     }
 
     @Override

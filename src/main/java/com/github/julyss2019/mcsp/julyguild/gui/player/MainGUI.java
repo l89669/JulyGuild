@@ -1,15 +1,11 @@
 package com.github.julyss2019.mcsp.julyguild.gui.player;
 
 import com.github.julyss2019.mcsp.julyguild.JulyGuild;
-import com.github.julyss2019.mcsp.julyguild.config.Lang;
-import com.github.julyss2019.mcsp.julyguild.config.MainSettings;
+import com.github.julyss2019.mcsp.julyguild.config.MainConfig;
 import com.github.julyss2019.mcsp.julyguild.gui.BasePageableGUI;
 import com.github.julyss2019.mcsp.julyguild.gui.CommonItem;
 import com.github.julyss2019.mcsp.julyguild.gui.GUI;
 import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
-import com.github.julyss2019.mcsp.julyguild.gui.player.GuildCreateGUI;
-import com.github.julyss2019.mcsp.julyguild.gui.player.GuildInfoGUI;
-import com.github.julyss2019.mcsp.julyguild.gui.player.GuildMineGUI;
 import com.github.julyss2019.mcsp.julyguild.guild.CacheGuildManager;
 import com.github.julyss2019.mcsp.julyguild.guild.Guild;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
@@ -24,6 +20,7 @@ import com.github.julyss2019.mcsp.julylibrary.item.SkullItemBuilder;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
@@ -35,11 +32,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainGUI extends BasePageableGUI {
-    private static JulyGuild plugin = JulyGuild.getInstance();
-    private static MainSettings mainSettings = plugin.getMainSettings();
-    private static CacheGuildManager cacheGuildManager = plugin.getCacheGuildManager();
     private Inventory inventory;
     private List<Guild> guilds = new ArrayList<>();
+
+    private final JulyGuild plugin = JulyGuild.getInstance();
+    private final ConfigurationSection thisLangSection = plugin.getLangYamlConfig().getConfigurationSection("MainGUI");
+    private final CacheGuildManager cacheGuildManager = plugin.getCacheGuildManager();
 
     public MainGUI(GuildPlayer guildPlayer) {
         super(GUIType.MAIN, guildPlayer);
@@ -54,7 +52,7 @@ public class MainGUI extends BasePageableGUI {
         InventoryBuilder inventoryBuilder = new InventoryBuilder()
                 .row(6)
                 .colored()
-                .title(Lang.getString("MainGUI.title").replace("%page%", String.valueOf((getCurrentPage() + 1))))
+                .title(thisLangSection.getString("title").replace("%page%", String.valueOf((getCurrentPage() + 1))))
                 .listener(new InventoryListener() {
                     @Override
                     public void onClicked(InventoryClickEvent event) {
@@ -130,8 +128,8 @@ public class MainGUI extends BasePageableGUI {
 
                                     String guildName = event.getMessage();
 
-                                    if (!guildName.matches(mainSettings.getGuildCreateNameRegex())) {
-                                        Util.sendColoredMessage(bukkitPlayer, mainSettings.getGuildCreateNameNotValidMsg());
+                                    if (!guildName.matches(MainConfig.getGuildCreateNameRegex())) {
+                                        Util.sendColoredMessage(bukkitPlayer, "WAIT...");
                                         return;
                                     }
 
@@ -172,13 +170,13 @@ public class MainGUI extends BasePageableGUI {
         for (int i = 0; i < loopCount; i++) {
             Guild guild = guilds.get(itemCounter++);
 
-            inventoryBuilder.item(i, new ItemBuilder(guild.getCurrentIcon().getItemStack())
-                    .lores(PlaceholderAPI.setPlaceholders(Bukkit.getOfflinePlayer(guild.getOwner().getName()), mainSettings.getMainGUIRankingListLores()))
-                    .displayName(PlaceholderAPI.setPlaceholders(Bukkit.getOfflinePlayer(guild.getOwner().getName()), mainSettings.getMainGUIRankingListDisplayName()))
-                    .colored()
-                    .enchant(Enchantment.DURABILITY, 1)
-                    .addItemFlag(ItemFlag.HIDE_ENCHANTS)
-                    .build());
+//            inventoryBuilder.item(i, new ItemBuilder(guild.getCurrentIcon().getItemStack())
+//                    .lores(PlaceholderAPI.setPlaceholders(Bukkit.getOfflinePlayer(guild.getOwner().getName()), MainConfig.getMainGUIRankingListLores()))
+//                    .displayName(PlaceholderAPI.setPlaceholders(Bukkit.getOfflinePlayer(guild.getOwner().getName()), MainConfig.getMainGUIRankingListDisplayName()))
+//                    .colored()
+//                    .enchant(Enchantment.DURABILITY, 1)
+//                    .addItemFlag(ItemFlag.HIDE_ENCHANTS)
+//                    .build());
         }
 
         this.inventory = inventoryBuilder.build();

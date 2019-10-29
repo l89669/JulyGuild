@@ -1,15 +1,13 @@
 package com.github.julyss2019.mcsp.julyguild.gui.player;
 
 import com.github.julyss2019.mcsp.julyguild.JulyGuild;
-import com.github.julyss2019.mcsp.julyguild.config.Lang;
-import com.github.julyss2019.mcsp.julyguild.config.MainSettings;
+import com.github.julyss2019.mcsp.julyguild.config.MainConfig;
 import com.github.julyss2019.mcsp.julyguild.gui.BaseGUI;
 import com.github.julyss2019.mcsp.julyguild.gui.CommonItem;
 import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
 import com.github.julyss2019.mcsp.julyguild.guild.Guild;
 import com.github.julyss2019.mcsp.julyguild.guild.player.GuildAdmin;
 import com.github.julyss2019.mcsp.julyguild.guild.player.GuildMember;
-import com.github.julyss2019.mcsp.julyguild.guild.player.Permission;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
 import com.github.julyss2019.mcsp.julyguild.util.Util;
 import com.github.julyss2019.mcsp.julylibrary.chat.ChatListener;
@@ -29,7 +27,6 @@ import java.util.List;
 
 public class GuildMineGUI extends BaseGUI {
     private static JulyGuild plugin = JulyGuild.getInstance();
-    private static MainSettings mainSettings = plugin.getMainSettings();
     private Inventory inventory;
     private Guild guild;
 
@@ -42,7 +39,7 @@ public class GuildMineGUI extends BaseGUI {
 
     @Override
     public void build() {
-        GuildMember member = guild.getMember(playerName);
+ /*       GuildMember member = guild.getMember(playerName);
         InventoryBuilder inventoryBuilder = new InventoryBuilder().title("&e&l我的宗门").colored().row(6);
 
         List<String> memberLores = new ArrayList<>();
@@ -52,7 +49,7 @@ public class GuildMineGUI extends BaseGUI {
 
         for (GuildMember guildMember : guild.getMembers()) {
             if (memberLores.size() < 10) {
-                memberLores.add(Lang.getNickName(guildMember));
+                memberLores.add(ConfigHandler.getNickName(guildMember));
             } else {
                 break;
             }
@@ -62,15 +59,15 @@ public class GuildMineGUI extends BaseGUI {
                 // 宗门信息
                 .item(2, 5, new ItemBuilder().
                         material(Material.SIGN)
-                        .displayName(PlaceholderAPI.setPlaceholders(bukkitPlayer, mainSettings.getGlobalGuildInfoDisplayName()))
-                        .lores(PlaceholderAPI.setPlaceholders(bukkitPlayer, mainSettings.getGlobalGuildInfoLores()))
+                        .displayName(PlaceholderAPI.setPlaceholders(bukkitPlayer, mainConfig.getGlobalGuildInfoDisplayName()))
+                        .lores(PlaceholderAPI.setPlaceholders(bukkitPlayer, mainConfig.getGlobalGuildInfoLores()))
                         .colored()
                         .build())
                 // 个人信息
                 .item(2, 3, new ItemBuilder().
                         material(Material.SIGN)
-                        .displayName(PlaceholderAPI.setPlaceholders(bukkitPlayer, mainSettings.getMineGUIPlayerInfoDisplayName()))
-                        .lores(PlaceholderAPI.setPlaceholders(bukkitPlayer, mainSettings.getMineGUIPlayerInfoLores()))
+                        .displayName(PlaceholderAPI.setPlaceholders(bukkitPlayer, mainConfig.getMineGUIPlayerInfoDisplayName()))
+                        .lores(PlaceholderAPI.setPlaceholders(bukkitPlayer, mainConfig.getMineGUIPlayerInfoLores()))
                         .colored()
                         .build())
                 .item(2, 4, new ItemBuilder()
@@ -97,7 +94,7 @@ public class GuildMineGUI extends BaseGUI {
                 .item(3, 4, new ItemBuilder()
                         .material(Material.EMERALD)
                         .displayName("&e贡献")
-                        .addLore("&b>> &a点击贡献金币" + (mainSettings.isDonatePointsEnabled() ? "/点券" : ""))
+                        .addLore("&b>> &a点击贡献金币" + (mainConfig.isDonatePointsEnabled() ? "/点券" : ""))
                         .colored().build(), new ItemListener() {
                     @Override
                     public void onClicked(InventoryClickEvent event) {
@@ -159,7 +156,7 @@ public class GuildMineGUI extends BaseGUI {
             }
         });
 
-        this.inventory = inventoryBuilder.build();
+        this.inventory = inventoryBuilder.build();*/
     }
 
     @Override

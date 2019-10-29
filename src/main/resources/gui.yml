@@ -1,0 +1,25 @@
+VERSION: 1.0.6
+GuildCreateGUI:
+  row: 3
+  title: '&e&l请选择支付方式'
+  money:
+    index: 12
+    material: GOLD_INGOT
+    data: 0
+    display_name: '&a使用 &e%AMOUNT%个 &a金币'
+    lores:
+      - '&c点击支付'
+  points:
+    index: 14
+    material: DIAMOND
+    data: 0
+    display_name: '&a使用 &e%AMOUNT%个 &a点券'
+    lores:
+      - '&c点击支付'
+  item:
+    index: 16
+    material: PAPER
+    data: 0
+    display_name: '&a使用 &e%AMOUNT%个 &a建帮令'
+    lores:
+    - '&c点击支付'

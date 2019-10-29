@@ -1,5 +1,6 @@
-VERSION: 1.0.3
+VERSION: 1.0.7
 Global:
+  prefix: '&a[公会] '
   nick_name: '&f[%PERMISSION%&f] &e%NAME%'
   enabled: '已启用'
   disabled: '未启用'
@@ -12,13 +13,9 @@ Permission:
 JulyGuild:
   command_prefix: '&a[公会]'
 GuildCreateGUI:
-  title: '&e&l请选择支付方式'
+  already_in: '&c你已经在一个公会里了.'
+  money_not_enough: '&c要创建公会, 你还需要 &e%AMOUNT%个 &c金币.'
   on_close: '&c创建公会失败!'
-  pay:
-    lores:
-      - '&c%IS_ENABLED%'
-      - '&e消耗 &c%COST%个 &e%TYPE%'
-      - '%GUILD_NAME%'
 MainGUI:
   title: '&a&l公会(第%PAGE%页)'
 GuildIconRepositoryGUI:

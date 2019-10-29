@@ -1,10 +1,10 @@
 package com.github.julyss2019.mcsp.julyguild.listener;
 
 import com.github.julyss2019.mcsp.julyguild.JulyGuild;
-import com.github.julyss2019.mcsp.julyguild.config.MainSettings;
+import com.github.julyss2019.mcsp.julyguild.config.MainConfig;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayerManager;
-import com.github.julyss2019.mcsp.julyguild.request.player.GuildPlayerRequestType;
+import com.github.julyss2019.mcsp.julyguild.request.player.PlayerRequestType;
 import com.github.julyss2019.mcsp.julyguild.request.player.TpRequest;
 import com.github.julyss2019.mcsp.julyguild.util.Util;
 import com.github.julyss2019.mcsp.julylibrary.message.JulyMessage;
@@ -19,7 +19,6 @@ import java.util.Map;
 
 public class TpAllListener implements Listener {
     private static JulyGuild plugin = JulyGuild.getInstance();
-    private static MainSettings mainSettings = plugin.getMainSettings();
     private static GuildPlayerManager guildPlayerManager = plugin.getGuildPlayerManager();
     private static Map<String, Long> lastSneakMap = new HashMap<>();
     private static Map<String, Integer> sneakCounterMap = new HashMap<>();
@@ -34,18 +33,18 @@ public class TpAllListener implements Listener {
 
         String playerName = player.getName();
         GuildPlayer guildPlayer = guildPlayerManager.getGuildPlayer(player);
-        TpRequest tpRequest = (TpRequest) guildPlayer.getOnlyOneRequest(GuildPlayerRequestType.TP);
+        TpRequest tpRequest = (TpRequest) guildPlayer.getOnlyOneRequest(PlayerRequestType.TP);
 
         if (tpRequest != null && !tpRequest.isTimeout()) {
-            if (System.currentTimeMillis() - lastSneakMap.getOrDefault(playerName, 0L) < mainSettings.getTpAllShiftCountInterval()) {
+            if (System.currentTimeMillis() - lastSneakMap.getOrDefault(playerName, 0L) < MainConfig.getTpAllShiftCountInterval()) {
                 sneakCounterMap.put(playerName, sneakCounterMap.getOrDefault(playerName, 0) + 1);
 
-                JulyMessage.sendTitle(player, new TitleBuilder().text("&c再按" + (mainSettings.getTpAllShiftCount() - sneakCounterMap.get(playerName)) + "次").colored().build());
+                JulyMessage.sendTitle(player, new TitleBuilder().text("&c再按" + (MainConfig.getTpAllShiftCount() - sneakCounterMap.get(playerName)) + "次").colored().build());
             }
 
             lastSneakMap.put(playerName, System.currentTimeMillis());
 
-            if (sneakCounterMap.getOrDefault(playerName, 0) == mainSettings.getTpAllShiftCount()) {
+            if (sneakCounterMap.getOrDefault(playerName, 0) == MainConfig.getTpAllShiftCount()) {
                 guildPlayer.removeRequest(tpRequest.getUUID().toString());
                 player.teleport(tpRequest.getLocation());
                 JulyMessage.sendTitle(player, new TitleBuilder().text("&a已传送").colored().build());

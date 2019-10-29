@@ -1,6 +1,6 @@
 package com.github.julyss2019.mcsp.julyguild.util;
 
-import com.github.julyss2019.mcsp.julyguild.JulyGuild;
+import com.github.julyss2019.mcsp.julyguild.LangHelper;
 import com.github.julyss2019.mcsp.julylibrary.message.JulyMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -20,7 +20,7 @@ public class Util {
     }
 
     public static void sendColoredMessage(CommandSender cs, String msg) {
-        JulyMessage.sendColoredMessage(cs, JulyGuild.getInstance().getMainSettings().getPrefix() + msg);
+        JulyMessage.sendColoredMessage(cs, LangHelper.Global.getPrefix() + msg);
     }
 
     public static void sendColoredConsoleMessage(String msg) {
