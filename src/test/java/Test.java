@@ -1,29 +1,38 @@
-import java.util.Arrays;
+import org.apache.commons.lang.StringEscapeUtils;
 
 public class Test {
-    private static String test = "test";
-    private static String testS = test;
 
     public static void main(String[] args) {
-        String input = "    %money%\\%money%";
-        String[] splitArray = input.split("%money%");
-        String result = "";
+        String s = "\\s0000\s-";
+        String result = new String();
+        boolean hadSlash = false;
+        boolean b = false;
 
-        System.out.println(Arrays.toString(splitArray));
+        out:
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
 
-        for (int i = 0; i < splitArray.length; i++) {
-            String last = splitArray[i];
 
-            if (last.endsWith("\\")) {
-                result += last.substring(0, last.length() - 1);
-                result += "%money%";
-            } else {
-                result += "1.0";
+            if (hadSlash) {
+                switch (c) {
+                    case '%':
+                        result += "%";
+                        hadSlash = false;
+                        break;
+                    case 's':
+                        result += "*";
+                        break;
+                        default:
+                            result += c;
+                            break;
+                }
+            } else if (c == '%') {
+                hadSlash = true;
+                result += c;
             }
-
-
         }
 
+        System.out.println(StringEscapeUtils.escapeJava("\\\n"));
         System.out.println(result);
     }
 }

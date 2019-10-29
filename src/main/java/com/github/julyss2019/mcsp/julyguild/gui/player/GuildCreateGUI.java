@@ -1,8 +1,8 @@
 package com.github.julyss2019.mcsp.julyguild.gui.player;
 
 import com.github.julyss2019.mcsp.julyguild.JulyGuild;
-import com.github.julyss2019.mcsp.julyguild.Placeholder;
-import com.github.julyss2019.mcsp.julyguild.PlaceholderText;
+import com.github.julyss2019.mcsp.julyguild.placeholder.Placeholder;
+import com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderText;
 import com.github.julyss2019.mcsp.julyguild.config.ConfigGUI;
 import com.github.julyss2019.mcsp.julyguild.config.ConfigGUIItem;
 import com.github.julyss2019.mcsp.julyguild.config.MainConfig;
@@ -50,7 +50,7 @@ public class GuildCreateGUI extends BaseGUI {
         super.build();
 
         ConfigGUI.Builder guiBuilder = (ConfigGUI.Builder) new ConfigGUI.Builder()
-                .byConfig(thisGuiSection)
+                .fromConfig(thisGuiSection)
                 .colored()
                 .listener(new InventoryListener() {
             @Override
@@ -61,6 +61,7 @@ public class GuildCreateGUI extends BaseGUI {
             }
         });
 
+        // 金币
         if (MainConfig.isGuildCreateCostMoneyEnabled()) {
             guiBuilder.item(ConfigGUIItem.get(thisGuiSection.getConfigurationSection("money"), new Placeholder.Builder().add("%AMOUNT%", String.valueOf(MainConfig.getGuildCreateCostMoneyAmount())).build()), new ItemListener() {
                 @Override
@@ -69,14 +70,14 @@ public class GuildCreateGUI extends BaseGUI {
                     close();
 
                     if (guildPlayer.isInGuild()) {
-                        Util.sendColoredMessage(bukkitPlayer, thisLangSection.getString("GuildCreateGUI.already_in"));
+                        Util.sendColoredMessage(bukkitPlayer, thisLangSection.getString("already_in"));
                         return;
                     }
 
                     double playerMoney = vault.getBalance(bukkitPlayer);
 
                     if (playerMoney < MainConfig.getGuildCreateCostMoneyAmount()) {
-                        Util.sendColoredMessage(bukkitPlayer, PlaceholderText.replacePlaceholders(thisLangSection.getString("GuildCreateGUI.money_not_enough"), new Placeholder.Builder().add("%AMOUNT%", MainConfig.getGuildCreateCostMoneyAmount() - playerMoney + "个 &c金币!").build()));
+                        Util.sendColoredMessage(bukkitPlayer, PlaceholderText.replacePlaceholders(thisLangSection.getString("money_not_enough"), new Placeholder.Builder().add("%AMOUNT%", MainConfig.getGuildCreateCostMoneyAmount() - playerMoney + "个 &c金币!").build()));
                         return;
                     }
 
@@ -86,6 +87,7 @@ public class GuildCreateGUI extends BaseGUI {
             });
         }
 
+        // 点券
         if (MainConfig.isGuildCreateCostPointsEnabled()) {
             guiBuilder.item(ConfigGUIItem.get(thisGuiSection.getConfigurationSection("points"), new Placeholder.Builder().add("%AMOUNT%", String.valueOf(MainConfig.getGuildCreateCostPointsAmount())).build()), new ItemListener() {
                 @Override
@@ -94,14 +96,14 @@ public class GuildCreateGUI extends BaseGUI {
                     close();
 
                     if (guildPlayer.isInGuild()) {
-                        Util.sendColoredMessage(bukkitPlayer, "&c你已经在一个宗门里了.");
+                        Util.sendColoredMessage(bukkitPlayer, thisLangSection.getString("already_in"));
                         return;
                     }
 
                     int playerPoints = playerPointsAPI.look(bukkitPlayer.getUniqueId());
 
                     if (playerPoints < MainConfig.getGuildCreateCostPointsAmount()) {
-                        Util.sendColoredMessage(bukkitPlayer, "&c要创建宗门, 你还需要 &e" + (MainConfig.getGuildCreateCostPointsAmount() - playerPoints) + "个 &c点券!");
+                        Util.sendColoredMessage(bukkitPlayer, PlaceholderText.replacePlaceholders(thisLangSection.getString("points_not_enough"), new Placeholder.Builder().add("%AMOUNT%", String.valueOf(MainConfig.getGuildCreateCostPointsAmount() - playerPoints)).build()));
                         return;
                     }
 
@@ -111,6 +113,7 @@ public class GuildCreateGUI extends BaseGUI {
             });
         }
 
+        // 建帮令
         if (MainConfig.isGuildCreateCostItemEnabled()) {
             guiBuilder.item(ConfigGUIItem.get(thisGuiSection.getConfigurationSection("item"), new Placeholder.Builder().add("%AMOUNT%", String.valueOf(MainConfig.getGuildCreateCostItemAmount())).build()), new ItemListener() {
                 @Override
@@ -119,15 +122,19 @@ public class GuildCreateGUI extends BaseGUI {
                     close();
 
                     if (guildPlayer.isInGuild()) {
-                        Util.sendColoredMessage(bukkitPlayer, "&c你已经在一个宗门里了.");
+                        Util.sendColoredMessage(bukkitPlayer, thisLangSection.getString("already_in"));
                         return;
                     }
 
-                    if (PlayerUtil.hasItem(bukkitPlayer, itemStack -> ItemUtil.containsLore(itemStack, MainConfig.getGuildCreateCostItemKeyLore()), MainConfig.getGuildCreateCostItemAmount())) {
-                        PlayerUtil.takeItems(bukkitPlayer, itemStack -> ItemUtil.containsLore(itemStack, MainConfig.getGuildCreateCostItemKeyLore()), MainConfig    .getGuildCreateCostItemAmount());
+                    int hadItemAmount = PlayerUtil.getItemAmount(bukkitPlayer, itemStack -> ItemUtil.containsLore(itemStack, MainConfig.getGuildCreateCostItemKeyLore()));
+
+
+                    if (hadItemAmount < MainConfig.getGuildCreateCostItemAmount()) {
+                        PlayerUtil.takeItems(bukkitPlayer, itemStack -> ItemUtil.containsLore(itemStack, MainConfig.getGuildCreateCostItemKeyLore()), MainConfig.getGuildCreateCostItemAmount());
                         createGuild(guildPlayer, guildName);
                     } else {
-                        Util.sendColoredMessage(bukkitPlayer, "&c要创建宗门, 你还需要 &e建帮令x" + MainConfig.getGuildCreateCostItemAmount());
+                        Util.sendColoredMessage(bukkitPlayer,
+                                PlaceholderText.replacePlaceholders(thisLangSection.getString("item_not_enough"), new Placeholder.Builder().add("%AMOUNT%", String.valueOf(hadItemAmount - MainConfig.getGuildCreateCostItemAmount())).build()));
                     }
                 }
             });
@@ -140,15 +147,15 @@ public class GuildCreateGUI extends BaseGUI {
         Player bukkitPlayer = guildPlayer.getBukkitPlayer();
 
         guildManager.createGuild(guildPlayer, guildName);
-        JulyMessage.broadcastColoredMessage("&d恭喜 &e" + bukkitPlayer.getName() + " &d创建宗门 &e" + guildName + " &d成功!");
-        JulyMessage.sendTitle(bukkitPlayer, new TitleBuilder().text("&d创建宗门成功").colored().build());
+        JulyMessage.broadcastColoredMessage(PlaceholderText.replacePlaceholders(thisLangSection.getString("success.broadcast"), new Placeholder.Builder().add("%PLAYER%", playerName).add("%GUILD%", guildName).build()));
+        JulyMessage.sendTitle(bukkitPlayer, new TitleBuilder().text(thisLangSection.getString("success.self_title")).colored().build());
 
         new BukkitRunnable() {
             @Override
             public void run() {
                 bukkitPlayer.performCommand("jguild main");
             }
-        }.runTaskLater(plugin, 60L);
+        }.runTaskLater(plugin, 20L);
     }
 
     @Override

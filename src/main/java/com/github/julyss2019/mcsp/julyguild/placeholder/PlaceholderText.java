@@ -1,4 +1,4 @@
-package com.github.julyss2019.mcsp.julyguild;
+package com.github.julyss2019.mcsp.julyguild.placeholder;
 
 import org.jetbrains.annotations.NotNull;
 

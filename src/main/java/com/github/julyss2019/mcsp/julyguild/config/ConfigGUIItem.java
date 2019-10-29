@@ -1,7 +1,7 @@
 package com.github.julyss2019.mcsp.julyguild.config;
 
-import com.github.julyss2019.mcsp.julyguild.Placeholder;
-import com.github.julyss2019.mcsp.julyguild.PlaceholderText;
+import com.github.julyss2019.mcsp.julyguild.placeholder.Placeholder;
+import com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderText;
 import com.github.julyss2019.mcsp.julylibrary.item.ItemBuilder;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.Nullable;

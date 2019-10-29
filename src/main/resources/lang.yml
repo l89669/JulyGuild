@@ -1,4 +1,4 @@
-VERSION: 1.0.7
+VERSION: 1.0.9
 Global:
   prefix: '&a[公会] '
   nick_name: '&f[%PERMISSION%&f] &e%NAME%'
@@ -15,7 +15,12 @@ JulyGuild:
 GuildCreateGUI:
   already_in: '&c你已经在一个公会里了.'
   money_not_enough: '&c要创建公会, 你还需要 &e%AMOUNT%个 &c金币.'
+  points_not_enough: '&c要创建公会, 你还需要 &e%AMOUNT%个 &c金币.'
+  item_not_enough: '&c要创建公会, 你还需要 &e%AMOUNT%个 &c建帮令.'
   on_close: '&c创建公会失败!'
+  success:
+    self_title: '&d创建公会成功'
+    broadcase: '&d恭喜 &e%PLAYER% &d创建了公会 &e%GUILD%&d.'
 MainGUI:
   title: '&a&l公会(第%PAGE%页)'
 GuildIconRepositoryGUI:
