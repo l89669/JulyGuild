@@ -119,7 +119,7 @@ public class JulyGuild extends JavaPlugin {
         }
 
         julyCommandExecutor.setPrefix(langYamlConfig.getString("JulyGuild.command_prefix"));
-        guildManager.loadGuilds();
+        guildManager.loadAll();
         cacheGuildManager.startTask();
 
         getCommand("jguild").setExecutor(julyCommandExecutor);
@@ -229,6 +229,12 @@ public class JulyGuild extends JavaPlugin {
         this.guiYamlConfig = YamlConfiguration.loadConfiguration(new File(getDataFolder(), "gui.yml"));
     }
 
+    public void reloadPlugin() {
+        guildManager.unloadAll();
+        cacheGuildManager.reset();
+        guildPlayerManager.unloadAll();
+    }
+
     /*
     更新版本文件
      */
@@ -252,7 +258,7 @@ public class JulyGuild extends JavaPlugin {
                     throw new RuntimeException("文件更新失败: " + name);
                 }
 
-                Util.sendColoredConsoleMessage("文件版本已更新: " + name + "(" + currentVersion + "->" + latestVersion + ").");
+                Util.sendColoredConsoleMessage("&e文件版本已更新: " + name + "(" + currentVersion + "->" + latestVersion + ").");
             }
         }
     }

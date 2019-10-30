@@ -80,17 +80,17 @@ public class GuildManageGUI extends BaseGUI {
                         @Override
                         public void onClicked(InventoryClickEvent event) {
                             close();
-                            Util.sendColoredMessage(bukkitPlayer, "&e请在聊天栏输入并发送要设置的公告, 使用符号 &c" + MainConfig.getGuildAnnouncementSplitChar() + " &e来换行, 最多支持 &c" + MainConfig.getGuildAnnouncementMaxCount() + "行&e: ");
+                            Util.sendColoredMessage(bukkitPlayer, "&e请在聊天栏输入并发送要设置的公告, 使用符号 &c" + MainConfig.getAnnouncementSplitChar() + " &e来换行, 最多支持 &c" + MainConfig.getAnnouncementMaxCount() + "行&e: ");
 
                             JulyChatFilter.registerChatFilter(bukkitPlayer, new ChatListener() {
                                 @Override
                                 public void onChat(AsyncPlayerChatEvent event) {
                                     event.setCancelled(true);
 
-                                    String[] messages = event.getMessage().split(MainConfig.getGuildAnnouncementSplitChar());
+                                    String[] messages = event.getMessage().split(MainConfig.getAnnouncementSplitChar());
 
-                                    if (messages.length > MainConfig.getGuildAnnouncementMaxCount()) {
-                                        Util.sendColoredMessage(bukkitPlayer, "&c公告最多能设置 &e" + MainConfig.getGuildAnnouncementMaxCount() + "条&c, 使用分隔符 &e" + MainConfig.getGuildAnnouncementSplitChar() + " &c换行.");
+                                    if (messages.length > MainConfig.getAnnouncementMaxCount()) {
+                                        Util.sendColoredMessage(bukkitPlayer, "&c公告最多能设置 &e" + MainConfig.getAnnouncementMaxCount() + "条&c, 使用分隔符 &e" + MainConfig.getAnnouncementSplitChar() + " &c换行.");
                                         return;
                                     }
 

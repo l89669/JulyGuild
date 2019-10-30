@@ -33,7 +33,7 @@ public class GuildCreateGUI extends BaseGUI {
 
     private final JulyGuild plugin = JulyGuild.getInstance();
     private final ConfigurationSection thisLangSection = plugin.getLangYamlConfig().getConfigurationSection("GuildCreateGUI");
-    private final ConfigurationSection thisGuiSection = plugin.getGuiYamlConfig().getConfigurationSection("GuildCreateGUI");
+    private final ConfigurationSection thisGUISection = plugin.getGuiYamlConfig().getConfigurationSection("GuildCreateGUI");
     private final Economy vault = plugin.getVaultAPI();
     private final PlayerPointsAPI playerPointsAPI = plugin.getPlayerPointsAPI();
     private final GuildManager guildManager = plugin.getGuildManager();
@@ -50,7 +50,7 @@ public class GuildCreateGUI extends BaseGUI {
         super.build();
 
         ConfigGUI.Builder guiBuilder = (ConfigGUI.Builder) new ConfigGUI.Builder()
-                .fromConfig(thisGuiSection)
+                .fromConfig(thisGUISection)
                 .colored()
                 .listener(new InventoryListener() {
             @Override
@@ -62,8 +62,8 @@ public class GuildCreateGUI extends BaseGUI {
         });
 
         // 金币
-        if (MainConfig.isGuildCreateCostMoneyEnabled()) {
-            guiBuilder.item(ConfigGUIItem.get(thisGuiSection.getConfigurationSection("money"), new Placeholder.Builder().add("%AMOUNT%", String.valueOf(MainConfig.getGuildCreateCostMoneyAmount())).build()), new ItemListener() {
+        if (MainConfig.isCreateCostMoneyEnabled()) {
+            guiBuilder.item(ConfigGUIItem.fromConfig(thisGUISection.getConfigurationSection("money"), new Placeholder.Builder().add("%AMOUNT%", String.valueOf(MainConfig.getCreateCostMoneyAmount())).build()), new ItemListener() {
                 @Override
                 public void onClicked(InventoryClickEvent event) {
                     noAction = false;
@@ -76,20 +76,20 @@ public class GuildCreateGUI extends BaseGUI {
 
                     double playerMoney = vault.getBalance(bukkitPlayer);
 
-                    if (playerMoney < MainConfig.getGuildCreateCostMoneyAmount()) {
-                        Util.sendColoredMessage(bukkitPlayer, PlaceholderText.replacePlaceholders(thisLangSection.getString("money_not_enough"), new Placeholder.Builder().add("%AMOUNT%", MainConfig.getGuildCreateCostMoneyAmount() - playerMoney + "个 &c金币!").build()));
+                    if (playerMoney < MainConfig.getCreateCostMoneyAmount()) {
+                        Util.sendColoredMessage(bukkitPlayer, PlaceholderText.replacePlaceholders(thisLangSection.getString("money_not_enough"), new Placeholder.Builder().add("%AMOUNT%", MainConfig.getCreateCostMoneyAmount() - playerMoney + "个 &c金币!").build()));
                         return;
                     }
 
-                    vault.withdrawPlayer(bukkitPlayer, MainConfig.getGuildCreateCostMoneyAmount());
+                    vault.withdrawPlayer(bukkitPlayer, MainConfig.getCreateCostMoneyAmount());
                     createGuild(guildPlayer, guildName);
                 }
             });
         }
 
         // 点券
-        if (MainConfig.isGuildCreateCostPointsEnabled()) {
-            guiBuilder.item(ConfigGUIItem.get(thisGuiSection.getConfigurationSection("points"), new Placeholder.Builder().add("%AMOUNT%", String.valueOf(MainConfig.getGuildCreateCostPointsAmount())).build()), new ItemListener() {
+        if (MainConfig.isCreateCostPointsEnabled()) {
+            guiBuilder.item(ConfigGUIItem.fromConfig(thisGUISection.getConfigurationSection("points"), new Placeholder.Builder().add("%AMOUNT%", String.valueOf(MainConfig.getCreateCostPointsAmount())).build()), new ItemListener() {
                 @Override
                 public void onClicked(InventoryClickEvent event) {
                     noAction = false;
@@ -102,20 +102,20 @@ public class GuildCreateGUI extends BaseGUI {
 
                     int playerPoints = playerPointsAPI.look(bukkitPlayer.getUniqueId());
 
-                    if (playerPoints < MainConfig.getGuildCreateCostPointsAmount()) {
-                        Util.sendColoredMessage(bukkitPlayer, PlaceholderText.replacePlaceholders(thisLangSection.getString("points_not_enough"), new Placeholder.Builder().add("%AMOUNT%", String.valueOf(MainConfig.getGuildCreateCostPointsAmount() - playerPoints)).build()));
+                    if (playerPoints < MainConfig.getCreateCostPointsAmount()) {
+                        Util.sendColoredMessage(bukkitPlayer, PlaceholderText.replacePlaceholders(thisLangSection.getString("points_not_enough"), new Placeholder.Builder().add("%AMOUNT%", String.valueOf(MainConfig.getCreateCostPointsAmount() - playerPoints)).build()));
                         return;
                     }
 
-                    playerPointsAPI.take(bukkitPlayer.getUniqueId(), MainConfig.getGuildCreateCostPointsAmount());
+                    playerPointsAPI.take(bukkitPlayer.getUniqueId(), MainConfig.getCreateCostPointsAmount());
                     createGuild(guildPlayer, guildName);
                 }
             });
         }
 
         // 建帮令
-        if (MainConfig.isGuildCreateCostItemEnabled()) {
-            guiBuilder.item(ConfigGUIItem.get(thisGuiSection.getConfigurationSection("item"), new Placeholder.Builder().add("%AMOUNT%", String.valueOf(MainConfig.getGuildCreateCostItemAmount())).build()), new ItemListener() {
+        if (MainConfig.isCreateCostItemEnabled()) {
+            guiBuilder.item(ConfigGUIItem.fromConfig(thisGUISection.getConfigurationSection("item"), new Placeholder.Builder().add("%AMOUNT%", String.valueOf(MainConfig.getCreateCostItemAmount())).build()), new ItemListener() {
                 @Override
                 public void onClicked(InventoryClickEvent event) {
                     noAction = false;
@@ -126,15 +126,14 @@ public class GuildCreateGUI extends BaseGUI {
                         return;
                     }
 
-                    int hadItemAmount = PlayerUtil.getItemAmount(bukkitPlayer, itemStack -> ItemUtil.containsLore(itemStack, MainConfig.getGuildCreateCostItemKeyLore()));
+                    int hadItemAmount = PlayerUtil.getItemAmount(bukkitPlayer, itemStack -> ItemUtil.containsLore(itemStack, MainConfig.getCreateCostItemKeyLore()));
 
 
-                    if (hadItemAmount < MainConfig.getGuildCreateCostItemAmount()) {
-                        PlayerUtil.takeItems(bukkitPlayer, itemStack -> ItemUtil.containsLore(itemStack, MainConfig.getGuildCreateCostItemKeyLore()), MainConfig.getGuildCreateCostItemAmount());
+                    if (hadItemAmount < MainConfig.getCreateCostItemAmount()) {
+                        PlayerUtil.takeItems(bukkitPlayer, itemStack -> ItemUtil.containsLore(itemStack, MainConfig.getCreateCostItemKeyLore()), MainConfig.getCreateCostItemAmount());
                         createGuild(guildPlayer, guildName);
                     } else {
-                        Util.sendColoredMessage(bukkitPlayer,
-                                PlaceholderText.replacePlaceholders(thisLangSection.getString("item_not_enough"), new Placeholder.Builder().add("%AMOUNT%", String.valueOf(hadItemAmount - MainConfig.getGuildCreateCostItemAmount())).build()));
+                        Util.sendColoredMessage(bukkitPlayer, PlaceholderText.replacePlaceholders(thisLangSection.getString("item_not_enough"), new Placeholder.Builder().add("%AMOUNT%", String.valueOf(hadItemAmount - MainConfig.getCreateCostItemAmount())).build()));
                     }
                 }
             });

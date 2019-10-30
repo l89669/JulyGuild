@@ -27,4 +27,18 @@ public class GuildPlayerManager {
     public List<GuildPlayer> getSortedOnlineGuildPlayers() {
         return guildPlayerMap.size() == 0 ? new ArrayList<>() : guildPlayerMap.values().stream().filter(GuildPlayer::isOnline).collect(Collectors.toList());
     }
+
+    public Collection<GuildPlayer> getGuildsPlayers() {
+        return guildPlayerMap.values();
+    }
+
+    public void unloadAll() {
+        for (GuildPlayer guildPlayer : getGuildsPlayers()) {
+            if (guildPlayer.isOnline()) {
+                guildPlayer.getUsingGUI().close();
+            }
+        }
+
+        guildPlayerMap.clear();
+    }
 }

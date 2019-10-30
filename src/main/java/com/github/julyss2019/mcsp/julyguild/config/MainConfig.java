@@ -1,10 +1,7 @@
 package com.github.julyss2019.mcsp.julyguild.config;
 
 import com.github.julyss2019.mcsp.julylibrary.config.Config;
-import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 public class MainConfig {
@@ -12,43 +9,43 @@ public class MainConfig {
     private static boolean metricsEnabled;
 
     @Config(path = "guild.create.name_regex")
-    private static String guildCreateNameRegex;
+    private static String createNameRegex;
 
     @Config(path = "guild.create.cost.money.amount")
-    private static int guildCreateCostMoneyAmount;
+    private static int createCostMoneyAmount;
 
     @Config(path = "guild.create.cost.money.enabled")
-    private static boolean guildCreateCostMoneyEnabled;
+    private static boolean createCostMoneyEnabled;
 
     @Config(path = "guild.create.cost.points.amount")
-    private static int guildCreateCostPointsAmount;
+    private static int createCostPointsAmount;
 
     @Config(path = "guild.create.cost.points.enabled")
-    private static boolean guildCreateCostPointsEnabled;
+    private static boolean createCostPointsEnabled;
 
     @Config(path = "guild.create.cost.item.key_lore")
-    private static String guildCreateCostItemKeyLore;
+    private static String createCostItemKeyLore;
 
     @Config(path = "guild.create.cost.item.enabled")
-    private static boolean guildCreateCostItemEnabled;
+    private static boolean createCostItemEnabled;
 
     @Config(path = "guild.create.cost.item.amount")
-    private static int guildCreateCostItemAmount;
+    private static int createCostItemAmount;
 
     @Config(path = "guild.announcement.split_char")
-    private static String guildAnnouncementSplitChar;
+    private static String announcementSplitChar;
 
     @Config(path = "guild.announcement.max_count")
-    private static int guildAnnouncementMaxCount;
+    private static int announcementMaxCount;
 
     @Config(path = "guild.default_max_member_count")
-    private static int guildDefMaxMemberCount;
+    private static int defaultMaxMemberCount;
 
     @Config(path = "guild.request.join.timeout")
-    private static int guildRequestJoinTimeout;
+    private static int requestJoinTimeout;
 
     @Config(path = "guild.default_max_admin_count")
-    private static int guildDefaultMaxAdminCount;
+    private static int defaultMaxAdminCount;
 
     @Config(path = "guild.donate.money.enabled")
     private static boolean donateMoneyEnabled;
@@ -111,56 +108,56 @@ public class MainConfig {
         return metricsEnabled;
     }
 
-    public static String getGuildCreateNameRegex() {
-        return guildCreateNameRegex;
+    public static String getCreateNameRegex() {
+        return createNameRegex;
     }
 
-    public static int getGuildCreateCostMoneyAmount() {
-        return guildCreateCostMoneyAmount;
+    public static int getCreateCostMoneyAmount() {
+        return createCostMoneyAmount;
     }
 
-    public static boolean isGuildCreateCostMoneyEnabled() {
-        return guildCreateCostMoneyEnabled;
+    public static boolean isCreateCostMoneyEnabled() {
+        return createCostMoneyEnabled;
     }
 
-    public static int getGuildCreateCostPointsAmount() {
-        return guildCreateCostPointsAmount;
+    public static int getCreateCostPointsAmount() {
+        return createCostPointsAmount;
     }
 
-    public static boolean isGuildCreateCostPointsEnabled() {
-        return guildCreateCostPointsEnabled;
+    public static boolean isCreateCostPointsEnabled() {
+        return createCostPointsEnabled;
     }
 
-    public static String getGuildCreateCostItemKeyLore() {
-        return guildCreateCostItemKeyLore;
+    public static String getCreateCostItemKeyLore() {
+        return createCostItemKeyLore;
     }
 
-    public static boolean isGuildCreateCostItemEnabled() {
-        return guildCreateCostItemEnabled;
+    public static boolean isCreateCostItemEnabled() {
+        return createCostItemEnabled;
     }
 
-    public static int getGuildCreateCostItemAmount() {
-        return guildCreateCostItemAmount;
+    public static int getCreateCostItemAmount() {
+        return createCostItemAmount;
     }
 
-    public static String getGuildAnnouncementSplitChar() {
-        return guildAnnouncementSplitChar;
+    public static String getAnnouncementSplitChar() {
+        return announcementSplitChar;
     }
 
-    public static int getGuildAnnouncementMaxCount() {
-        return guildAnnouncementMaxCount;
+    public static int getAnnouncementMaxCount() {
+        return announcementMaxCount;
     }
 
-    public static int getGuildDefMaxMemberCount() {
-        return guildDefMaxMemberCount;
+    public static int getDefaultMaxMemberCount() {
+        return defaultMaxMemberCount;
     }
 
-    public static int getGuildRequestJoinTimeout() {
-        return guildRequestJoinTimeout;
+    public static int getRequestJoinTimeout() {
+        return requestJoinTimeout;
     }
 
-    public static int getGuildDefaultMaxAdminCount() {
-        return guildDefaultMaxAdminCount;
+    public static int getDefaultMaxAdminCount() {
+        return defaultMaxAdminCount;
     }
 
     public static boolean isDonateMoneyEnabled() {

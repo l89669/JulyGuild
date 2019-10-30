@@ -1,7 +1,6 @@
 package com.github.julyss2019.mcsp.julyguild.guild;
 
 import com.github.julyss2019.mcsp.julyguild.JulyGuild;
-import com.github.julyss2019.mcsp.julyguild.config.ConfigGuildIcon;
 import com.github.julyss2019.mcsp.julyguild.config.MainConfig;
 import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
 import com.github.julyss2019.mcsp.julyguild.guild.exception.GuildLoadException;
@@ -28,11 +27,12 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class Guild {
-    private static JulyGuild plugin = JulyGuild.getInstance();
-    private static GuildPlayerManager guildPlayerManager = plugin.getGuildPlayerManager();
-    private static GuildManager guildManager = plugin.getGuildManager();
+    private final JulyGuild plugin = JulyGuild.getInstance();
+    private final YamlConfiguration guiYaml = plugin.getGuiYamlConfig();
+    private final GuildPlayerManager guildPlayerManager = plugin.getGuildPlayerManager();
+    private final GuildManager guildManager = plugin.getGuildManager();
 
-    private File file;
+    private final File file;
     private YamlConfiguration yml;
 
     private boolean valid;
@@ -50,10 +50,12 @@ public class Guild {
     private OwnedIcon currentIcon;
     private GuildBank guildBank;
 
-    private final OwnedIcon DEFAULT_ICON = OwnedIcon.createNew(Material.STONE, (short) 0);
+    private final OwnedIcon DEFAULT_ICON;
 
     protected Guild(File file) {
         this.file = file;
+        this.DEFAULT_ICON = OwnedIcon.createNew(Material.valueOf(guiYaml.getString("Global.guild.default_icon.material"))
+                , (short) guiYaml.getInt("Global.guild.default_icon.data"), guiYaml.getString("Global.guild.default_icon.first_lore"));
     }
 
     public void init() {
@@ -80,7 +82,7 @@ public class Guild {
 
         this.owner = new GuildOwner(this, guildPlayerManager.getGuildPlayer(yml.getString("owner.name")));
         this.name = yml.getString("name");
-        this.maxMemberCount = yml.getInt("max_member_count", MainConfig.getGuildDefMaxMemberCount());
+        this.maxMemberCount = yml.getInt("max_member_count", MainConfig.getDefaultMaxMemberCount());
         this.announcements = yml.getStringList("announcements");
         this.guildBank = new GuildBank(this).load();
 
@@ -141,6 +143,12 @@ public class Guild {
             }
         }
 
+        iconMap.put(DEFAULT_ICON.getUuid().toString(), DEFAULT_ICON);
+
+        if (currentIcon == null) {
+            this.currentIcon = DEFAULT_ICON;
+        }
+
         return this;
     }
 
@@ -179,7 +187,7 @@ public class Guild {
 
     public boolean isOwnedIcon(Material material, short durability) {
         for (OwnedIcon ownedIcon : getIcons()) {
-            if (ownedIcon.getMaterial() == material && ownedIcon.getDurability() == durability) {
+            if (ownedIcon.getMaterial() == material && ownedIcon.getData() == durability) {
                 return true;
             }
         }
@@ -217,7 +225,7 @@ public class Guild {
 
     public UUID giveIcon(Material material, short durability) {
         for (OwnedIcon icon : getIcons()) {
-            if (icon.getMaterial() == material && icon.getDurability() == durability) {
+            if (icon.getMaterial() == material && icon.getData() == durability) {
                 throw new IllegalArgumentException("图标已拥有");
             }
         }
@@ -411,7 +419,7 @@ public class Guild {
             }
         }
 
-        guildManager.unloadGuild(this);
+        guildManager.unload(this);
         this.valid = false;
     }
 

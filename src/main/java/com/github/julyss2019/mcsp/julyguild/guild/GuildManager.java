@@ -59,7 +59,7 @@ public class GuildManager {
         yml.set("creation_time", creationTime);
 
         YamlUtil.saveYaml(yml, file);
-        loadGuild(file);
+        load(file);
         ownerGuildPlayer.setGuild(getGuild(uuid));
 
         // 更新所有玩家的GUI
@@ -90,7 +90,7 @@ public class GuildManager {
      * 卸载公会
      * @param guild
      */
-    public void unloadGuild(Guild guild) {
+    public void unload(Guild guild) {
         guildMap.remove(guild.getUUID().toString());
         JulyGuild.getInstance().getCacheGuildManager().updateSortedGuilds();
 
@@ -103,7 +103,7 @@ public class GuildManager {
      * 载入公会
      * @param file
      */
-    private void loadGuild(File file) {
+    private void load(File file) {
         Guild guild = new Guild(file);
 
         guild.init();
@@ -125,7 +125,7 @@ public class GuildManager {
     /**
      * 载入所有公会
      */
-    public void loadGuilds() {
+    public void loadAll() {
         guildMap.clear();
 
         File guildFolder = new File(plugin.getDataFolder(), "guilds");
@@ -138,7 +138,7 @@ public class GuildManager {
 
         if (guildFiles != null) {
             for (File guildFile : guildFiles) {
-                loadGuild(guildFile);
+                load(guildFile);
             }
         }
     }
@@ -150,5 +150,11 @@ public class GuildManager {
      */
     public Guild getGuild(String uuid) {
         return guildMap.get(uuid);
+    }
+
+    public void unloadAll() {
+        for (Guild guild : getGuilds()) {
+            unload(guild);
+        }
     }
 }

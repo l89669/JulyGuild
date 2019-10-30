@@ -7,10 +7,10 @@ import org.bukkit.inventory.Inventory;
 
 public class BaseGUI implements GUI {
     private GUIType type;
-    protected GuildPlayer guildPlayer;
-    protected Player bukkitPlayer;
-    protected String playerName;
-    protected Guild guild;
+    protected final GuildPlayer guildPlayer;
+    protected final Guild guild;
+    protected final Player bukkitPlayer;
+    protected final String playerName;
 
     protected BaseGUI(GUIType guiType, GuildPlayer guildPlayer) {
         this.type = guiType;

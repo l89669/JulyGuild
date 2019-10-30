@@ -1,4 +1,4 @@
-VERSION: 1.0.9
+VERSION: 1.1.11
 Global:
   prefix: '&a[公会] '
   nick_name: '&f[%PERMISSION%&f] &e%NAME%'
@@ -20,9 +20,12 @@ GuildCreateGUI:
   on_close: '&c创建公会失败!'
   success:
     self_title: '&d创建公会成功'
-    broadcase: '&d恭喜 &e%PLAYER% &d创建了公会 &e%GUILD%&d.'
+    broadcast: '&d恭喜 &e%PLAYER% &d创建了公会 &e%GUILD%&d.'
 MainGUI:
-  title: '&a&l公会(第%PAGE%页)'
+  create:
+    input: '&e请在聊天栏输入 &c公会名 &e后发送聊天消息: '
+    regex_not_match: '&c公会名不合法(只允许中文或英文或数字组合, 且长度限定在10以内).'
+    no_colored_name_permission: '&c你没有彩色公会名的使用权限.'
 GuildIconRepositoryGUI:
   title: '&e&l图标仓库'
   current_use: '&b>> &e当前使用'

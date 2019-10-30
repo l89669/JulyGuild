@@ -24,7 +24,7 @@ public class JoinGuildRequest extends BaseGuildRequest {
 
     @Override
     public boolean isTimeout() {
-        return (System.currentTimeMillis() - getCreationTime()) / 1000 > MainConfig.getGuildRequestJoinTimeout();
+        return (System.currentTimeMillis() - getCreationTime()) / 1000 > MainConfig.getRequestJoinTimeout();
     }
 
     @Override

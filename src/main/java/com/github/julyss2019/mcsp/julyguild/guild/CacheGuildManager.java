@@ -36,4 +36,8 @@ public class CacheGuildManager {
     public int getRanking(Guild guild) {
         return sortedGuilds.indexOf(guild) + 1;
     }
+
+    public void reset() {
+        sortedGuilds.clear();
+    }
 }

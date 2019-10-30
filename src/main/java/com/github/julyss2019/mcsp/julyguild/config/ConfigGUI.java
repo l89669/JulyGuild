@@ -8,14 +8,15 @@ import org.bukkit.configuration.ConfigurationSection;
 
 public class ConfigGUI {
     public static class Builder extends InventoryBuilder {
-        public Builder fromConfig(ConfigurationSection section, @org.jetbrains.annotations.Nullable Placeholder placeholder) {
+        public Builder fromConfig(ConfigurationSection section, @org.jetbrains.annotations.Nullable Placeholder placeholder, boolean colored) {
             row(section.getInt( "row"));
             title(placeholder == null ? section.getString("title") : PlaceholderText.replacePlaceholders(section.getString("title"), placeholder));
+            colored(colored);
             return this;
         }
 
         public Builder fromConfig(ConfigurationSection section) {
-            return fromConfig(section, null);
+            return fromConfig(section, null, true);
         }
 
         public Builder item(ConfigGUIItem item, ItemListener itemListener) {

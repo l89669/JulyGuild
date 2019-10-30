@@ -1,38 +1,25 @@
 import org.apache.commons.lang.StringEscapeUtils;
 
+import java.util.Arrays;
+
 public class Test {
 
     public static void main(String[] args) {
-        String s = "\\s0000\s-";
-        String result = new String();
-        boolean hadSlash = false;
-        boolean b = false;
+        String input = "%%u";
+        String[] array = input.split("%%");
+        String result = "";
 
-        out:
-        for (int i = 0; i < s.length(); i++) {
-            char c = s.charAt(i);
+        for (int i = 0; i < array.length; i++) {
+            String s = array[i];
 
-
-            if (hadSlash) {
-                switch (c) {
-                    case '%':
-                        result += "%";
-                        hadSlash = false;
-                        break;
-                    case 's':
-                        result += "*";
-                        break;
-                        default:
-                            result += c;
-                            break;
-                }
-            } else if (c == '%') {
-                hadSlash = true;
-                result += c;
+            if (s.equalsIgnoreCase("")) {
+                result += "%";
+            } else {
+                result += s.replace("%u", "666");
             }
         }
 
-        System.out.println(StringEscapeUtils.escapeJava("\\\n"));
+        System.out.println(Arrays.toString(array));
         System.out.println(result);
     }
 }

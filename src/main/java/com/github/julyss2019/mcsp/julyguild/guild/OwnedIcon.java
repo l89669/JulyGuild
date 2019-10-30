@@ -1,40 +1,47 @@
 package com.github.julyss2019.mcsp.julyguild.guild;
 
-import com.github.julyss2019.mcsp.julylibrary.item.ItemBuilder;
-
 import org.bukkit.Material;
-import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
 
 public class OwnedIcon {
     private Material material;
-    private short durability;
+    private short data;
+    private String firstLore;
     private UUID uuid;
-    private ItemStack itemStack;
 
-    public OwnedIcon(Material material, short durability, UUID uuid) {
+    protected OwnedIcon(Material material, short data, UUID uuid) {
         this.material = material;
-        this.durability = durability;
+        this.data = data;
         this.uuid = uuid;
+    }
 
-        this.itemStack = new ItemBuilder().material(material).durability(durability).build();
+    protected OwnedIcon(Material material, short data, String firstLore, UUID uuid) {
+        this.material = material;
+        this.data = data;
+        this.firstLore = firstLore;
+        this.uuid = uuid;
     }
 
     public UUID getUuid() {
         return uuid;
     }
 
-    public ItemStack getItemStack() {
-        return itemStack;
-    }
-
     public Material getMaterial() {
         return material;
     }
 
-    public short getDurability() {
-        return durability;
+    public short getData() {
+        return data;
+    }
+
+    public String getFirstLore() {
+        return firstLore;
+    }
+
+    public static OwnedIcon createNew(Material material, short durability, @Nullable String firstLore) {
+        return firstLore == null ? new OwnedIcon(material, durability, UUID.randomUUID()) : new OwnedIcon(material, durability, firstLore, UUID.randomUUID());
     }
 
     public static OwnedIcon createNew(Material material, short durability) {
