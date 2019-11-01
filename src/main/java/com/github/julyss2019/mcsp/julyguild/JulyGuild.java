@@ -39,6 +39,7 @@ import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 
 public class JulyGuild extends JavaPlugin {
+    private final boolean CODING = true;
     private static JulyGuild instance;
     private static final Gson gson = new Gson();
 
@@ -62,7 +63,7 @@ public class JulyGuild extends JavaPlugin {
     private IconShopConfig iconShopConfig;
     private GuildShopConfig guildShopConfig;
 
-    @Override
+
     public void onEnable() {
         for (String pluginName : DEPEND_PLUGINS) {
             if (!Bukkit.getPluginManager().isPluginEnabled(pluginName)) {
@@ -76,12 +77,19 @@ public class JulyGuild extends JavaPlugin {
         this.pluginManager = Bukkit.getPluginManager();
 
         init();
-        updateVersionYmlFiles();
+
+        if (CODING) {
+            onCoding();
+            Util.sendColoredConsoleMessage("&c开发模式");
+        } else {
+            updateVersionYmlFiles();
+        }
+
         loadConfig();
 
         if (MainConfig.isMetricsEnabled()) {
             new Metrics(this);
-            Util.sendColoredConsoleMessage("&e[!] bStats统计 已启用.");
+            Util.sendColoredConsoleMessage("bStats统计: 已启用.");
         }
 
         this.fileLogger = JulyFileLogger.getLogger(new File(getDataFolder(), "logs"), null, 5);
@@ -100,7 +108,7 @@ public class JulyGuild extends JavaPlugin {
             setEnabled(false);
             return;
         } else {
-            Util.sendColoredConsoleMessage("&eVault: Hook成功.");
+            Util.sendColoredConsoleMessage("Vault: Hook成功.");
         }
 
         if (!placeholderAPIExpansion.register()) {
@@ -108,17 +116,17 @@ public class JulyGuild extends JavaPlugin {
             setEnabled(false);
             return;
         } else {
-            Util.sendColoredConsoleMessage("&ePlaceholderAPI: Hook成功.");
+            Util.sendColoredConsoleMessage("PlaceholderAPI: Hook成功.");
         }
 
         if (pluginManager.isPluginEnabled("PlayerPoints")) {
             this.playerPointsAPI = ((PlayerPoints) Bukkit.getPluginManager().getPlugin("PlayerPoints")).getAPI();
-            Util.sendColoredConsoleMessage("&ePlayerPoints: Hook成功.");
+            Util.sendColoredConsoleMessage("PlayerPoints: Hook成功.");
         } else {
-            Util.sendColoredConsoleMessage("&ePlayerPoints: 未启用.");
+            Util.sendColoredConsoleMessage("PlayerPoints: 未启用.");
         }
 
-        julyCommandExecutor.setPrefix(langYamlConfig.getString("JulyGuild.command_prefix"));
+        julyCommandExecutor.setPrefix(langYamlConfig.getString("Global.command_prefix"));
         guildManager.loadAll();
         cacheGuildManager.startTask();
 
@@ -132,7 +140,6 @@ public class JulyGuild extends JavaPlugin {
         Util.sendColoredConsoleMessage("插件初始化完毕.");
     }
 
-    @Override
     public void onDisable() {
         if (isPlaceHolderAPIEnabled() && PlaceholderAPI.isRegistered("guild")) {
             PlaceholderAPI.unregisterPlaceholderHook("guild");
@@ -144,6 +151,7 @@ public class JulyGuild extends JavaPlugin {
             }
         }
 
+        Bukkit.getScheduler().cancelTasks(this);
         Util.sendColoredConsoleMessage("插件被卸载.");
     }
 
@@ -233,6 +241,29 @@ public class JulyGuild extends JavaPlugin {
         guildManager.unloadAll();
         cacheGuildManager.reset();
         guildPlayerManager.unloadAll();
+    }
+
+    private void onCoding() {
+        for (String name : VERSION_YML_FILES) {
+            YamlConfiguration yml = YamlConfiguration.loadConfiguration(new File(getDataFolder(), name));
+            String currentVersion = yml.getString("VERSION", "0.0.0");
+            String latestVersion = YamlConfiguration.loadConfiguration(new InputStreamReader(getResource(name))).getString("VERSION");
+
+            File oldFile = new File(getDataFolder(), name);
+
+            if (!oldFile.renameTo(new File(getDataFolder(), name + "." + currentVersion))) {
+                throw new RuntimeException("文件更名失败: " + name);
+            }
+
+            try {
+                Files.copy(getResource(name), oldFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            } catch (IOException e) {
+                e.printStackTrace();
+                throw new RuntimeException("文件更新失败: " + name);
+            }
+
+            Util.sendColoredConsoleMessage("&e文件版本已更新: " + name + "(" + currentVersion + "->" + latestVersion + ").");
+        }
     }
 
     /*

@@ -5,6 +5,7 @@ import com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderText;
 import com.github.julyss2019.mcsp.julylibrary.inventory.InventoryBuilder;
 import com.github.julyss2019.mcsp.julylibrary.inventory.ItemListener;
 import org.bukkit.configuration.ConfigurationSection;
+import org.jetbrains.annotations.Nullable;
 
 public class ConfigGUI {
     public static class Builder extends InventoryBuilder {
@@ -19,12 +20,15 @@ public class ConfigGUI {
             return fromConfig(section, null, true);
         }
 
-        public Builder item(ConfigGUIItem item, ItemListener itemListener) {
-            item(item.getIndex(), item.getItemBuilder().build(), itemListener);
+        public Builder item(@Nullable IndexItem item, ItemListener itemListener) {
+            if (item != null) {
+                item(item.getIndex(), item.getItemBuilder().build(), itemListener);
+            }
+
             return this;
         }
 
-        public Builder item(ConfigGUIItem item) {
+        public Builder item(@Nullable IndexItem item) {
             item(item, null);
             return this;
         }

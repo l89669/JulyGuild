@@ -54,8 +54,8 @@ public class Guild {
 
     protected Guild(File file) {
         this.file = file;
-        this.DEFAULT_ICON = OwnedIcon.createNew(Material.valueOf(guiYaml.getString("Global.guild.default_icon.material"))
-                , (short) guiYaml.getInt("Global.guild.default_icon.data"), guiYaml.getString("Global.guild.default_icon.first_lore"));
+        this.DEFAULT_ICON = OwnedIcon.createNew(Material.valueOf(MainConfig.getDefaultIconMaterial())
+                , MainConfig.getDefaultIconData(), MainConfig.getDefaultIconFirstLore());
     }
 
     public void init() {
@@ -84,18 +84,15 @@ public class Guild {
         this.name = yml.getString("name");
         this.maxMemberCount = yml.getInt("max_member_count", MainConfig.getDefaultMaxMemberCount());
         this.announcements = yml.getStringList("announcements");
+        this.creationTime = yml.getLong("creation_time");
         this.guildBank = new GuildBank(this).load();
 
-        if (yml.isConfigurationSection("icon"))
-
-        if (announcements.size() == 0) {
-            announcements.addAll(MainConfig.getAnnouncementDef());
+        if (this.announcements == null) {
+            this.announcements = new ArrayList<>();
         }
 
-        this.creationTime = yml.getLong("creation_time");
-
         if (announcements.size() == 0) {
-            announcements.add("&d欢迎加入!");
+            announcements.addAll(MainConfig.getAnnouncementDefault());
         }
 
         if (yml.contains("members")) {
@@ -358,8 +355,8 @@ public class Guild {
         return new ArrayList<>(memberMap.values());
     }
 
-    public static void sortMembers(List<GuildMember> guildMembers) {
-        guildMembers.sort((o1, o2) -> o1.getPermission().getLevel() > o2.getPermission().getLevel() ? -1 : 0);
+    public List<GuildMember> getSortedMembers() {
+        return getMembers().stream().sorted((o1, o2) -> o1.getPermission().getLevel() > o2.getPermission().getLevel() ? -1 : 0).collect(Collectors.toList());
     }
 
     /**

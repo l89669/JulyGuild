@@ -30,6 +30,10 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 主GUI
+ * @version 1.0.0
+ */
 public class MainGUI extends BasePageableGUI {
     private Inventory inventory;
     private List<Guild> guilds = new ArrayList<>();
@@ -97,7 +101,7 @@ public class MainGUI extends BasePageableGUI {
         }
 
         if (guildPlayer.isInGuild()) {
-            guiBuilder.item(ConfigGUIItem.fromConfig(thisGUISection.getConfigurationSection("my_guild"), new Placeholder.Builder().add("%PLAYER%", playerName).build()), new ItemListener() {
+            guiBuilder.item(ConfigGUIItem.getIndexItem(thisGUISection.getConfigurationSection("items.my_guild"), new Placeholder.Builder().add("%PLAYER%", playerName).build()), new ItemListener() {
                 @Override
                 public void onClicked(InventoryClickEvent event) {
                     close();
@@ -105,7 +109,7 @@ public class MainGUI extends BasePageableGUI {
                 }
             });
         } else {
-            guiBuilder.item(ConfigGUIItem.fromConfig(thisGUISection.getConfigurationSection("create_guild")), new ItemListener() {
+            guiBuilder.item(ConfigGUIItem.getIndexItem(thisGUISection.getConfigurationSection("items.create_guild")), new ItemListener() {
                 @Override
                 public void onClicked(InventoryClickEvent event) {
                     close();
@@ -148,6 +152,7 @@ public class MainGUI extends BasePageableGUI {
         int itemCounter = page * 43;
         int loopCount = guildSize - itemCounter < 43 ? guildSize - itemCounter : 43;
 
+        // 公会图标
         for (int i = 0; i < loopCount; i++) {
             Guild guild = guilds.get(itemCounter++);
             OwnedIcon ownedIcon = guild.getIcon();
@@ -155,8 +160,8 @@ public class MainGUI extends BasePageableGUI {
                     .material(ownedIcon.getMaterial())
                     .data(ownedIcon.getData())
                     .insertLore(0, ownedIcon.getFirstLore())
-                    .displayName(PlaceholderText.replacePlaceholders(thisGUISection.getString("guilds.display_name"), bukkitPlayer))
-                    .lores(PlaceholderText.replacePlaceholders(thisGUISection.getStringList("guilds.lores"), bukkitPlayer))
+                    .displayName(PlaceholderText.replacePlaceholders(thisGUISection.getString("items._guild.display_name"), bukkitPlayer))
+                    .lores(PlaceholderText.replacePlaceholders(thisGUISection.getStringList("items._guild.lores"), bukkitPlayer))
             ;
 
             guiBuilder.item(i, itemBuilder.build());
@@ -175,9 +180,5 @@ public class MainGUI extends BasePageableGUI {
     @Override
     public Inventory getInventory() {
         return inventory;
-    }
-
-    public List<Guild> getGuilds() {
-        return guilds;
     }
 }

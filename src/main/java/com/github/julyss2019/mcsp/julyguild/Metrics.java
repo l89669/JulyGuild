@@ -264,7 +264,7 @@ public class Metrics {
         final JsonObject data = getServerData();
 
         JsonArray pluginData = new JsonArray();
-        // Search for all other bStats Metrics classes to fromConfig their plugin data
+        // Search for all other bStats Metrics classes to getIndexItem their plugin data
         for (Class<?> service : Bukkit.getServicesManager().getKnownServices()) {
             try {
                 service.getField("B_STATS_VERSION"); // Our identifier :)
@@ -319,7 +319,7 @@ public class Metrics {
     /**
      * Sends the data to the bStats server.
      *
-     * @param plugin Any plugin. It's just used to fromConfig a logger instance.
+     * @param plugin Any plugin. It's just used to getIndexItem a logger instance.
      * @param data The data to send.
      * @throws Exception If the request failed.
      */
@@ -418,7 +418,7 @@ public class Metrics {
                 chart.add("data", data);
             } catch (Throwable t) {
                 if (logFailedRequests) {
-                    Bukkit.getLogger().log(Level.WARNING, "Failed to fromConfig data for custom chart with id " + chartId, t);
+                    Bukkit.getLogger().log(Level.WARNING, "Failed to getIndexItem data for custom chart with id " + chartId, t);
                 }
                 return null;
             }

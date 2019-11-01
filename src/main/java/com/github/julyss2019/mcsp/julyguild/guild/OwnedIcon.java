@@ -41,7 +41,7 @@ public class OwnedIcon {
     }
 
     public static OwnedIcon createNew(Material material, short durability, @Nullable String firstLore) {
-        return firstLore == null ? new OwnedIcon(material, durability, UUID.randomUUID()) : new OwnedIcon(material, durability, firstLore, UUID.randomUUID());
+        return firstLore == null || firstLore.equalsIgnoreCase("") ? new OwnedIcon(material, durability, UUID.randomUUID()) : new OwnedIcon(material, durability, firstLore, UUID.randomUUID());
     }
 
     public static OwnedIcon createNew(Material material, short durability) {

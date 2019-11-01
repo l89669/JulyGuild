@@ -80,14 +80,14 @@ public class GuildMemberGUI extends BasePageableGUI {
 
         List<GuildMember> members = guild.getMembers();
 
-        Guild.sortMembers(members);
+        Guild.getSortedMembers(members);
 
         int memberSize = members.size();
         int itemCounter = page * 51;
         int loopCount = memberSize - itemCounter < 51 ? memberSize - itemCounter : 51;
 
         for (int i = 0; i < loopCount; i++) {
-            GuildMember member = members.fromConfig(itemCounter++);
+            GuildMember member = members.getIndexItem(itemCounter++);
             Permission permission = member.getPermission();
             String memberName = member.getName();
 

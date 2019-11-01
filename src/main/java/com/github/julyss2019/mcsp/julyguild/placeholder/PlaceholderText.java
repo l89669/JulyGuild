@@ -43,20 +43,16 @@ public class PlaceholderText {
         String result = s;
 
         for (Map.Entry<String, String> entry : placeholder.getPlaceholders().entrySet()) {
-            result = ignoreCaseReplace(s, entry.getKey(), entry.getValue());
+            result = ignoreCaseReplace(result, entry.getKey(), entry.getValue());
         }
 
         return result;
     }
 
-    private static String ignoreCaseReplace(String source, String oldStr, String newStr){
+    private static String ignoreCaseReplace(String source, String oldStr, String newStr) {
         Pattern p = Pattern.compile(oldStr, Pattern.CASE_INSENSITIVE);
         Matcher m = p.matcher(source);
 
         return m.replaceAll(newStr);
-    }
-
-    public static void main(String[] args) {
-        System.out.println(ignoreCaseReplace("%W%", "%w%", "33"));
     }
 }

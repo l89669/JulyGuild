@@ -1,61 +1,74 @@
 package com.github.julyss2019.mcsp.julyguild.gui.player;
 
 import com.github.julyss2019.mcsp.julyguild.JulyGuild;
-import com.github.julyss2019.mcsp.julyguild.config.MainConfig;
+import com.github.julyss2019.mcsp.julyguild.LangHelper;
+import com.github.julyss2019.mcsp.julyguild.config.ConfigGUI;
+import com.github.julyss2019.mcsp.julyguild.config.ConfigGUIItem;
 import com.github.julyss2019.mcsp.julyguild.gui.BaseGUI;
-import com.github.julyss2019.mcsp.julyguild.gui.CommonItem;
 import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
-import com.github.julyss2019.mcsp.julyguild.guild.Guild;
-import com.github.julyss2019.mcsp.julyguild.guild.player.GuildAdmin;
 import com.github.julyss2019.mcsp.julyguild.guild.player.GuildMember;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
-import com.github.julyss2019.mcsp.julyguild.util.Util;
-import com.github.julyss2019.mcsp.julylibrary.chat.ChatListener;
-import com.github.julyss2019.mcsp.julylibrary.chat.JulyChatFilter;
-import com.github.julyss2019.mcsp.julylibrary.inventory.InventoryBuilder;
 import com.github.julyss2019.mcsp.julylibrary.inventory.ItemListener;
-import com.github.julyss2019.mcsp.julylibrary.item.ItemBuilder;
-import com.github.julyss2019.mcsp.julylibrary.item.SkullItemBuilder;
-import me.clip.placeholderapi.PlaceholderAPI;
-import org.bukkit.Material;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.inventory.Inventory;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class GuildMineGUI extends BaseGUI {
-    private static JulyGuild plugin = JulyGuild.getInstance();
+    private JulyGuild plugin = JulyGuild.getInstance();
+    private ConfigurationSection thisGUISection = plugin.getGuiYamlConfig().getConfigurationSection("GuildMineGUI");
     private Inventory inventory;
-    private Guild guild;
 
     public GuildMineGUI(GuildPlayer guildPlayer) {
         super(GUIType.MINE, guildPlayer);
 
-        this.guild = this.guildPlayer.getGuild();
         build();
     }
 
     @Override
     public void build() {
- /*       GuildMember member = guild.getMember(playerName);
-        InventoryBuilder inventoryBuilder = new InventoryBuilder().title("&e&l我的宗门").colored().row(6);
+        ConfigGUI.Builder guiBuilder = new ConfigGUI.Builder().fromConfig(thisGUISection)
+                .item(ConfigGUIItem.getIndexItem(thisGUISection.getConfigurationSection("items.back")), new ItemListener() {
+            @Override
+            public void onClicked(InventoryClickEvent event) {
+                close();
+                new MainGUI(guildPlayer).open();
+            }
+        })
+                .item(ConfigGUIItem.getIndexItem(thisGUISection.getConfigurationSection("items.guild_info"), bukkitPlayer))
+                .item(ConfigGUIItem.getIndexItem(thisGUISection.getConfigurationSection("items.self_info"), bukkitPlayer));
 
+        // 公会公告
+        ConfigGUIItem guildAnnouncementItem = ConfigGUIItem.getIndexItem(thisGUISection.getConfigurationSection("items._guild_announcements"));
+
+        guildAnnouncementItem.getItemBuilder().lores(guild.getAnnouncements());
+        guiBuilder.item(guildAnnouncementItem);
+
+        // 公会成员
         List<String> memberLores = new ArrayList<>();
-        List<GuildMember> guildMembers = guild.getMembers();
 
-        Guild.sortMembers(guildMembers);
-
-        for (GuildMember guildMember : guild.getMembers()) {
+        for (GuildMember guildMember : guild.getSortedMembers()) {
             if (memberLores.size() < 10) {
-                memberLores.add(ConfigHandler.getNickName(guildMember));
+                memberLores.add(LangHelper.Global.getNickName(guildMember));
             } else {
                 break;
             }
         }
 
-        inventoryBuilder
+        ConfigGUIItem guildMemberItem = ConfigGUIItem.getIndexItem(thisGUISection.getConfigurationSection("items._guild_members"));
+
+        guildMemberItem.getItemBuilder().lores(memberLores);
+        guiBuilder.item(guildMemberItem);
+
+
+        /*
+        公会信息，个人信息，公告，成员，捐献，(退出|解散)，管理
+         */
+
+
+/*        guiBuilder
                 // 宗门信息
                 .item(2, 5, new ItemBuilder().
                         material(Material.SIGN)
@@ -154,9 +167,9 @@ public class GuildMineGUI extends BaseGUI {
                 close();
                 new MainGUI(guildPlayer).open();
             }
-        });
+        });*/
 
-        this.inventory = inventoryBuilder.build();*/
+        this.inventory = guiBuilder.build();
     }
 
     @Override

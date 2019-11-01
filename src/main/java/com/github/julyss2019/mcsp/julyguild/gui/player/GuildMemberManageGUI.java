@@ -3,7 +3,6 @@ package com.github.julyss2019.mcsp.julyguild.gui.player;
 import com.github.julyss2019.mcsp.julyguild.gui.BasePageableGUI;
 import com.github.julyss2019.mcsp.julyguild.gui.CommonItem;
 import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
-import com.github.julyss2019.mcsp.julyguild.gui.player.GuildManageGUI;
 import com.github.julyss2019.mcsp.julyguild.guild.Guild;
 import com.github.julyss2019.mcsp.julyguild.guild.player.GuildMember;
 import com.github.julyss2019.mcsp.julyguild.guild.player.Permission;
@@ -137,8 +136,6 @@ public class GuildMemberManageGUI extends BasePageableGUI {
         } else if (permission == Permission.ADMIN) {
             this.guildMembers = guild.getMembers().stream().filter(guildMember -> guildMember.getPermission() == Permission.MEMBER).collect(Collectors.toList());
         }
-
-        Guild.sortMembers(guildMembers);
 
         int memberSize = guildMembers.size();
         int itemCounter = page * 51;

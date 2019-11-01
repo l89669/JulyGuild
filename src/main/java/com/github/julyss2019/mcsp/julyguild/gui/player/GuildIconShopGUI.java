@@ -40,7 +40,7 @@ public class GuildIconShopGUI extends BasePageableGUI {
                 int index = event.getSlot() + getCurrentPage() * 51;
 
                 if (index < icons.size()) {
-                    ConfigGuildIcon configGuildIcon = icons.fromConfig(index);
+                    ConfigGuildIcon configGuildIcon = icons.getIndexItem(index);
 
                     if (guild.isOwnedIcon(configGuildIcon.getMaterial(), configGuildIcon.getData())) {
                         Util.sendColoredMessage(bukkitPlayer, ConfigHandler.getString("GuildIconShopGUI.already_own"));
@@ -88,7 +88,7 @@ public class GuildIconShopGUI extends BasePageableGUI {
         int loopCount = iconSize - itemCounter < 51 ? iconSize - itemCounter : 51;
 
         for (int i = 0; i < loopCount; i++) {
-            ConfigGuildIcon icon = icons.fromConfig(itemCounter++);
+            ConfigGuildIcon icon = icons.getIndexItem(itemCounter++);
             boolean isOwned = guild.isOwnedIcon(icon.getMaterial(), icon.getData());
 
             ItemBuilder itemBuilder = new ItemBuilder()

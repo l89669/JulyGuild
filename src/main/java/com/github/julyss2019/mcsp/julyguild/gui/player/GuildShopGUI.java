@@ -35,7 +35,7 @@ public class GuildShopGUI extends BasePageableGUI {
 
                 if (index < shopItems.size()) {
                     close();
-                    new GuildShopItemBuyGUI(guildPlayer, shopItems.fromConfig(index)).open();
+                    new GuildShopItemBuyGUI(guildPlayer, shopItems.getIndexItem(index)).open();
                 }
             }
         });
@@ -75,7 +75,7 @@ public class GuildShopGUI extends BasePageableGUI {
         int loopCount = itemSize - itemCounter < 51 ? itemSize - itemCounter : 51;
 
         for (int i = 0; i < loopCount; i++) {
-            ConfigGuildShopItem shopItem = shopItems.fromConfig(itemCounter++);
+            ConfigGuildShopItem shopItem = shopItems.getIndexItem(itemCounter++);
 
             inventoryBuilder.item(i, shopItem.getItemBuilder().build());
         }

@@ -47,7 +47,7 @@ public class GuildIconRepositoryGUI extends BasePageableGUI {
 //                int index = getCurrentPage() * 51 + event.getSlot();
 //
 //                if (index < icons.size()) {
-//                    OwnedIcon icon = icons.fromConfig(index);
+//                    OwnedIcon icon = icons.getIndexItem(index);
 //
 //                    if (!guild.getCurrentIcon().equals(icon)) {
 //                        guild.setCurrentIcon(icon);
@@ -95,7 +95,7 @@ public class GuildIconRepositoryGUI extends BasePageableGUI {
 //        int loopCount = iconSize - itemCounter < 51 ? iconSize - itemCounter : 51;
 //
 //        for (int i = 0; i < loopCount; i++) {
-//            OwnedIcon icon = icons.fromConfig(itemCounter++);
+//            OwnedIcon icon = icons.getIndexItem(itemCounter++);
 //            ItemBuilder itemBuilder = new ItemBuilder().material(icon.getMaterial()).durability(icon.getData()).colored();
 //
 //            if (guild.getCurrentIcon().equals(icon)) {

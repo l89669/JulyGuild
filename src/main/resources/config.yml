@@ -1,9 +1,11 @@
-VERSION: 1.4.3
+VERSION: 2.0.2
 # 是否开启数据统计
 metrics_enabled: true
-# 前缀
-prefix: '&a[公会] &f'
 guild:
+  default_icon:
+    material: APPLE
+    data: 0
+    first_lore: '' # 用于支持 SX-Attribute 的物品
   # 排行榜
   ranking_list:
     # 计算公式，可用变量：
@@ -64,7 +66,7 @@ guild:
   # 公告
   announcement:
     default:
-      - '&d欢迎加入本公会~'
+      - ' &d欢迎加入本公会~'
     # 换行符
     split_char: '#'
     # 最大公告数量

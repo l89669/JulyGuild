@@ -1,3 +1,5 @@
+import com.github.julyss2019.mcsp.julyguild.placeholder.Placeholder;
+import com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderText;
 import org.apache.commons.lang.StringEscapeUtils;
 
 import java.util.Arrays;
@@ -21,5 +23,8 @@ public class Test {
 
         System.out.println(Arrays.toString(array));
         System.out.println(result);
+        System.out.println(PlaceholderText.replacePlaceholders("&f[%PERMISSION%&f] &e%NAME%",
+                new Placeholder.Builder().add("%PERMISSION%", "测试")
+                        .add("%NAME%", "JJJ").build()));
     }
 }

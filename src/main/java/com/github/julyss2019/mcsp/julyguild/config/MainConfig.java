@@ -93,7 +93,7 @@ public class MainConfig {
     private static int tpAllCostMoney;
 
     @Config(path = "guild.announcement.default")
-    private static List<String> announcementDef;
+    private static List<String> announcementDefault;
 
     @Config(path = "guild.ranking_list.formula")
     private static String rankingListFormula;
@@ -103,6 +103,27 @@ public class MainConfig {
 
     @Config(path = "guild.tp_all.allowed_receive_worlds")
     private static List<String> tpAllAllowedReceiveWorlds;
+
+    @Config(path = "guild.default_icon.material")
+    private static String defaultIconMaterial;
+
+    @Config(path = "guild.default_icon.data")
+    private static short defaultIconData;
+
+    @Config(path = "guild.default_icon.first_lore")
+    private static String defaultIconFirstLore;
+
+    public static String getDefaultIconMaterial() {
+        return defaultIconMaterial;
+    }
+
+    public static short getDefaultIconData() {
+        return defaultIconData;
+    }
+
+    public static String getDefaultIconFirstLore() {
+        return defaultIconFirstLore;
+    }
 
     public static boolean isMetricsEnabled() {
         return metricsEnabled;
@@ -220,8 +241,8 @@ public class MainConfig {
         return tpAllCostMoney;
     }
 
-    public static List<String> getAnnouncementDef() {
-        return announcementDef;
+    public static List<String> getAnnouncementDefault() {
+        return announcementDefault;
     }
 
     public static String getRankingListFormula() {

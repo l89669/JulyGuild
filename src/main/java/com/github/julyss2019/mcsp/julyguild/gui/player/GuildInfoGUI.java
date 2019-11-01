@@ -44,9 +44,7 @@ public class GuildInfoGUI extends BaseGUI {
     public void build() {
 
         List<String> memberLores = new ArrayList<>();
-        List<GuildMember> guildMembers = guild.getMembers();
-
-        Guild.sortMembers(guildMembers);
+        List<GuildMember> guildMembers = guild.getSortedMembers();
 
         for (GuildMember guildMember : guildMembers) {
             if (memberLores.size() < 10) {

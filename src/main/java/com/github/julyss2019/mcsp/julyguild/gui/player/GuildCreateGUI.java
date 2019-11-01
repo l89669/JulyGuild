@@ -26,6 +26,11 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.scheduler.BukkitRunnable;
 
+/**
+ * 公会创建GUI
+ * @version 1.0.0
+ */
+
 public class GuildCreateGUI extends BaseGUI {
     private String guildName;
     private Inventory inventory;
@@ -63,7 +68,7 @@ public class GuildCreateGUI extends BaseGUI {
 
         // 金币
         if (MainConfig.isCreateCostMoneyEnabled()) {
-            guiBuilder.item(ConfigGUIItem.fromConfig(thisGUISection.getConfigurationSection("money"), new Placeholder.Builder().add("%AMOUNT%", String.valueOf(MainConfig.getCreateCostMoneyAmount())).build()), new ItemListener() {
+            guiBuilder.item(ConfigGUIItem.getIndexItem(thisGUISection.getConfigurationSection("items.money"), new Placeholder.Builder().add("%AMOUNT%", String.valueOf(MainConfig.getCreateCostMoneyAmount())).build()), new ItemListener() {
                 @Override
                 public void onClicked(InventoryClickEvent event) {
                     noAction = false;
@@ -89,7 +94,7 @@ public class GuildCreateGUI extends BaseGUI {
 
         // 点券
         if (MainConfig.isCreateCostPointsEnabled()) {
-            guiBuilder.item(ConfigGUIItem.fromConfig(thisGUISection.getConfigurationSection("points"), new Placeholder.Builder().add("%AMOUNT%", String.valueOf(MainConfig.getCreateCostPointsAmount())).build()), new ItemListener() {
+            guiBuilder.item(ConfigGUIItem.getIndexItem(thisGUISection.getConfigurationSection("items.points"), new Placeholder.Builder().add("%AMOUNT%", String.valueOf(MainConfig.getCreateCostPointsAmount())).build()), new ItemListener() {
                 @Override
                 public void onClicked(InventoryClickEvent event) {
                     noAction = false;
@@ -115,7 +120,7 @@ public class GuildCreateGUI extends BaseGUI {
 
         // 建帮令
         if (MainConfig.isCreateCostItemEnabled()) {
-            guiBuilder.item(ConfigGUIItem.fromConfig(thisGUISection.getConfigurationSection("item"), new Placeholder.Builder().add("%AMOUNT%", String.valueOf(MainConfig.getCreateCostItemAmount())).build()), new ItemListener() {
+            guiBuilder.item(ConfigGUIItem.getIndexItem(thisGUISection.getConfigurationSection("items.item"), new Placeholder.Builder().add("%AMOUNT%", String.valueOf(MainConfig.getCreateCostItemAmount())).build()), new ItemListener() {
                 @Override
                 public void onClicked(InventoryClickEvent event) {
                     noAction = false;
@@ -154,7 +159,7 @@ public class GuildCreateGUI extends BaseGUI {
             public void run() {
                 bukkitPlayer.performCommand("jguild main");
             }
-        }.runTaskLater(plugin, 20L);
+        }.runTaskLater(plugin, 20L * 3L);
     }
 
     @Override
