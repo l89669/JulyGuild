@@ -4,6 +4,7 @@ import com.github.julyss2019.mcsp.julyguild.JulyGuild;
 import com.github.julyss2019.mcsp.julyguild.LangHelper;
 import com.github.julyss2019.mcsp.julyguild.config.ConfigGUI;
 import com.github.julyss2019.mcsp.julyguild.config.ConfigGUIItem;
+import com.github.julyss2019.mcsp.julyguild.config.IndexItem;
 import com.github.julyss2019.mcsp.julyguild.gui.BaseGUI;
 import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
 import com.github.julyss2019.mcsp.julyguild.guild.player.GuildMember;
@@ -41,7 +42,7 @@ public class GuildMineGUI extends BaseGUI {
                 .item(ConfigGUIItem.getIndexItem(thisGUISection.getConfigurationSection("items.self_info"), bukkitPlayer));
 
         // 公会公告
-        ConfigGUIItem guildAnnouncementItem = ConfigGUIItem.getIndexItem(thisGUISection.getConfigurationSection("items._guild_announcements"));
+        IndexItem guildAnnouncementItem = ConfigGUIItem.getIndexItem(thisGUISection.getConfigurationSection("items._guild_announcements"));
 
         guildAnnouncementItem.getItemBuilder().lores(guild.getAnnouncements());
         guiBuilder.item(guildAnnouncementItem);
@@ -57,7 +58,7 @@ public class GuildMineGUI extends BaseGUI {
             }
         }
 
-        ConfigGUIItem guildMemberItem = ConfigGUIItem.getIndexItem(thisGUISection.getConfigurationSection("items._guild_members"));
+        IndexItem guildMemberItem = ConfigGUIItem.getIndexItem(thisGUISection.getConfigurationSection("items._guild_members"));
 
         guildMemberItem.getItemBuilder().lores(memberLores);
         guiBuilder.item(guildMemberItem);
