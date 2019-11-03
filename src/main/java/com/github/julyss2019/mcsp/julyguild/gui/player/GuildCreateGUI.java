@@ -151,7 +151,7 @@ public class GuildCreateGUI extends BaseGUI {
         new BukkitRunnable() {
             @Override
             public void run() {
-                bukkitPlayer.performCommand("jguild main");
+                new MainGUI(guildPlayer).open();
             }
         }.runTaskLater(plugin, 20L * 3L);
     }
