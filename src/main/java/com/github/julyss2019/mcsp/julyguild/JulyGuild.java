@@ -4,6 +4,7 @@ import com.github.julyss2019.mcsp.julyguild.command.Command;
 import com.github.julyss2019.mcsp.julyguild.command.MainGUICommand;
 import com.github.julyss2019.mcsp.julyguild.command.ReloadCommand;
 import com.github.julyss2019.mcsp.julyguild.config.*;
+import com.github.julyss2019.mcsp.julyguild.config.setting.MainSettings;
 import com.github.julyss2019.mcsp.julyguild.guild.CacheGuildManager;
 import com.github.julyss2019.mcsp.julyguild.guild.GuildManager;
 import com.github.julyss2019.mcsp.julyguild.listener.GUIListener;
@@ -87,7 +88,7 @@ public class JulyGuild extends JavaPlugin {
 
         loadConfig();
 
-        if (MainConfig.isMetricsEnabled()) {
+        if (MainSettings.isMetricsEnabled()) {
             new Metrics(this);
             Util.sendColoredConsoleMessage("bStats统计: 已启用.");
         }
@@ -250,8 +251,9 @@ public class JulyGuild extends JavaPlugin {
             String latestVersion = YamlConfiguration.loadConfiguration(new InputStreamReader(getResource(name))).getString("VERSION");
 
             File oldFile = new File(getDataFolder(), name);
+            File newFile = new File(getDataFolder(), name + "." + currentVersion);
 
-            if (!oldFile.renameTo(new File(getDataFolder(), name + "." + currentVersion))) {
+            if (!oldFile.renameTo(newFile.exists() ? new File(getDataFolder(), name + "." + currentVersion + "." + System.currentTimeMillis()) : newFile)) {
                 throw new RuntimeException("文件更名失败: " + name);
             }
 
@@ -300,7 +302,7 @@ public class JulyGuild extends JavaPlugin {
     private void loadConfig() {
         YamlConfiguration configYml = YamlConfiguration.loadConfiguration(new File(getDataFolder(), "config.yml"));
 
-        JulyConfig.loadConfig(this, configYml, MainConfig.class);
+        JulyConfig.loadConfig(this, configYml, MainSettings.class);
 
         this.guildShopConfig = new GuildShopConfig();
         this.iconShopConfig = new IconShopConfig();

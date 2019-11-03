@@ -1,6 +1,6 @@
 package com.github.julyss2019.mcsp.julyguild.request.player;
 
-import com.github.julyss2019.mcsp.julyguild.config.MainConfig;
+import com.github.julyss2019.mcsp.julyguild.config.setting.MainSettings;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
 import org.bukkit.Location;
 
@@ -30,6 +30,6 @@ public class TpRequest extends BasePlayerRequest {
 
     @Override
     public boolean isTimeout() {
-        return (System.currentTimeMillis() - getCreationTime()) / 1000 > MainConfig.getTpAllShiftTimeout();
+        return (System.currentTimeMillis() - getCreationTime()) / 1000 > MainSettings.getTpAllShiftTimeout();
     }
 }

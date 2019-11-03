@@ -1,7 +1,7 @@
 package com.github.julyss2019.mcsp.julyguild.guild;
 
 import com.github.julyss2019.mcsp.julyguild.JulyGuild;
-import com.github.julyss2019.mcsp.julyguild.config.MainConfig;
+import com.github.julyss2019.mcsp.julyguild.config.setting.MainSettings;
 import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
 import com.github.julyss2019.mcsp.julyguild.guild.exception.GuildLoadException;
 import com.github.julyss2019.mcsp.julyguild.guild.player.GuildAdmin;
@@ -54,8 +54,8 @@ public class Guild {
 
     protected Guild(File file) {
         this.file = file;
-        this.DEFAULT_ICON = OwnedIcon.createNew(Material.valueOf(MainConfig.getDefaultIconMaterial())
-                , MainConfig.getDefaultIconData(), MainConfig.getDefaultIconFirstLore());
+        this.DEFAULT_ICON = OwnedIcon.createNew(Material.valueOf(MainSettings.getDefaultIconMaterial())
+                , MainSettings.getDefaultIconData(), MainSettings.getDefaultIconFirstLore());
     }
 
     public void init() {
@@ -82,7 +82,7 @@ public class Guild {
 
         this.owner = new GuildOwner(this, guildPlayerManager.getGuildPlayer(yml.getString("owner.name")));
         this.name = yml.getString("name");
-        this.maxMemberCount = yml.getInt("max_member_count", MainConfig.getDefaultMaxMemberCount());
+        this.maxMemberCount = yml.getInt("max_member_count", MainSettings.getDefaultMaxMemberCount());
         this.announcements = yml.getStringList("announcements");
         this.creationTime = yml.getLong("creation_time");
         this.guildBank = new GuildBank(this).load();
@@ -92,7 +92,7 @@ public class Guild {
         }
 
         if (announcements.size() == 0) {
-            announcements.addAll(MainConfig.getAnnouncementDefault());
+            announcements.addAll(MainSettings.getAnnouncementDefault());
         }
 
         if (yml.contains("members")) {
@@ -578,7 +578,7 @@ public class Guild {
 
     public int getRank() {
         try {
-            return (int) Parser.parse(MainConfig.getRankingListFormula()
+            return (int) Parser.parse(MainSettings.getRankingListFormula()
                     .replace("%GUILD_MONEY%", String.valueOf(getGuildBank().getBalance(GuildBank.BalanceType.MONEY)))
                     .replace("%GUILD_POINTS%", String.valueOf(getGuildBank().getBalance(GuildBank.BalanceType.POINTS)))
                     .replace("%GUILD_MEMBER_COUNT%", String.valueOf(getMemberCount()))

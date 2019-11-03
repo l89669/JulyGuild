@@ -1,9 +1,9 @@
 package com.github.julyss2019.mcsp.julyguild.gui.player;
 
 import com.github.julyss2019.mcsp.julyguild.JulyGuild;
-import com.github.julyss2019.mcsp.julyguild.config.ConfigGUI;
-import com.github.julyss2019.mcsp.julyguild.config.ConfigGUIItem;
-import com.github.julyss2019.mcsp.julyguild.config.MainConfig;
+import com.github.julyss2019.mcsp.julyguild.config.gui.IndexConfigGUI;
+import com.github.julyss2019.mcsp.julyguild.config.gui.item.GUIItemManager;
+import com.github.julyss2019.mcsp.julyguild.config.setting.MainSettings;
 import com.github.julyss2019.mcsp.julyguild.gui.BasePageableGUI;
 import com.github.julyss2019.mcsp.julyguild.gui.CommonItem;
 import com.github.julyss2019.mcsp.julyguild.gui.GUI;
@@ -54,7 +54,7 @@ public class MainGUI extends BasePageableGUI {
     public void setCurrentPage(int page) {
         super.setCurrentPage(page);
 
-        ConfigGUI.Builder guiBuilder = (ConfigGUI.Builder) new ConfigGUI.Builder()
+        IndexConfigGUI.Builder guiBuilder = (IndexConfigGUI.Builder) new IndexConfigGUI.Builder()
                 .title(PlaceholderText.replacePlaceholders(thisGUISection.getString("title"), new Placeholder.Builder().add("%PAGE%", String.valueOf(getCurrentPage() + 1)).build()))
                 .row(6)
                 .colored()
@@ -101,7 +101,7 @@ public class MainGUI extends BasePageableGUI {
         }
 
         if (guildPlayer.isInGuild()) {
-            guiBuilder.item(ConfigGUIItem.getIndexItem(thisGUISection.getConfigurationSection("items.my_guild"), new Placeholder.Builder().add("%PLAYER%", playerName).build()), new ItemListener() {
+            guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.my_guild"), new Placeholder.Builder().add("%PLAYER%", playerName).build()), new ItemListener() {
                 @Override
                 public void onClicked(InventoryClickEvent event) {
                     close();
@@ -109,7 +109,7 @@ public class MainGUI extends BasePageableGUI {
                 }
             });
         } else {
-            guiBuilder.item(ConfigGUIItem.getIndexItem(thisGUISection.getConfigurationSection("items.create_guild")), new ItemListener() {
+            guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.create_guild")), new ItemListener() {
                 @Override
                 public void onClicked(InventoryClickEvent event) {
                     close();
@@ -122,7 +122,7 @@ public class MainGUI extends BasePageableGUI {
 
                             String guildName = ChatColor.translateAlternateColorCodes('&', event.getMessage());
 
-                            if (!guildName.matches(MainConfig.getCreateNameRegex())) {
+                            if (!guildName.matches(MainSettings.getCreateNameRegex())) {
                                 Util.sendColoredMessage(bukkitPlayer, thisLangSection.getString("create.regex_not_match"));
                                 return;
                             }

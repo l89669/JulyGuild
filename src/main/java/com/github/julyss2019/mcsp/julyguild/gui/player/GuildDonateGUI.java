@@ -1,26 +1,13 @@
 package com.github.julyss2019.mcsp.julyguild.gui.player;
 
-import com.github.julyss2019.mcsp.julyguild.config.MainConfig;
+import com.github.julyss2019.mcsp.julyguild.config.setting.MainSettings;
 import com.github.julyss2019.mcsp.julyguild.gui.BaseGUI;
-import com.github.julyss2019.mcsp.julyguild.gui.CommonItem;
 import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
 import com.github.julyss2019.mcsp.julyguild.guild.GuildBank;
 import com.github.julyss2019.mcsp.julyguild.guild.player.GuildMember;
 import com.github.julyss2019.mcsp.julyguild.guild.player.Permission;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
-import com.github.julyss2019.mcsp.julyguild.util.Util;
-import com.github.julyss2019.mcsp.julylibrary.chat.ChatListener;
-import com.github.julyss2019.mcsp.julylibrary.chat.JulyChatFilter;
-import com.github.julyss2019.mcsp.julylibrary.inventory.InventoryBuilder;
-import com.github.julyss2019.mcsp.julylibrary.inventory.ItemListener;
-import com.github.julyss2019.mcsp.julylibrary.item.ItemBuilder;
-import org.bukkit.Material;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.scheduler.BukkitRunnable;
-
-import java.util.UUID;
 
 public class GuildDonateGUI extends BaseGUI {
     private Inventory inventory;
@@ -36,8 +23,8 @@ public class GuildDonateGUI extends BaseGUI {
         this.guildMember = guild.getMember(guildPlayer.getName());
         this.permission = guildMember.getPermission();
         this.guildBank = guild.getGuildBank();
-        this.pointsEnabled = MainConfig.isDonatePointsEnabled();
-        this.moneyEnabled = MainConfig.isDonateMoneyEnabled();
+        this.pointsEnabled = MainSettings.isDonatePointsEnabled();
+        this.moneyEnabled = MainSettings.isDonateMoneyEnabled();
         build();
     }
 

@@ -1,7 +1,7 @@
 package com.github.julyss2019.mcsp.julyguild.guild.request;
 
 import com.github.julyss2019.mcsp.julyguild.JulyGuild;
-import com.github.julyss2019.mcsp.julyguild.config.MainConfig;
+import com.github.julyss2019.mcsp.julyguild.config.setting.MainSettings;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
 
 import java.util.UUID;
@@ -24,7 +24,7 @@ public class JoinGuildRequest extends BaseGuildRequest {
 
     @Override
     public boolean isTimeout() {
-        return (System.currentTimeMillis() - getCreationTime()) / 1000 > MainConfig.getRequestJoinTimeout();
+        return (System.currentTimeMillis() - getCreationTime()) / 1000 > MainSettings.getRequestJoinTimeout();
     }
 
     @Override

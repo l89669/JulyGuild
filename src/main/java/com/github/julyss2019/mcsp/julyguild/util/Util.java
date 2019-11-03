@@ -26,4 +26,16 @@ public class Util {
     public static void sendColoredConsoleMessage(String msg) {
         JulyMessage.sendColoredMessage(Bukkit.getConsoleSender(), "&a[JulyGuild] &f" + msg);
     }
+
+    public static int parseIntegerOrThrow(String str, String message) {
+        int result;
+
+        try {
+            result = Integer.parseInt(str);
+        } catch (Exception e) {
+            throw new RuntimeException(message);
+        }
+
+        return result;
+    }
 }

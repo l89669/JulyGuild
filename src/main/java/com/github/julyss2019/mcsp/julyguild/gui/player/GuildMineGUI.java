@@ -2,9 +2,11 @@ package com.github.julyss2019.mcsp.julyguild.gui.player;
 
 import com.github.julyss2019.mcsp.julyguild.JulyGuild;
 import com.github.julyss2019.mcsp.julyguild.LangHelper;
-import com.github.julyss2019.mcsp.julyguild.config.ConfigGUI;
-import com.github.julyss2019.mcsp.julyguild.config.ConfigGUIItem;
-import com.github.julyss2019.mcsp.julyguild.config.IndexItem;
+import com.github.julyss2019.mcsp.julyguild.config.gui.IndexConfigGUI;
+import com.github.julyss2019.mcsp.julyguild.config.gui.PriorityConfigGUI;
+import com.github.julyss2019.mcsp.julyguild.config.gui.item.GUIItemManager;
+import com.github.julyss2019.mcsp.julyguild.config.gui.item.IndexItem;
+import com.github.julyss2019.mcsp.julyguild.config.gui.item.PriorityItem;
 import com.github.julyss2019.mcsp.julyguild.gui.BaseGUI;
 import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
 import com.github.julyss2019.mcsp.julyguild.guild.player.GuildMember;
@@ -15,6 +17,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class GuildMineGUI extends BaseGUI {
@@ -30,19 +33,50 @@ public class GuildMineGUI extends BaseGUI {
 
     @Override
     public void build() {
-        ConfigGUI.Builder guiBuilder = new ConfigGUI.Builder().fromConfig(thisGUISection)
-                .item(ConfigGUIItem.getIndexItem(thisGUISection.getConfigurationSection("items.back")), new ItemListener() {
-            @Override
-            public void onClicked(InventoryClickEvent event) {
-                close();
-                new MainGUI(guildPlayer).open();
+        List<Integer> positions = new ArrayList<>(); // 可供填充的位置
+
+        try {
+            for (String configPosStr : thisGUISection.getString("positions").split(",")) {
+                String[] range = configPosStr.split("-"); // 范围界定符
+
+                if (range.length == 1) {
+                    positions.add(Integer.parseInt(range[0]));
+                } else if (range.length == 2) {
+                    for (int i = Integer.parseInt(range[0]); i <= Integer.parseInt(range[1]); i++) {
+                        positions.add(i);
+                    }
+                } else {
+                    throw new RuntimeException("位置不合法");
+                }
             }
-        })
-                .item(ConfigGUIItem.getIndexItem(thisGUISection.getConfigurationSection("items.guild_info"), bukkitPlayer))
-                .item(ConfigGUIItem.getIndexItem(thisGUISection.getConfigurationSection("items.self_info"), bukkitPlayer));
+        } catch (Exception e) {
+            throw new RuntimeException("位置不合法", e.getCause());
+        }
+
+        PriorityConfigGUI.Builder guiBuilder = (PriorityConfigGUI.Builder) new PriorityConfigGUI.Builder(positions).fromConfig(thisGUISection)
+                .item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.back")), new ItemListener() {
+                    @Override
+                    public void onClicked(InventoryClickEvent event) {
+                        close();
+                        new MainGUI(guildPlayer).open();
+                    }
+                });
+
+
+        guiBuilder
+                .item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.guild_info"), bukkitPlayer))
+                .item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.self_info"), bukkitPlayer))
+                .item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.donate")), new ItemListener() {
+                    @Override
+                    public void onClicked(InventoryClickEvent event) {
+                        bukkitPlayer.sendMessage("donate");
+                    }
+                });
+
+
 
         // 公会公告
-        IndexItem guildAnnouncementItem = ConfigGUIItem.getIndexItem(thisGUISection.getConfigurationSection("items._guild_announcements"));
+        PriorityItem guildAnnouncementItem = GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items._guild_announcements"));
 
         guildAnnouncementItem.getItemBuilder().lores(guild.getAnnouncements());
         guiBuilder.item(guildAnnouncementItem);
@@ -58,7 +92,7 @@ public class GuildMineGUI extends BaseGUI {
             }
         }
 
-        IndexItem guildMemberItem = ConfigGUIItem.getIndexItem(thisGUISection.getConfigurationSection("items._guild_members"));
+        PriorityItem guildMemberItem = GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items._guild_members"));
 
         guildMemberItem.getItemBuilder().lores(memberLores);
         guiBuilder.item(guildMemberItem);

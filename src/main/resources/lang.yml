@@ -1,4 +1,4 @@
-VERSION: 2.0.2
+VERSION: 2.0.0
 Global:
   prefix: '&a[公会] &f'
   nick_name: '&f[%PERMISSION%&f] &e%NAME%'
@@ -6,7 +6,7 @@ Global:
   disabled: '未启用'
   money: '金币'
   points: '点券'
-  command_prefix: '&a[公会] '
+  command_prefix: '&a[公会] &f'
 Permission:
   member: '&a会员'
   admin: '&c管理员'

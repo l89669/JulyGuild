@@ -1,10 +1,10 @@
-package com.github.julyss2019.mcsp.julyguild.config;
+package com.github.julyss2019.mcsp.julyguild.config.setting;
 
 import com.github.julyss2019.mcsp.julylibrary.config.Config;
 
 import java.util.List;
 
-public class MainConfig {
+public class MainSettings {
     @Config(path = "metrics_enabled")
     private static boolean metricsEnabled;
 
@@ -14,20 +14,11 @@ public class MainConfig {
     @Config(path = "guild.create.cost.money.amount")
     private static int createCostMoneyAmount;
 
-    @Config(path = "guild.create.cost.money.enabled")
-    private static boolean createCostMoneyEnabled;
-
     @Config(path = "guild.create.cost.points.amount")
     private static int createCostPointsAmount;
 
-    @Config(path = "guild.create.cost.points.enabled")
-    private static boolean createCostPointsEnabled;
-
     @Config(path = "guild.create.cost.item.key_lore")
     private static String createCostItemKeyLore;
-
-    @Config(path = "guild.create.cost.item.enabled")
-    private static boolean createCostItemEnabled;
 
     @Config(path = "guild.create.cost.item.amount")
     private static int createCostItemAmount;
@@ -137,24 +128,12 @@ public class MainConfig {
         return createCostMoneyAmount;
     }
 
-    public static boolean isCreateCostMoneyEnabled() {
-        return createCostMoneyEnabled;
-    }
-
     public static int getCreateCostPointsAmount() {
         return createCostPointsAmount;
     }
 
-    public static boolean isCreateCostPointsEnabled() {
-        return createCostPointsEnabled;
-    }
-
     public static String getCreateCostItemKeyLore() {
         return createCostItemKeyLore;
-    }
-
-    public static boolean isCreateCostItemEnabled() {
-        return createCostItemEnabled;
     }
 
     public static int getCreateCostItemAmount() {
