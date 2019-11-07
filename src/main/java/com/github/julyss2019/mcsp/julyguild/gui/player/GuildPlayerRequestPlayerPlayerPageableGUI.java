@@ -1,10 +1,8 @@
 package com.github.julyss2019.mcsp.julyguild.gui.player;
 
 import com.github.julyss2019.mcsp.julyguild.JulyGuild;
-import com.github.julyss2019.mcsp.julyguild.gui.BasePageableGUI;
 import com.github.julyss2019.mcsp.julyguild.gui.CommonItem;
 import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
-import com.github.julyss2019.mcsp.julyguild.gui.player.GuildManageGUI;
 import com.github.julyss2019.mcsp.julyguild.guild.Guild;
 import com.github.julyss2019.mcsp.julyguild.guild.request.JoinGuildRequest;
 import com.github.julyss2019.mcsp.julyguild.guild.request.GuildRequest;
@@ -21,13 +19,13 @@ import org.bukkit.inventory.Inventory;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GuildPlayerRequestGUI extends BasePageableGUI {
+public class GuildPlayerRequestPlayerPlayerPageableGUI extends BasePlayerPageableGUI {
     private static JulyGuild plugin = JulyGuild.getInstance();
     private Inventory inventory;
     private Guild guild;
     private List<JoinGuildRequest> joinGuildRequests = new ArrayList<>();
 
-    public GuildPlayerRequestGUI(GuildPlayer guildPlayer) {
+    public GuildPlayerRequestPlayerPlayerPageableGUI(GuildPlayer guildPlayer) {
         super(GUIType.PLAYER_JOIN_REQUEST, guildPlayer);
 
         this.guild = this.guildPlayer.getGuild();
@@ -94,7 +92,7 @@ public class GuildPlayerRequestGUI extends BasePageableGUI {
                     @Override
                     public void onClicked(InventoryClickEvent event) {
                         close();
-                        new GuildManageGUI(guildPlayer).open();
+                        new GuildManagePlayerGUI(guildPlayer).open();
                     }
                 });
 

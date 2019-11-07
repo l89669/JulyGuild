@@ -1,7 +1,7 @@
 package com.github.julyss2019.mcsp.julyguild.listener;
 
 import com.github.julyss2019.mcsp.julyguild.JulyGuild;
-import com.github.julyss2019.mcsp.julyguild.gui.player.GuildShopItemBuyGUI;
+import com.github.julyss2019.mcsp.julyguild.gui.player.GuildShopItemBuyPlayerGUI;
 import com.github.julyss2019.mcsp.julyguild.guild.Guild;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayerManager;
@@ -26,7 +26,7 @@ public class GuildShopListener implements Listener {
         Guild guild = guildPlayer.getGuild();
         GuildPlayer guildOwner = guild.getOwner().getGuildPlayer();
 
-        if (guildOwner.isOnline() && !guildPlayer.equals(guildOwner) && guildOwner.getUsingGUI() instanceof GuildShopItemBuyGUI) {
+        if (guildOwner.isOnline() && !guildPlayer.equals(guildOwner) && guildOwner.getUsingGUI() instanceof GuildShopItemBuyPlayerGUI) {
             guildOwner.getUsingGUI().update();
         }
     }

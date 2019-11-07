@@ -1,22 +1,22 @@
 package com.github.julyss2019.mcsp.julyguild.gui.player;
 
 import com.github.julyss2019.mcsp.julyguild.JulyGuild;
-import com.github.julyss2019.mcsp.julyguild.gui.BaseGUI;
+import com.github.julyss2019.mcsp.julyguild.gui.BaseMemberGUI;
 import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
 import com.github.julyss2019.mcsp.julyguild.guild.Guild;
 import com.github.julyss2019.mcsp.julyguild.guild.GuildBank;
-import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
+import com.github.julyss2019.mcsp.julyguild.guild.player.GuildMember;
 import org.bukkit.inventory.Inventory;
 
-public class GuildTpAllBuyGUI extends BaseGUI {
+public class GuildTpAllBuyGUI extends BaseMemberGUI {
     private static JulyGuild plugin = JulyGuild.getInstance();
 
     private Inventory inventory;
     private Guild guild;
     private GuildBank guildBank;
 
-    public GuildTpAllBuyGUI(GuildPlayer guildPlayer) {
-        super(GUIType.TP_ALL_BUY, guildPlayer);
+    public GuildTpAllBuyGUI(GuildMember guildMember) {
+        super(GUIType.TP_ALL_BUY, guildMember);
 
         this.guild = guildPlayer.getGuild();
         this.guildBank = guild.getGuildBank();
@@ -30,7 +30,7 @@ public class GuildTpAllBuyGUI extends BaseGUI {
                     @Override
                     public void onClicked(InventoryClickEvent event) {
                         close();
-                        new GuildManageGUI(guildPlayer).open();
+                        new GuildManagePlayerGUI(guildPlayer).open();
                     }
                 })
                 .item(1, 4, new ItemBuilder()

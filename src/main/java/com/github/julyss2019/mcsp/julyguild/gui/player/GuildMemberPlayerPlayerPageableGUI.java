@@ -1,35 +1,24 @@
 package com.github.julyss2019.mcsp.julyguild.gui.player;
 
-import com.github.julyss2019.mcsp.julyguild.gui.BasePageableGUI;
-import com.github.julyss2019.mcsp.julyguild.gui.CommonItem;
 import com.github.julyss2019.mcsp.julyguild.gui.GUI;
 import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
 import com.github.julyss2019.mcsp.julyguild.guild.Guild;
-import com.github.julyss2019.mcsp.julyguild.guild.player.GuildMember;
-import com.github.julyss2019.mcsp.julyguild.guild.player.Permission;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
-import com.github.julyss2019.mcsp.julyguild.util.Util;
-import com.github.julyss2019.mcsp.julylibrary.inventory.InventoryBuilder;
-import com.github.julyss2019.mcsp.julylibrary.inventory.ItemListener;
-import com.github.julyss2019.mcsp.julylibrary.item.SkullItemBuilder;
-import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 
-import java.util.List;
-
-public class GuildMemberGUI extends BasePageableGUI {
+public class GuildMemberPlayerPlayerPageableGUI extends BasePlayerPageableGUI {
     private Guild guild;
     private Inventory inventory;
     private GUI lastGUI;
 
-    public GuildMemberGUI(GuildPlayer guildPlayer, Guild guild) {
+    public GuildMemberPlayerPlayerPageableGUI(GuildPlayer guildPlayer, Guild guild) {
         super(GUIType.MEMBER, guildPlayer);
 
         this.guild = guild;
         setCurrentPage(0);
     }
 
-    public GuildMemberGUI(GuildPlayer guildPlayer, Guild guild, GUI lastGUI) {
+    public GuildMemberPlayerPlayerPageableGUI(GuildPlayer guildPlayer, Guild guild, GUI lastGUI) {
         this(guildPlayer, guild);
 
         this.lastGUI = lastGUI;
@@ -39,7 +28,7 @@ public class GuildMemberGUI extends BasePageableGUI {
     public void setCurrentPage(int page) {
         super.setCurrentPage(page);
 
-/*        InventoryBuilder inventoryBuilder = new InventoryBuilder().title(ConfigHandler.getString("GuildMemberGUI.title").replace("%name%", guild.getName()).replace("%page%", String.valueOf(page))).colored().row(6);
+/*        InventoryBuilder inventoryBuilder = new InventoryBuilder().title(ConfigHandler.getString("GuildMemberPlayerPlayerPageableGUI.title").replace("%name%", guild.getName()).replace("%page%", String.valueOf(page))).colored().row(6);
 
         inventoryBuilder.item(53, CommonItem.BACK, new ItemListener() {
             @Override
@@ -51,7 +40,7 @@ public class GuildMemberGUI extends BasePageableGUI {
                         lastGUI.build();
                         lastGUI.open();
                     } else {
-                        new GuildInfoGUI(guildPlayer, guild).open();
+                        new GuildInfoPlayerGUI(guildPlayer, guild).open();
                     }
                 }
             }
@@ -93,7 +82,7 @@ public class GuildMemberGUI extends BasePageableGUI {
 
             inventoryBuilder.item(i, new SkullItemBuilder()
                     .owner(memberName)
-                    .displayName(ConfigHandler.getString("GuildMemberGUI.member.display_name"))
+                    .displayName(ConfigHandler.getString("GuildMemberPlayerPlayerPageableGUI.member.display_name"))
                     .addLore(Permission.getChineseName(permission))
                     .addLore("")
                     .addLore("&e金币贡献 &b▹ &e" + member.getDonatedMoney())

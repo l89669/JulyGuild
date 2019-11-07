@@ -1,6 +1,5 @@
 package com.github.julyss2019.mcsp.julyguild.gui.player;
 
-import com.github.julyss2019.mcsp.julyguild.gui.BasePageableGUI;
 import com.github.julyss2019.mcsp.julyguild.gui.CommonItem;
 import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
 import com.github.julyss2019.mcsp.julyguild.guild.Guild;
@@ -24,12 +23,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class GuildMemberManageGUI extends BasePageableGUI {
+public class GuildMemberManagePlayerPlayerPageableGUI extends BasePlayerPageableGUI {
     private Inventory inventory;
     private Guild guild;
     private List<GuildMember> guildMembers = new ArrayList<>();
 
-    public GuildMemberManageGUI(GuildPlayer guildPlayer) {
+    public GuildMemberManagePlayerPlayerPageableGUI(GuildPlayer guildPlayer) {
         super(GUIType.MEMBER_MANAGE, guildPlayer);
 
         this.guild = this.guildPlayer.getGuild();
@@ -102,7 +101,7 @@ public class GuildMemberManageGUI extends BasePageableGUI {
                 close();
 
                 if (guild.isValid()) {
-                    new GuildManageGUI(guildPlayer).open();
+                    new GuildManagePlayerGUI(guildPlayer).open();
                 }
             }
         });

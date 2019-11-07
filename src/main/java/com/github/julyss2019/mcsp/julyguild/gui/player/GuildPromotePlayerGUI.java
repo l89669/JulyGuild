@@ -2,7 +2,7 @@ package com.github.julyss2019.mcsp.julyguild.gui.player;
 
 import com.github.julyss2019.mcsp.julyguild.JulyGuild;
 import com.github.julyss2019.mcsp.julyguild.config.setting.MainSettings;
-import com.github.julyss2019.mcsp.julyguild.gui.BaseGUI;
+import com.github.julyss2019.mcsp.julyguild.gui.BasePlayerGUI;
 import com.github.julyss2019.mcsp.julyguild.gui.CommonItem;
 import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
 import com.github.julyss2019.mcsp.julyguild.guild.Guild;
@@ -22,7 +22,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import parsii.eval.Parser;
 import parsii.tokenizer.ParseException;
 
-public class GuildPromoteGUI extends BaseGUI {
+public class GuildPromotePlayerGUI extends BasePlayerGUI {
     private Inventory inventory;
     private Guild guild;
     private GuildBank guildBank;
@@ -30,7 +30,7 @@ public class GuildPromoteGUI extends BaseGUI {
     private boolean pointsEnabled;
     private final JulyGuild plugin = JulyGuild.getInstance();
 
-    public GuildPromoteGUI(GuildPlayer guildPlayer) {
+    public GuildPromotePlayerGUI(GuildPlayer guildPlayer) {
         super(GUIType.PROMOTE, guildPlayer);
 
         this.guild = this.guildPlayer.getGuild();
@@ -50,7 +50,7 @@ public class GuildPromoteGUI extends BaseGUI {
                     @Override
                     public void onClicked(InventoryClickEvent event) {
                         close();
-                        new GuildManageGUI(guildPlayer).open();
+                        new GuildManagePlayerGUI(guildPlayer).open();
                     }
                 })
                 .listener(new InventoryListener() {

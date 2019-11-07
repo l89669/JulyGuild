@@ -1,32 +1,35 @@
 package com.github.julyss2019.mcsp.julyguild.gui.player;
 
 import com.github.julyss2019.mcsp.julyguild.config.ConfigGuildIcon;
-import com.github.julyss2019.mcsp.julyguild.gui.BaseGUI;
+import com.github.julyss2019.mcsp.julyguild.gui.BaseMemberGUI;
 import com.github.julyss2019.mcsp.julyguild.gui.CommonItem;
 import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
 import com.github.julyss2019.mcsp.julyguild.guild.Guild;
 import com.github.julyss2019.mcsp.julyguild.guild.GuildBank;
-import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
+import com.github.julyss2019.mcsp.julyguild.guild.player.GuildMember;
 import com.github.julyss2019.mcsp.julyguild.util.Util;
 import com.github.julyss2019.mcsp.julylibrary.inventory.InventoryBuilder;
 import com.github.julyss2019.mcsp.julylibrary.inventory.ItemListener;
 import com.github.julyss2019.mcsp.julylibrary.item.ItemBuilder;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 
-public class GuildIconBuyGUI extends BaseGUI {
+public class GuildIconBuyGUI extends BaseMemberGUI {
     private ConfigGuildIcon configGuildIcon;
     private Inventory inventory;
     private Guild guild;
     private GuildBank guildBank;
+    private Player bukkitPlayer;
     private boolean pointsPayEnabled;
     private boolean moneyPayEnabled;
 
-    public GuildIconBuyGUI(GuildPlayer guildPlayer, ConfigGuildIcon configGuildIcon) {
-        super(GUIType.ICON_SHOP_BUY, guildPlayer);
+    public GuildIconBuyGUI(GuildMember guildMember, ConfigGuildIcon configGuildIcon) {
+        super(GUIType.ICON_SHOP_BUY, guildMember);
 
         this.guild = guildPlayer.getGuild();
+        this.bukkitPlayer = guildPlayer.getBukkitPlayer();
         this.configGuildIcon = configGuildIcon;
         this.guildBank = guild.getGuildBank();
         this.moneyPayEnabled = configGuildIcon.isMoneyPayEnabled();

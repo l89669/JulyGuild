@@ -1,6 +1,6 @@
 package com.github.julyss2019.mcsp.julyguild.gui.player;
 
-import com.github.julyss2019.mcsp.julyguild.gui.BaseGUI;
+import com.github.julyss2019.mcsp.julyguild.gui.BasePlayerGUI;
 import com.github.julyss2019.mcsp.julyguild.gui.CommonItem;
 import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
 import com.github.julyss2019.mcsp.julyguild.guild.Guild;
@@ -23,16 +23,16 @@ import org.bukkit.inventory.ItemFlag;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GuildInfoGUI extends BaseGUI {
+public class GuildInfoPlayerGUI extends BasePlayerGUI {
     private Guild guild;
     private Inventory inventory;
     private int lastPage;
 
-    public GuildInfoGUI(GuildPlayer guildPlayer, Guild guild) {
+    public GuildInfoPlayerGUI(GuildPlayer guildPlayer, Guild guild) {
         this(guildPlayer, guild, 0);
     }
 
-    public GuildInfoGUI(GuildPlayer guildPlayer, Guild guild, int lastPage) {
+    public GuildInfoPlayerGUI(GuildPlayer guildPlayer, Guild guild, int lastPage) {
         super(GUIType.INFO, guildPlayer);
 
         this.guild = guild;
@@ -68,7 +68,7 @@ public class GuildInfoGUI extends BaseGUI {
                     @Override
                     public void onClicked(InventoryClickEvent event) {
                             close();
-                            new GuildMemberGUI(guildPlayer, guild).open();
+                            new GuildMemberPlayerPlayerPageableGUI(guildPlayer, guild).open();
                     }
                 })
                 .item(1, 5, new ItemBuilder()

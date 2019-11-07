@@ -1,21 +1,29 @@
 package com.github.julyss2019.mcsp.julyguild.gui;
 
+import com.github.julyss2019.mcsp.julyguild.guild.player.GuildMember;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
+import org.bukkit.Bukkit;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 
-/**
- * 基础GUI，实现了换页等功能
- */
-public class BasePageableGUI extends BaseGUI implements Pageable {
+public class BaseMemberPageableGUI implements Pageable {
     private int currentPage;
+    private GUIType guiType;
+    private GuildMember guildMember;
 
-    public BasePageableGUI(GUIType guiType, GuildPlayer guildPlayer) {
-        super(guiType, guildPlayer);
+    public BaseMemberPageableGUI(GUIType guiType, GuildMember guildMember) {
+        this.guiType = guiType;
+        this.guildMember = guildMember;
     }
 
     @Override
     public void build() {
         setCurrentPage(0);
+    }
+
+    @Override
+    public GUIType getType() {
+        return guiType;
     }
 
     @Override
@@ -44,8 +52,13 @@ public class BasePageableGUI extends BaseGUI implements Pageable {
     }
 
     @Override
+    public GuildPlayer getGuildPlayer() {
+        return guildMember.getGuildPlayer();
+    }
+
+    @Override
     public Inventory getInventory() {
-        return null;
+        return Bukkit.createInventory(null, InventoryType.CHEST, "BaseMemberPageableGUI");
     }
 
     // 需要子类来覆盖

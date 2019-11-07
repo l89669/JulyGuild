@@ -6,7 +6,7 @@ import com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderText;
 import com.github.julyss2019.mcsp.julyguild.config.gui.IndexConfigGUI;
 import com.github.julyss2019.mcsp.julyguild.config.gui.item.GUIItemManager;
 import com.github.julyss2019.mcsp.julyguild.config.setting.MainSettings;
-import com.github.julyss2019.mcsp.julyguild.gui.BaseGUI;
+import com.github.julyss2019.mcsp.julyguild.gui.BasePlayerGUI;
 import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
 import com.github.julyss2019.mcsp.julyguild.guild.GuildManager;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
@@ -31,11 +31,13 @@ import org.bukkit.scheduler.BukkitRunnable;
  * @version 1.0.0
  */
 
-public class GuildCreateGUI extends BaseGUI {
+public class GuildCreateGUI extends BasePlayerGUI {
     private String guildName;
     private Inventory inventory;
     private boolean noAction = true;
 
+    private final Player bukkitPlayer;
+    private final String playerName;
     private final JulyGuild plugin = JulyGuild.getInstance();
     private final ConfigurationSection thisLangSection = plugin.getLangYamlConfig().getConfigurationSection("GuildCreateGUI");
     private final ConfigurationSection thisGUISection = plugin.getGuiYamlConfig().getConfigurationSection("GuildCreateGUI");
@@ -46,6 +48,8 @@ public class GuildCreateGUI extends BaseGUI {
     public GuildCreateGUI(GuildPlayer guildPlayer, String guildName) {
         super(GUIType.CREATE, guildPlayer);
 
+        this.bukkitPlayer = guildPlayer.getBukkitPlayer();
+        this.playerName = guildPlayer.getName();
         this.guildName = guildName;
         build();
     }

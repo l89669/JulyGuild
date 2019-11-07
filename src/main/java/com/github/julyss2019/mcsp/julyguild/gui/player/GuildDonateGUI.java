@@ -1,15 +1,14 @@
 package com.github.julyss2019.mcsp.julyguild.gui.player;
 
 import com.github.julyss2019.mcsp.julyguild.config.setting.MainSettings;
-import com.github.julyss2019.mcsp.julyguild.gui.BaseGUI;
+import com.github.julyss2019.mcsp.julyguild.gui.BaseMemberGUI;
 import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
 import com.github.julyss2019.mcsp.julyguild.guild.GuildBank;
 import com.github.julyss2019.mcsp.julyguild.guild.player.GuildMember;
 import com.github.julyss2019.mcsp.julyguild.guild.player.Permission;
-import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
 import org.bukkit.inventory.Inventory;
 
-public class GuildDonateGUI extends BaseGUI {
+public class GuildDonateGUI extends BaseMemberGUI {
     private Inventory inventory;
     private GuildMember guildMember;
     private Permission permission;
@@ -17,8 +16,8 @@ public class GuildDonateGUI extends BaseGUI {
     private boolean pointsEnabled;
     private boolean moneyEnabled;
 
-    public GuildDonateGUI(GuildPlayer guildPlayer) {
-        super(GUIType.DONATE, guildPlayer);
+    public GuildDonateGUI(GuildMember guildMember) {
+        super(GUIType.DONATE, guildMember);
 
         this.guildMember = guild.getMember(guildPlayer.getName());
         this.permission = guildMember.getPermission();
@@ -136,7 +135,7 @@ public class GuildDonateGUI extends BaseGUI {
 //                    @Override
 //                    public void onClicked(InventoryClickEvent event) {
 //                        close();
-//                        new GuildMineGUI(guildPlayer).open();
+//                        new GuildMinePlayerGUI(guildPlayer).open();
 //                    }
 //                })
 //                .build();

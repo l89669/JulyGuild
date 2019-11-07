@@ -1,32 +1,23 @@
 package com.github.julyss2019.mcsp.julyguild.gui.player;
 
-import com.github.julyss2019.mcsp.julyguild.gui.BasePageableGUI;
-import com.github.julyss2019.mcsp.julyguild.gui.CommonItem;
 import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
 import com.github.julyss2019.mcsp.julyguild.guild.Guild;
 import com.github.julyss2019.mcsp.julyguild.guild.OwnedIcon;
-import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
-import com.github.julyss2019.mcsp.julylibrary.inventory.InventoryBuilder;
-import com.github.julyss2019.mcsp.julylibrary.inventory.InventoryListener;
-import com.github.julyss2019.mcsp.julylibrary.inventory.ItemListener;
-import com.github.julyss2019.mcsp.julylibrary.item.ItemBuilder;
-import org.bukkit.enchantments.Enchantment;
-import org.bukkit.event.inventory.InventoryClickEvent;
+import com.github.julyss2019.mcsp.julyguild.guild.player.GuildMember;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemFlag;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class GuildIconRepositoryGUI extends BasePageableGUI {
+public class GuildIconRepositoryGUI extends BasePlayerPageableGUI {
     private Inventory inventory;
     private Guild guild;
     private List<OwnedIcon> icons = new ArrayList<>();
 
-    public GuildIconRepositoryGUI(GuildPlayer guildPlayer) {
-        super(GUIType.ICON_REPOSITORY, guildPlayer);
+    public GuildIconRepositoryGUI(GuildMember guildMember) {
+        super(GUIType.ICON_REPOSITORY, guildMember);
 
-        this.guild = this.guildPlayer.getGuild();
+        this.guild = guildPlayer.getGuild();
         setCurrentPage(0);
     }
 
@@ -63,7 +54,7 @@ public class GuildIconRepositoryGUI extends BasePageableGUI {
 //            @Override
 //            public void onClicked(InventoryClickEvent event) {
 //                close();
-//                new GuildManageGUI(guildPlayer).open();
+//                new GuildManagePlayerGUI(guildPlayer).open();
 //            }
 //        });
 //

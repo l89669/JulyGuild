@@ -1,7 +1,7 @@
 package com.github.julyss2019.mcsp.julyguild.gui.player;
 
 import com.github.julyss2019.mcsp.julyguild.config.ConfigGuildShopItem;
-import com.github.julyss2019.mcsp.julyguild.gui.BaseGUI;
+import com.github.julyss2019.mcsp.julyguild.gui.BasePlayerGUI;
 import com.github.julyss2019.mcsp.julyguild.gui.CommonItem;
 import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
 import com.github.julyss2019.mcsp.julyguild.guild.GuildBank;
@@ -17,14 +17,14 @@ import org.bukkit.inventory.Inventory;
 import parsii.eval.Parser;
 import parsii.tokenizer.ParseException;
 
-public class GuildShopItemBuyGUI extends BaseGUI {
+public class GuildShopItemBuyPlayerGUI extends BasePlayerGUI {
     private Inventory inventory;
     private ConfigGuildShopItem shopItem;
     private GuildBank guildBank;
     private boolean moneyEnabled;
     private boolean pointsEnabled;
 
-    public GuildShopItemBuyGUI(GuildPlayer guildPlayer, ConfigGuildShopItem shopItem) {
+    public GuildShopItemBuyPlayerGUI(GuildPlayer guildPlayer, ConfigGuildShopItem shopItem) {
         super(GUIType.SHOP_BUY, guildPlayer);
 
         this.guildBank = guild.getGuildBank();
@@ -122,7 +122,7 @@ public class GuildShopItemBuyGUI extends BaseGUI {
                     @Override
                     public void onClicked(InventoryClickEvent event) {
                         close();
-                        new GuildShopGUI(guildPlayer).open();
+                        new GuildShopPlayerPageableGUI(guildPlayer).open();
                     }
                 })
                 .build();

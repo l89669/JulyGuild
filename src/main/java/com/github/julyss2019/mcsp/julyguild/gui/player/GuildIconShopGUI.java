@@ -3,7 +3,7 @@ package com.github.julyss2019.mcsp.julyguild.gui.player;
 import com.github.julyss2019.mcsp.julyguild.JulyGuild;
 import com.github.julyss2019.mcsp.julyguild.config.ConfigGuildIcon;
 import com.github.julyss2019.mcsp.julyguild.config.IconShopConfig;
-import com.github.julyss2019.mcsp.julyguild.gui.BasePageableGUI;
+import com.github.julyss2019.mcsp.julyguild.gui.BasePlayerPageableGUI;
 import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
 import com.github.julyss2019.mcsp.julyguild.guild.Guild;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
@@ -12,7 +12,7 @@ import org.bukkit.inventory.Inventory;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GuildIconShopGUI extends BasePageableGUI {
+public class GuildIconShopGUI extends BasePlayerPageableGUI {
     private Inventory inventory;
     private static JulyGuild plugin = JulyGuild.getInstance();
     private static IconShopConfig iconShopConfig = plugin.getIconShopConfig();
@@ -58,7 +58,7 @@ public class GuildIconShopGUI extends BasePageableGUI {
             @Override
             public void onClicked(InventoryClickEvent event) {
                 close();
-                new GuildManageGUI(guildPlayer).open();
+                new GuildManagePlayerGUI(guildPlayer).open();
             }
         });
 

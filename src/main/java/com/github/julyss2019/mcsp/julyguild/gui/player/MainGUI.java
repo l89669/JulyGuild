@@ -4,10 +4,10 @@ import com.github.julyss2019.mcsp.julyguild.JulyGuild;
 import com.github.julyss2019.mcsp.julyguild.config.gui.IndexConfigGUI;
 import com.github.julyss2019.mcsp.julyguild.config.gui.item.GUIItemManager;
 import com.github.julyss2019.mcsp.julyguild.config.setting.MainSettings;
-import com.github.julyss2019.mcsp.julyguild.gui.BasePageableGUI;
 import com.github.julyss2019.mcsp.julyguild.gui.CommonItem;
 import com.github.julyss2019.mcsp.julyguild.gui.GUI;
 import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
+import com.github.julyss2019.mcsp.julyguild.gui.BasePlayerPageableGUI;
 import com.github.julyss2019.mcsp.julyguild.guild.CacheGuildManager;
 import com.github.julyss2019.mcsp.julyguild.guild.Guild;
 import com.github.julyss2019.mcsp.julyguild.guild.OwnedIcon;
@@ -22,6 +22,7 @@ import com.github.julyss2019.mcsp.julylibrary.inventory.ItemListener;
 import com.github.julyss2019.mcsp.julylibrary.item.ItemBuilder;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.inventory.Inventory;
@@ -34,19 +35,22 @@ import java.util.List;
  * 主GUI
  * @version 1.0.0
  */
-public class MainGUI extends BasePageableGUI {
+public class MainGUI extends BasePlayerPageableGUI {
     private Inventory inventory;
     private List<Guild> guilds = new ArrayList<>();
 
+    private Player bukkitPlayer;
+    private String playerName;
     private final JulyGuild plugin = JulyGuild.getInstance();
     private final ConfigurationSection thisGUISection = plugin.getGuiYamlConfig().getConfigurationSection("MainGUI");
     private final ConfigurationSection thisLangSection = plugin.getLangYamlConfig().getConfigurationSection("MainGUI");
-    private final CacheGuildManager cacheGuildManager = plugin.getCacheGuildManager();
 
     public MainGUI(GuildPlayer guildPlayer) {
         super(GUIType.MAIN, guildPlayer);
 
-        guilds.addAll(cacheGuildManager.getSortedGuilds());
+        this.bukkitPlayer = guildPlayer.getBukkitPlayer();
+        this.playerName = bukkitPlayer.getName();
+        this.guilds.addAll(plugin.getCacheGuildManager().getSortedGuilds());
         setCurrentPage(0);
     }
 
@@ -65,7 +69,7 @@ public class MainGUI extends BasePageableGUI {
 
                         if (index < guilds.size()) {
                             Guild guild = guilds.get(index);
-                            GUI newGUI = new GuildInfoGUI(guildPlayer, guild, getCurrentPage());
+                            GUI newGUI = new GuildInfoPlayerGUI(guildPlayer, guild, getCurrentPage());
 
                             close();
                             guildPlayer.setUsingGUI(newGUI);
@@ -105,7 +109,7 @@ public class MainGUI extends BasePageableGUI {
                 @Override
                 public void onClicked(InventoryClickEvent event) {
                     close();
-                    new GuildMineGUI(guildPlayer).open();
+                    new GuildMinePlayerGUI(guildPlayer).open();
                 }
             });
         } else {

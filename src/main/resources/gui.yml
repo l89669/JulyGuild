@@ -85,10 +85,11 @@ GuildMineGUI:
         - ' &f金币: %vault_eco_balance%'
     _guild_members:
       priority: -2
-      material: SKULL_ITEM
-      data: 3
-      display_name: '&f公会成员'
-      skull: 'July_ss' # %player_name%
+      player:
+        material: SKULL_ITEM
+        data: 3
+        display_name: '&f公会成员'
+        skull: 'July_ss' # %player_name%
     _guild_announcements:
       priority: -3
       material: MAP
@@ -100,3 +101,15 @@ GuildMineGUI:
       # 这里支持PAPI
       lores:
         - ' &f捐献金币或点券'
+    exit:
+      priority: -5
+      material: BARRIR
+      display_name: '&c退出公会'
+      lores:
+        - ' &c请谨慎操作'
+    dismiss:
+      priority: -5
+      material: BARRIR
+      display_name: '&c解散公会'
+      lores:
+      - ' &c请谨慎操作'

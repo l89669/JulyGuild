@@ -2,14 +2,13 @@ package com.github.julyss2019.mcsp.julyguild.gui.player;
 
 import com.github.julyss2019.mcsp.julyguild.JulyGuild;
 import com.github.julyss2019.mcsp.julyguild.LangHelper;
-import com.github.julyss2019.mcsp.julyguild.config.gui.IndexConfigGUI;
 import com.github.julyss2019.mcsp.julyguild.config.gui.PriorityConfigGUI;
 import com.github.julyss2019.mcsp.julyguild.config.gui.item.GUIItemManager;
-import com.github.julyss2019.mcsp.julyguild.config.gui.item.IndexItem;
 import com.github.julyss2019.mcsp.julyguild.config.gui.item.PriorityItem;
-import com.github.julyss2019.mcsp.julyguild.gui.BaseGUI;
+import com.github.julyss2019.mcsp.julyguild.gui.BasePlayerGUI;
 import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
 import com.github.julyss2019.mcsp.julyguild.guild.player.GuildMember;
+import com.github.julyss2019.mcsp.julyguild.guild.player.Permission;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
 import com.github.julyss2019.mcsp.julylibrary.inventory.ItemListener;
 import org.bukkit.configuration.ConfigurationSection;
@@ -17,15 +16,15 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-public class GuildMineGUI extends BaseGUI {
+public class GuildMinePlayerGUI extends BasePlayerGUI {
     private JulyGuild plugin = JulyGuild.getInstance();
-    private ConfigurationSection thisGUISection = plugin.getGuiYamlConfig().getConfigurationSection("GuildMineGUI");
+    private ConfigurationSection thisGUISection = plugin.getGuiYamlConfig().getConfigurationSection("GuildMinePlayerGUI");
     private Inventory inventory;
+    private Permission permission;
 
-    public GuildMineGUI(GuildPlayer guildPlayer) {
+    public GuildMinePlayerGUI(GuildPlayer guildPlayer) {
         super(GUIType.MINE, guildPlayer);
 
         build();
@@ -82,6 +81,7 @@ public class GuildMineGUI extends BaseGUI {
         guiBuilder.item(guildAnnouncementItem);
 
         // 公会成员
+        PriorityItem guildMemberItem = GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items._guild_members"));
         List<String> memberLores = new ArrayList<>();
 
         for (GuildMember guildMember : guild.getSortedMembers()) {
@@ -92,10 +92,11 @@ public class GuildMineGUI extends BaseGUI {
             }
         }
 
-        PriorityItem guildMemberItem = GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items._guild_members"));
-
         guildMemberItem.getItemBuilder().lores(memberLores);
         guiBuilder.item(guildMemberItem);
+
+        // 解散或退出
+
 
 
         /*
@@ -135,7 +136,7 @@ public class GuildMineGUI extends BaseGUI {
                             @Override
                             public void onClicked(InventoryClickEvent event) {
                                 close();
-                                new GuildMemberGUI(guildPlayer, guild, GuildMineGUI.this).open();
+                                new GuildMemberPlayerPlayerPageableGUI(guildPlayer, guild, GuildMinePlayerGUI.this).open();
                             }
                         }
                 )
@@ -161,7 +162,7 @@ public class GuildMineGUI extends BaseGUI {
                         @Override
                         public void onClicked(InventoryClickEvent event) {
                             close();
-                            new GuildManageGUI(guildPlayer).open();
+                            new GuildManagePlayerGUI(guildPlayer).open();
                         }
                     });
         } else {
