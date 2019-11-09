@@ -2,10 +2,9 @@ package com.github.julyss2019.mcsp.julyguild.guild;
 
 import com.github.julyss2019.mcsp.julyguild.JulyGuild;
 import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
-import com.github.julyss2019.mcsp.julyguild.guild.exception.GuildCreateException;
 import com.github.julyss2019.mcsp.julyguild.log.guild.GuildCreateLog;
-import com.github.julyss2019.mcsp.julyguild.player.GuildPlayerManager;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
+import com.github.julyss2019.mcsp.julyguild.player.GuildPlayerManager;
 import com.github.julyss2019.mcsp.julylibrary.logger.FileLogger;
 import com.github.julyss2019.mcsp.julylibrary.utils.YamlUtil;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -42,7 +41,7 @@ public class GuildManager {
         if (!file.exists()) {
             try {
                 if (!file.createNewFile()) {
-                    throw new GuildCreateException("文件创建失败: " + file.getAbsolutePath());
+                    throw new RuntimeException("文件创建失败: " + file.getAbsolutePath());
                 }
             } catch (IOException e) {
                 e.printStackTrace();

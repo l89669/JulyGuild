@@ -2,6 +2,7 @@ package com.github.julyss2019.mcsp.julyguild.placeholder;
 
 import com.github.julyss2019.mcsp.julyguild.JulyGuild;
 import me.clip.placeholderapi.PlaceholderAPI;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -38,21 +39,44 @@ public class PlaceholderText {
         return result;
     }
 
+    public static List<String> replacePlaceholders(List<String> list, Placeholder placeholder, Player player) {
+        List<String> result = new ArrayList<>();
 
-    public static String replacePlaceholders(String s, Placeholder placeholder) {
-        String result = s;
-
-        for (Map.Entry<String, String> entry : placeholder.getPlaceholders().entrySet()) {
-            result = ignoreCaseReplace(result, entry.getKey(), entry.getValue());
+        for (String s : list) {
+            result.add(replacePlaceholders(replacePlaceholders(s, placeholder), player));
         }
 
         return result;
     }
 
-    private static String ignoreCaseReplace(String source, String oldStr, String newStr) {
-        Pattern p = Pattern.compile(oldStr, Pattern.CASE_INSENSITIVE);
+    public static String replacePlaceholders(String s, Placeholder placeholder, Player player) {
+        return replacePlaceholders(replacePlaceholders(s, placeholder), player);
+    }
+
+
+    public static String replacePlaceholders(String s, Placeholder placeholder) {
+        String result = s;
+
+        for (Map.Entry<String, String> entry : placeholder.getPlaceholders().entrySet()) {
+            // 对正则符号进行转义
+            result = ignoreCaseReplace(result, entry.getKey()
+                    .replace("\\", "\\\\").replace("*", "\\*")
+                    .replace("+", "\\+").replace("|", "\\|")
+                    .replace("{", "\\{").replace("}", "\\}")
+                    .replace("(", "\\(").replace(")", "\\)")
+                    .replace("^", "\\^").replace("$", "\\$")
+                    .replace("[", "\\[").replace("]", "\\]")
+                    .replace("?", "\\?").replace(",", "\\,")
+                    .replace(".", "\\.").replace("&", "\\&"), entry.getValue());
+        }
+
+        return result;
+    }
+
+    private static String ignoreCaseReplace(String source, String target, String replacement) {
+        Pattern p = Pattern.compile(target, Pattern.CASE_INSENSITIVE);
         Matcher m = p.matcher(source);
 
-        return m.replaceAll(newStr);
+        return m.replaceAll(replacement);
     }
 }

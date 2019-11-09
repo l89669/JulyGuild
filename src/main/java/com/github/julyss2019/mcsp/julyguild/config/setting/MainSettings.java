@@ -50,23 +50,19 @@ public class MainSettings {
     @Config(path = "guild.donate.points.min")
     private static int donateMinPoints;
 
-    @Config(path = "guild.promote.money.enabled")
-    private static boolean promoteMoneyEnabled;
 
-    @Config(path = "guild.promote.money.formula")
-    private static String promoteMoneyFormula;
+    @Config(path = "guild.upgrade.money.formula")
+    private static String upgradeMoneyFormula;
 
-    @Config(path = "guild.promote.money.max_member_count")
-    private static int promoteMoneyMaxMemberCount;
+    @Config(path = "guild.upgrade.money.max_member_count")
+    private static int upgradeMoneyMaxMemberCount;
 
-    @Config(path = "guild.promote.points.enabled")
-    private static boolean promotePointsEnabled;
 
-    @Config(path = "guild.promote.points.formula")
-    private static String promotePointFormula;
+    @Config(path = "guild.upgrade.points.formula")
+    private static String upgradePointFormula;
 
-    @Config(path = "guild.promote.points.max_member_count")
-    private static int promotePointMaxMemberCount;
+    @Config(path = "guild.upgrade.points.max_member_count")
+    private static int upgradePointsMaxMemberCount;
 
     @Config(path = "guild.tp_all.interval")
     private static int tpAllInterval;
@@ -103,6 +99,20 @@ public class MainSettings {
 
     @Config(path = "guild.default_icon.first_lore")
     private static String defaultIconFirstLore;
+
+    @Config(path = "guild.dismiss.wait")
+    private static int dismissWait;
+
+    @Config(path = "guild.dismiss.confirm_str")
+    private static String dismissConfirmStr;
+
+    public static int getDismissWait() {
+        return dismissWait;
+    }
+
+    public static String getDismissConfirmStr() {
+        return dismissConfirmStr;
+    }
 
     public static String getDefaultIconMaterial() {
         return defaultIconMaterial;
@@ -176,28 +186,20 @@ public class MainSettings {
         return donateMinPoints;
     }
 
-    public static boolean isPromoteMoneyEnabled() {
-        return promoteMoneyEnabled;
+    public static String getUpgradeMoneyFormula() {
+        return upgradeMoneyFormula;
     }
 
-    public static String getPromoteMoneyFormula() {
-        return promoteMoneyFormula;
+    public static int getUpgradeMoneyMaxMemberCount() {
+        return upgradeMoneyMaxMemberCount;
     }
 
-    public static int getPromoteMoneyMaxMemberCount() {
-        return promoteMoneyMaxMemberCount;
+    public static String getUpgradePointFormula() {
+        return upgradePointFormula;
     }
 
-    public static boolean isPromotePointsEnabled() {
-        return promotePointsEnabled;
-    }
-
-    public static String getPromotePointFormula() {
-        return promotePointFormula;
-    }
-
-    public static int getPromotePointMaxMemberCount() {
-        return promotePointMaxMemberCount;
+    public static int getUpgradePointsMaxMemberCount() {
+        return upgradePointsMaxMemberCount;
     }
 
     public static int getTpAllInterval() {

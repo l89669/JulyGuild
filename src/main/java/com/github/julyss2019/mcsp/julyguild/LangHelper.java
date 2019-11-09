@@ -16,8 +16,8 @@ public class LangHelper {
             String format = langSection.getString("Global.nick_name");
 
             return PlaceholderText.replacePlaceholders(format, new Placeholder.Builder()
-                    .add("%PERMISSION%", langSection.getString("Permission." + guildMember.getPermission().name().toLowerCase()))
-                    .add("%NAME%", guildMember.getName()).build());
+                    .addInner("PERMISSION", langSection.getString("Permission." + guildMember.getPermission().name().toLowerCase()))
+                    .addInner("NAME", guildMember.getName()).build());
         }
     }
 }

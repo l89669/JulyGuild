@@ -6,7 +6,7 @@ public class IndexItem {
     private ItemBuilder itemBuilder;
     private int index;
 
-    public IndexItem(ItemBuilder itemBuilder, int index) {
+    protected IndexItem(ItemBuilder itemBuilder, int index) {
         this.itemBuilder = itemBuilder;
         this.index = index;
     }
@@ -18,4 +18,6 @@ public class IndexItem {
     public int getIndex() {
         return index;
     }
+
+
 }

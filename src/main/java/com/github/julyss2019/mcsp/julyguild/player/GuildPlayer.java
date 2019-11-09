@@ -125,9 +125,7 @@ public class GuildPlayer {
         if (usingGUI != null) {
             for (GUIType guiType : guiTypes) {
                 if (usingGUI.getType() == guiType) {
-                    usingGUI.close();
-                    usingGUI.build();
-                    usingGUI.open();
+                    usingGUI.reopen();
                 }
             }
         }

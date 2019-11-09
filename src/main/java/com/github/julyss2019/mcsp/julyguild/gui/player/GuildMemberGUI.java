@@ -1,11 +1,11 @@
 package com.github.julyss2019.mcsp.julyguild.gui.player;
 
+import com.github.julyss2019.mcsp.julyguild.gui.BaseMemberPageableGUI;
 import com.github.julyss2019.mcsp.julyguild.gui.CommonItem;
 import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
 import com.github.julyss2019.mcsp.julyguild.guild.Guild;
 import com.github.julyss2019.mcsp.julyguild.guild.player.GuildMember;
 import com.github.julyss2019.mcsp.julyguild.guild.player.Permission;
-import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
 import com.github.julyss2019.mcsp.julyguild.util.Util;
 import com.github.julyss2019.mcsp.julylibrary.chat.ChatListener;
 import com.github.julyss2019.mcsp.julylibrary.chat.JulyChatFilter;
@@ -14,6 +14,7 @@ import com.github.julyss2019.mcsp.julylibrary.inventory.InventoryListener;
 import com.github.julyss2019.mcsp.julylibrary.inventory.ItemListener;
 import com.github.julyss2019.mcsp.julylibrary.item.ItemBuilder;
 import com.github.julyss2019.mcsp.julylibrary.item.SkullItemBuilder;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
@@ -23,16 +24,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class GuildMemberManagePlayerPlayerPageableGUI extends BasePlayerPageableGUI {
+
+public class GuildMemberGUI extends BaseMemberPageableGUI {
     private Inventory inventory;
-    private Guild guild;
-    private List<GuildMember> guildMembers = new ArrayList<>();
+    private final Guild guild;
+    private final List<GuildMember> guildMembers = new ArrayList<>();
+    private Player bukkitPlayer;
 
-    public GuildMemberManagePlayerPlayerPageableGUI(GuildPlayer guildPlayer) {
-        super(GUIType.MEMBER_MANAGE, guildPlayer);
+    public GuildMemberGUI(GuildMember guildMember) {
+        super(GUIType.MEMBER_MANAGE, guildMember);
 
-        this.guild = this.guildPlayer.getGuild();
-        build();
+        this.guild = getGuild();
+        this.bukkitPlayer = getBukkitPlayer();
     }
 
     @Override
@@ -101,7 +104,7 @@ public class GuildMemberManagePlayerPlayerPageableGUI extends BasePlayerPageable
                 close();
 
                 if (guild.isValid()) {
-                    new GuildManagePlayerGUI(guildPlayer).open();
+                    new GuildMemberGUI(getGuildMember()).open();
                 }
             }
         });
@@ -130,11 +133,11 @@ public class GuildMemberManagePlayerPlayerPageableGUI extends BasePlayerPageable
 
         Permission permission = guild.getMember(guildPlayer.getName()).getPermission();
 
-        if (permission == Permission.OWNER) {
-            this.guildMembers = guild.getMembers().stream().filter(guildMember -> guildMember.getPermission() == Permission.MEMBER || guildMember.getPermission() == Permission.ADMIN).collect(Collectors.toList());
-        } else if (permission == Permission.ADMIN) {
-            this.guildMembers = guild.getMembers().stream().filter(guildMember -> guildMember.getPermission() == Permission.MEMBER).collect(Collectors.toList());
-        }
+//        if (permission == Permission.OWNER) {
+//            this.guildMembers = guild.getMembers().stream().filter(guildMember -> guildMember.getPermission() == Permission.MEMBER || guildMember.getPermission() == Permission.ADMIN).collect(Collectors.toList());
+//        } else if (permission == Permission.ADMIN) {
+//            this.guildMembers = guild.getMembers().stream().filter(guildMember -> guildMember.getPermission() == Permission.MEMBER).collect(Collectors.toList());
+//        }
 
         int memberSize = guildMembers.size();
         int itemCounter = page * 51;
@@ -173,4 +176,5 @@ public class GuildMemberManagePlayerPlayerPageableGUI extends BasePlayerPageable
     public Inventory getInventory() {
         return inventory;
     }
+
 }

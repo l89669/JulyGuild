@@ -3,7 +3,6 @@ package com.github.julyss2019.mcsp.julyguild.guild;
 import com.github.julyss2019.mcsp.julyguild.JulyGuild;
 import com.github.julyss2019.mcsp.julyguild.config.setting.MainSettings;
 import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
-import com.github.julyss2019.mcsp.julyguild.guild.exception.GuildLoadException;
 import com.github.julyss2019.mcsp.julyguild.guild.player.GuildAdmin;
 import com.github.julyss2019.mcsp.julyguild.guild.player.GuildMember;
 import com.github.julyss2019.mcsp.julyguild.guild.player.GuildOwner;
@@ -60,7 +59,7 @@ public class Guild {
 
     public void init() {
         if (!file.exists()) {
-            throw new GuildLoadException("宗门不存在!");
+            throw new RuntimeException("公会不存在!");
         }
 
         this.yml = YamlConfiguration.loadConfiguration(file);
@@ -75,7 +74,7 @@ public class Guild {
      */
     public Guild load() {
         if (isDeleted()) {
-            throw new GuildLoadException("宗门已被删除");
+            throw new RuntimeException("公会已被删除");
         }
 
         memberMap.clear();

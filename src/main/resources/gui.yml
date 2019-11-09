@@ -1,34 +1,32 @@
 # 使用指南：
 # 如果你想关闭某个功能，在物品项中添加一行 enabled: false 即可，届时图标也不会显示
+# 在 gui.yml 中，被{}包括的是插件内部的占位符，被%%包括的是PAPI占位符
 VERSION: 2.0.0
 MainGUI:
-  title: '&e&l公会(第%PAGE%页)'
+  title: '&e&l公会(第{PAGE}页)'
   items:
     _guild:
       # 这里支持PAPI
-      display_name: '&bNo.%guild_ranking% %guild_name%'
+      display_name: '&bNo.{guild_ranking} {guild_name}'
       lores:
-        - ' &f会长: %guild_owner%'
-        - ' &f金币储备: %guild_money%'
-        - ' &f点券储备: %guild_points%'
-        - ' &f人数: %guild_member_count%/%guild_max_member_count%'
-        - ' &f创建时间: %guild_creation_time%'
+        - ' &f会长: {guild_owner}'
+        - ' &f金币储备: {guild_money}'
+        - ' &f点券储备: {guild_points}'
+        - ' &f人数: {guild_member_count}/{guild_max_member_count}'
+        - ' &f创建时间: {guild_creation_time}'
+        - ' &f点击查看详细信息或加入'
     create_guild:
-      index: 46
+      index: 50
       material: EMERALD
       display_name: '&f创建公会'
+      lores:
+        - ' &e也可以选择单击上方的图标来加入公会'
     my_guild:
       index: 50
       material: SKULL_ITEM
       display_name: '&f我的公会'
       skullTexture: 'eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjU1ZmU2MDdiMDZiMTQwNTQxM2U2ZTI5OTljMmYzNjA0N2ZmNzhmZTc2Njk3MWMxMWIzOTIzNWY2MGUyMmEzZiJ9fX0='
       data: 3
-    join_guild:
-      index: 50
-      material: EMERALD
-      display_name: '&f加入公会'
-      lores:
-        - '&e单击上方的图标来加入公会'
 GuildCreateGUI:
   row: 3
   title: '&e&l请选择支付方式'
@@ -36,19 +34,19 @@ GuildCreateGUI:
     money:
       index: 12
       material: GOLD_INGOT
-      display_name: '&a使用 &e%AMOUNT%个 &a金币'
+      display_name: '&a使用 &e{AMOUNT}个 &a金币'
       lores:
         - '&c点击支付'
     points:
       index: 14
       material: DIAMOND
-      display_name: '&a使用 &e%AMOUNT%个 &a点券'
+      display_name: '&a使用 &e{AMOUNT}个 &a点券'
       lores:
         - '&c点击支付'
     item:
       index: 16
       material: PAPER
-      display_name: '&a使用 &e%AMOUNT%个 &a建帮令'
+      display_name: '&a使用 &e{AMOUNT}个 &a建帮令'
       lores:
       - '&c点击支付'
 # 最重要的GUI,集成了所有功能
@@ -69,11 +67,11 @@ GuildMineGUI:
       display_name: '&f公会信息'
       # 这里支持PAPI
       lores:
-        - ' &f会长: %guild_owner%'
-        - ' &f金币储备: %guild_money%'
-        - ' &f点券储备: %guild_points%'
-        - ' &f人数: %guild_member_count%/%guild_max_member_count%'
-        - ' &f创建时间: %guild_creation_time%'
+        - ' &f会长: {guild_owner}'
+        - ' &f金币储备: {guild_money}'
+        - ' &f点券储备: {guild_points}'
+        - ' &f人数: {guild_member_count}/{guild_max_member_count}'
+        - ' &f创建时间: {guild_creation_time}'
     self_info:
       priority: -1
       material: SKULL_ITEM
@@ -83,33 +81,91 @@ GuildMineGUI:
       lores:
         - ' &fID: %player_name%'
         - ' &f金币: %vault_eco_balance%'
-    _guild_members:
-      priority: -2
-      player:
+    guild_members:
+      # 成员看到的图标
+      member:
+        priority: -2
         material: SKULL_ITEM
         data: 3
         display_name: '&f公会成员'
+        skull: 'July_ss' # %player_name%
+      # 管理员看到的图标
+      admin:
+        priority: -2
+        material: SKULL_ITEM
+        data: 3
+        display_name: '&f成员管理'
+        skull: 'July_ss' # %player_name%
+      # 会长看到的图标
+      owner:
+        priority: -2
+        material: SKULL_ITEM
+        data: 3
+        display_name: '&f成员管理'
         skull: 'July_ss' # %player_name%
     _guild_announcements:
       priority: -3
       material: MAP
       display_name: '&f公会公告'
-    donate:
+    guild_donate:
       priority: -4
       material: DIAMOND
       display_name: '&f捐献'
       # 这里支持PAPI
       lores:
         - ' &f捐献金币或点券'
-    exit:
+    guild_upgrade:
       priority: -5
+      material: EXP_BOTTLE
+      display_name: '&f公会升级'
+    guild_exit:
+      priority: -6
       material: BARRIR
       display_name: '&c退出公会'
       lores:
         - ' &c请谨慎操作'
-    dismiss:
-      priority: -5
-      material: BARRIR
+    guild_dismiss:
+      priority: -6
+      material: BARRIER
       display_name: '&c解散公会'
       lores:
       - ' &c请谨慎操作'
+GuildUpgradeGUI:
+  row: 3
+  title: '&e&l公会升级'
+  items:
+    back:
+      material: BOOK
+      display_name: '&c返回'
+    money:
+      full:
+        index: 12
+        material: BARRIR
+        display_name: '&c已封顶'
+        lores:
+          - ' &c无法使用金币继续升级'
+      available:
+        index: 12
+        material: GOLD_INGOT
+        display_name: '&f使用 &a金币x{COST} &f升级'
+        # 支持PAPI
+        lores:
+          - '&a 点击升级'
+          - ' &f最大人数: {OLD} -> {NEW}'
+          - ' &f花费: {COST}'
+    points:
+      full:
+        index: 16
+        material: BARRIR
+        display_name: '&c已封顶'
+        lores:
+          - ' &c无法使用点券继续升级'
+      available:
+        index: 16
+        material: DIAMOND
+        display_name: '&f使用 &a点券x{COST} &f升级'
+        # 支持PAPI
+        lores:
+          - '&a 点击升级'
+          - ' &f最大人数: {OLD} -> {NEW}'
+          - ' &f花费: {COST}'

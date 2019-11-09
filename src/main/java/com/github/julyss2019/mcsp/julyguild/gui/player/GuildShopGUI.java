@@ -11,7 +11,7 @@ public class GuildShopGUI extends BaseMemberPageableGUI {
     public GuildShopGUI(GuildMember guildMember) {
         super(GUIType.SHOP, guildMember);
 
-        build();
+
     }
 
     @Override
@@ -25,7 +25,7 @@ public class GuildShopGUI extends BaseMemberPageableGUI {
 
                 if (index < shopItems.size()) {
                     close();
-                    new GuildShopItemBuyPlayerGUI(guildPlayer, shopItems.getIndexItem(index)).open();
+                    new GuildShopItemBuyGUI(guildPlayer, shopItems.getIndexItem(index)).open();
                 }
             }
         });

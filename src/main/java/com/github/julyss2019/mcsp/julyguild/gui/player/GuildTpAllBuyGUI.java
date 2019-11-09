@@ -23,7 +23,7 @@ public class GuildTpAllBuyGUI extends BaseMemberGUI {
         build();
     }
 
-    @Override
+
     public void build() {
    /*     this.inventory = new InventoryBuilder().title("&e&l请选择支付方式").row(3).colored()
                 .item(26, CommonItem.BACK, new ItemListener() {

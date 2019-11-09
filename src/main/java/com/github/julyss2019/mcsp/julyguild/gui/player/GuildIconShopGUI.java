@@ -24,7 +24,7 @@ public class GuildIconShopGUI extends BasePlayerPageableGUI {
         super(GUIType.ICON_SHOP, guildPlayer);
 
         this.guild = this.guildPlayer.getGuild();
-        build();
+
     }
 
     @Override

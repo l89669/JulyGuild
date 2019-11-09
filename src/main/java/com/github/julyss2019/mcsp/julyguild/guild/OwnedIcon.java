@@ -8,7 +8,7 @@ import java.util.UUID;
 public class OwnedIcon {
     private Material material;
     private short data;
-    private String firstLore;
+    private String firstLore; // 对 SX-ATTRIBUTE 材质包的支持
     private UUID uuid;
 
     protected OwnedIcon(Material material, short data, UUID uuid) {

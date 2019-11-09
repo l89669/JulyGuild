@@ -8,7 +8,6 @@ import com.github.julyss2019.mcsp.julyguild.gui.CommonItem;
 import com.github.julyss2019.mcsp.julyguild.gui.GUI;
 import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
 import com.github.julyss2019.mcsp.julyguild.gui.BasePlayerPageableGUI;
-import com.github.julyss2019.mcsp.julyguild.guild.CacheGuildManager;
 import com.github.julyss2019.mcsp.julyguild.guild.Guild;
 import com.github.julyss2019.mcsp.julyguild.guild.OwnedIcon;
 import com.github.julyss2019.mcsp.julyguild.placeholder.Placeholder;
@@ -55,11 +54,9 @@ public class MainGUI extends BasePlayerPageableGUI {
     }
 
     @Override
-    public void setCurrentPage(int page) {
-        super.setCurrentPage(page);
-
+    public Inventory getInventory() {
         IndexConfigGUI.Builder guiBuilder = (IndexConfigGUI.Builder) new IndexConfigGUI.Builder()
-                .title(PlaceholderText.replacePlaceholders(thisGUISection.getString("title"), new Placeholder.Builder().add("%PAGE%", String.valueOf(getCurrentPage() + 1)).build()))
+                .title(PlaceholderText.replacePlaceholders(thisGUISection.getString("title"), new Placeholder.Builder().add("{PAGE}", String.valueOf(getCurrentPage() + 1)).build()))
                 .row(6)
                 .colored()
                 .listener(new InventoryListener() {
@@ -69,7 +66,7 @@ public class MainGUI extends BasePlayerPageableGUI {
 
                         if (index < guilds.size()) {
                             Guild guild = guilds.get(index);
-                            GUI newGUI = new GuildInfoPlayerGUI(guildPlayer, guild, getCurrentPage());
+                            GUI newGUI = new GuildInfoGUI(guildPlayer, guild, getCurrentPage());
 
                             close();
                             guildPlayer.setUsingGUI(newGUI);
@@ -109,7 +106,7 @@ public class MainGUI extends BasePlayerPageableGUI {
                 @Override
                 public void onClicked(InventoryClickEvent event) {
                     close();
-                    new GuildMinePlayerGUI(guildPlayer).open();
+                    new GuildMineGUI(guildPlayer.getGuild().getMember(guildPlayer)).open();
                 }
             });
         } else {
@@ -153,7 +150,7 @@ public class MainGUI extends BasePlayerPageableGUI {
         }
 
         int guildSize = guilds.size();
-        int itemCounter = page * 43;
+        int itemCounter = getCurrentPage() * 43;
         int loopCount = guildSize - itemCounter < 43 ? guildSize - itemCounter : 43;
 
         // 公会图标
@@ -164,14 +161,13 @@ public class MainGUI extends BasePlayerPageableGUI {
                     .material(ownedIcon.getMaterial())
                     .data(ownedIcon.getData())
                     .insertLore(0, ownedIcon.getFirstLore())
-                    .displayName(PlaceholderText.replacePlaceholders(thisGUISection.getString("items._guild.display_name"), bukkitPlayer))
-                    .lores(PlaceholderText.replacePlaceholders(thisGUISection.getStringList("items._guild.lores"), bukkitPlayer))
-            ;
+                    .displayName(PlaceholderText.replacePlaceholders(thisGUISection.getString("items._guild.display_name"), new Placeholder.Builder().addGuildPlaceholders(guild).build(), bukkitPlayer))
+                    .lores(PlaceholderText.replacePlaceholders(thisGUISection.getStringList("items._guild.lores"), new Placeholder.Builder().addGuildPlaceholders(guild).build(), bukkitPlayer));
 
             guiBuilder.item(i, itemBuilder.build());
         }
 
-        this.inventory = guiBuilder.build();
+        return guiBuilder.build();
     }
 
     @Override
@@ -179,10 +175,5 @@ public class MainGUI extends BasePlayerPageableGUI {
         int guildSize = guilds.size();
 
         return guildSize == 0 ? 1 : guildSize % 43 == 0 ? guildSize / 43 : guildSize / 43 + 1;
-    }
-
-    @Override
-    public Inventory getInventory() {
-        return inventory;
     }
 }

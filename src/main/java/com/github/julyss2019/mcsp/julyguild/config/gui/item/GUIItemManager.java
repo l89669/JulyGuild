@@ -85,13 +85,16 @@ public class GUIItemManager {
             itemBuilder.material(Material.valueOf(section.getString("material")));
         } catch (Exception e) {
             itemBuilder.material(Material.STONE);
-            Util.sendColoredConsoleMessage("&c" + section.getCurrentPath() + " material 不合法.");
+            Util.sendColoredConsoleMessage("&c" + section.getCurrentPath() + ".material 不合法.");
         }
 
         itemBuilder
                 .data((short) section.getInt("data", 0))
-                .displayName(replacePlaceholders(section.getString("display_name"), placeholder, player))
                 .colored(colored);
+
+        if (section.contains("display_name")) {
+            itemBuilder.displayName(replacePlaceholders(section.getString("display_name"), placeholder, player));
+        }
 
         if (section.contains("lores")) {
             itemBuilder.lores(replacePlaceholders(section.getStringList("lores"), placeholder, player));

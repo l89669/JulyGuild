@@ -16,6 +16,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 
+/**
+ * 公会图标购买GUI
+ */
 public class GuildIconBuyGUI extends BaseMemberGUI {
     private ConfigGuildIcon configGuildIcon;
     private Inventory inventory;
@@ -32,14 +35,14 @@ public class GuildIconBuyGUI extends BaseMemberGUI {
         this.bukkitPlayer = guildPlayer.getBukkitPlayer();
         this.configGuildIcon = configGuildIcon;
         this.guildBank = guild.getGuildBank();
-        this.moneyPayEnabled = configGuildIcon.isMoneyPayEnabled();
-        this.pointsPayEnabled = configGuildIcon.isPointsPayEnabled();
+        this.moneyPayEnabled = configGuildIcon.isMoneyPayEnabled(); // 图标是否开启了金币购买
+        this.pointsPayEnabled = configGuildIcon.isPointsPayEnabled(); // 图标是否开启了金币购买
         build();
     }
 
-    @Override
+
     public void build() {
-        super.build();
+
 
         this.inventory = new InventoryBuilder()
                 .title("&e&l请选择支付方式")

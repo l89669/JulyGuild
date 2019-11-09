@@ -16,6 +16,7 @@ import com.github.julyss2019.mcsp.julylibrary.item.ItemBuilder;
 import com.github.julyss2019.mcsp.julylibrary.item.SkullItemBuilder;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
@@ -23,24 +24,26 @@ import org.bukkit.inventory.ItemFlag;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GuildInfoPlayerGUI extends BasePlayerGUI {
+public class GuildInfoGUI extends BasePlayerGUI {
+    private Player bukkitPlayer;
     private Guild guild;
     private Inventory inventory;
     private int lastPage;
 
-    public GuildInfoPlayerGUI(GuildPlayer guildPlayer, Guild guild) {
+    public GuildInfoGUI(GuildPlayer guildPlayer, Guild guild) {
         this(guildPlayer, guild, 0);
     }
 
-    public GuildInfoPlayerGUI(GuildPlayer guildPlayer, Guild guild, int lastPage) {
+    public GuildInfoGUI(GuildPlayer guildPlayer, Guild guild, int lastPage) {
         super(GUIType.INFO, guildPlayer);
 
+        this.bukkitPlayer = guildPlayer.getBukkitPlayer();
         this.guild = guild;
         this.lastPage = lastPage;
         build();
     }
 
-    @Override
+
     public void build() {
 
         List<String> memberLores = new ArrayList<>();
@@ -68,7 +71,7 @@ public class GuildInfoPlayerGUI extends BasePlayerGUI {
                     @Override
                     public void onClicked(InventoryClickEvent event) {
                             close();
-                            new GuildMemberPlayerPlayerPageableGUI(guildPlayer, guild).open();
+                            //new GuildMemberGUI(guildPlayer, guild).open();
                     }
                 })
                 .item(1, 5, new ItemBuilder()
@@ -82,7 +85,7 @@ public class GuildInfoPlayerGUI extends BasePlayerGUI {
 
                 .item(2, 8, CommonItem.BACK_TO_MAIN, new ItemListener() {
                     @Override
-                    public void onClicked(InventoryClickEvent event) {
+                    public void onClick(InventoryClickEvent event) {
                         close();
                         MainGUI gui = new MainGUI(guildPlayer);
 

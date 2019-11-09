@@ -1,5 +1,6 @@
 package com.github.julyss2019.mcsp.julyguild.gui.player;
 
+import com.github.julyss2019.mcsp.julyguild.gui.BaseMemberPageableGUI;
 import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
 import com.github.julyss2019.mcsp.julyguild.guild.Guild;
 import com.github.julyss2019.mcsp.julyguild.guild.OwnedIcon;
@@ -9,7 +10,10 @@ import org.bukkit.inventory.Inventory;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GuildIconRepositoryGUI extends BasePlayerPageableGUI {
+/**
+ * 图标仓库GUI
+ */
+public class GuildIconRepositoryGUI extends BaseMemberPageableGUI {
     private Inventory inventory;
     private Guild guild;
     private List<OwnedIcon> icons = new ArrayList<>();

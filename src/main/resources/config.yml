@@ -34,7 +34,7 @@ guild:
     cost:
       money: 500
       enabled: true
-  promote:
+  upgrade:
     money:
       enabled: true
       # 金币升级公式
@@ -87,3 +87,10 @@ guild:
       item:
         amount: 1 # 数量
         key_lore: '&a创建公会'
+  # 解散
+  dismiss:
+    wait: 10 # 等待时间
+    confirm_str: '确认'
+  member:
+    # 成员列表最多能预览多少
+    most_show: 10

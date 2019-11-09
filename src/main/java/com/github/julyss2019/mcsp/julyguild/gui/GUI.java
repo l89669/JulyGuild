@@ -1,6 +1,7 @@
 package com.github.julyss2019.mcsp.julyguild.gui;
 
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 
 public interface GUI {
@@ -8,7 +9,9 @@ public interface GUI {
 
     Inventory getInventory();
 
-    void build();
+    default Player getBukkitPlayer() {
+        return getGuildPlayer().getBukkitPlayer();
+    }
 
     default void close() {
         getGuildPlayer().getBukkitPlayer().closeInventory();
@@ -22,11 +25,10 @@ public interface GUI {
         }
     }
 
-    GUIType getType();
-
-    default void update() {
+    default void reopen() {
         close();
-        build();
         open();
     }
+
+    GUIType getType();
 }
