@@ -11,7 +11,7 @@ import org.bukkit.inventory.Inventory;
 
 import java.util.ArrayList;
 import java.util.List;
-
+// TODO: update
 public class GuildIconShopGUI extends BasePlayerPageableGUI {
     private Inventory inventory;
     private static JulyGuild plugin = JulyGuild.getInstance();

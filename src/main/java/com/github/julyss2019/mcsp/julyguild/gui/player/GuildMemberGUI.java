@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
+// TODO: update
 public class GuildMemberGUI extends BaseMemberPageableGUI {
     private Inventory inventory;
     private final Guild guild;

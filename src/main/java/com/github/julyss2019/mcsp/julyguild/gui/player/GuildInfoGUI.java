@@ -23,7 +23,7 @@ import org.bukkit.inventory.ItemFlag;
 
 import java.util.ArrayList;
 import java.util.List;
-
+// TODO: update
 public class GuildInfoGUI extends BasePlayerGUI {
     private Player bukkitPlayer;
     private Guild guild;
