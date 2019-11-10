@@ -22,14 +22,12 @@ import parsii.eval.Parser;
 import parsii.tokenizer.ParseException;
 
 public class GuildUpgradeGUI extends BaseMemberGUI {
-    private Inventory inventory;
-
     private final Player bukkitPlayer;
     private final Guild guild;
     private final GuildBank guildBank;
     private final JulyGuild plugin = JulyGuild.getInstance();
-    private final ConfigurationSection thisGUISection = plugin.getGuiYamlConfig().getConfigurationSection(this.getClass().getName());
-    private final ConfigurationSection thisLangSection = plugin.getLangYamlConfig().getConfigurationSection(this.getClass().getName());
+    private final ConfigurationSection thisGUISection = plugin.getGuiYamlConfig().getConfigurationSection("GuildUpgradeGUI");
+    private final ConfigurationSection thisLangSection = plugin.getLangYamlConfig().getConfigurationSection("GuildUpgradeGUI");
 
     public GuildUpgradeGUI(GuildMember guildMember) {
         super(GUIType.PROMOTE, guildMember);
@@ -44,10 +42,10 @@ public class GuildUpgradeGUI extends BaseMemberGUI {
         IndexConfigGUI.Builder guiBuilder = (IndexConfigGUI.Builder) new IndexConfigGUI.Builder().fromConfig(thisGUISection)
                 .colored();
 
-        guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("back")), new ItemListener() {
+        guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.back")), new ItemListener() {
             @Override
             public void onClick(InventoryClickEvent event) {
-                new MainGUI(guildPlayer).open();
+                new GuildMineGUI(guildMember).open();
             }
         });
 
@@ -55,7 +53,7 @@ public class GuildUpgradeGUI extends BaseMemberGUI {
 
         // 金币升级封顶
         if (oldMaxMemberCount + 1 > MainSettings.getUpgradeMoneyMaxMemberCount()) {
-            guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("money.full")));
+            guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.money.full")));
         } else {
             int needMoney;
 
@@ -66,7 +64,10 @@ public class GuildUpgradeGUI extends BaseMemberGUI {
                 throw new RuntimeException("升级公式不合法");
             }
 
-            guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("money.available")), new ItemListener() {
+            guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.money.available"), new Placeholder.Builder()
+                    .addInner("cost", needMoney)
+                    .addInner("old", oldMaxMemberCount)
+                    .addInner("new", oldMaxMemberCount + 1).build()), new ItemListener() {
                 @Override
                 public void onClick(InventoryClickEvent event) {
                     if (!guildBank.has(GuildBank.BalanceType.MONEY, needMoney)) {
@@ -93,7 +94,7 @@ public class GuildUpgradeGUI extends BaseMemberGUI {
 
         // 点券升级封顶
         if (oldMaxMemberCount + 1 > MainSettings.getUpgradePointsMaxMemberCount()) {
-            guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("points.full")));
+            guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.points.full")));
         } else {
             int needPoints;
 
@@ -104,7 +105,10 @@ public class GuildUpgradeGUI extends BaseMemberGUI {
                 throw new RuntimeException("升级公式不合法");
             }
 
-            guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("points.available")), new ItemListener() {
+            guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.points.available"), new Placeholder.Builder()
+                    .addInner("cost", needPoints)
+                    .addInner("old", oldMaxMemberCount)
+                    .addInner("new", oldMaxMemberCount + 1).build()), new ItemListener() {
                 @Override
                 public void onClick(InventoryClickEvent event) {
                     if (!guildBank.has(GuildBank.BalanceType.POINTS, needPoints)) {

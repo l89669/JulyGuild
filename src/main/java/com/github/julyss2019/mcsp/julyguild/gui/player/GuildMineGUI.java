@@ -74,7 +74,7 @@ public class GuildMineGUI extends BaseMemberGUI {
 
 
         guiBuilder
-                .item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.guild_info"), bukkitPlayer))
+                .item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.guild_info"), new Placeholder.Builder().addGuildPlaceholders(guild).build(), bukkitPlayer))
                 .item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.self_info"), bukkitPlayer))
                 .item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.guild_members." + guildMember.getPermission().name().toLowerCase())), new ItemListener() {
                     @Override
@@ -91,7 +91,8 @@ public class GuildMineGUI extends BaseMemberGUI {
                 .item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.guild_upgrade")), new ItemListener() {
                     @Override
                     public void onClick(InventoryClickEvent event) {
-
+                        close();
+                        new GuildUpgradeGUI(guildMember).open();
                     }
                 });
 

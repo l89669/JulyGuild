@@ -135,6 +135,7 @@ GuildUpgradeGUI:
   title: '&e&l公会升级'
   items:
     back:
+      index: 27
       material: BOOK
       display_name: '&c返回'
     money:
@@ -150,7 +151,7 @@ GuildUpgradeGUI:
         display_name: '&f使用 &a金币x{COST} &f升级'
         # 支持PAPI
         lores:
-          - '&a 点击升级'
+          - '&e 点击升级'
           - ' &f最大人数: {OLD} -> {NEW}'
           - ' &f花费: {COST}'
     points:
@@ -166,6 +167,6 @@ GuildUpgradeGUI:
         display_name: '&f使用 &a点券x{COST} &f升级'
         # 支持PAPI
         lores:
-          - '&a 点击升级'
+          - '&e点击升级'
           - ' &f最大人数: {OLD} -> {NEW}'
           - ' &f花费: {COST}'

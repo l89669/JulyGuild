@@ -1,8 +1,6 @@
 package com.github.julyss2019.mcsp.julyguild.config.gui.item;
 
 import com.github.julyss2019.mcsp.julyguild.JulyGuild;
-import com.github.julyss2019.mcsp.julyguild.config.gui.item.IndexItem;
-import com.github.julyss2019.mcsp.julyguild.config.gui.item.PriorityItem;
 import com.github.julyss2019.mcsp.julyguild.placeholder.Placeholder;
 import com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderText;
 import com.github.julyss2019.mcsp.julyguild.util.Util;
@@ -155,6 +153,10 @@ public class GUIItemManager {
     public static IndexItem getIndexItem(@NotNull ConfigurationSection section, @Nullable Placeholder placeholder, @Nullable Player player, boolean colored) {
         if (!section.getBoolean("enabled", true)) {
             return null;
+        }
+
+        if (section.getInt("index", 0) <= 0) {
+            throw new RuntimeException(section.getCurrentPath() + ".index 不合法");
         }
 
         return new IndexItem(getItemBuilder(section, placeholder, player, colored), section.getInt("index") - 1);
