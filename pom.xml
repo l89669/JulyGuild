@@ -8,7 +8,10 @@
     <artifactId>JulyGuild</artifactId>
     <version>RELEASE</version>
 
-
+    <properties>
+        <mac_output>/Users/july_ss/Desktop/july_ss/mc_servers/1.12.2/plugins</mac_output>
+        <win_output>G:\july_ss\mc_servers\1.12.2_paper\plugins</win_output>
+    </properties>
 
     <repositories>
         <repository>
@@ -32,15 +35,40 @@
                     <target>1.8</target>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>2.4.1</version>
+                <configuration>
+                    <finalName>${pom.artifactId}</finalName>
+                    <appendAssemblyId>false</appendAssemblyId>
+                    <outputDirectory>${win_output}</outputDirectory>
+                    <!-- get all project dependencies -->
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                    <!-- MainClass in mainfest make a executable jar -->
+                    <archive>
+                        <manifest>
+
+                        </manifest>
+                    </archive>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <!-- bind to the packaging phase -->
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 
     <dependencies>
-        <dependency>
-            <groupId>commons-lang</groupId>
-            <artifactId>commons-lang</artifactId>
-            <version>2.6</version>
-        </dependency>
         <dependency>
             <groupId>Vault</groupId>
             <artifactId>-</artifactId>
@@ -59,16 +87,19 @@
             <groupId>org.bukkit</groupId>
             <artifactId>bukkit</artifactId>
             <version>1.12.2-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot</artifactId>
             <version>1.12.2-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.github.julyss2019.mcsp</groupId>
             <artifactId>JulyLibrary</artifactId>
             <version>RELEASE</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>me.clip</groupId>
@@ -80,7 +111,6 @@
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
             <version>2.8.4</version>
-
         </dependency>
         <dependency>
             <groupId>com.scireum</groupId>
