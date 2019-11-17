@@ -56,7 +56,9 @@ public class MainGUI extends BasePlayerPageableGUI {
     @Override
     public Inventory getInventory() {
         IndexConfigGUI.Builder guiBuilder = (IndexConfigGUI.Builder) new IndexConfigGUI.Builder()
-                .title(PlaceholderText.replacePlaceholders(thisGUISection.getString("title"), new Placeholder.Builder().add("{PAGE}", String.valueOf(getCurrentPage() + 1)).build()))
+                .fromConfig(thisGUISection, new Placeholder.Builder()
+                        .addInner("PAGE", String.valueOf(getCurrentPage() + 1))
+                        .addInner("TOTAL_PAGE", String.valueOf(getTotalPage())).build(), bukkitPlayer)
                 .row(6)
                 .colored()
                 .listener(new InventoryListener() {
@@ -102,7 +104,7 @@ public class MainGUI extends BasePlayerPageableGUI {
         }
 
         if (guildPlayer.isInGuild()) {
-            guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.my_guild"), new Placeholder.Builder().add("%PLAYER%", playerName).build()), new ItemListener() {
+            guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.my_guild"), new Placeholder.Builder().add("%PLAYER%", playerName).build(), bukkitPlayer), new ItemListener() {
                 @Override
                 public void onClicked(InventoryClickEvent event) {
                     close();
@@ -110,7 +112,7 @@ public class MainGUI extends BasePlayerPageableGUI {
                 }
             });
         } else {
-            guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.create_guild")), new ItemListener() {
+            guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.create_guild"), bukkitPlayer), new ItemListener() {
                 @Override
                 public void onClicked(InventoryClickEvent event) {
                     close();

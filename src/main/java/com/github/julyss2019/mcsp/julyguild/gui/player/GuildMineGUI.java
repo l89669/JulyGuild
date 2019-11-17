@@ -63,8 +63,9 @@ public class GuildMineGUI extends BaseMemberGUI {
             throw new RuntimeException("位置不合法", e.getCause());
         }
 
-        PriorityConfigGUI.Builder guiBuilder = (PriorityConfigGUI.Builder) new PriorityConfigGUI.Builder(positions).fromConfig(thisGUISection)
-                .item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.back")), new ItemListener() {
+        PriorityConfigGUI.Builder guiBuilder = (PriorityConfigGUI.Builder) new PriorityConfigGUI.Builder(positions)
+                .fromConfig(thisGUISection, bukkitPlayer)
+                .item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.back"), bukkitPlayer), new ItemListener() {
                     @Override
                     public void onClicked(InventoryClickEvent event) {
                         close();
@@ -76,19 +77,21 @@ public class GuildMineGUI extends BaseMemberGUI {
         guiBuilder
                 .item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.guild_info"), new Placeholder.Builder().addGuildPlaceholders(guild).build(), bukkitPlayer))
                 .item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.self_info"), bukkitPlayer))
-                .item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.guild_members." + guildMember.getPermission().name().toLowerCase())), new ItemListener() {
+                .item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.guild_members." + guildMember.getPermission().name().toLowerCase()), bukkitPlayer), new ItemListener() {
                     @Override
                     public void onClick(InventoryClickEvent event) {
+                        close();
                         new GuildMemberGUI(guildMember).open();
                     }
                 })
-                .item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.guild_donate")), new ItemListener() {
+                .item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.guild_donate"), bukkitPlayer), new ItemListener() {
                     @Override
-                    public void onClicked(InventoryClickEvent event) {
-                        bukkitPlayer.sendMessage("donate");
+                    public void onClick(InventoryClickEvent event) {
+                        close();
+                        new GuildDonateGUI(guildMember).open();
                     }
                 })
-                .item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.guild_upgrade")), new ItemListener() {
+                .item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.guild_upgrade"), bukkitPlayer), new ItemListener() {
                     @Override
                     public void onClick(InventoryClickEvent event) {
                         close();
@@ -99,7 +102,7 @@ public class GuildMineGUI extends BaseMemberGUI {
 
 
         // 公会公告
-        PriorityItem guildAnnouncementItem = GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items._guild_announcements"));
+        PriorityItem guildAnnouncementItem = GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items._guild_announcements"), bukkitPlayer);
 
         guildAnnouncementItem.getItemBuilder().lores(guild.getAnnouncements());
         guiBuilder.item(guildAnnouncementItem);
@@ -107,7 +110,7 @@ public class GuildMineGUI extends BaseMemberGUI {
 
         // 解散或退出
         if (permission == Permission.OWNER) {
-            guiBuilder.item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.guild_dismiss")), new ItemListener() {
+            guiBuilder.item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.guild_dismiss"), bukkitPlayer), new ItemListener() {
                 @Override
                 public void onClick(InventoryClickEvent event) {
                     close();
@@ -135,7 +138,7 @@ public class GuildMineGUI extends BaseMemberGUI {
                 }
             });
         } else {
-            guiBuilder.item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.guild_exit")), new ItemListener() {
+            guiBuilder.item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.guild_exit"), bukkitPlayer), new ItemListener() {
                 @Override
                 public void onClick(InventoryClickEvent event) {
 

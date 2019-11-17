@@ -46,7 +46,7 @@ public class PlaceholderAPIExpansion extends PlaceholderExpansion {
         }
 
         if (!isInGuild) {
-            return "无";
+            return "null";
         }
 
         GuildBank guildBank = guild.getGuildBank();
@@ -57,9 +57,9 @@ public class PlaceholderAPIExpansion extends PlaceholderExpansion {
             case "member_per":
                 return Permission.getChineseName(guild.getMember(guildPlayer).getPermission());
             case "member_donate_money":
-                return String.valueOf((int) guild.getMember(playerName).getDonatedMoney());
+                return Util.WITHOUT_DECIMAL_FORMAT.format(guild.getMember(guildPlayer).getDonated(GuildBank.BalanceType.MONEY));
             case "member_donate_points":
-                return String.valueOf((int) guild.getMember(playerName).getDonatedPoints());
+                return Util.WITHOUT_DECIMAL_FORMAT.format(guild.getMember(guildPlayer).getDonated(GuildBank.BalanceType.POINTS));
             case "member_join_time":
                 return Util.YMD_SDF.format(guild.getMember(playerName).getJoinTime());
             case "ranking":
@@ -73,9 +73,9 @@ public class PlaceholderAPIExpansion extends PlaceholderExpansion {
             case "creation_time":
                 return Util.YMD_SDF.format(guild.getCreationTime());
             case "money":
-                return String.valueOf((int) guildBank.getBalance(GuildBank.BalanceType.MONEY));
+                return guildBank.getBalance(GuildBank.BalanceType.MONEY).toString();
             case "points":
-                return String.valueOf((int) guildBank.getBalance(GuildBank.BalanceType.POINTS));
+                return guildBank.getBalance(GuildBank.BalanceType.POINTS).toString();
             case "online_member_count":
                 return String.valueOf(guild.getOnlineMembers().size());
         }

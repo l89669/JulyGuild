@@ -4,6 +4,7 @@ import com.github.julyss2019.mcsp.julyguild.gui.BaseMemberPageableGUI;
 import com.github.julyss2019.mcsp.julyguild.gui.CommonItem;
 import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
 import com.github.julyss2019.mcsp.julyguild.guild.Guild;
+import com.github.julyss2019.mcsp.julyguild.guild.GuildBank;
 import com.github.julyss2019.mcsp.julyguild.guild.player.GuildMember;
 import com.github.julyss2019.mcsp.julyguild.guild.player.Permission;
 import com.github.julyss2019.mcsp.julyguild.util.Util;
@@ -22,7 +23,6 @@ import org.bukkit.inventory.Inventory;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 // TODO: update
 public class GuildMemberGUI extends BaseMemberPageableGUI {
@@ -155,7 +155,7 @@ public class GuildMemberGUI extends BaseMemberPageableGUI {
                     .addLore("&d左键 &b▹ &d任命管理员")
                     .addLore("&c右键 &b▹ &c移出宗门")
                     .addLore("")
-                    .addLore("&e金币贡献 &b▹ &e¥" + member.getDonatedMoney())
+                    .addLore("&e金币贡献 &b▹ &e¥" + Util.WITHOUT_DECIMAL_FORMAT.format(member.getDonated(GuildBank.BalanceType.MONEY)))
                     .addLore("&a入宗时间 &b▹ &a" + Util.YMD_SDF.format(member.getJoinTime()))
                     .colored();
 

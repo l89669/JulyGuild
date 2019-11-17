@@ -49,11 +49,12 @@ guild:
       max_member_count: 50
   # 赞助
   donate:
+    input:
+      cancel_string: 'c'
+      wait_second: 30
     points:
-      enabled: true
       min: 1
     money:
-      enabled: true
       min: 10000
   # 默认最大管理员数量
   default_max_admin_count: 3

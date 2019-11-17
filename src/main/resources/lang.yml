@@ -33,5 +33,25 @@ GuildMineGUI:
     confirm: '&c如果要解散公会请在 &e{WAIT}秒内 &c发送: &e{CONFIRM_STR}&c, 注意: 这将使你的公会财产和成员全部清空, 请务必谨慎操作.'
 GuildUpgradeGUI:
   money:
-    success: '&d升级公会人数成功, &e%OLD%->%NEW%&d.'
-    not_enough: '&c要升级公会人数, 公会银行至少还需要 &e%NEED%个 &c金币.'
+    success: '&d升级公会人数成功, &e{OLD}->{NEW}&d.'
+    not_enough: '&c要升级公会人数, 公会银行至少还需要 &e{NEED}个 &c金币.'
+  points:
+    success: '&d升级公会人数成功, &e{OLD}->{NEW}&d.'
+    not_enough: '&c要升级公会人数, 公会银行至少还需要 &e{NEED}个 &c点券.'
+GuildDonateGUI:
+  money:
+    input:
+      message: '&e请在聊天栏输入并发送你要捐赠的金币数量(发送 &c{CANCEL_STRING} &e以取消): '
+      cancelled: '&e捐赠已取消.'
+      timeout: '&e捐赠已超时.'
+      amount_invalid: '&c捐赠数量不合法, 请输入一个整数.'
+    success: '&d你捐赠了 &e{AMOUNT} &d金币.'
+    not_enough: '&c金币不足.'
+  points:
+    input:
+      message: '&e请在聊天栏输入并发送你要捐赠的点券数量(发送 &c{CANCEL_STRING} &e以取消): '
+      cancelled: '&e捐赠已取消.'
+      timeout: '&e捐赠已超时.'
+      amount_invalid: '&c捐赠数量不合法.'
+    success: '&d你捐赠了 &e{AMOUNT} &d点券.'
+    not_enough: '&c点券不足.'

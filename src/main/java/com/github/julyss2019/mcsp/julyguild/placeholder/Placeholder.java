@@ -2,11 +2,17 @@ package com.github.julyss2019.mcsp.julyguild.placeholder;
 
 import com.github.julyss2019.mcsp.julyguild.JulyGuild;
 import com.github.julyss2019.mcsp.julyguild.guild.Guild;
+import com.github.julyss2019.mcsp.julyguild.guild.GuildBank;
+import com.github.julyss2019.mcsp.julyguild.util.Util;
 import com.github.julyss2019.mcsp.julylibrary.utils.TimeUtil;
 
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * 用于内部的占位符
+ */
 public class Placeholder {
     private Map<String, String> placeholderMap;
 
@@ -34,8 +40,8 @@ public class Placeholder {
             addInner("guild_name", guild.getName());
             addInner("guild_ranking", JulyGuild.getInstance().getCacheGuildManager().getRanking(guild));
             addInner("guild_owner", guild.getOwner().getName());
-            addInner("guild_money", (int) guild.getOwner().getDonatedMoney());
-            addInner("guild_points", (int) guild.getOwner().getDonatedMoney());
+            addInner("guild_money", Util.WITHOUT_DECIMAL_FORMAT.format(guild.getGuildBank().getBalance(GuildBank.BalanceType.MONEY)));
+            addInner("guild_points", Util.WITHOUT_DECIMAL_FORMAT.format(guild.getGuildBank().getBalance(GuildBank.BalanceType.POINTS)));
             addInner("guild_member_count", guild.getMemberCount());
             addInner("guild_max_member_count", guild.getMaxMemberCount());
             addInner("guild_creation_time", TimeUtil.YMD_SDF.format(guild.getCreationTime()));
@@ -53,7 +59,15 @@ public class Placeholder {
         }
 
         public Builder addInner(String key, int value) {
-            return add("{" + key + "}", value);
+            return addInner(key, String.valueOf(value));
+        }
+
+        public Builder addInner(String key, double value) {
+            return addInner(key, String.valueOf(value));
+        }
+
+        public Builder add(String key, double value) {
+            return add(key, String.valueOf(value));
         }
 
         public Builder add(String key, int value) {

@@ -21,6 +21,8 @@ import org.bukkit.scheduler.BukkitRunnable;
 import parsii.eval.Parser;
 import parsii.tokenizer.ParseException;
 
+import java.math.BigDecimal;
+
 public class GuildUpgradeGUI extends BaseMemberGUI {
     private final Player bukkitPlayer;
     private final Guild guild;
@@ -39,10 +41,11 @@ public class GuildUpgradeGUI extends BaseMemberGUI {
 
     @Override
     public Inventory getInventory() {
-        IndexConfigGUI.Builder guiBuilder = (IndexConfigGUI.Builder) new IndexConfigGUI.Builder().fromConfig(thisGUISection)
+        IndexConfigGUI.Builder guiBuilder = (IndexConfigGUI.Builder) new IndexConfigGUI.Builder()
+                .fromConfig(thisGUISection, bukkitPlayer)
                 .colored();
 
-        guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.back")), new ItemListener() {
+        guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.back"), bukkitPlayer), new ItemListener() {
             @Override
             public void onClick(InventoryClickEvent event) {
                 new GuildMineGUI(guildMember).open();
@@ -53,7 +56,7 @@ public class GuildUpgradeGUI extends BaseMemberGUI {
 
         // 金币升级封顶
         if (oldMaxMemberCount + 1 > MainSettings.getUpgradeMoneyMaxMemberCount()) {
-            guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.money.full")));
+            guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.money.full"), bukkitPlayer));
         } else {
             int needMoney;
 
@@ -61,26 +64,34 @@ public class GuildUpgradeGUI extends BaseMemberGUI {
                 needMoney = (int) Parser.parse(PlaceholderAPI.setPlaceholders(bukkitPlayer, MainSettings.getUpgradeMoneyFormula())).evaluate();
             } catch (ParseException e) {
                 e.printStackTrace();
-                throw new RuntimeException("升级公式不合法");
+                throw new RuntimeException("公会升级公式不合法");
             }
 
             guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.money.available"), new Placeholder.Builder()
                     .addInner("cost", needMoney)
                     .addInner("old", oldMaxMemberCount)
-                    .addInner("new", oldMaxMemberCount + 1).build()), new ItemListener() {
+                    .addInner("new", oldMaxMemberCount + 1).build(), bukkitPlayer), new ItemListener() {
                 @Override
                 public void onClick(InventoryClickEvent event) {
+                    close();
+
                     if (!guildBank.has(GuildBank.BalanceType.MONEY, needMoney)) {
-                        Util.sendColoredMessage(bukkitPlayer,thisLangSection.getString("money_upgrade.not_enough"), new Placeholder.Builder()
-                                .add("%NEED%", String.valueOf(needMoney - guildBank.getBalance(GuildBank.BalanceType.MONEY))).build());
+                        Util.sendColoredMessage(bukkitPlayer, thisLangSection.getString("money.not_enough"), new Placeholder.Builder()
+                                .addInner("NEED", String.valueOf(new BigDecimal(needMoney).subtract(guildBank.getBalance(GuildBank.BalanceType.MONEY)).toString())).build());
+                        new BukkitRunnable() {
+                            @Override
+                            public void run() {
+                                reopen();
+                            }
+                        }.runTaskLater(plugin, 20L);
                         return;
                     }
 
                     guildBank.withdraw(GuildBank.BalanceType.MONEY, needMoney);
                     guild.setMaxMemberCount(guild.getMaxMemberCount() + 1);
-                    Util.sendColoredMessage(bukkitPlayer, thisLangSection.getString("money_upgrade.success"), new Placeholder.Builder()
-                            .add("%OLD%", String.valueOf(oldMaxMemberCount))
-                            .add("%NEW%", String.valueOf(oldMaxMemberCount + 1)).build());
+                    Util.sendColoredMessage(bukkitPlayer, thisLangSection.getString("money.success"), new Placeholder.Builder()
+                            .addInner("OLD", String.valueOf(oldMaxMemberCount))
+                            .addInner("NEW", String.valueOf(oldMaxMemberCount + 1)).build());
 
                     new BukkitRunnable() {
                         @Override
@@ -94,7 +105,7 @@ public class GuildUpgradeGUI extends BaseMemberGUI {
 
         // 点券升级封顶
         if (oldMaxMemberCount + 1 > MainSettings.getUpgradePointsMaxMemberCount()) {
-            guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.points.full")));
+            guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.points.full"), bukkitPlayer));
         } else {
             int needPoints;
 
@@ -102,26 +113,34 @@ public class GuildUpgradeGUI extends BaseMemberGUI {
                 needPoints = (int) Parser.parse(PlaceholderAPI.setPlaceholders(bukkitPlayer, MainSettings.getUpgradePointFormula())).evaluate();
             } catch (ParseException e) {
                 e.printStackTrace();
-                throw new RuntimeException("升级公式不合法");
+                throw new RuntimeException("公会升级公式不合法");
             }
 
             guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.points.available"), new Placeholder.Builder()
                     .addInner("cost", needPoints)
                     .addInner("old", oldMaxMemberCount)
-                    .addInner("new", oldMaxMemberCount + 1).build()), new ItemListener() {
+                    .addInner("new", oldMaxMemberCount + 1).build(), bukkitPlayer), new ItemListener() {
                 @Override
                 public void onClick(InventoryClickEvent event) {
+                    close();
+
                     if (!guildBank.has(GuildBank.BalanceType.POINTS, needPoints)) {
                         Util.sendColoredMessage(bukkitPlayer, thisLangSection.getString("points.not_enough"), new Placeholder.Builder()
-                                .add("%NEED%", String.valueOf(needPoints - guildBank.getBalance(GuildBank.BalanceType.MONEY))).build());
+                                .addInner("NEED", new BigDecimal(needPoints).subtract(guildBank.getBalance(GuildBank.BalanceType.POINTS)).toString()).build());
+                        new BukkitRunnable() {
+                            @Override
+                            public void run() {
+                                reopen();
+                            }
+                        }.runTaskLater(plugin, 20L);
                         return;
                     }
 
                     guildBank.withdraw(GuildBank.BalanceType.POINTS, needPoints);
                     guild.setMaxMemberCount(guild.getMaxMemberCount() + 1);
                     Util.sendColoredMessage(bukkitPlayer, thisLangSection.getString("points.success"), new Placeholder.Builder()
-                            .add("%OLD%", String.valueOf(oldMaxMemberCount))
-                            .add("%NEW%", String.valueOf(oldMaxMemberCount + 1)).build());
+                            .addInner("OLD", String.valueOf(oldMaxMemberCount))
+                            .addInner("NEW", String.valueOf(oldMaxMemberCount + 1)).build());
 
                     new BukkitRunnable() {
                         @Override

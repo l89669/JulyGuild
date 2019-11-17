@@ -38,25 +38,23 @@ public class MainSettings {
     @Config(path = "guild.default_max_admin_count")
     private static int defaultMaxAdminCount;
 
-    @Config(path = "guild.donate.money.enabled")
-    private static boolean donateMoneyEnabled;
-
-    @Config(path = "guild.donate.points.enabled")
-    private static boolean donatePointsEnabled;
-
     @Config(path = "guild.donate.money.min")
-    private static int donateMinMoney;
+    private static int donateMoneyMin;
 
     @Config(path = "guild.donate.points.min")
-    private static int donateMinPoints;
+    private static int donatePointsMin;
 
+    @Config(path = "guild.donate.input.cancel_string")
+    private static String donateInputCancelString;
+
+    @Config(path = "guild.donate.input.wait_second")
+    private static int donateInputWaitSecond;
 
     @Config(path = "guild.upgrade.money.formula")
     private static String upgradeMoneyFormula;
 
     @Config(path = "guild.upgrade.money.max_member_count")
     private static int upgradeMoneyMaxMemberCount;
-
 
     @Config(path = "guild.upgrade.points.formula")
     private static String upgradePointFormula;
@@ -105,6 +103,8 @@ public class MainSettings {
 
     @Config(path = "guild.dismiss.confirm_str")
     private static String dismissConfirmStr;
+
+
 
     public static int getDismissWait() {
         return dismissWait;
@@ -170,20 +170,20 @@ public class MainSettings {
         return defaultMaxAdminCount;
     }
 
-    public static boolean isDonateMoneyEnabled() {
-        return donateMoneyEnabled;
+    public static String getDonateInputCancelString() {
+        return donateInputCancelString;
     }
 
-    public static boolean isDonatePointsEnabled() {
-        return donatePointsEnabled;
+    public static int getDonateInputWaitSecond() {
+        return donateInputWaitSecond;
     }
 
-    public static int getDonateMinMoney() {
-        return donateMinMoney;
+    public static int getDonateMoneyMin() {
+        return donateMoneyMin;
     }
 
-    public static int getDonateMinPoints() {
-        return donateMinPoints;
+    public static int getDonatePointsMin() {
+        return donatePointsMin;
     }
 
     public static String getUpgradeMoneyFormula() {

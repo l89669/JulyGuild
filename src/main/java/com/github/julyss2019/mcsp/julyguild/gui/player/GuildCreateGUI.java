@@ -32,7 +32,7 @@ import org.bukkit.scheduler.BukkitRunnable;
  */
 
 public class GuildCreateGUI extends BasePlayerGUI {
-    private String guildName;
+    private final String guildName;
     private boolean noAction = true;
 
     private final Player bukkitPlayer;
@@ -47,15 +47,15 @@ public class GuildCreateGUI extends BasePlayerGUI {
     public GuildCreateGUI(GuildPlayer guildPlayer, String guildName) {
         super(GUIType.CREATE, guildPlayer);
 
-        this.bukkitPlayer = guildPlayer.getBukkitPlayer();
-        this.playerName = guildPlayer.getName();
+        this.bukkitPlayer = getBukkitPlayer();
+        this.playerName = bukkitPlayer.getName();
         this.guildName = guildName;
     }
 
     @Override
     public Inventory getInventory() {
         IndexConfigGUI.Builder guiBuilder = (IndexConfigGUI.Builder) new IndexConfigGUI.Builder()
-                .fromConfig(thisGUISection)
+                .fromConfig(thisGUISection, bukkitPlayer)
                 .colored()
                 .listener(new InventoryListener() {
             @Override
@@ -67,7 +67,7 @@ public class GuildCreateGUI extends BasePlayerGUI {
         });
 
         // 金币
-        guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.money"), new Placeholder.Builder().addInner("AMOUNT", String.valueOf(MainSettings.getCreateCostMoneyAmount())).build()), new ItemListener() {
+        guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.money"), new Placeholder.Builder().addInner("AMOUNT", String.valueOf(MainSettings.getCreateCostMoneyAmount())).build(), bukkitPlayer), new ItemListener() {
             @Override
             public void onClick(InventoryClickEvent event) {
                 noAction = false;
@@ -91,7 +91,7 @@ public class GuildCreateGUI extends BasePlayerGUI {
         });
 
         // 点券
-        guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.points"), new Placeholder.Builder().addInner("AMOUNT", String.valueOf(MainSettings.getCreateCostPointsAmount())).build()), new ItemListener() {
+        guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.points"), new Placeholder.Builder().addInner("AMOUNT", String.valueOf(MainSettings.getCreateCostPointsAmount())).build(), bukkitPlayer), new ItemListener() {
             @Override
             public void onClick(InventoryClickEvent event) {
                 noAction = false;
@@ -115,7 +115,7 @@ public class GuildCreateGUI extends BasePlayerGUI {
         });
 
         // 建帮令
-        guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.item"), new Placeholder.Builder().addInner("AMOUNT", String.valueOf(MainSettings.getCreateCostItemAmount())).build()), new ItemListener() {
+        guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.item"), new Placeholder.Builder().addInner("AMOUNT", String.valueOf(MainSettings.getCreateCostItemAmount())).build(), bukkitPlayer), new ItemListener() {
             @Override
             public void onClick(InventoryClickEvent event) {
                 noAction = false;

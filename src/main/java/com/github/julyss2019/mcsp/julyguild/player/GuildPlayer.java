@@ -20,9 +20,6 @@ import java.util.Map;
 import java.util.Objects;
 
 public class GuildPlayer {
-    private static JulyGuild plugin = JulyGuild.getInstance();
-    private static GuildManager guildManager = plugin.getGuildManager();
-    private static GuildPlayerManager guildPlayerManager = plugin.getGuildPlayerManager();
     private String name;
     private File file;
     private YamlConfiguration yml;
@@ -136,7 +133,7 @@ public class GuildPlayer {
      * @return
      */
     public GuildPlayer load() {
-        this.file = new File(plugin.getDataFolder(), "players" + File.separator + name + ".yml");
+        this.file = new File(JulyGuild.getInstance().getDataFolder(), "players" + File.separator + name + ".yml");
 
         if (!file.exists()) {
             try {
@@ -149,7 +146,7 @@ public class GuildPlayer {
         }
 
         this.yml = YamlConfiguration.loadConfiguration(file);
-        this.guild = guildManager.getGuild(yml.getString("guild"));
+        this.guild = JulyGuild.getInstance().getGuildManager().getGuild(yml.getString("guild"));
         return this;
     }
 
@@ -164,7 +161,7 @@ public class GuildPlayer {
     public void setGuild(Guild guild) {
         yml.set("guild", guild == null ? null : guild.getUUID().toString());
         save();
-        this.guild = guildManager.getGuild(yml.getString("guild"));
+        this.guild = JulyGuild.getInstance().getGuildManager().getGuild(yml.getString("guild"));
     }
 
     public Player getBukkitPlayer() {
@@ -178,7 +175,7 @@ public class GuildPlayer {
     }
 
     public GuildPlayer getGuildPlayer() {
-        return !isOnline() ? null : guildPlayerManager.getGuildPlayer(getBukkitPlayer());
+        return !isOnline() ? null : JulyGuild.getInstance().getGuildPlayerManager().getGuildPlayer(getBukkitPlayer());
     }
 
     public boolean isInGuild() {

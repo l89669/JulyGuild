@@ -20,6 +20,7 @@ import com.github.julyss2019.mcsp.julylibrary.config.JulyConfig;
 import com.github.julyss2019.mcsp.julylibrary.logger.FileLogger;
 import com.github.julyss2019.mcsp.julylibrary.logger.JulyFileLogger;
 import com.google.gson.Gson;
+import com.mysql.jdbc.TimeUtil;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.milkbowl.vault.economy.Economy;
 import org.black_ixx.playerpoints.PlayerPoints;
@@ -49,7 +50,7 @@ public class JulyGuild extends JavaPlugin {
     private CacheGuildManager cacheGuildManager;
 
     private final String[] VERSION_YML_FILES = new String[] {"config.yml", "lang.yml", "gui.yml"};
-    private final String[] DEPEND_PLUGINS = new String[] {"JulyLibrary", "PlaceholderAPI", "Vault"};
+    private final String[] DEPEND_PLUGINS = new String[] {"JulyLibrary", "Vault"};
     private final String[] INIT_FOLDERS = new String[] {"players", "guilds", "logs"};
     private final String[] INIT_FILES = new String[] {"gui.yml", "config.yml", "icon_shop.yml", "guild_shop.yml", "lang.yml"};
 
@@ -63,9 +64,13 @@ public class JulyGuild extends JavaPlugin {
     private YamlConfiguration guiYamlConfig;
     private IconShopConfig iconShopConfig;
     private GuildShopConfig guildShopConfig;
+    private PlaceholderAPIExpansion placeholderAPIExpansion;
 
 
     public void onEnable() {
+        instance = this;
+        this.pluginManager = Bukkit.getPluginManager();
+
         for (String pluginName : DEPEND_PLUGINS) {
             if (!Bukkit.getPluginManager().isPluginEnabled(pluginName)) {
                 Util.sendColoredConsoleMessage("&c[!] 硬前置插件 " + pluginName + " 未成功加载, 插件将被卸载.");
@@ -73,9 +78,6 @@ public class JulyGuild extends JavaPlugin {
                 return;
             }
         }
-
-        instance = this;
-        this.pluginManager = Bukkit.getPluginManager();
 
         init();
 
@@ -94,12 +96,20 @@ public class JulyGuild extends JavaPlugin {
         }
 
         this.fileLogger = JulyFileLogger.getLogger(new File(getDataFolder(), "logs"), null, 5);
-        this.julyCommandExecutor = new JulyCommandExecutor(this);
+        this.julyCommandExecutor = new JulyCommandExecutor();
         this.guildPlayerManager = new GuildPlayerManager();
         this.guildManager = new GuildManager();
         this.cacheGuildManager = new CacheGuildManager();
 
-        PlaceholderAPIExpansion placeholderAPIExpansion = new PlaceholderAPIExpansion();
+        if (pluginManager.isPluginEnabled("PlayerPoints")) {
+            this.placeholderAPIExpansion = new PlaceholderAPIExpansion();
+
+            if (!placeholderAPIExpansion.register()) {
+                getLogger().warning("&c[!] PlaceholderAPI: Hook失败.");
+            } else {
+                Util.sendColoredConsoleMessage("PlaceholderAPI: Hook成功.");
+            }
+        }
 
         /*
         第三方插件注入
@@ -110,14 +120,6 @@ public class JulyGuild extends JavaPlugin {
             return;
         } else {
             Util.sendColoredConsoleMessage("Vault: Hook成功.");
-        }
-
-        if (!placeholderAPIExpansion.register()) {
-            getLogger().warning("&c[!] PlaceholderAPI: Hook失败, 插件将被卸载.");
-            setEnabled(false);
-            return;
-        } else {
-            Util.sendColoredConsoleMessage("PlaceholderAPI: Hook成功.");
         }
 
         if (pluginManager.isPluginEnabled("PlayerPoints")) {
@@ -142,8 +144,8 @@ public class JulyGuild extends JavaPlugin {
     }
 
     public void onDisable() {
-        if (isPlaceHolderAPIEnabled() && PlaceholderAPI.isRegistered("guild")) {
-            PlaceholderAPI.unregisterPlaceholderHook("guild");
+        if (isPlaceHolderAPIEnabled()) {
+            PlaceholderAPI.unregisterExpansion(placeholderAPIExpansion);
         }
 
         for (GuildPlayer guildPlayer : getGuildPlayerManager().getOnlineGuildPlayers()) {

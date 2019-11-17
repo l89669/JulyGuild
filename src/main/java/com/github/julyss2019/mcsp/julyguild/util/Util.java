@@ -6,12 +6,15 @@ import com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderText;
 import com.github.julyss2019.mcsp.julylibrary.message.JulyMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
+import org.jetbrains.annotations.NotNull;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 
 public class Util {
-    public static SimpleDateFormat YMD_SDF = new SimpleDateFormat("yyyy/MM/dd");
-    public static SimpleDateFormat YMDHM_SDF = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+    public static final DecimalFormat WITHOUT_DECIMAL_FORMAT = new DecimalFormat("0");
+    public static final SimpleDateFormat YMD_SDF = new SimpleDateFormat("yyyy/MM/dd");
+    public static final SimpleDateFormat YMDHM_SDF = new SimpleDateFormat("yyyy/MM/dd HH:mm");
 
     public static String getTimeLeftStr(long timeLeft) {
         long h = timeLeft / 60 / 60;
