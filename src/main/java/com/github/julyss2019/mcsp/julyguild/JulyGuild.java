@@ -1,9 +1,11 @@
 package com.github.julyss2019.mcsp.julyguild;
 
-import com.github.julyss2019.mcsp.julyguild.command.Command;
 import com.github.julyss2019.mcsp.julyguild.command.MainGUICommand;
 import com.github.julyss2019.mcsp.julyguild.command.ReloadCommand;
-import com.github.julyss2019.mcsp.julyguild.config.*;
+import com.github.julyss2019.mcsp.julyguild.config.ConfigGuildIcon;
+import com.github.julyss2019.mcsp.julyguild.config.ConfigGuildShopItem;
+import com.github.julyss2019.mcsp.julyguild.config.GuildShopConfig;
+import com.github.julyss2019.mcsp.julyguild.config.IconShopConfig;
 import com.github.julyss2019.mcsp.julyguild.config.setting.MainSettings;
 import com.github.julyss2019.mcsp.julyguild.guild.CacheGuildManager;
 import com.github.julyss2019.mcsp.julyguild.guild.GuildManager;
@@ -15,7 +17,6 @@ import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayerManager;
 import com.github.julyss2019.mcsp.julyguild.task.RequestCleanTask;
 import com.github.julyss2019.mcsp.julyguild.util.Util;
-import com.github.julyss2019.mcsp.julylibrary.command.JulyCommand;
 import com.github.julyss2019.mcsp.julylibrary.command.JulyCommandExecutor;
 import com.github.julyss2019.mcsp.julylibrary.command.tab.JulyTabCommand;
 import com.github.julyss2019.mcsp.julylibrary.command.tab.JulyTabCompleter;

@@ -9,6 +9,7 @@ MainGUI:
   title: '&e&l公会({PAGE}/{TOTAL_PAGE})'
   items:
     _guild:
+      material: STONE # 该 material 会被强制设置为公会图标
       papi: true
       display_name: '&bNo.{guild_ranking} {guild_name}'
       lores:
@@ -22,6 +23,8 @@ MainGUI:
       index: 50
       material: EMERALD
       display_name: '&f创建公会'
+      reward_type: func
+      rewards: 'funcCreateGuild'
       lores:
         - ' &e也可以选择单击上方的图标来加入公会'
     my_guild:
@@ -34,19 +37,19 @@ GuildCreateGUI:
   row: 3
   title: '&e&l请选择支付方式'
   items:
-    money:
+    pay_money:
       index: 12
       material: GOLD_INGOT
       display_name: '&a使用 &e{AMOUNT}个 &a金币'
       lores:
         - '&c点击支付'
-    points:
+    pay_points:
       index: 14
       material: DIAMOND
       display_name: '&a使用 &e{AMOUNT}个 &a点券'
       lores:
         - '&c点击支付'
-    item:
+    pay_item:
       index: 16
       material: PAPER
       display_name: '&a使用 &e{AMOUNT}个 &a建帮令'
@@ -193,12 +196,36 @@ GuildMemberGUI:
         material: ARROW
         display_name: '&f返回'
 GuildDonateGUI:
-  placeholder: true
+  ConfirmGUI:
+    items:
+      money:
+        back:
+          index: 1
+          material: BOOK
+        pay:
+          index: 14
+          material: GOLDEN_APPLE
+          lores:
+            - ' &f赞助: 点券'
+            - ' &f手续费: {FEE}'
+            - ' &f实际赞助额: {DONATE_AMOUNT}'
+      points:
+        back:
+          index: 1
+          material: BOOK
+        pay:
+          index: 14
+          material: GOLDEN_APPLE
+          lores:
+            - ' &f赞助: 点券'
+            - ' &f手续费: {FEE}'
+            - ' &f实际赞助额: {DONATE_AMOUNT}'
+  papi: true
   row: 3
   title: '&e&l捐赠'
   items:
     money:
-      index: 13
+      index: 12
       material: GOLD_INGOT
       display_name: '&f捐赠金币'
       papi: true
@@ -206,7 +233,7 @@ GuildDonateGUI:
         - ' &f手续费: {FEE}%'
         - ' &f拥有: %vault_eco_balance%'
     points:
-      index: 15
+      index: 16
       material: DIAMOND
       papi: true
       lores:

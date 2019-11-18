@@ -104,7 +104,19 @@ public class MainSettings {
     @Config(path = "guild.dismiss.confirm_str")
     private static String dismissConfirmStr;
 
+    @Config(path = "guild.donate.points.fee")
+    private static double donatePointsFee;
 
+    @Config(path = "guild.donate.money.fee")
+    private static double donateMoneyFee;
+
+    public static double getDonatePointsFee() {
+        return donatePointsFee;
+    }
+
+    public static double getDonateMoneyFee() {
+        return donateMoneyFee;
+    }
 
     public static int getDismissWait() {
         return dismissWait;

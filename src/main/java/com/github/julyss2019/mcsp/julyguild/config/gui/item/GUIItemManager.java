@@ -47,6 +47,10 @@ public class GUIItemManager {
      * @return
      */
     public static PriorityItem getPriorityItem(@NotNull ConfigurationSection section, @Nullable Placeholder placeholder, @Nullable Player player, boolean colored) {
+        if (!section.getBoolean("enabled", true)) {
+            return null;
+        }
+
         ItemBuilder itemBuilder = getItemBuilder(section, placeholder, player, colored);
 
         return new PriorityItem(section.getInt("priority"), itemBuilder);

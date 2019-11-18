@@ -35,10 +35,10 @@ import java.util.List;
  * @version 1.0.0
  */
 public class MainGUI extends BasePlayerPageableGUI {
-    private List<Guild> guilds = new ArrayList<>();
+    private final List<Guild> guilds = new ArrayList<>();
 
-    private Player bukkitPlayer;
-    private String playerName;
+    private final Player bukkitPlayer;
+    private final String playerName;
     private final JulyGuild plugin = JulyGuild.getInstance();
     private final ConfigurationSection thisGUISection = plugin.getGuiYamlConfig().getConfigurationSection("MainGUI");
     private final ConfigurationSection thisLangSection = plugin.getLangYamlConfig().getConfigurationSection("MainGUI");
@@ -49,7 +49,6 @@ public class MainGUI extends BasePlayerPageableGUI {
         this.bukkitPlayer = guildPlayer.getBukkitPlayer();
         this.playerName = bukkitPlayer.getName();
         this.guilds.addAll(plugin.getCacheGuildManager().getSortedGuilds());
-        setCurrentPage(0);
     }
 
     @Override
@@ -171,6 +170,7 @@ public class MainGUI extends BasePlayerPageableGUI {
 
     @Override
     public int getTotalPage() {
+        int configRow = thisGUISection.getInt("row");
         int guildSize = guilds.size();
 
         return guildSize == 0 ? 1 : guildSize % 43 == 0 ? guildSize / 43 : guildSize / 43 + 1;

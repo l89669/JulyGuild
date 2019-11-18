@@ -67,7 +67,7 @@ public class GuildCreateGUI extends BasePlayerGUI {
         });
 
         // 金币
-        guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.money"), new Placeholder.Builder().addInner("AMOUNT", String.valueOf(MainSettings.getCreateCostMoneyAmount())).build(), bukkitPlayer), new ItemListener() {
+        guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.pay_money"), new Placeholder.Builder().addInner("AMOUNT", String.valueOf(MainSettings.getCreateCostMoneyAmount())).build(), bukkitPlayer), new ItemListener() {
             @Override
             public void onClick(InventoryClickEvent event) {
                 noAction = false;
@@ -81,7 +81,8 @@ public class GuildCreateGUI extends BasePlayerGUI {
                 double playerMoney = vault.getBalance(bukkitPlayer);
 
                 if (playerMoney < MainSettings.getCreateCostMoneyAmount()) {
-                    Util.sendColoredMessage(bukkitPlayer, PlaceholderText.replacePlaceholders(thisLangSection.getString("money_not_enough"), new Placeholder.Builder().addInner("AMOUNT", MainSettings.getCreateCostMoneyAmount() - playerMoney + "个 &c金币!").build()));
+                    Util.sendColoredMessage(bukkitPlayer, PlaceholderText.replacePlaceholders(thisLangSection.getString("money_not_enough"), new Placeholder.Builder()
+                            .addInner("need", MainSettings.getCreateCostMoneyAmount() - playerMoney + "个 &c金币!").build()));
                     return;
                 }
 
@@ -91,7 +92,7 @@ public class GuildCreateGUI extends BasePlayerGUI {
         });
 
         // 点券
-        guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.points"), new Placeholder.Builder().addInner("AMOUNT", String.valueOf(MainSettings.getCreateCostPointsAmount())).build(), bukkitPlayer), new ItemListener() {
+        guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.pay_points"), new Placeholder.Builder().addInner("AMOUNT", String.valueOf(MainSettings.getCreateCostPointsAmount())).build(), bukkitPlayer), new ItemListener() {
             @Override
             public void onClick(InventoryClickEvent event) {
                 noAction = false;
@@ -105,7 +106,8 @@ public class GuildCreateGUI extends BasePlayerGUI {
                 int playerPoints = playerPointsAPI.look(bukkitPlayer.getUniqueId());
 
                 if (playerPoints < MainSettings.getCreateCostPointsAmount()) {
-                    Util.sendColoredMessage(bukkitPlayer, PlaceholderText.replacePlaceholders(thisLangSection.getString("points_not_enough"), new Placeholder.Builder().addInner("AMOUNT", String.valueOf(MainSettings.getCreateCostPointsAmount() - playerPoints)).build()));
+                    Util.sendColoredMessage(bukkitPlayer, PlaceholderText.replacePlaceholders(thisLangSection.getString("points.not_enough"), new Placeholder.Builder()
+                            .addInner("need", String.valueOf(MainSettings.getCreateCostPointsAmount() - playerPoints)).build()));
                     return;
                 }
 
@@ -115,7 +117,7 @@ public class GuildCreateGUI extends BasePlayerGUI {
         });
 
         // 建帮令
-        guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.item"), new Placeholder.Builder().addInner("AMOUNT", String.valueOf(MainSettings.getCreateCostItemAmount())).build(), bukkitPlayer), new ItemListener() {
+        guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.pay_item"), new Placeholder.Builder().addInner("AMOUNT", String.valueOf(MainSettings.getCreateCostItemAmount())).build(), bukkitPlayer), new ItemListener() {
             @Override
             public void onClick(InventoryClickEvent event) {
                 noAction = false;
@@ -133,7 +135,8 @@ public class GuildCreateGUI extends BasePlayerGUI {
                     PlayerUtil.takeItems(bukkitPlayer, itemStack -> ItemUtil.containsLore(itemStack, MainSettings.getCreateCostItemKeyLore()), MainSettings.getCreateCostItemAmount());
                     createGuild(guildPlayer, guildName);
                 } else {
-                    Util.sendColoredMessage(bukkitPlayer, PlaceholderText.replacePlaceholders(thisLangSection.getString("item_not_enough"), new Placeholder.Builder().addInner("AMOUNT", String.valueOf(hadItemAmount - MainSettings.getCreateCostItemAmount())).build()));
+                    Util.sendColoredMessage(bukkitPlayer, PlaceholderText.replacePlaceholders(thisLangSection.getString("item.not_enough"), new Placeholder.Builder()
+                            .addInner("need", String.valueOf(hadItemAmount - MainSettings.getCreateCostItemAmount())).build()));
                 }
             }
         });

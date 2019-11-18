@@ -123,7 +123,6 @@ public class GuildDonateGUI extends BaseMemberGUI {
                             }
 
                             playerPointsAPI.take(bukkitPlayer.getUniqueId(), amount);
-
                             guild.getGuildBank().deposit(GuildBank.BalanceType.POINTS, amount);
                             guildMember.addDonated(GuildBank.BalanceType.POINTS, amount);
                             Util.sendColoredMessage(bukkitPlayer, thisLangSection.getString("points.success"), new Placeholder.Builder()
