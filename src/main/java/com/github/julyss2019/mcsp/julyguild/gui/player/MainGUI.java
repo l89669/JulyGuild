@@ -35,7 +35,6 @@ import java.util.List;
  * @version 1.0.0
  */
 public class MainGUI extends BasePlayerPageableGUI {
-    private Inventory inventory;
     private List<Guild> guilds = new ArrayList<>();
 
     private Player bukkitPlayer;
@@ -93,7 +92,7 @@ public class MainGUI extends BasePlayerPageableGUI {
                     })
                     .item(4, 8, CommonItem.NEXT_PAGE, new ItemListener() {
                         @Override
-                        public void onClicked(InventoryClickEvent event) {
+                        public void onClick(InventoryClickEvent event) {
                             if (hasNext()) {
                                 close();
                                 nextPage();
@@ -159,12 +158,10 @@ public class MainGUI extends BasePlayerPageableGUI {
         for (int i = 0; i < loopCount; i++) {
             Guild guild = guilds.get(itemCounter++);
             OwnedIcon ownedIcon = guild.getIcon();
-            ItemBuilder itemBuilder = new ItemBuilder()
+            ItemBuilder itemBuilder = GUIItemManager.getItemBuilder(thisGUISection.getConfigurationSection("items._guild"), new Placeholder.Builder().addGuildPlaceholders(guild).build(), bukkitPlayer)
                     .material(ownedIcon.getMaterial())
                     .data(ownedIcon.getData())
-                    .insertLore(0, ownedIcon.getFirstLore())
-                    .displayName(PlaceholderText.replacePlaceholders(thisGUISection.getString("items._guild.display_name"), new Placeholder.Builder().addGuildPlaceholders(guild).build(), bukkitPlayer))
-                    .lores(PlaceholderText.replacePlaceholders(thisGUISection.getStringList("items._guild.lores"), new Placeholder.Builder().addGuildPlaceholders(guild).build(), bukkitPlayer));
+                    .insertLore(0, ownedIcon.getFirstLore());
 
             guiBuilder.item(i, itemBuilder.build());
         }

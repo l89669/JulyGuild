@@ -1,5 +1,6 @@
 import com.github.julyss2019.mcsp.julyguild.placeholder.Placeholder;
 import com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderText;
+import com.scalified.tree.multinode.ArrayMultiTreeNode;
 import org.apache.commons.lang.StringEscapeUtils;
 
 import java.util.Arrays;
@@ -7,7 +8,7 @@ import java.util.Arrays;
 public class Test {
 
     public static void main(String[] args) {
-        String input = "%%u";
+        String input = "%%u%u";
         String[] array = input.split("%%");
         String result = "";
 

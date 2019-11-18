@@ -14,7 +14,7 @@ Permission:
 GuildCreateGUI:
   already_in: '&c你已经在一个公会里了.'
   money_not_enough: '&c要创建公会, 你还需要 &e{AMOUNT}个 &c金币.'
-  points_not_enough: '&c要创建公会, 你还需要 &e{AMOUNT}个 &c金币.'
+  points_not_enough: '&c要创建公会, 你还需要 &e{AMOUNT}个 &c点券.'
   item_not_enough: '&c要创建公会, 你还需要 &e{AMOUNT}个 &c建帮令.'
   on_close: '&c创建公会失败!'
   success:

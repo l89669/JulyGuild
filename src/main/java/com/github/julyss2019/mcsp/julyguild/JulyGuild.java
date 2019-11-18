@@ -15,12 +15,14 @@ import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayerManager;
 import com.github.julyss2019.mcsp.julyguild.task.RequestCleanTask;
 import com.github.julyss2019.mcsp.julyguild.util.Util;
+import com.github.julyss2019.mcsp.julylibrary.command.JulyCommand;
 import com.github.julyss2019.mcsp.julylibrary.command.JulyCommandExecutor;
+import com.github.julyss2019.mcsp.julylibrary.command.tab.JulyTabCommand;
+import com.github.julyss2019.mcsp.julylibrary.command.tab.JulyTabCompleter;
 import com.github.julyss2019.mcsp.julylibrary.config.JulyConfig;
 import com.github.julyss2019.mcsp.julylibrary.logger.FileLogger;
 import com.github.julyss2019.mcsp.julylibrary.logger.JulyFileLogger;
 import com.google.gson.Gson;
-import com.mysql.jdbc.TimeUtil;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.milkbowl.vault.economy.Economy;
 import org.black_ixx.playerpoints.PlayerPoints;
@@ -55,6 +57,7 @@ public class JulyGuild extends JavaPlugin {
     private final String[] INIT_FILES = new String[] {"gui.yml", "config.yml", "icon_shop.yml", "guild_shop.yml", "lang.yml"};
 
     private JulyCommandExecutor julyCommandExecutor;
+    private JulyTabCompleter julyTabCompleter;
     private PlayerPointsAPI playerPointsAPI;
     private Economy vaultAPI;
     private FileLogger fileLogger;
@@ -97,6 +100,7 @@ public class JulyGuild extends JavaPlugin {
 
         this.fileLogger = JulyFileLogger.getLogger(new File(getDataFolder(), "logs"), null, 5);
         this.julyCommandExecutor = new JulyCommandExecutor();
+        this.julyTabCompleter = new JulyTabCompleter();
         this.guildPlayerManager = new GuildPlayerManager();
         this.guildManager = new GuildManager();
         this.cacheGuildManager = new CacheGuildManager();
@@ -134,6 +138,8 @@ public class JulyGuild extends JavaPlugin {
         cacheGuildManager.startTask();
 
         getCommand("jguild").setExecutor(julyCommandExecutor);
+        getCommand("jguild").setTabCompleter(julyTabCompleter);
+
         registerCommands();
         registerListeners();
         runTasks();
@@ -199,8 +205,9 @@ public class JulyGuild extends JavaPlugin {
         registerCommand(new ReloadCommand());
     }
 
-    private void registerCommand(Command command) {
+    private void registerCommand(JulyTabCommand command) {
         julyCommandExecutor.register(command);
+        julyTabCompleter.register(command);
     }
 
     /*

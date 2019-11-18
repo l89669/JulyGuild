@@ -1,7 +1,7 @@
 # 使用指南：
 # 如果你想关闭某个功能，在物品项中添加一行 enabled: false 即可，届时图标也不会显示
+# 如果你要在物品或GUI中使用papi变量，添加一行 papi: true 即可
 # 在 gui.yml 中，被{}包括的是插件内部的占位符，被%%包括的是PAPI占位符
-# 如果你要在物品或GUI中使用papi变量，添加papi: true即可
 VERSION: 2.0.0
 MainGUI:
   # 该GUI row被强制设置为6
@@ -9,7 +9,7 @@ MainGUI:
   title: '&e&l公会({PAGE}/{TOTAL_PAGE})'
   items:
     _guild:
-      # 这里支持PAPI
+      papi: true
       display_name: '&bNo.{guild_ranking} {guild_name}'
       lores:
         - ' &f会长: {guild_owner}'
@@ -68,7 +68,7 @@ GuildMineGUI:
       priority: 0
       material: PAPER
       display_name: '&f公会信息'
-      # 这里支持PAPI
+      papi: true
       lores:
         - ' &f会长: {guild_owner}'
         - ' &f金币储备: {guild_money}'
@@ -79,9 +79,8 @@ GuildMineGUI:
       priority: -1
       material: SKULL_ITEM
       data: 3
-      papi: false
+      papi: true
       display_name: '&f个人信息'
-      # 这里支持PAPI
       lores:
         - ' &fID: %player_name%'
         - ' &f金币: %vault_eco_balance%'
@@ -115,7 +114,6 @@ GuildMineGUI:
       priority: -4
       material: DIAMOND
       display_name: '&f捐献'
-      # 这里支持PAPI
       lores:
         - ' &f捐献金币或点券'
     guild_upgrade:
@@ -198,24 +196,24 @@ GuildDonateGUI:
   placeholder: true
   row: 3
   title: '&e&l捐赠'
-  ConfirmGUI:
-    title: '&e请确认'
-    row: 3
-    items:
-      pay:
-        index: 14
-        display_name: '&b确认'
-
   items:
     money:
-      index: 12
+      index: 13
       material: GOLD_INGOT
       display_name: '&f捐赠金币'
+      papi: true
+      lores:
+        - ' &f手续费: {FEE}%'
+        - ' &f拥有: %vault_eco_balance%'
     points:
-      index: 16
+      index: 15
       material: DIAMOND
+      papi: true
+      lores:
+        - ' &f手续费: {FEE}%'
+        - ' &f拥有: %playerpoints_points%'
       display_name: '&f捐赠点券'
     back:
       index: 27
-      material: ARROW
+      material: BOOK
       display_name: '&f返回'

@@ -102,6 +102,10 @@ public class GUIItemManager {
         return getItemBuilder(section, null, null, true);
     }
 
+    public static ItemBuilder getItemBuilder(ConfigurationSection section, Placeholder placeholder, Player player) {
+        return getItemBuilder(section, placeholder, player, true);
+    }
+
     /**
      * 得到 ItemBuilder
      * @param section 配置

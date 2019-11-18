@@ -32,7 +32,6 @@ public class GuildMineGUI extends BaseMemberGUI {
     private final ConfigurationSection thisLangSection = plugin.getLangYamlConfig().getConfigurationSection("GuildMineGUI");
     private final Player bukkitPlayer;
     private final Permission permission;
-    private Inventory inventory;
 
     public GuildMineGUI(GuildMember guildMember) {
         super(GUIType.MINE, guildMember);

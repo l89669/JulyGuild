@@ -66,7 +66,7 @@ public class GuildManager {
             guildPlayer.updateGUI(GUIType.MAIN);
         }
 
-        fileLogger.writeJson(new GuildCreateLog(uuid, guildName, guildOwner.getName()));
+        plugin.writeGuildLog(FileLogger.LoggerLevel.INFO, new GuildCreateLog(uuid, guildName, guildOwner.getName()));
     }
 
     public int getGuildCount() {
