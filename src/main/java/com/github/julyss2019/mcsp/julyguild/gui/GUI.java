@@ -7,7 +7,7 @@ import org.bukkit.inventory.Inventory;
 public interface GUI {
     GuildPlayer getGuildPlayer();
 
-    Inventory getInventory();
+    Inventory getGUI();
 
     default Player getBukkitPlayer() {
         return getGuildPlayer().getBukkitPlayer();
@@ -19,8 +19,10 @@ public interface GUI {
     }
 
     default void open() {
-        if (!getInventory().equals(getGuildPlayer().getBukkitPlayer().getOpenInventory().getTopInventory())) {
-            getGuildPlayer().getBukkitPlayer().openInventory(getInventory());
+        Inventory gui = getGUI();
+
+        if (!gui.equals(getGuildPlayer().getBukkitPlayer().getOpenInventory().getTopInventory())) {
+            getGuildPlayer().getBukkitPlayer().openInventory(gui);
             getGuildPlayer().setUsingGUI(this);
         }
     }

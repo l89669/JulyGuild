@@ -132,7 +132,7 @@ public class GuildShopItemBuyGUI extends BaseMemberGUI {
     }
 
     @Override
-    public Inventory getInventory() {
+    public Inventory getGUI() {
         return inventory;
     }
 }

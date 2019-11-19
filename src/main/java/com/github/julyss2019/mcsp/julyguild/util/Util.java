@@ -25,20 +25,25 @@ public class Util {
      */
     public static List<Integer> getIntegerList(String str) {
         List<Integer> result = new ArrayList<>();
-        String[] split1 = str.split(",");
 
-        for (String splitStr : split1) {
-            String[] split2 = splitStr.split("-");
+        try {
+            String[] split1 = str.split(",");
 
-            if (split2.length == 2) {
-                int max = Integer.parseInt(split2[1]);
+            for (String splitStr : split1) {
+                String[] split2 = splitStr.split("-");
 
-                for (int i = Integer.parseInt(split2[0]); i <= max; i++) {
-                    result.add(i);
+                if (split2.length == 2) {
+                    int max = Integer.parseInt(split2[1]);
+
+                    for (int i = Integer.parseInt(split2[0]); i <= max; i++) {
+                        result.add(i);
+                    }
+                } else {
+                    result.add(Integer.parseInt(splitStr));
                 }
-            } else {
-                result.add(Integer.parseInt(splitStr));
             }
+        } catch (Exception e) {
+            throw new RuntimeException("字符串 " + str + " 不是有效的表达式");
         }
 
         return result;

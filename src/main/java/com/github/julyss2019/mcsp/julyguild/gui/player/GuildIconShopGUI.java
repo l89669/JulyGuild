@@ -120,7 +120,7 @@ public class GuildIconShopGUI extends BasePlayerPageableGUI {
     }
 
     @Override
-    public Inventory getInventory() {
+    public Inventory getGUI() {
         return inventory;
     }
 }

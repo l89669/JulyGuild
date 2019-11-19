@@ -133,7 +133,7 @@ public class GuildInfoGUI extends BasePlayerGUI {
     }
 
     @Override
-    public Inventory getInventory() {
+    public Inventory getGUI() {
         return inventory;
     }
 }

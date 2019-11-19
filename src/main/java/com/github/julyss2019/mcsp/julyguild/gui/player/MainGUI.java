@@ -42,6 +42,7 @@ public class MainGUI extends BasePlayerPageableGUI {
     private final JulyGuild plugin = JulyGuild.getInstance();
     private final ConfigurationSection thisGUISection = plugin.getGuiYamlConfig().getConfigurationSection("MainGUI");
     private final ConfigurationSection thisLangSection = plugin.getLangYamlConfig().getConfigurationSection("MainGUI");
+    private final List<Integer> positions = Util.getIntegerList(thisGUISection.getString("positions")); // 得到所有可供公会设置的位置
 
     public MainGUI(GuildPlayer guildPlayer) {
         super(GUIType.MAIN, guildPlayer);
@@ -52,7 +53,7 @@ public class MainGUI extends BasePlayerPageableGUI {
     }
 
     @Override
-    public Inventory getInventory() {
+    public Inventory getGUI() {
         IndexConfigGUI.Builder guiBuilder = (IndexConfigGUI.Builder) new IndexConfigGUI.Builder()
                 .fromConfig(thisGUISection, new Placeholder.Builder()
                         .addInner("PAGE", String.valueOf(getCurrentPage() + 1))
@@ -75,6 +76,10 @@ public class MainGUI extends BasePlayerPageableGUI {
                     }
                 });
 
+
+        guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.precious_page").getConfigurationSection(hasPrecious() ? "have" : "not_have"), bukkitPlayer));
+        guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.next_page").getConfigurationSection(hasNext() ? "have" : "not_have"), bukkitPlayer));
+        guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.close"), bukkitPlayer));
 
         // 如果大于1页则提供翻页按钮
         if (getTotalPage() > 1) {
@@ -150,7 +155,7 @@ public class MainGUI extends BasePlayerPageableGUI {
         }
 
         int guildSize = guilds.size();
-        int itemCounter = getCurrentPage() * 43;
+        int itemCounter = getCurrentPage() * positions.size();
         int loopCount = guildSize - itemCounter < 43 ? guildSize - itemCounter : 43;
 
         // 公会图标
@@ -170,9 +175,8 @@ public class MainGUI extends BasePlayerPageableGUI {
 
     @Override
     public int getTotalPage() {
-        int configRow = thisGUISection.getInt("row");
         int guildSize = guilds.size();
 
-        return guildSize == 0 ? 1 : guildSize % 43 == 0 ? guildSize / 43 : guildSize / 43 + 1;
+        return guildSize == 0 ? 1 : guildSize % positions.size() == 0 ? guildSize / 43 : guildSize / 43 + 1;
     }
 }

@@ -35,7 +35,7 @@ public class GuildDonateGUI extends BaseMemberGUI {
     }
 
     @Override
-    public Inventory getInventory() {
+    public Inventory getGUI() {
         IndexConfigGUI.Builder guiBuilder = new IndexConfigGUI.Builder()
                 .fromConfig(thisGUISection, bukkitPlayer);
 

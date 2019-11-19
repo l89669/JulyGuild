@@ -82,7 +82,7 @@ return 0;
     }
 
     @Override
-    public Inventory getInventory() {
+    public Inventory getGUI() {
         return inventory;
     }
 }

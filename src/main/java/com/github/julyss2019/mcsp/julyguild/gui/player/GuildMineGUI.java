@@ -41,7 +41,7 @@ public class GuildMineGUI extends BaseMemberGUI {
     }
 
     @Override
-    public Inventory getInventory() {
+    public Inventory getGUI() {
         List<Integer> positions = new ArrayList<>(); // 可供填充的位置
 
         try {

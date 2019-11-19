@@ -1,12 +1,14 @@
 package com.github.julyss2019.mcsp.julyguild.guild;
 
 import com.github.julyss2019.mcsp.julyguild.JulyGuild;
+import com.github.julyss2019.mcsp.julyguild.event.GuildCreateEvent;
 import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
 import com.github.julyss2019.mcsp.julyguild.log.guild.GuildCreateLog;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayerManager;
 import com.github.julyss2019.mcsp.julylibrary.logger.FileLogger;
 import com.github.julyss2019.mcsp.julylibrary.utils.YamlUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;
 
@@ -66,6 +68,7 @@ public class GuildManager {
             guildPlayer.updateGUI(GUIType.MAIN);
         }
 
+        Bukkit.getPluginManager().callEvent(new GuildCreateEvent(getGuild(uuid), ownerGuildPlayer));
         plugin.writeGuildLog(FileLogger.LoggerLevel.INFO, new GuildCreateLog(uuid, guildName, guildOwner.getName()));
     }
 

@@ -173,7 +173,7 @@ public class GuildMemberGUI extends BaseMemberPageableGUI {
     }
 
     @Override
-    public Inventory getInventory() {
+    public Inventory getGUI() {
         return inventory;
     }
 
