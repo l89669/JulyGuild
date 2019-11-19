@@ -9,7 +9,6 @@ import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -23,7 +22,7 @@ public class GUIItemManager {
      * @param player
      * @return
      */
-    public static PriorityItem getPriorityItem(@NotNull ConfigurationSection section, @Nullable Player player) {
+    public static PriorityItem getPriorityItem(ConfigurationSection section, @Nullable Player player) {
         return getPriorityItem(section, null, player, true);
     }
 
@@ -34,7 +33,7 @@ public class GUIItemManager {
      * @param player 玩家，用于PAPI
      * @return
      */
-    public static PriorityItem getPriorityItem(@NotNull ConfigurationSection section, @Nullable Placeholder placeholder, @Nullable Player player) {
+    public static PriorityItem getPriorityItem(ConfigurationSection section, @Nullable Placeholder placeholder, @Nullable Player player) {
         return getPriorityItem(section, placeholder, player, true);
     }
 
@@ -46,7 +45,7 @@ public class GUIItemManager {
      * @param colored 是否转换颜色
      * @return
      */
-    public static PriorityItem getPriorityItem(@NotNull ConfigurationSection section, @Nullable Placeholder placeholder, @Nullable Player player, boolean colored) {
+    public static PriorityItem getPriorityItem(ConfigurationSection section, @Nullable Placeholder placeholder, @Nullable Player player, boolean colored) {
         if (!section.getBoolean("enabled", true)) {
             return null;
         }
@@ -62,7 +61,7 @@ public class GUIItemManager {
      * @param player
      * @return
      */
-    public static IndexItem getIndexItem(ConfigurationSection section, Player player) {
+    public static IndexItem getIndexItem(ConfigurationSection section, @Nullable Player player) {
         return getIndexItem(section, null, player, true);
     }
 
@@ -85,7 +84,7 @@ public class GUIItemManager {
      * @param colored 是否转换颜色
      * @return
      */
-    public static IndexItem getIndexItem(@NotNull ConfigurationSection section, @Nullable Placeholder placeholder, @Nullable Player player, boolean colored) {
+    public static IndexItem getIndexItem(ConfigurationSection section, @Nullable Placeholder placeholder, @Nullable Player player, boolean colored) {
         if (!section.getBoolean("enabled", true)) {
             return null;
         }
@@ -94,7 +93,7 @@ public class GUIItemManager {
             throw new RuntimeException(section.getCurrentPath() + ".index 不合法");
         }
 
-        return new IndexItem(getItemBuilder(section, placeholder, player, colored), section.getInt("index") - 1);
+        return new IndexItem(section.getInt("index") - 1, getItemBuilder(section, placeholder, player, colored));
     }
 
     /**
@@ -102,7 +101,7 @@ public class GUIItemManager {
      * @param section
      * @return
      */
-    public static ItemBuilder getItemBuilder(@NotNull ConfigurationSection section) {
+    public static ItemBuilder getItemBuilder(ConfigurationSection section) {
         return getItemBuilder(section, null, null, true);
     }
 
@@ -118,7 +117,7 @@ public class GUIItemManager {
      * @param colored 是否转换颜色
      * @return
      */
-    public static ItemBuilder getItemBuilder(@NotNull ConfigurationSection section, @Nullable Placeholder placeholder, @Nullable Player player, boolean colored) {
+    public static ItemBuilder getItemBuilder(ConfigurationSection section, @Nullable Placeholder placeholder, @Nullable Player player, boolean colored) {
         ItemBuilder itemBuilder = new ItemBuilder();
 
         try {
@@ -153,7 +152,7 @@ public class GUIItemManager {
         return itemBuilder;
     }
 
-    private static String replacePlaceholders(@NotNull String text, @Nullable Placeholder placeholder, @Nullable Player player) {
+    private static String replacePlaceholders(String text, @Nullable Placeholder placeholder, @Nullable Player player) {
         String result = text;
 
         if (placeholder != null) {
@@ -167,7 +166,7 @@ public class GUIItemManager {
         return result;
     }
 
-    private static List<String> replacePlaceholders(@NotNull List<String> list, @Nullable Placeholder placeholder, @Nullable Player player) {
+    private static List<String> replacePlaceholders(List<String> list, @Nullable Placeholder placeholder, @Nullable Player player) {
         List<String> result = new ArrayList<>();
 
         for (String s : list) {

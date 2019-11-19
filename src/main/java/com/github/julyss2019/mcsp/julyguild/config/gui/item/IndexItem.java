@@ -3,12 +3,12 @@ package com.github.julyss2019.mcsp.julyguild.config.gui.item;
 import com.github.julyss2019.mcsp.julylibrary.item.ItemBuilder;
 
 public class IndexItem {
-    private ItemBuilder itemBuilder;
     private int index;
+    private ItemBuilder itemBuilder;
 
-    protected IndexItem(ItemBuilder itemBuilder, int index) {
-        this.itemBuilder = itemBuilder;
+    public IndexItem(int index, ItemBuilder itemBuilder) {
         this.index = index;
+        this.itemBuilder = itemBuilder;
     }
 
     public ItemBuilder getItemBuilder() {

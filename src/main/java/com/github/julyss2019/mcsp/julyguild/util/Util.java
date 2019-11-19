@@ -10,11 +10,39 @@ import org.jetbrains.annotations.NotNull;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Util {
     public static final DecimalFormat WITHOUT_DECIMAL_FORMAT = new DecimalFormat("0");
     public static final SimpleDateFormat YMD_SDF = new SimpleDateFormat("yyyy/MM/dd");
     public static final SimpleDateFormat YMDHM_SDF = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+
+    /**
+     * 通过字符串来获得整数列表
+     * @param str 以 "," 作为分隔符的字符串 以 "-" 作为范围界定符的字符串 单个字符串
+     * @return
+     */
+    public static List<Integer> getIntegerList(String str) {
+        List<Integer> result = new ArrayList<>();
+        String[] split1 = str.split(",");
+
+        for (String splitStr : split1) {
+            String[] split2 = splitStr.split("-");
+
+            if (split2.length == 2) {
+                int max = Integer.parseInt(split2[1]);
+
+                for (int i = Integer.parseInt(split2[0]); i <= max; i++) {
+                    result.add(i);
+                }
+            } else {
+                result.add(Integer.parseInt(splitStr));
+            }
+        }
+
+        return result;
+    }
 
     public static String getTimeLeftStr(long timeLeft) {
         long h = timeLeft / 60 / 60;
