@@ -76,6 +76,9 @@ guild:
     max_count: 5
   # 创建
   create:
+    input:
+      cancel_str: '#QX' # 取消创建字符串
+      wait_sec: 60 # 等待秒数
     # 公会名正则表达式
     name_regex: '[\u4e00-\u9fa5_a-zA-Z0-9_§]{1,10}'
     # 消费

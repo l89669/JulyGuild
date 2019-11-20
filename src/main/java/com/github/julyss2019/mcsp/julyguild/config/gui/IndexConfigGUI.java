@@ -16,7 +16,7 @@ import org.jetbrains.annotations.Nullable;
 public class IndexConfigGUI {
     public static class Builder extends InventoryBuilder {
 
-        public Builder fromConfig(ConfigurationSection section, @org.jetbrains.annotations.Nullable Placeholder placeholder, @Nullable Player papiPlayer, boolean colored) {
+        public Builder fromConfig(ConfigurationSection section, @Nullable Player papiPlayer, @Nullable Placeholder placeholder, boolean colored) {
             row(section.getInt( "row"));
 
             String finalTitle = section.getString("title");
@@ -41,11 +41,11 @@ public class IndexConfigGUI {
         }
 
         public Builder fromConfig(ConfigurationSection section, @Nullable Player papiPlayer) {
-            return fromConfig(section, null, papiPlayer, true);
+            return fromConfig(section, papiPlayer, null, true);
         }
 
-        public Builder fromConfig(ConfigurationSection section, @Nullable Placeholder placeholder, @Nullable Player papiPlayer) {
-            return fromConfig(section, placeholder, papiPlayer, true);
+        public Builder fromConfig(ConfigurationSection section, @Nullable Player papiPlayer, @Nullable Placeholder placeholder) {
+            return fromConfig(section, papiPlayer, placeholder, true);
         }
 
         private Builder setCustomItems(ConfigurationSection section, Player player) {

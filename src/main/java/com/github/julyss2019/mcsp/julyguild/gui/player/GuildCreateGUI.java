@@ -67,7 +67,10 @@ public class GuildCreateGUI extends BasePlayerGUI {
         });
 
         // 金币
-        guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.pay_money"), new Placeholder.Builder().addInner("AMOUNT", String.valueOf(MainSettings.getCreateCostMoneyAmount())).build(), bukkitPlayer), new ItemListener() {
+        guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.money"), bukkitPlayer,
+                new Placeholder.Builder()
+                        .addInner("amount", String.valueOf(MainSettings.getCreateCostMoneyAmount()))
+                        .addInner("name", guildName).build()), new ItemListener() {
             @Override
             public void onClick(InventoryClickEvent event) {
                 noAction = false;
@@ -81,8 +84,8 @@ public class GuildCreateGUI extends BasePlayerGUI {
                 double playerMoney = vault.getBalance(bukkitPlayer);
 
                 if (playerMoney < MainSettings.getCreateCostMoneyAmount()) {
-                    Util.sendColoredMessage(bukkitPlayer, PlaceholderText.replacePlaceholders(thisLangSection.getString("money_not_enough"), new Placeholder.Builder()
-                            .addInner("need", MainSettings.getCreateCostMoneyAmount() - playerMoney + "个 &c金币!").build()));
+                    Util.sendColoredMessage(bukkitPlayer, PlaceholderText.replacePlaceholders(thisLangSection.getString("money.not_enough"), new Placeholder.Builder()
+                            .addInner("need", MainSettings.getCreateCostMoneyAmount() - playerMoney).build()));
                     return;
                 }
 
@@ -92,7 +95,10 @@ public class GuildCreateGUI extends BasePlayerGUI {
         });
 
         // 点券
-        guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.pay_points"), new Placeholder.Builder().addInner("AMOUNT", String.valueOf(MainSettings.getCreateCostPointsAmount())).build(), bukkitPlayer), new ItemListener() {
+        guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.points"), bukkitPlayer,
+                new Placeholder.Builder()
+                        .addInner("amount", String.valueOf(MainSettings.getCreateCostPointsAmount()))
+                        .addInner("name", guildName).build()), new ItemListener() {
             @Override
             public void onClick(InventoryClickEvent event) {
                 noAction = false;
@@ -117,7 +123,10 @@ public class GuildCreateGUI extends BasePlayerGUI {
         });
 
         // 建帮令
-        guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.pay_item"), new Placeholder.Builder().addInner("AMOUNT", String.valueOf(MainSettings.getCreateCostItemAmount())).build(), bukkitPlayer), new ItemListener() {
+        guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.item"), bukkitPlayer,
+                new Placeholder.Builder().addInner("AMOUNT", String.valueOf(MainSettings.getCreateCostItemAmount()))
+                        .addInner("name", guildName)
+                        .build()), new ItemListener() {
             @Override
             public void onClick(InventoryClickEvent event) {
                 noAction = false;

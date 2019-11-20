@@ -174,10 +174,6 @@ public class GuildPlayer {
         return tmp != null && tmp.isOnline();
     }
 
-    public GuildPlayer getGuildPlayer() {
-        return !isOnline() ? null : JulyGuild.getInstance().getGuildPlayerManager().getGuildPlayer(getBukkitPlayer());
-    }
-
     public boolean isInGuild() {
         return guild != null;
     }

@@ -2,6 +2,7 @@ package com.github.julyss2019.mcsp.julyguild;
 
 import com.github.julyss2019.mcsp.julyguild.command.MainGUICommand;
 import com.github.julyss2019.mcsp.julyguild.command.ReloadCommand;
+import com.github.julyss2019.mcsp.julyguild.command.TestCommand;
 import com.github.julyss2019.mcsp.julyguild.config.ConfigGuildIcon;
 import com.github.julyss2019.mcsp.julyguild.config.ConfigGuildShopItem;
 import com.github.julyss2019.mcsp.julyguild.config.GuildShopConfig;
@@ -16,7 +17,11 @@ import com.github.julyss2019.mcsp.julyguild.log.GuildLog;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayerManager;
 import com.github.julyss2019.mcsp.julyguild.task.RequestCleanTask;
+import com.github.julyss2019.mcsp.julyguild.thirdparty.economy.PlayerPointsEconomy;
+import com.github.julyss2019.mcsp.julyguild.thirdparty.economy.ThirdPartyEconomy;
+import com.github.julyss2019.mcsp.julyguild.thirdparty.economy.VaultEconomy;
 import com.github.julyss2019.mcsp.julyguild.util.Util;
+import com.github.julyss2019.mcsp.julylibrary.chat.JulyChatInterceptor;
 import com.github.julyss2019.mcsp.julylibrary.command.JulyCommandExecutor;
 import com.github.julyss2019.mcsp.julylibrary.command.tab.JulyTabCommand;
 import com.github.julyss2019.mcsp.julylibrary.command.tab.JulyTabCompleter;
@@ -59,8 +64,7 @@ public class JulyGuild extends JavaPlugin {
 
     private JulyCommandExecutor julyCommandExecutor;
     private JulyTabCompleter julyTabCompleter;
-    private PlayerPointsAPI playerPointsAPI;
-    private Economy vaultAPI;
+    private ThirdPartyEconomy vaultEconomy, playerPointsEconomy;
     private FileLogger fileLogger;
     private PluginManager pluginManager;
 
@@ -119,16 +123,25 @@ public class JulyGuild extends JavaPlugin {
         /*
         第三方插件注入
          */
-        if (!pluginManager.isPluginEnabled("Vault") || !setupEconomy()) {
-            Util.sendColoredConsoleMessage("&c[!] Vault: Hook失败, 插件将被卸载.");
+        if (!pluginManager.isPluginEnabled("Vault")) {
+            Util.sendColoredConsoleMessage("&c[!] Vault: 未启用, 插件将被卸载.");
             setEnabled(false);
             return;
         } else {
+            Economy tmp = setupEconomy();
+
+            if (tmp == null) {
+                Util.sendColoredConsoleMessage("&c[!] Vault: Hook是吧, 插件将被卸载.");
+                setEnabled(false);
+                return;
+            }
+
+            this.vaultEconomy = new VaultEconomy(tmp);
             Util.sendColoredConsoleMessage("Vault: Hook成功.");
         }
 
         if (pluginManager.isPluginEnabled("PlayerPoints")) {
-            this.playerPointsAPI = ((PlayerPoints) Bukkit.getPluginManager().getPlugin("PlayerPoints")).getAPI();
+            this.playerPointsEconomy = new PlayerPointsEconomy(((PlayerPoints) Bukkit.getPluginManager().getPlugin("PlayerPoints")).getAPI());
             Util.sendColoredConsoleMessage("PlayerPoints: Hook成功.");
         } else {
             Util.sendColoredConsoleMessage("PlayerPoints: 未启用.");
@@ -140,6 +153,8 @@ public class JulyGuild extends JavaPlugin {
 
         getCommand("jguild").setExecutor(julyCommandExecutor);
         getCommand("jguild").setTabCompleter(julyTabCompleter);
+
+        julyCommandExecutor.register(new TestCommand());
 
         registerCommands();
         registerListeners();
@@ -161,6 +176,7 @@ public class JulyGuild extends JavaPlugin {
             }
         }
 
+        JulyChatInterceptor.unregisterAll(this);
         Bukkit.getScheduler().cancelTasks(this);
         Util.sendColoredConsoleMessage("插件被卸载.");
     }
@@ -191,14 +207,14 @@ public class JulyGuild extends JavaPlugin {
         return fileLogger;
     }
 
-    private boolean setupEconomy() {
+    private Economy setupEconomy() {
         RegisteredServiceProvider<Economy> economyProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
 
         if (economyProvider != null) {
-            vaultAPI = economyProvider.getProvider();
+            return economyProvider.getProvider();
         }
 
-        return (vaultAPI != null);
+        return null;
     }
 
     private void registerCommands() {
@@ -383,8 +399,16 @@ public class JulyGuild extends JavaPlugin {
         return guiYamlConfig;
     }
 
+    public ThirdPartyEconomy getVaultEconomy() {
+        return vaultEconomy;
+    }
+
+    public ThirdPartyEconomy getPlayerPointsEconomy() {
+        return playerPointsEconomy;
+    }
+
     public boolean isPlayerPointsHooked() {
-        return getPlayerPointsAPI() != null;
+        return getPlayerPointsEconomy() != null;
     }
 
     public GuildManager getGuildManager() {
@@ -397,14 +421,6 @@ public class JulyGuild extends JavaPlugin {
 
     public static JulyGuild getInstance() {
         return instance;
-    }
-
-    public PlayerPointsAPI getPlayerPointsAPI() {
-        return playerPointsAPI;
-    }
-
-    public Economy getVaultAPI() {
-        return vaultAPI;
     }
 
     public IconShopConfig getIconShopConfig() {

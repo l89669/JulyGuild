@@ -5,10 +5,20 @@ import com.scalified.tree.multinode.ArrayMultiTreeNode;
 import org.apache.commons.lang.StringEscapeUtils;
 
 import java.util.Arrays;
+import java.util.Random;
 
 public class Test {
 
+    public static int random(int min, int max) {
+        return new Random().nextInt(max - min + 1) + min;
+    }
+
+    public static int random1(int min, int max) {
+        return (int) (Math.random() * (max - min + 1) + min);
+    }
+
     public static void main(String[] args) {
+
         Util.getIntegerList("1").stream().forEach(integer -> System.out.println(integer));
 
 

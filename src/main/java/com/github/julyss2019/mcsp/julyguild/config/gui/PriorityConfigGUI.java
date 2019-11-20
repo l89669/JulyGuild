@@ -23,15 +23,15 @@ public class PriorityConfigGUI {
         }
 
         public Builder fromConfig(ConfigurationSection section, @Nullable Player papiPlayer) {
-            return fromConfig(section, null, papiPlayer, true);
+            return fromConfig(section, papiPlayer, null, true);
         }
 
-        public Builder fromConfig(ConfigurationSection section, @Nullable Placeholder placeholder, @Nullable Player papiPlayer) {
-            return fromConfig(section, placeholder, papiPlayer, true);
+        public Builder fromConfig(ConfigurationSection section, @Nullable Player papiPlayer, @Nullable Placeholder placeholder) {
+            return fromConfig(section, papiPlayer, placeholder, true);
         }
 
-        public Builder fromConfig(ConfigurationSection section, @org.jetbrains.annotations.Nullable Placeholder placeholder, @Nullable Player papiPlayer, boolean colored) {
-            super.fromConfig(section, placeholder, papiPlayer, colored);
+        public Builder fromConfig(ConfigurationSection section, @Nullable Player papiPlayer, @Nullable Placeholder placeholder, boolean colored) {
+            super.fromConfig(section, papiPlayer, placeholder, colored);
             return this;
         }
 

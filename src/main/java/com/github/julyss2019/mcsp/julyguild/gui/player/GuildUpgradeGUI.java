@@ -67,10 +67,10 @@ public class GuildUpgradeGUI extends BaseMemberGUI {
                 throw new RuntimeException("公会升级公式不合法");
             }
 
-            guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.money.available"), new Placeholder.Builder()
+            guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.money.available"), bukkitPlayer, new Placeholder.Builder()
                     .addInner("cost", needMoney)
                     .addInner("old", oldMaxMemberCount)
-                    .addInner("new", oldMaxMemberCount + 1).build(), bukkitPlayer), new ItemListener() {
+                    .addInner("new", oldMaxMemberCount + 1).build()), new ItemListener() {
                 @Override
                 public void onClick(InventoryClickEvent event) {
                     close();
@@ -116,10 +116,10 @@ public class GuildUpgradeGUI extends BaseMemberGUI {
                 throw new RuntimeException("公会升级公式不合法");
             }
 
-            guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.points.available"), new Placeholder.Builder()
+            guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.points.available"), bukkitPlayer, new Placeholder.Builder()
                     .addInner("cost", needPoints)
                     .addInner("old", oldMaxMemberCount)
-                    .addInner("new", oldMaxMemberCount + 1).build(), bukkitPlayer), new ItemListener() {
+                    .addInner("new", oldMaxMemberCount + 1).build()), new ItemListener() {
                 @Override
                 public void onClick(InventoryClickEvent event) {
                     close();

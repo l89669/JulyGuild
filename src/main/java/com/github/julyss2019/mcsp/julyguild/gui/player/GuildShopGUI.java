@@ -43,7 +43,7 @@ public class GuildShopGUI extends BaseMemberPageableGUI {
             inventoryBuilder.item(51, CommonItem.PREVIOUS_PAGE, new ItemListener() {
                 @Override
                 public void onClicked(InventoryClickEvent event) {
-                    if (hasPrecious()) {
+                    if (hasPreciousPage()) {
                         close();
                         previousPage();
                     }
@@ -52,7 +52,7 @@ public class GuildShopGUI extends BaseMemberPageableGUI {
             inventoryBuilder.item(52, CommonItem.NEXT_PAGE, new ItemListener() {
                 @Override
                 public void onClicked(InventoryClickEvent event) {
-                    if (hasNext()) {
+                    if (hasNextPage()) {
                         close();
                         nextPage();
                     }

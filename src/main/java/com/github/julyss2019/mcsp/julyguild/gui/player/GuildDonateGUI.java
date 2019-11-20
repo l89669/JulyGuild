@@ -9,6 +9,8 @@ import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
 import com.github.julyss2019.mcsp.julyguild.guild.GuildBank;
 import com.github.julyss2019.mcsp.julyguild.guild.player.GuildMember;
 import com.github.julyss2019.mcsp.julyguild.placeholder.Placeholder;
+import com.github.julyss2019.mcsp.julyguild.thirdparty.economy.ThirdPartyEconomy;
+import com.github.julyss2019.mcsp.julyguild.thirdparty.economy.VaultEconomy;
 import com.github.julyss2019.mcsp.julyguild.util.Util;
 import com.github.julyss2019.mcsp.julylibrary.chat.ChatListener;
 import com.github.julyss2019.mcsp.julylibrary.chat.JulyChatFilter;
@@ -23,6 +25,68 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.inventory.Inventory;
 
 public class GuildDonateGUI extends BaseMemberGUI {
+    public enum DonateType {
+        MONEY, POINTS
+    }
+
+    public static class ConfirmGUI extends BaseMemberGUI {
+        private final JulyGuild plugin = JulyGuild.getInstance();
+        private final ThirdPartyEconomy vaultEconomy = plugin.getVaultEconomy();
+        private final ThirdPartyEconomy playerPointsEconomy = plugin.getPlayerPointsEconomy();
+        private final Player bukkitPlayer = getBukkitPlayer();
+        private final ConfigurationSection parentLangSection = plugin.getLangYamlConfig().getConfigurationSection("GuildDonateGUI");
+        private final ConfigurationSection thisGUISection;
+        private final DonateType donateType;
+        private final int donateAmount;
+
+        public ConfirmGUI(GuildMember guildMember, DonateType donateType, int donateAmount) {
+            super(GUIType.DONATE_CONFIRM, guildMember);
+
+            this.donateType = donateType;
+            this.donateAmount = donateAmount;
+            this.thisGUISection = plugin.getGuiYamlConfig().getConfigurationSection("GuildDonateGUI").getConfigurationSection("ConfirmGUI").getConfigurationSection(donateType.name().toLowerCase());
+        }
+
+        @Override
+        public Inventory getGUI() {
+            double fee = donateAmount * (donateType == DonateType.MONEY ? MainSettings.getDonateMoneyFee() : MainSettings.getDonatePointsFee());
+            double exactlyDonateAmount = donateAmount - fee;
+
+            IndexConfigGUI.Builder guiBuilder = new IndexConfigGUI.Builder()
+                    .fromConfig(thisGUISection, bukkitPlayer);
+
+            guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.confirm"), bukkitPlayer, new Placeholder.Builder()
+                    .addInner("donate_amount", donateAmount)
+                    .addInner("fee", fee)
+                    .addInner("exactly_donate_amount", Util.SIMPLE_DECIMAL_FORMAT.format(exactlyDonateAmount)).build()), new ItemListener() {
+                @Override
+                public void onClick(InventoryClickEvent event) {
+                    close();
+
+                    if (!vaultEconomy.isEnough(bukkitPlayer, donateAmount)) {
+                        Util.sendColoredMessage(bukkitPlayer, parentLangSection.getString("money.not_enough"));
+                        return;
+                    }
+
+                    guild.getGuildBank().deposit(GuildBank.BalanceType.MONEY, donateAmount);
+                    guildMember.addDonated(GuildBank.BalanceType.MONEY, donateAmount);
+                    Util.sendColoredMessage(bukkitPlayer, parentLangSection.getString("money.success"), new Placeholder.Builder()
+                            .addInner("amount", donateAmount).build());
+                }
+            });
+
+            guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.back"), bukkitPlayer), new ItemListener() {
+                @Override
+                public void onClick(InventoryClickEvent event) {
+                    close();
+                    new GuildDonateGUI(guildMember).open();
+                }
+            });
+
+            return guiBuilder.build();
+        }
+    }
+
     private final JulyGuild plugin = JulyGuild.getInstance();
     private final Player bukkitPlayer = getBukkitPlayer();
     private final Economy vault = plugin.getVaultAPI();
@@ -39,12 +103,13 @@ public class GuildDonateGUI extends BaseMemberGUI {
         IndexConfigGUI.Builder guiBuilder = new IndexConfigGUI.Builder()
                 .fromConfig(thisGUISection, bukkitPlayer);
 
-        guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.money"), bukkitPlayer), new ItemListener() {
+        guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.money"), bukkitPlayer, new Placeholder.Builder().addInner("fee", (int) (MainSettings.getDonateMoneyFee() * 100)).build()), new ItemListener() {
             @Override
             public void onClick(InventoryClickEvent event) {
                 close();
                 Util.sendColoredMessage(bukkitPlayer, thisLangSection.getString("money.input.message"), new Placeholder.Builder()
-                        .addInner("CANCEL_STRING", MainSettings.getDonateInputCancelString()).build());
+                        .addInner("cancel_string", MainSettings.getDonateInputCancelString()).build());
+
                 JulyChatFilter.registerChatFilter(bukkitPlayer, new ChatListener() {
                     @Override
                     public void onChat(AsyncPlayerChatEvent event) {
@@ -71,14 +136,7 @@ public class GuildDonateGUI extends BaseMemberGUI {
                             return;
                         }
 
-                        if (vault.withdrawPlayer(bukkitPlayer, amount).type != EconomyResponse.ResponseType.SUCCESS) {
-                            throw new RuntimeException("扣除金币失败");
-                        }
-
-                        guild.getGuildBank().deposit(GuildBank.BalanceType.MONEY, amount);
-                        guildMember.addDonated(GuildBank.BalanceType.MONEY, amount);
-                        Util.sendColoredMessage(bukkitPlayer, thisLangSection.getString("money.success"), new Placeholder.Builder()
-                                .addInner("amount", amount).build());
+                        new GuildDonateGUI.ConfirmGUI(guildMember, DonateType.MONEY, amount).open();
                     }
 
                     @Override
@@ -90,7 +148,7 @@ public class GuildDonateGUI extends BaseMemberGUI {
         });
 
         if (plugin.isPlayerPointsHooked()) {
-            guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.points"), bukkitPlayer), new ItemListener() {
+            guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.points"), bukkitPlayer, new Placeholder.Builder().addInner("fee", (int) (MainSettings.getDonateMoneyFee() * 100)).build()), new ItemListener() {
                 @Override
                 public void onClick(InventoryClickEvent event) {
                     close();

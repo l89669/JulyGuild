@@ -4,18 +4,17 @@ import com.github.julyss2019.mcsp.julyguild.JulyGuild;
 import com.github.julyss2019.mcsp.julyguild.config.gui.IndexConfigGUI;
 import com.github.julyss2019.mcsp.julyguild.config.gui.item.GUIItemManager;
 import com.github.julyss2019.mcsp.julyguild.config.setting.MainSettings;
-import com.github.julyss2019.mcsp.julyguild.gui.CommonItem;
-import com.github.julyss2019.mcsp.julyguild.gui.GUI;
 import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
 import com.github.julyss2019.mcsp.julyguild.gui.BasePlayerPageableGUI;
 import com.github.julyss2019.mcsp.julyguild.guild.Guild;
+import com.github.julyss2019.mcsp.julyguild.guild.GuildManager;
 import com.github.julyss2019.mcsp.julyguild.guild.OwnedIcon;
 import com.github.julyss2019.mcsp.julyguild.placeholder.Placeholder;
-import com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderText;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
 import com.github.julyss2019.mcsp.julyguild.util.Util;
+import com.github.julyss2019.mcsp.julylibrary.chat.ChatInterceptor;
 import com.github.julyss2019.mcsp.julylibrary.chat.ChatListener;
-import com.github.julyss2019.mcsp.julylibrary.chat.JulyChatFilter;
+import com.github.julyss2019.mcsp.julylibrary.chat.JulyChatInterceptor;
 import com.github.julyss2019.mcsp.julylibrary.inventory.InventoryListener;
 import com.github.julyss2019.mcsp.julylibrary.inventory.ItemListener;
 import com.github.julyss2019.mcsp.julylibrary.item.ItemBuilder;
@@ -27,87 +26,72 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * 主GUI
+ * 新公会创建后GUI会被自动 reopen()
  * @version 1.0.0
  */
 public class MainGUI extends BasePlayerPageableGUI {
-    private final List<Guild> guilds = new ArrayList<>();
-
-    private final Player bukkitPlayer;
-    private final String playerName;
     private final JulyGuild plugin = JulyGuild.getInstance();
+    private final GuildManager guildManager = plugin.getGuildManager();
+    private final List<Guild> guilds = new ArrayList<>();
+    private final Player bukkitPlayer = guildPlayer.getBukkitPlayer();
+    private final String playerName = bukkitPlayer.getName();
     private final ConfigurationSection thisGUISection = plugin.getGuiYamlConfig().getConfigurationSection("MainGUI");
     private final ConfigurationSection thisLangSection = plugin.getLangYamlConfig().getConfigurationSection("MainGUI");
     private final List<Integer> positions = Util.getIntegerList(thisGUISection.getString("positions")); // 得到所有可供公会设置的位置
+    private final int positionCount = positions.size();
+    private final Map<Integer, UUID> guildIndexMap = new HashMap<>();
 
     public MainGUI(GuildPlayer guildPlayer) {
         super(GUIType.MAIN, guildPlayer);
 
-        this.bukkitPlayer = guildPlayer.getBukkitPlayer();
-        this.playerName = bukkitPlayer.getName();
         this.guilds.addAll(plugin.getCacheGuildManager().getSortedGuilds());
     }
 
     @Override
     public Inventory getGUI() {
         IndexConfigGUI.Builder guiBuilder = (IndexConfigGUI.Builder) new IndexConfigGUI.Builder()
-                .fromConfig(thisGUISection, new Placeholder.Builder()
-                        .addInner("PAGE", String.valueOf(getCurrentPage() + 1))
-                        .addInner("TOTAL_PAGE", String.valueOf(getTotalPage())).build(), bukkitPlayer)
-                .row(6)
+                .fromConfig(thisGUISection, bukkitPlayer, new Placeholder.Builder()
+                        .addInner("page", String.valueOf(getCurrentPage() + 1))
+                        .addInner("total_page", String.valueOf(getTotalPage())).build())
                 .colored()
                 .listener(new InventoryListener() {
                     @Override
                     public void onClick(InventoryClickEvent event) {
-                        int index = event.getSlot() + getCurrentPage() * 43;
+                        int slot = event.getSlot();
 
-                        if (index < guilds.size()) {
-                            Guild guild = guilds.get(index);
-                            GUI newGUI = new GuildInfoGUI(guildPlayer, guild, getCurrentPage());
-
+                        if (guildIndexMap.containsKey(slot)) {
                             close();
-                            guildPlayer.setUsingGUI(newGUI);
-                            newGUI.open();
+                            new GuildInfoGUI(guildPlayer, guildManager.getGuild(guildIndexMap.get(slot)), getCurrentPage()).open();
                         }
                     }
                 });
 
 
-        guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.precious_page").getConfigurationSection(hasPrecious() ? "have" : "not_have"), bukkitPlayer));
-        guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.next_page").getConfigurationSection(hasNext() ? "have" : "not_have"), bukkitPlayer));
-        guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.close"), bukkitPlayer));
-
-        // 如果大于1页则提供翻页按钮
-        if (getTotalPage() > 1) {
-            guiBuilder
-                    .item(4, 7, CommonItem.PREVIOUS_PAGE, new ItemListener() {
-                        @Override
-                        public void onClicked(InventoryClickEvent event) {
-                            if (hasPrecious()) {
-                                close();
-                                previousPage();
-                                open();
-                            }
-                        }
-                    })
-                    .item(4, 8, CommonItem.NEXT_PAGE, new ItemListener() {
-                        @Override
-                        public void onClick(InventoryClickEvent event) {
-                            if (hasNext()) {
-                                close();
-                                nextPage();
-                                open();
-                            }
-                        }
-                    });
-        }
+        guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.precious_page").getConfigurationSection(hasPreciousPage() ? "have" : "not_have"), bukkitPlayer), !hasPreciousPage() ? null : new ItemListener() {
+            @Override
+            public void onClick(InventoryClickEvent event) {
+                previousPage();
+            }
+        });
+        guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.next_page").getConfigurationSection(hasNextPage() ? "have" : "not_have"), bukkitPlayer), !hasNextPage() ? null : new ItemListener() {
+            @Override
+            public void onClick(InventoryClickEvent event) {
+                nextPage();
+            }
+        });
+        guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.close"), bukkitPlayer), new ItemListener() {
+            @Override
+            public void onClick(InventoryClickEvent event) {
+                close();
+            }
+        });
 
         if (guildPlayer.isInGuild()) {
-            guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.my_guild"), new Placeholder.Builder().add("%PLAYER%", playerName).build(), bukkitPlayer), new ItemListener() {
+            guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.my_guild"), bukkitPlayer, new Placeholder.Builder().add("%PLAYER%", playerName).build()), new ItemListener() {
                 @Override
                 public void onClicked(InventoryClickEvent event) {
                     close();
@@ -119,44 +103,53 @@ public class MainGUI extends BasePlayerPageableGUI {
                 @Override
                 public void onClicked(InventoryClickEvent event) {
                     close();
-                    Util.sendColoredMessage(bukkitPlayer, thisLangSection.getString("create.input"));
-                    JulyChatFilter.registerChatFilter(bukkitPlayer, new ChatListener() {
-                        @Override
-                        public void onChat(AsyncPlayerChatEvent event) {
-                            event.setCancelled(true);
-                            JulyChatFilter.unregisterChatFilter(bukkitPlayer);
-
-                            String guildName = ChatColor.translateAlternateColorCodes('&', event.getMessage());
-
-                            if (!guildName.matches(MainSettings.getCreateNameRegex())) {
-                                Util.sendColoredMessage(bukkitPlayer, thisLangSection.getString("create.regex_not_match"));
-                                return;
-                            }
-
-                            if (guildName.contains("§") && !bukkitPlayer.hasPermission("JulyGuild.create.colored")) {
-                                Util.sendColoredMessage(bukkitPlayer, thisLangSection.getString("create.no_colored_name_permission"));
-                                return;
-                            }
-
-                            new BukkitRunnable() {
+                    Util.sendColoredMessage(bukkitPlayer, thisLangSection.getString("create.input.tip"), new Placeholder.Builder().addInner("cancel_str", MainSettings.getCreateInputCancelStr()).build());
+                    new ChatInterceptor.Builder(playerName, plugin)
+                            .onlyFirst(true)
+                            .timeout(MainSettings.getCreateInputWaitSec())
+                            .chatListener(new ChatListener() {
                                 @Override
-                                public void run() {
-                                    close();
-                                    new GuildCreateGUI(guildPlayer, guildName).open();
-                                    JulyChatFilter.unregisterChatFilter(bukkitPlayer);
-                                }
-                            }.runTaskLater(plugin, 1L);
+                                public void onChat(AsyncPlayerChatEvent event) {
+                                    String msg = event.getMessage();
 
-                            event.setCancelled(true);
-                        }
-                    });
+                                    if (msg.equalsIgnoreCase(MainSettings.getCreateInputCancelStr())) {
+                                        Util.sendColoredMessage(bukkitPlayer, thisLangSection.getString("create.input.cancelled"));
+                                        return;
+                                    }
+
+                                    String guildName = ChatColor.translateAlternateColorCodes('&', msg);
+
+                                    if (!guildName.matches(MainSettings.getCreateNameRegex())) {
+                                        Util.sendColoredMessage(bukkitPlayer, thisLangSection.getString("create.input.regex_not_match"));
+                                        return;
+                                    }
+
+                                    if (guildName.contains("§") && !bukkitPlayer.hasPermission("JulyGuild.create.colored")) {
+                                        Util.sendColoredMessage(bukkitPlayer, thisLangSection.getString("create.no_colored_name_permission"));
+                                        return;
+                                    }
+
+                                    new BukkitRunnable() {
+                                        @Override
+                                        public void run() {
+                                            close();
+                                            new GuildCreateGUI(guildPlayer, guildName).open();
+                                        }
+                                    }.runTaskLater(plugin, 1L);
+                                }
+
+                                @Override
+                                public void onTimeout(AsyncPlayerChatEvent event) {
+                                    Util.sendColoredMessage(bukkitPlayer, thisLangSection.getString("create.input.timeout"));
+                                }
+                            }).build().register();
                 }
             });
         }
 
         int guildSize = guilds.size();
         int itemCounter = getCurrentPage() * positions.size();
-        int loopCount = guildSize - itemCounter < 43 ? guildSize - itemCounter : 43;
+        int loopCount = guildSize - itemCounter < positionCount ? guildSize - itemCounter : positionCount;
 
         // 公会图标
         for (int i = 0; i < loopCount; i++) {
@@ -167,7 +160,8 @@ public class MainGUI extends BasePlayerPageableGUI {
                     .data(ownedIcon.getData())
                     .insertLore(0, ownedIcon.getFirstLore());
 
-            guiBuilder.item(i, itemBuilder.build());
+            guildIndexMap.put(positions.get(i) - 1, guild.getUUID());
+            guiBuilder.item(positions.get(i) - 1, itemBuilder.build());
         }
 
         return guiBuilder.build();
@@ -177,6 +171,6 @@ public class MainGUI extends BasePlayerPageableGUI {
     public int getTotalPage() {
         int guildSize = guilds.size();
 
-        return guildSize == 0 ? 1 : guildSize % positions.size() == 0 ? guildSize / 43 : guildSize / 43 + 1;
+        return guildSize == 0 ? 1 : guildSize % positionCount == 0 ? guildSize / positionCount : guildSize / positionCount + 1;
     }
 }

@@ -6,7 +6,6 @@ import com.github.julyss2019.mcsp.julyguild.guild.GuildBank;
 import com.github.julyss2019.mcsp.julyguild.util.Util;
 import com.github.julyss2019.mcsp.julylibrary.utils.TimeUtil;
 
-import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,8 +39,8 @@ public class Placeholder {
             addInner("guild_name", guild.getName());
             addInner("guild_ranking", JulyGuild.getInstance().getCacheGuildManager().getRanking(guild));
             addInner("guild_owner", guild.getOwner().getName());
-            addInner("guild_money", Util.WITHOUT_DECIMAL_FORMAT.format(guild.getGuildBank().getBalance(GuildBank.BalanceType.MONEY)));
-            addInner("guild_points", Util.WITHOUT_DECIMAL_FORMAT.format(guild.getGuildBank().getBalance(GuildBank.BalanceType.POINTS)));
+            addInner("guild_money", Util.SIMPLE_DECIMAL_FORMAT.format(guild.getGuildBank().getBalance(GuildBank.BalanceType.MONEY)));
+            addInner("guild_points", Util.SIMPLE_DECIMAL_FORMAT.format(guild.getGuildBank().getBalance(GuildBank.BalanceType.POINTS)));
             addInner("guild_member_count", guild.getMemberCount());
             addInner("guild_max_member_count", guild.getMaxMemberCount());
             addInner("guild_creation_time", TimeUtil.YMD_SDF.format(guild.getCreationTime()));

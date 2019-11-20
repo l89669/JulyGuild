@@ -1,18 +1,15 @@
 package com.github.julyss2019.mcsp.julyguild.gui.player;
 
 import com.github.julyss2019.mcsp.julyguild.JulyGuild;
-import com.github.julyss2019.mcsp.julyguild.LangHelper;
 import com.github.julyss2019.mcsp.julyguild.config.gui.PriorityConfigGUI;
 import com.github.julyss2019.mcsp.julyguild.config.gui.item.GUIItemManager;
 import com.github.julyss2019.mcsp.julyguild.config.gui.item.PriorityItem;
 import com.github.julyss2019.mcsp.julyguild.config.setting.MainSettings;
 import com.github.julyss2019.mcsp.julyguild.gui.BaseMemberGUI;
-import com.github.julyss2019.mcsp.julyguild.gui.BasePlayerGUI;
 import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
 import com.github.julyss2019.mcsp.julyguild.guild.player.GuildMember;
 import com.github.julyss2019.mcsp.julyguild.guild.player.Permission;
 import com.github.julyss2019.mcsp.julyguild.placeholder.Placeholder;
-import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
 import com.github.julyss2019.mcsp.julyguild.util.Util;
 import com.github.julyss2019.mcsp.julylibrary.chat.ChatListener;
 import com.github.julyss2019.mcsp.julylibrary.chat.JulyChatFilter;
@@ -74,7 +71,7 @@ public class GuildMineGUI extends BaseMemberGUI {
 
 
         guiBuilder
-                .item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.guild_info"), new Placeholder.Builder().addGuildPlaceholders(guild).build(), bukkitPlayer))
+                .item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.guild_info"), bukkitPlayer, new Placeholder.Builder().addGuildPlaceholders(guild).build()))
                 .item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.self_info"), bukkitPlayer))
                 .item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.guild_members." + guildMember.getPermission().name().toLowerCase()), bukkitPlayer), new ItemListener() {
                     @Override

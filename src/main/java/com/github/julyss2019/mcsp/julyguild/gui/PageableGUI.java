@@ -14,7 +14,7 @@ public abstract class PageableGUI implements GUI {
 
     // 下一页
     public void nextPage() {
-        if (!hasNext()) {
+        if (!hasNextPage()) {
             throw new RuntimeException("没有下一页了");
         }
 
@@ -25,7 +25,7 @@ public abstract class PageableGUI implements GUI {
 
     // 上一页
     public void previousPage() {
-        if (!hasPrecious()) {
+        if (!hasPreciousPage()) {
             throw new RuntimeException("没有上一页了");
         }
 
@@ -35,12 +35,12 @@ public abstract class PageableGUI implements GUI {
     }
 
     // 是否有下一页
-    public boolean hasNext() {
+    public boolean hasNextPage() {
         return getCurrentPage() < getTotalPage() - 1;
     }
 
     // 是否有上一页
-    public boolean hasPrecious() {
+    public boolean hasPreciousPage() {
         return getCurrentPage() > 0;
     }
 

@@ -3,6 +3,7 @@ package com.github.julyss2019.mcsp.julyguild.guild;
 import com.github.julyss2019.mcsp.julyguild.JulyGuild;
 import com.github.julyss2019.mcsp.julyguild.event.GuildCreateEvent;
 import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
+import com.github.julyss2019.mcsp.julyguild.guild.player.GuildOwner;
 import com.github.julyss2019.mcsp.julyguild.log.guild.GuildCreateLog;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayerManager;
@@ -26,15 +27,13 @@ public class GuildManager {
     public GuildManager() {}
 
     /**
-     * 创建宗门
-     * @param guildOwner 宗门主人
+     * 创建公会
+     * @param owner 公会主人
      * @return
      */
-    public void createGuild(@NotNull GuildPlayer guildOwner, @NotNull String guildName) {
-        GuildPlayer ownerGuildPlayer = guildOwner.getGuildPlayer();
-
-        if (guildOwner.getGuildPlayer().isInGuild()) {
-            throw new IllegalArgumentException("主人已经有宗门了!");
+    public void createGuild(GuildPlayer owner, @NotNull String guildName) {
+        if (owner.isInGuild()) {
+            throw new IllegalArgumentException("主人已经有公会了!");
         }
 
         String uuid = UUID.randomUUID().toString();
@@ -56,20 +55,21 @@ public class GuildManager {
         yml.set("name", guildName);
         yml.set("uuid", uuid);
         yml.set("owner.join_time", System.currentTimeMillis());
-        yml.set("owner.name", ownerGuildPlayer.getName());
+        yml.set("owner.name", owner.getName());
         yml.set("creation_time", creationTime);
 
         YamlUtil.saveYaml(yml, file);
         load(file);
-        ownerGuildPlayer.setGuild(getGuild(uuid));
+        owner.setGuild(getGuild(uuid));
 
         // 更新所有玩家的GUI
         for (GuildPlayer guildPlayer : guildPlayerManager.getSortedOnlineGuildPlayers()) {
             guildPlayer.updateGUI(GUIType.MAIN);
         }
 
-        Bukkit.getPluginManager().callEvent(new GuildCreateEvent(getGuild(uuid), ownerGuildPlayer));
-        plugin.writeGuildLog(FileLogger.LoggerLevel.INFO, new GuildCreateLog(uuid, guildName, guildOwner.getName()));
+        // 触发 Bukkit 事件
+        Bukkit.getPluginManager().callEvent(new GuildCreateEvent(getGuild(uuid), owner));
+        plugin.writeGuildLog(FileLogger.LoggerLevel.INFO, new GuildCreateLog(uuid, guildName, owner.getName()));
     }
 
     public int getGuildCount() {
@@ -143,6 +143,10 @@ public class GuildManager {
                 load(guildFile);
             }
         }
+    }
+
+    public Guild getGuild(UUID uuid) {
+        return getGuild(uuid.toString());
     }
 
     /**

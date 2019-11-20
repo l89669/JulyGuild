@@ -57,9 +57,9 @@ public class PlaceholderAPIExpansion extends PlaceholderExpansion {
             case "member_per":
                 return Permission.getChineseName(guild.getMember(guildPlayer).getPermission());
             case "member_donate_money":
-                return Util.WITHOUT_DECIMAL_FORMAT.format(guild.getMember(guildPlayer).getDonated(GuildBank.BalanceType.MONEY));
+                return Util.SIMPLE_DECIMAL_FORMAT.format(guild.getMember(guildPlayer).getDonated(GuildBank.BalanceType.MONEY));
             case "member_donate_points":
-                return Util.WITHOUT_DECIMAL_FORMAT.format(guild.getMember(guildPlayer).getDonated(GuildBank.BalanceType.POINTS));
+                return Util.SIMPLE_DECIMAL_FORMAT.format(guild.getMember(guildPlayer).getDonated(GuildBank.BalanceType.POINTS));
             case "member_join_time":
                 return Util.YMD_SDF.format(guild.getMember(playerName).getJoinTime());
             case "ranking":

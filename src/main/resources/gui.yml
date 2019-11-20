@@ -7,7 +7,7 @@ MainGUI:
   row: 6
   title: '&e&l公会({PAGE}/{TOTAL_PAGE})'
   # 公会可显示的位置，支持使用 '-' 作为范围界定符，使用 ',' 分隔
-  positions: '10-45'
+  positions: '11-17,20-26,29-35'
   # 其他物品
   other_items:
     glass:
@@ -43,31 +43,42 @@ MainGUI:
       data: 3
     precious_page:
       have:
-        index: 43
+        index: 46
         material: BOOK
         display_name: '&f上一页'
+        enchantments:
+          DAMAGE_ALL: 1
+        flags:
+          - 'HIDE_ATTRIBUTES'
+          - 'HIDE_ENCHANTS'
         lores:
           - ' &f点击切换'
       not_have:
-        index: 43
+        index: 46
         material: BOOK
         display_name: '&f上一页'
         lores:
           - ' &7没有上一页了'
     next_page:
       have:
-        index: 44
+        index: 54
         material: BOOK
         display_name: '&f下一页'
+        enchantments:
+          DAMAGE_ALL: 1
+        flags:
+          - 'HIDE_ATTRIBUTES'
+          - 'HIDE_ENCHANTS'
         lores:
           - ' &f点击切换'
       not_have:
-        index: 44
+        index: 54
         material: BOOK
         display_name: '&f下一页'
         lores:
           - ' &7没有下一页了'
     close:
+      enabled: false
       index: 45
       material: BARRIER
       display_name: '&c关闭'
@@ -75,24 +86,27 @@ GuildCreateGUI:
   row: 3
   title: '&e&l请选择支付方式'
   items:
-    pay_money:
+    money:
       index: 12
       material: GOLD_INGOT
-      display_name: '&a使用 &e{AMOUNT}个 &a金币'
+      display_name: '&a使用 &e{amount}个 &a金币'
       lores:
-        - '&c点击支付'
-    pay_points:
+        - ' &f公会名: {NAME}'
+        - ' &c点击支付'
+    points:
       index: 14
       material: DIAMOND
-      display_name: '&a使用 &e{AMOUNT}个 &a点券'
+      display_name: '&a使用 &e{amount}个 &a点券'
       lores:
-        - '&c点击支付'
-    pay_item:
+        - ' &f公会名: {NAME}'
+        - ' &c点击支付'
+    item:
       index: 16
       material: PAPER
-      display_name: '&a使用 &e{AMOUNT}个 &a建帮令'
+      display_name: '&a使用 &e{amount}个 &a建帮令'
       lores:
-      - '&c点击支付'
+        - ' &f公会名: {NAME}'
+        - ' &c点击支付'
 # 最重要的GUI,集成了所有功能
 # 该GUI除了 back 以外的物品都不允许自定义位置，将根据 positions 属性排序
 GuildMineGUI:
@@ -111,6 +125,7 @@ GuildMineGUI:
       display_name: '&f公会信息'
       papi: true
       lores:
+        - ' &f公会名: {guild_name}'
         - ' &f会长: {guild_owner}'
         - ' &f金币储备: {guild_money}'
         - ' &f点券储备: {guild_points}'
@@ -191,12 +206,12 @@ GuildUpgradeGUI:
       available:
         index: 12
         material: GOLD_INGOT
-        display_name: '&f使用 &a金币x{COST} &f升级'
+        display_name: '&f使用 &a金币x{cost} &f升级'
         # 支持PAPI
         lores:
           - '&e 点击升级'
-          - ' &f最大人数: {OLD} -> {NEW}'
-          - ' &f花费: {COST}'
+          - ' &f最大人数: {old} -> {new}'
+          - ' &f花费: {cost}'
     points:
       full:
         index: 16
@@ -207,12 +222,12 @@ GuildUpgradeGUI:
       available:
         index: 16
         material: DIAMOND
-        display_name: '&f使用 &a点券x{COST} &f升级'
+        display_name: '&f使用 &a点券x{cost} &f升级'
         # 支持PAPI
         lores:
           - '&e点击升级'
-          - ' &f最大人数: {OLD} -> {NEW}'
-          - ' &f花费: {COST}'
+          - ' &f最大人数: {old} -> {new}'
+          - ' &f花费: {cost}'
 GuildMemberGUI:
   player:
     title: '&e&l成员列表'
@@ -235,50 +250,57 @@ GuildMemberGUI:
         display_name: '&f返回'
 GuildDonateGUI:
   ConfirmGUI:
-    items:
-      money:
-        _back:
-          index: 1
+    money:
+      title: '&e&l金币赞助确认'
+      row: 3
+      items:
+        back:
+          index: 27
+          display_name: '&f返回'
           material: BOOK
-        _pay:
+        confirm:
           index: 14
           material: GOLDEN_APPLE
           lores:
-            - ' &f赞助: 点券'
-            - ' &f手续费: {FEE}'
-            - ' &f实际赞助额: {DONATE_AMOUNT}'
-      points:
-        _back:
-          index: 1
+            - ' &f赞助: 金币x{donate_amount}'
+            - ' &f手续费: {fee}'
+            - ' &f实际赞助额: {exactly_donate_amount}'
+    points:
+      title: '&e&l点券赞助确认'
+      row: 3
+      items:
+        back:
+          index: 27
+          display_name: '&f返回'
           material: BOOK
-        _pay:
+        confirm:
           index: 14
           material: GOLDEN_APPLE
           lores:
-            - ' &f赞助: 点券'
-            - ' &f手续费: {FEE}'
-            - ' &f实际赞助额: {DONATE_AMOUNT}'
+            - ' &f赞助: 点券x{donate_amount}'
+            - ' &f手续费: {fee}'
+            - ' &f实际赞助额: {exactly_donate_amount}'
   papi: true
   row: 3
   title: '&e&l捐赠'
   items:
-    _money:
+    money:
       index: 12
       material: GOLD_INGOT
       display_name: '&f捐赠金币'
       papi: true
       lores:
-        - ' &f手续费: {FEE}%'
+        - ' &f手续费: {fee}%'
         - ' &f拥有: %vault_eco_balance%'
-    _points:
+    points:
       index: 16
       material: DIAMOND
       papi: true
       lores:
-        - ' &f手续费: {FEE}%'
+        - ' &f手续费: {fee}%'
         - ' &f拥有: %playerpoints_points%'
       display_name: '&f捐赠点券'
-    _back:
+    back:
       index: 27
       material: BOOK
       display_name: '&f返回'

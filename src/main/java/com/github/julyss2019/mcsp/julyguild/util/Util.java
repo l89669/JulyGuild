@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Util {
-    public static final DecimalFormat WITHOUT_DECIMAL_FORMAT = new DecimalFormat("0");
+    public static final DecimalFormat SIMPLE_DECIMAL_FORMAT = new DecimalFormat("0.00");
     public static final SimpleDateFormat YMD_SDF = new SimpleDateFormat("yyyy/MM/dd");
     public static final SimpleDateFormat YMDHM_SDF = new SimpleDateFormat("yyyy/MM/dd HH:mm");
 

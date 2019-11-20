@@ -113,7 +113,7 @@ public class GuildMemberGUI extends BaseMemberPageableGUI {
             inventoryBuilder.item(51, CommonItem.PREVIOUS_PAGE, new ItemListener() {
                 @Override
                 public void onClicked(InventoryClickEvent event) {
-                    if (hasPrecious()) {
+                    if (hasPreciousPage()) {
                         close();
                         previousPage();
                     }
@@ -122,7 +122,7 @@ public class GuildMemberGUI extends BaseMemberPageableGUI {
             inventoryBuilder.item(52, CommonItem.NEXT_PAGE, new ItemListener() {
                 @Override
                 public void onClicked(InventoryClickEvent event) {
-                    if (hasNext()) {
+                    if (hasNextPage()) {
                         close();
                         nextPage();
                     }
@@ -155,7 +155,7 @@ public class GuildMemberGUI extends BaseMemberPageableGUI {
                     .addLore("&d左键 &b▹ &d任命管理员")
                     .addLore("&c右键 &b▹ &c移出宗门")
                     .addLore("")
-                    .addLore("&e金币贡献 &b▹ &e¥" + Util.WITHOUT_DECIMAL_FORMAT.format(member.getDonated(GuildBank.BalanceType.MONEY)))
+                    .addLore("&e金币贡献 &b▹ &e¥" + Util.SIMPLE_DECIMAL_FORMAT.format(member.getDonated(GuildBank.BalanceType.MONEY)))
                     .addLore("&a入宗时间 &b▹ &a" + Util.YMD_SDF.format(member.getJoinTime()))
                     .colored();
 

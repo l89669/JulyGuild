@@ -110,6 +110,20 @@ public class MainSettings {
     @Config(path = "guild.donate.money.fee")
     private static double donateMoneyFee;
 
+    @Config(path = "guild.create.input.cancel_str")
+    private static String createInputCancelStr;
+
+    @Config(path = "guild.create.input.wait_sec")
+    private static int createInputWaitSec;
+
+    public static String getCreateInputCancelStr() {
+        return createInputCancelStr;
+    }
+
+    public static int getCreateInputWaitSec() {
+        return createInputWaitSec;
+    }
+
     public static double getDonatePointsFee() {
         return donatePointsFee;
     }

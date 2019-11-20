@@ -173,7 +173,7 @@ public class Guild {
         addMember(oldOwner.getGuildPlayer());
 
         if (newOwner.isOnline()) {
-            newOwner.getGuildPlayer().getGuildPlayer().updateGUI(GUIType.values());
+            newOwner.getGuildPlayer().updateGUI(GUIType.values());
         }
     }
 
@@ -411,7 +411,7 @@ public class Guild {
             guildMember.getGuildPlayer().setGuild(null);
 
             if (guildMember.getGuildPlayer().isOnline()) {
-                guildMember.getGuildPlayer().getGuildPlayer().updateGUI(GUIType.values());
+                guildMember.getGuildPlayer().updateGUI(GUIType.values());
             }
         }
 
@@ -509,7 +509,7 @@ public class Guild {
             GuildPlayer guildPlayer = guildMember.getGuildPlayer();
 
             if (guildPlayer.isOnline()) {
-                guildPlayer.getGuildPlayer().updateGUI(guiTypes);
+                guildPlayer.updateGUI(guiTypes);
             }
         }
     }

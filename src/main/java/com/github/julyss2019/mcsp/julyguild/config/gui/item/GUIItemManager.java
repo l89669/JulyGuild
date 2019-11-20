@@ -8,14 +8,15 @@ import com.github.julyss2019.mcsp.julylibrary.item.ItemBuilder;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemFlag;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class GUIItemManager {
-
     /**
      * 得到优先级物品
      * @param section
@@ -23,7 +24,7 @@ public class GUIItemManager {
      * @return
      */
     public static PriorityItem getPriorityItem(ConfigurationSection section, @Nullable Player player) {
-        return getPriorityItem(section, null, player, true);
+        return getPriorityItem(section, player, null, true);
     }
 
     /**
@@ -33,8 +34,8 @@ public class GUIItemManager {
      * @param player 玩家，用于PAPI
      * @return
      */
-    public static PriorityItem getPriorityItem(ConfigurationSection section, @Nullable Placeholder placeholder, @Nullable Player player) {
-        return getPriorityItem(section, placeholder, player, true);
+    public static PriorityItem getPriorityItem(ConfigurationSection section, @Nullable Player player, @Nullable Placeholder placeholder) {
+        return getPriorityItem(section, player, placeholder, true);
     }
 
     /**
@@ -45,7 +46,7 @@ public class GUIItemManager {
      * @param colored 是否转换颜色
      * @return
      */
-    public static PriorityItem getPriorityItem(ConfigurationSection section, @Nullable Placeholder placeholder, @Nullable Player player, boolean colored) {
+    public static PriorityItem getPriorityItem(ConfigurationSection section, @Nullable Player player, @Nullable Placeholder placeholder, boolean colored) {
         if (!section.getBoolean("enabled", true)) {
             return null;
         }
@@ -62,7 +63,7 @@ public class GUIItemManager {
      * @return
      */
     public static IndexItem getIndexItem(ConfigurationSection section, @Nullable Player player) {
-        return getIndexItem(section, null, player, true);
+        return getIndexItem(section, player, null, true);
     }
 
     /**
@@ -72,8 +73,8 @@ public class GUIItemManager {
      * @param player
      * @return
      */
-    public static IndexItem getIndexItem(ConfigurationSection section, @Nullable Placeholder placeholder, @Nullable Player player) {
-        return getIndexItem(section, placeholder, player, true);
+    public static IndexItem getIndexItem(ConfigurationSection section, @Nullable Player player, @Nullable Placeholder placeholder) {
+        return getIndexItem(section, player, placeholder, true);
     }
 
     /**
@@ -84,7 +85,7 @@ public class GUIItemManager {
      * @param colored 是否转换颜色
      * @return
      */
-    public static IndexItem getIndexItem(ConfigurationSection section, @Nullable Placeholder placeholder, @Nullable Player player, boolean colored) {
+    public static IndexItem getIndexItem(ConfigurationSection section,@Nullable Player player,  @Nullable Placeholder placeholder, boolean colored) {
         if (!section.getBoolean("enabled", true)) {
             return null;
         }
@@ -147,6 +148,19 @@ public class GUIItemManager {
 
         if (section.contains("skullTexture")) {
             itemBuilder.skullTexture(placeholder == null ? section.getString("skullTexture") : replacePlaceholders(section.getString("skullTexture"), placeholder, !sectionPapiEnabled ? null : player));
+        }
+
+        if (section.contains("flags")) {
+            for (String flagName : section.getStringList("flags")) {
+                itemBuilder.addItemFlag(ItemFlag.valueOf(flagName));
+            }
+        }
+
+        if (section.contains("enchantments")) {
+            for (String enchantment : section.getConfigurationSection("enchantments").getKeys(false)) {
+                itemBuilder.enchant(Enchantment.getByName(enchantment)
+                        , section.getConfigurationSection("enchantments").getInt(enchantment));
+            }
         }
 
         return itemBuilder;
