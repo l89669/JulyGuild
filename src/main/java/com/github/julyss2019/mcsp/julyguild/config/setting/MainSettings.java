@@ -116,6 +116,27 @@ public class MainSettings {
     @Config(path = "guild.create.input.wait_sec")
     private static int createInputWaitSec;
 
+    @Config(path = "papi.non_str")
+    private static String papiNonStr;
+
+    @Config(path = "gui.default.use_guild_placehoders")
+    private static boolean guiDefaultUseGuildPlacehoders;
+
+    @Config(path = "gui.default.use_papi")
+    private static boolean guiDefaultUsePapi;
+
+    public static String getPapiNonStr() {
+        return papiNonStr;
+    }
+
+    public static boolean isGuiDefaultUseGuildPlacehoders() {
+        return guiDefaultUseGuildPlacehoders;
+    }
+
+    public static boolean isGuiDefaultUsePapi() {
+        return guiDefaultUsePapi;
+    }
+
     public static String getCreateInputCancelStr() {
         return createInputCancelStr;
     }

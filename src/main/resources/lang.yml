@@ -1,5 +1,7 @@
 VERSION: 2.0.0
 Global:
+  date_format: 'yyyy-MM-dd'
+  date_time_format: 'yyyy-MM-dd HH:mm'
   prefix: '&a[公会] &f'
   nick_name: '&f[{permission}&f] &e{name}'
   enabled: '已启用'
@@ -7,7 +9,7 @@ Global:
   money: '金币'
   points: '点券'
   command_prefix: '&a[公会] &f'
-Permission:
+Position:
   member: '&a会员'
   admin: '&c管理员'
   owner: '&d会长'
@@ -51,7 +53,7 @@ GuildDonateGUI:
       cancelled: '&e捐赠已取消.'
       timeout: '&e捐赠已超时.'
       amount_invalid: '&c捐赠数量不合法, 请输入一个整数.'
-    success: '&d你捐赠了 &e{amount} &d金币.'
+    success: '&d你捐赠了 &e{exactly_donate_amount}个 &d金币, 手续费 &e{fee}&d.'
     not_enough: '&c金币不足.'
   points:
     input:
@@ -59,5 +61,5 @@ GuildDonateGUI:
       cancelled: '&e捐赠已取消.'
       timeout: '&e捐赠已超时.'
       amount_invalid: '&c捐赠数量不合法.'
-    success: '&d你捐赠了 &e{AMOUNT} &d点券.'
+    success: '&d你捐赠了 &e{exactly_donate_amount}个 &d点券, 手续费 &e{fee}&d.'
     not_enough: '&c点券不足.'

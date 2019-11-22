@@ -10,6 +10,8 @@ import com.github.julyss2019.mcsp.julyguild.guild.GuildManager;
 import com.github.julyss2019.mcsp.julyguild.placeholder.Placeholder;
 import com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderText;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
+import com.github.julyss2019.mcsp.julyguild.thirdparty.economy.PlayerPointsEconomy;
+import com.github.julyss2019.mcsp.julyguild.thirdparty.economy.VaultEconomy;
 import com.github.julyss2019.mcsp.julyguild.util.Util;
 import com.github.julyss2019.mcsp.julylibrary.inventory.InventoryListener;
 import com.github.julyss2019.mcsp.julylibrary.inventory.ItemListener;
@@ -17,8 +19,6 @@ import com.github.julyss2019.mcsp.julylibrary.message.JulyMessage;
 import com.github.julyss2019.mcsp.julylibrary.message.Title;
 import com.github.julyss2019.mcsp.julylibrary.utils.ItemUtil;
 import com.github.julyss2019.mcsp.julylibrary.utils.PlayerUtil;
-import net.milkbowl.vault.economy.Economy;
-import org.black_ixx.playerpoints.PlayerPointsAPI;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -40,8 +40,8 @@ public class GuildCreateGUI extends BasePlayerGUI {
     private final JulyGuild plugin = JulyGuild.getInstance();
     private final ConfigurationSection thisLangSection = plugin.getLangYamlConfig().getConfigurationSection("GuildCreateGUI");
     private final ConfigurationSection thisGUISection = plugin.getGuiYamlConfig().getConfigurationSection("GuildCreateGUI");
-    private final Economy vault = plugin.getVaultAPI();
-    private final PlayerPointsAPI playerPointsAPI = plugin.getPlayerPointsAPI();
+    private final VaultEconomy vaultEconomy = plugin.getVaultEconomy();
+    private final PlayerPointsEconomy playerPointsEconomy = plugin.getPlayerPointsEconomy();
     private final GuildManager guildManager = plugin.getGuildManager();
 
     public GuildCreateGUI(GuildPlayer guildPlayer, String guildName) {
@@ -81,15 +81,13 @@ public class GuildCreateGUI extends BasePlayerGUI {
                     return;
                 }
 
-                double playerMoney = vault.getBalance(bukkitPlayer);
-
-                if (playerMoney < MainSettings.getCreateCostMoneyAmount()) {
+                if (vaultEconomy.has(bukkitPlayer, MainSettings.getCreateCostMoneyAmount())) {
                     Util.sendColoredMessage(bukkitPlayer, PlaceholderText.replacePlaceholders(thisLangSection.getString("money.not_enough"), new Placeholder.Builder()
-                            .addInner("need", MainSettings.getCreateCostMoneyAmount() - playerMoney).build()));
+                            .addInner("need", vaultEconomy.getBalance(bukkitPlayer) - MainSettings.getCreateCostMoneyAmount()).build()));
                     return;
                 }
 
-                vault.withdrawPlayer(bukkitPlayer, MainSettings.getCreateCostMoneyAmount());
+                vaultEconomy.withdraw(bukkitPlayer, MainSettings.getCreateCostMoneyAmount());
                 createGuild(guildPlayer, guildName);
             }
         });
@@ -109,7 +107,7 @@ public class GuildCreateGUI extends BasePlayerGUI {
                     return;
                 }
 
-                int playerPoints = playerPointsAPI.look(bukkitPlayer.getUniqueId());
+                int playerPoints = playerPointsEconomy.getBalance(bukkitPlayer);
 
                 if (playerPoints < MainSettings.getCreateCostPointsAmount()) {
                     Util.sendColoredMessage(bukkitPlayer, PlaceholderText.replacePlaceholders(thisLangSection.getString("points.not_enough"), new Placeholder.Builder()
@@ -117,7 +115,7 @@ public class GuildCreateGUI extends BasePlayerGUI {
                     return;
                 }
 
-                playerPointsAPI.take(bukkitPlayer.getUniqueId(), MainSettings.getCreateCostPointsAmount());
+                playerPointsEconomy.withdraw(bukkitPlayer, MainSettings.getCreateCostPointsAmount());
                 createGuild(guildPlayer, guildName);
             }
         });
@@ -138,7 +136,6 @@ public class GuildCreateGUI extends BasePlayerGUI {
                 }
 
                 int hadItemAmount = PlayerUtil.getItemAmount(bukkitPlayer, itemStack -> ItemUtil.containsLore(itemStack, MainSettings.getCreateCostItemKeyLore()));
-
 
                 if (hadItemAmount < MainSettings.getCreateCostItemAmount()) {
                     PlayerUtil.takeItems(bukkitPlayer, itemStack -> ItemUtil.containsLore(itemStack, MainSettings.getCreateCostItemKeyLore()), MainSettings.getCreateCostItemAmount());

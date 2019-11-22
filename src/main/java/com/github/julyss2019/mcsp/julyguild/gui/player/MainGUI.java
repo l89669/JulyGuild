@@ -14,7 +14,6 @@ import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
 import com.github.julyss2019.mcsp.julyguild.util.Util;
 import com.github.julyss2019.mcsp.julylibrary.chat.ChatInterceptor;
 import com.github.julyss2019.mcsp.julylibrary.chat.ChatListener;
-import com.github.julyss2019.mcsp.julylibrary.chat.JulyChatInterceptor;
 import com.github.julyss2019.mcsp.julylibrary.inventory.InventoryListener;
 import com.github.julyss2019.mcsp.julylibrary.inventory.ItemListener;
 import com.github.julyss2019.mcsp.julylibrary.item.ItemBuilder;
@@ -155,7 +154,7 @@ public class MainGUI extends BasePlayerPageableGUI {
         for (int i = 0; i < loopCount; i++) {
             Guild guild = guilds.get(itemCounter++);
             OwnedIcon ownedIcon = guild.getIcon();
-            ItemBuilder itemBuilder = GUIItemManager.getItemBuilder(thisGUISection.getConfigurationSection("items._guild"), new Placeholder.Builder().addGuildPlaceholders(guild).build(), bukkitPlayer)
+            ItemBuilder itemBuilder = GUIItemManager.getItemBuilder(thisGUISection.getConfigurationSection("items._guild"), bukkitPlayer, new Placeholder.Builder().addGuildPlaceholders(guild).build())
                     .material(ownedIcon.getMaterial())
                     .data(ownedIcon.getData())
                     .insertLore(0, ownedIcon.getFirstLore());

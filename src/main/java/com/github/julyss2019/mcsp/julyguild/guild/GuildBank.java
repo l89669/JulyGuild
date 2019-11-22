@@ -7,29 +7,35 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 public class GuildBank {
     private static JulyGuild plugin = JulyGuild.getInstance();
     public enum BalanceType {POINTS, MONEY}
 
     private Guild guild;
-    private BigDecimal moneyBigDecimal;
-    private BigDecimal pointsBigDecimal;
+    private Map<BalanceType, BigDecimal> balanceMap = new HashMap<>();
     private ConfigurationSection section;
 
     public GuildBank(Guild guild) {
         this.guild = guild;
 
-        if (!guild.getYml().contains("bank")) {
-            guild.getYml().createSection("bank");
+        if (!guild.getYaml().contains("bank")) {
+            guild.getYaml().createSection("bank");
         }
 
-        this.section = guild.getYml().getConfigurationSection("bank");
+        this.section = guild.getYaml().getConfigurationSection("bank");
     }
 
     public GuildBank load() {
-        this.moneyBigDecimal = new BigDecimal(section.getString("money", "0"));
-        this.pointsBigDecimal = new BigDecimal(section.getString("points", "0"));
+        Set<String> keys = section.getKeys(false);
+
+        for (String key : keys) {
+            balanceMap.put(BalanceType.valueOf(key), new BigDecimal(section.getString(key)));
+        }
+
         return this;
     }
 
@@ -50,15 +56,7 @@ public class GuildBank {
      * @return
      */
     public boolean has(@NotNull GuildBank.BalanceType balanceType, BigDecimal valueBigDecimal) {
-        if (balanceType == BalanceType.MONEY) {
-            return moneyBigDecimal.compareTo(valueBigDecimal) >= 0;
-        }
-
-        if (balanceType == BalanceType.POINTS) {
-            return pointsBigDecimal.compareTo(valueBigDecimal) >= 0;
-        }
-
-        throw new IllegalArgumentException("非法的类型");
+        return getBalance(balanceType).compareTo(valueBigDecimal) >= 0;
     }
 
     /**
@@ -103,7 +101,7 @@ public class GuildBank {
         }
 
         if (!has(balanceType, amountBigDecimal)) {
-            throw new IllegalArgumentException("余额不足");
+            throw new RuntimeException("余额不足");
         }
 
         setBalance(balanceType, getBalance(balanceType).subtract(amountBigDecimal));
@@ -115,21 +113,12 @@ public class GuildBank {
      * @param bigDecimal BigDecimal
      */
     public void setBalance(@NotNull GuildBank.BalanceType balanceType, BigDecimal bigDecimal) {
-        if (balanceType == BalanceType.MONEY) {
-            BigDecimal oldMoney = this.moneyBigDecimal;
+        BigDecimal old = getBalance(balanceType);
 
-            section.set("money", bigDecimal.toString());
-            guild.save();
-            this.moneyBigDecimal = bigDecimal;
-            plugin.writeGuildLog(FileLogger.LoggerLevel.INFO, new GuildBalanceChangedLog(guild.getUUID().toString(), BalanceType.MONEY, oldMoney, this.moneyBigDecimal));
-        } else if (balanceType == BalanceType.POINTS) {
-            BigDecimal oldPoints = this.pointsBigDecimal;
-
-            section.set("points", oldPoints.toString());
-            guild.save();
-            this.pointsBigDecimal = bigDecimal;
-            plugin.writeGuildLog(FileLogger.LoggerLevel.INFO, new GuildBalanceChangedLog(guild.getUUID().toString(), BalanceType.POINTS, oldPoints, this.pointsBigDecimal));
-        }
+        section.set(balanceType.name(), bigDecimal.toString());
+        guild.save();
+        balanceMap.put(balanceType, bigDecimal);
+        plugin.writeGuildLog(FileLogger.LoggerLevel.INFO, new GuildBalanceChangedLog(guild.getUUID().toString(), BalanceType.POINTS, old, bigDecimal));
     }
 
     /**
@@ -138,14 +127,6 @@ public class GuildBank {
      * @return
      */
     public BigDecimal getBalance(@NotNull GuildBank.BalanceType balanceType) {
-        if (balanceType == BalanceType.MONEY) {
-            return moneyBigDecimal;
-        }
-
-        if (balanceType == BalanceType.POINTS) {
-            return pointsBigDecimal;
-        }
-
-        throw new IllegalArgumentException("非法的类型");
+        return balanceMap.getOrDefault(balanceType, new BigDecimal("0"));
     }
 }

@@ -3,25 +3,27 @@ package com.github.julyss2019.mcsp.julyguild;
 import com.github.julyss2019.mcsp.julyguild.guild.CacheGuildManager;
 import com.github.julyss2019.mcsp.julyguild.guild.Guild;
 import com.github.julyss2019.mcsp.julyguild.guild.GuildBank;
-import com.github.julyss2019.mcsp.julyguild.guild.player.Permission;
+import com.github.julyss2019.mcsp.julyguild.guild.player.Position;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayerManager;
 import com.github.julyss2019.mcsp.julyguild.util.Util;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
 /**
  * PAPI扩展
  */
 public class PlaceholderAPIExpansion extends PlaceholderExpansion {
-    private static JulyGuild plugin = JulyGuild.getInstance();
-    private static CacheGuildManager cacheGuildManager = plugin.getCacheGuildManager();
-    private static GuildPlayerManager guildPlayerManager = plugin.getGuildPlayerManager();
+    private static final JulyGuild plugin = JulyGuild.getInstance();
+    private static final YamlConfiguration langYml = plugin.getLangYamlConfig();
+    private static final CacheGuildManager cacheGuildManager = plugin.getCacheGuildManager();
+    private static final GuildPlayerManager guildPlayerManager = plugin.getGuildPlayerManager();
 
     @Override
     public String getIdentifier() {
-        return "GUILD";
+        return "guild";
     }
 
     @Override
@@ -46,7 +48,7 @@ public class PlaceholderAPIExpansion extends PlaceholderExpansion {
         }
 
         if (!isInGuild) {
-            return "null";
+            return langYml.getString("papi.non_str");
         }
 
         GuildBank guildBank = guild.getGuildBank();
@@ -55,13 +57,13 @@ public class PlaceholderAPIExpansion extends PlaceholderExpansion {
             case "name":
                 return guild.getName();
             case "member_per":
-                return Permission.getChineseName(guild.getMember(guildPlayer).getPermission());
+                return Position.getChineseName(guild.getMember(guildPlayer).getPosition());
             case "member_donate_money":
                 return Util.SIMPLE_DECIMAL_FORMAT.format(guild.getMember(guildPlayer).getDonated(GuildBank.BalanceType.MONEY));
             case "member_donate_points":
                 return Util.SIMPLE_DECIMAL_FORMAT.format(guild.getMember(guildPlayer).getDonated(GuildBank.BalanceType.POINTS));
             case "member_join_time":
-                return Util.YMD_SDF.format(guild.getMember(playerName).getJoinTime());
+                return LangHelper.Global.getDateTimeFormat().format(guild.getMember(playerName).getJoinTime());
             case "ranking":
                 return String.valueOf(cacheGuildManager.getRanking(guild));
             case "owner":
@@ -71,7 +73,7 @@ public class PlaceholderAPIExpansion extends PlaceholderExpansion {
             case "max_member_count":
                 return String.valueOf(guild.getMaxMemberCount());
             case "creation_time":
-                return Util.YMD_SDF.format(guild.getCreationTime());
+                return LangHelper.Global.getDateTimeFormat().format(guild.getCreationTime());
             case "money":
                 return guildBank.getBalance(GuildBank.BalanceType.MONEY).toString();
             case "points":

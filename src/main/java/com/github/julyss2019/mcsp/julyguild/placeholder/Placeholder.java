@@ -25,6 +25,16 @@ public class Placeholder {
         return placeholderMap;
     }
 
+    public Builder getBuilder() {
+        Builder builder = new Builder();
+
+        for (Map.Entry<String, String> entry : placeholderMap.entrySet()) {
+            builder.add(entry.getKey(), entry.getValue());
+        }
+
+        return builder;
+    }
+
     public static class Builder {
         private Map<String, String> map = new HashMap<>();
 

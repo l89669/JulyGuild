@@ -8,7 +8,7 @@ import com.github.julyss2019.mcsp.julyguild.config.setting.MainSettings;
 import com.github.julyss2019.mcsp.julyguild.gui.BaseMemberGUI;
 import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
 import com.github.julyss2019.mcsp.julyguild.guild.player.GuildMember;
-import com.github.julyss2019.mcsp.julyguild.guild.player.Permission;
+import com.github.julyss2019.mcsp.julyguild.guild.player.Position;
 import com.github.julyss2019.mcsp.julyguild.placeholder.Placeholder;
 import com.github.julyss2019.mcsp.julyguild.util.Util;
 import com.github.julyss2019.mcsp.julylibrary.chat.ChatListener;
@@ -28,13 +28,13 @@ public class GuildMineGUI extends BaseMemberGUI {
     private final ConfigurationSection thisGUISection = plugin.getGuiYamlConfig().getConfigurationSection("GuildMineGUI");
     private final ConfigurationSection thisLangSection = plugin.getLangYamlConfig().getConfigurationSection("GuildMineGUI");
     private final Player bukkitPlayer;
-    private final Permission permission;
+    private final Position position;
 
     public GuildMineGUI(GuildMember guildMember) {
         super(GUIType.MINE, guildMember);
 
         this.bukkitPlayer = guildPlayer.getBukkitPlayer();
-        this.permission = guildMember.getPermission();
+        this.position = guildMember.getPosition();
     }
 
     @Override
@@ -73,11 +73,11 @@ public class GuildMineGUI extends BaseMemberGUI {
         guiBuilder
                 .item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.guild_info"), bukkitPlayer, new Placeholder.Builder().addGuildPlaceholders(guild).build()))
                 .item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.self_info"), bukkitPlayer))
-                .item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.guild_members." + guildMember.getPermission().name().toLowerCase()), bukkitPlayer), new ItemListener() {
+                .item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.guild_members." + guildMember.getPosition().name().toLowerCase()), bukkitPlayer), new ItemListener() {
                     @Override
                     public void onClick(InventoryClickEvent event) {
                         close();
-                        new GuildMemberGUI(guildMember).open();
+                        new GuildMemberGUI(guild, guildMember).open();
                     }
                 })
                 .item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.guild_donate"), bukkitPlayer), new ItemListener() {
@@ -105,7 +105,7 @@ public class GuildMineGUI extends BaseMemberGUI {
 
 
         // 解散或退出
-        if (permission == Permission.OWNER) {
+        if (position == Position.OWNER) {
             guiBuilder.item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.guild_dismiss"), bukkitPlayer), new ItemListener() {
                 @Override
                 public void onClick(InventoryClickEvent event) {

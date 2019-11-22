@@ -4,7 +4,6 @@ import com.github.julyss2019.mcsp.julyguild.gui.BasePlayerGUI;
 import com.github.julyss2019.mcsp.julyguild.gui.CommonItem;
 import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
 import com.github.julyss2019.mcsp.julyguild.guild.Guild;
-import com.github.julyss2019.mcsp.julyguild.guild.player.GuildAdmin;
 import com.github.julyss2019.mcsp.julyguild.guild.player.GuildMember;
 import com.github.julyss2019.mcsp.julyguild.guild.request.GuildRequestType;
 import com.github.julyss2019.mcsp.julyguild.guild.request.JoinGuildRequest;
@@ -23,7 +22,8 @@ import org.bukkit.inventory.ItemFlag;
 
 import java.util.ArrayList;
 import java.util.List;
-// TODO: update
+
+
 public class GuildInfoGUI extends BasePlayerGUI {
     private Player bukkitPlayer;
     private Guild guild;
@@ -120,11 +120,11 @@ public class GuildInfoGUI extends BasePlayerGUI {
                         guild.addRequest(JoinGuildRequest.createNew(guildPlayer));
                         Util.sendColoredMessage(bukkitPlayer, "&d已向 &e" + guild.getName() + " &d宗门发送加入申请, 请等待审核!");
 
-                        for (GuildMember guildMember : guild.getMembers()) {
-                            if (guildMember instanceof GuildAdmin && guildMember.isOnline()) {
-                                Util.sendColoredMessage(guildMember.getGuildPlayer().getBukkitPlayer(), "&e你的宗门收到一个加入请求, 请及时处理!");
-                            }
-                        }
+//                        for (GuildMember guildMember : guild.getMembers()) {
+//                            if (guildMember instanceof GuildAdmin && guildMember.isOnline()) {
+//                                Util.sendColoredMessage(guildMember.getGuildPlayer().getBukkitPlayer(), "&e你的宗门收到一个加入请求, 请及时处理!");
+//                            }
+//                        }
                     }
                 });
         }

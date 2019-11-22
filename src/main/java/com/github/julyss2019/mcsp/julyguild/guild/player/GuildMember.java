@@ -8,20 +8,18 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
 import java.math.BigDecimal;
+import java.util.HashSet;
+import java.util.Set;
 
 public class GuildMember {
     private Guild guild;
     private GuildPlayer guildPlayer;
     private String name;
     private ConfigurationSection memberSection;
+    private Set<Permission> permissions = new HashSet<>();
 
     public GuildMember(Guild guild, GuildPlayer guildPlayer) {
-        this.guild = guild;
-        this.guildPlayer = guildPlayer;
-        this.name = guildPlayer.getName();
-        this.memberSection = guild.getYml().getConfigurationSection("members." + guildPlayer.getName());
-
-        load();
+        this(guild, guildPlayer, guild.getYaml().getConfigurationSection("members." + guildPlayer.getName()));
     }
 
     public GuildMember(Guild guild, GuildPlayer player, ConfigurationSection memberSection) {
@@ -35,8 +33,59 @@ public class GuildMember {
 
     public void load() {
         if (memberSection == null) {
-            this.memberSection = guild.getYml().createSection("members." + guildPlayer.getName());
+            this.memberSection = guild.getYaml().createSection("members." + guildPlayer.getName());
         }
+
+        if (memberSection.contains("permissions")) {
+            Set<String> permissions = memberSection.getConfigurationSection("permissions").getKeys(false);
+
+            if (permissions != null) {
+                permissions.forEach(s -> this.permissions.add(Permission.valueOf(s)));
+            }
+        }
+    }
+
+    public void removePermission(Permission permission) {
+        setPermission(permission, false);
+    }
+
+    public void addPermission(Permission permission) {
+        setPermission(permission, true);
+    }
+
+    /**
+     * 设置权限
+     * @param permission
+     * @param b true 为设置 false 为删除
+     */
+    public void setPermission(Permission permission, boolean b) {
+        if (b && permissions.contains(permission)) {
+            throw new RuntimeException("成员已经有该权限了");
+        } else if (!b && !permissions.contains(permission)) {
+            throw new RuntimeException("成员没有该权限");
+        }
+
+        Set<Permission> newPermissions = getPermissions();
+
+        if (b) {
+            newPermissions.add(permission);
+        } else {
+            newPermissions.remove(permission);
+        }
+
+        Set<String> stringPermissions = new HashSet<>();
+
+        newPermissions.forEach(permission1 -> stringPermissions.add(permission1.name()));
+
+        memberSection.set("permissions", stringPermissions);
+    }
+
+    public Set<Permission> getPermissions() {
+        return new HashSet<>(permissions);
+    }
+
+    public boolean hasPermission(Permission permission) {
+        return getPermissions().contains(permission);
     }
 
     public void addDonated(GuildBank.BalanceType balanceType, double amount) {
@@ -80,8 +129,8 @@ public class GuildMember {
         return getGuildPlayer().isOnline();
     }
 
-    public Permission getPermission() {
-        return Permission.MEMBER;
+    public Position getPosition() {
+        return Position.MEMBER;
     }
 
     public void save() {

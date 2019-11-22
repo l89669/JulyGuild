@@ -4,36 +4,30 @@ import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.entity.Player;
 
-import java.math.BigDecimal;
-
-public class VaultEconomy implements ThirdPartyEconomy {
+public class VaultEconomy {
     private Economy economy;
 
     public VaultEconomy(Economy economy) {
         this.economy = economy;
     }
 
-    @Override
-    public Type getType() {
-        return Type.VAULT;
+    public boolean has(Player player, double amount) {
+        return getBalance(player) >= amount;
     }
 
-    @Override
     public void withdraw(Player player, double amount) {
         if (economy.withdrawPlayer(player, amount).type != EconomyResponse.ResponseType.SUCCESS) {
-            throw new RuntimeException("扣除金币是吧");
+            throw new RuntimeException("扣除金币失败");
         }
     }
 
-    @Override
     public void deposit(Player player, double amount) {
         if (economy.depositPlayer(player, amount).type != EconomyResponse.ResponseType.SUCCESS) {
-            throw new RuntimeException("扣除金币是吧");
+            throw new RuntimeException("扣除金币失败");
         }
     }
 
-    @Override
-    public BigDecimal getBalance(Player player) {
-        return new BigDecimal(economy.getBalance(player));
+    public double getBalance(Player player) {
+        return economy.getBalance(player);
     }
 }

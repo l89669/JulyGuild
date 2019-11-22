@@ -23,7 +23,6 @@ public class GuildPlayer {
     private String name;
     private File file;
     private YamlConfiguration yml;
-    private Guild guild;
     private GUI usingGUI;
     private Map<String, PlayerRequest> requestMap = new HashMap<>();
 
@@ -146,7 +145,6 @@ public class GuildPlayer {
         }
 
         this.yml = YamlConfiguration.loadConfiguration(file);
-        this.guild = JulyGuild.getInstance().getGuildManager().getGuild(yml.getString("guild"));
         return this;
     }
 
@@ -155,13 +153,12 @@ public class GuildPlayer {
     }
 
     public Guild getGuild() {
-        return guild;
+        return JulyGuild.getInstance().getGuildManager().getGuild(yml.getString("guild"));
     }
 
     public void setGuild(Guild guild) {
         yml.set("guild", guild == null ? null : guild.getUUID().toString());
         save();
-        this.guild = JulyGuild.getInstance().getGuildManager().getGuild(yml.getString("guild"));
     }
 
     public Player getBukkitPlayer() {
@@ -175,7 +172,7 @@ public class GuildPlayer {
     }
 
     public boolean isInGuild() {
-        return guild != null;
+        return getGuild() != null;
     }
 
     @Override

@@ -5,8 +5,14 @@ import com.github.julyss2019.mcsp.julyguild.placeholder.Placeholder;
 import com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderText;
 import org.bukkit.configuration.ConfigurationSection;
 
+import java.text.SimpleDateFormat;
+
 public class LangHelper {
     public static class Global {
+        public static SimpleDateFormat getDateTimeFormat() {
+            return new SimpleDateFormat(JulyGuild.getInstance().getLangYamlConfig().getString("Global.date_time_format"));
+        }
+
         public static String getPrefix() {
             return JulyGuild.getInstance().getLangYamlConfig().getString("Global.prefix");
         }
@@ -16,7 +22,7 @@ public class LangHelper {
             String format = langSection.getString("Global.nick_name");
 
             return PlaceholderText.replacePlaceholders(format, new Placeholder.Builder()
-                    .addInner("PERMISSION", langSection.getString("Permission." + guildMember.getPermission().name().toLowerCase()))
+                    .addInner("PERMISSION", langSection.getString("Position." + guildMember.getPosition().name().toLowerCase()))
                     .addInner("NAME", guildMember.getName()).build());
         }
     }

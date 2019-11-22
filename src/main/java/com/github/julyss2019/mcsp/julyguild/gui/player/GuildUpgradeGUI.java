@@ -77,7 +77,7 @@ public class GuildUpgradeGUI extends BaseMemberGUI {
 
                     if (!guildBank.has(GuildBank.BalanceType.MONEY, needMoney)) {
                         Util.sendColoredMessage(bukkitPlayer, thisLangSection.getString("money.not_enough"), new Placeholder.Builder()
-                                .addInner("NEED", String.valueOf(new BigDecimal(needMoney).subtract(guildBank.getBalance(GuildBank.BalanceType.MONEY)).toString())).build());
+                                .addInner("need", String.valueOf(new BigDecimal(needMoney).subtract(guildBank.getBalance(GuildBank.BalanceType.MONEY)).toString())).build());
                         new BukkitRunnable() {
                             @Override
                             public void run() {
@@ -90,8 +90,8 @@ public class GuildUpgradeGUI extends BaseMemberGUI {
                     guildBank.withdraw(GuildBank.BalanceType.MONEY, needMoney);
                     guild.setMaxMemberCount(guild.getMaxMemberCount() + 1);
                     Util.sendColoredMessage(bukkitPlayer, thisLangSection.getString("money.success"), new Placeholder.Builder()
-                            .addInner("OLD", String.valueOf(oldMaxMemberCount))
-                            .addInner("NEW", String.valueOf(oldMaxMemberCount + 1)).build());
+                            .addInner("old", String.valueOf(oldMaxMemberCount))
+                            .addInner("new", String.valueOf(oldMaxMemberCount + 1)).build());
 
                     new BukkitRunnable() {
                         @Override
@@ -126,7 +126,7 @@ public class GuildUpgradeGUI extends BaseMemberGUI {
 
                     if (!guildBank.has(GuildBank.BalanceType.POINTS, needPoints)) {
                         Util.sendColoredMessage(bukkitPlayer, thisLangSection.getString("points.not_enough"), new Placeholder.Builder()
-                                .addInner("NEED", new BigDecimal(needPoints).subtract(guildBank.getBalance(GuildBank.BalanceType.POINTS)).toString()).build());
+                                .addInner("need", new BigDecimal(needPoints).subtract(guildBank.getBalance(GuildBank.BalanceType.POINTS)).toString()).build());
                         new BukkitRunnable() {
                             @Override
                             public void run() {
@@ -139,8 +139,8 @@ public class GuildUpgradeGUI extends BaseMemberGUI {
                     guildBank.withdraw(GuildBank.BalanceType.POINTS, needPoints);
                     guild.setMaxMemberCount(guild.getMaxMemberCount() + 1);
                     Util.sendColoredMessage(bukkitPlayer, thisLangSection.getString("points.success"), new Placeholder.Builder()
-                            .addInner("OLD", String.valueOf(oldMaxMemberCount))
-                            .addInner("NEW", String.valueOf(oldMaxMemberCount + 1)).build());
+                            .addInner("old", String.valueOf(oldMaxMemberCount))
+                            .addInner("new", String.valueOf(oldMaxMemberCount + 1)).build());
 
                     new BukkitRunnable() {
                         @Override

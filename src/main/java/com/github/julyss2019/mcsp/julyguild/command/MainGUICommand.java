@@ -11,8 +11,8 @@ import org.bukkit.entity.Player;
 import java.util.Map;
 
 public class MainGUICommand implements JulyTabCommand {
-    private JulyGuild plugin = JulyGuild.getInstance();
-    private GuildPlayerManager guildPlayerManager = plugin.getGuildPlayerManager();
+    private final JulyGuild plugin = JulyGuild.getInstance();
+    private final GuildPlayerManager guildPlayerManager = plugin.getGuildPlayerManager();
     private static final Map<String, String[]> tabMap = new MapBuilder<String, String[]>()
             .put("main", null).build();
 

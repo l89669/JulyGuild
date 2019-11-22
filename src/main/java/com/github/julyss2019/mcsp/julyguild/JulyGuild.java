@@ -14,11 +14,11 @@ import com.github.julyss2019.mcsp.julyguild.listener.GUIListener;
 import com.github.julyss2019.mcsp.julyguild.listener.GuildShopListener;
 import com.github.julyss2019.mcsp.julyguild.listener.TpAllListener;
 import com.github.julyss2019.mcsp.julyguild.log.GuildLog;
+import com.github.julyss2019.mcsp.julyguild.log.guild.GuildCreateLog;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayerManager;
 import com.github.julyss2019.mcsp.julyguild.task.RequestCleanTask;
 import com.github.julyss2019.mcsp.julyguild.thirdparty.economy.PlayerPointsEconomy;
-import com.github.julyss2019.mcsp.julyguild.thirdparty.economy.ThirdPartyEconomy;
 import com.github.julyss2019.mcsp.julyguild.thirdparty.economy.VaultEconomy;
 import com.github.julyss2019.mcsp.julyguild.util.Util;
 import com.github.julyss2019.mcsp.julylibrary.chat.JulyChatInterceptor;
@@ -32,7 +32,6 @@ import com.google.gson.Gson;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.milkbowl.vault.economy.Economy;
 import org.black_ixx.playerpoints.PlayerPoints;
-import org.black_ixx.playerpoints.PlayerPointsAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -47,7 +46,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
+import java.util.UUID;
 
+/**
+ * 强制依赖：JulyLibrary, Vault
+ * 软依赖：PlaceholderAPI, PlayerPoints
+ */
 public class JulyGuild extends JavaPlugin {
     private final boolean CODING = true;
     private static JulyGuild instance;
@@ -64,7 +68,8 @@ public class JulyGuild extends JavaPlugin {
 
     private JulyCommandExecutor julyCommandExecutor;
     private JulyTabCompleter julyTabCompleter;
-    private ThirdPartyEconomy vaultEconomy, playerPointsEconomy;
+    private VaultEconomy vaultEconomy;
+    private PlayerPointsEconomy playerPointsEconomy;
     private FileLogger fileLogger;
     private PluginManager pluginManager;
 
@@ -163,6 +168,8 @@ public class JulyGuild extends JavaPlugin {
         Util.sendColoredConsoleMessage("载入了 " + iconShopConfig.getIcons().size() + "个 图标商店物品.");
         Util.sendColoredConsoleMessage("载入了 " + guildShopConfig.getShopItems().size() + "个 公会商店物品.");
         Util.sendColoredConsoleMessage("插件初始化完毕.");
+
+        writeGuildLog(FileLogger.LoggerLevel.INFO, new GuildCreateLog(UUID.randomUUID().toString(), "w", "w"));
     }
 
     public void onDisable() {
@@ -399,11 +406,11 @@ public class JulyGuild extends JavaPlugin {
         return guiYamlConfig;
     }
 
-    public ThirdPartyEconomy getVaultEconomy() {
+    public VaultEconomy getVaultEconomy() {
         return vaultEconomy;
     }
 
-    public ThirdPartyEconomy getPlayerPointsEconomy() {
+    public PlayerPointsEconomy getPlayerPointsEconomy() {
         return playerPointsEconomy;
     }
 

@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ReloadCommand implements JulyTabCommand {
-    private static JulyGuild plugin = JulyGuild.getInstance();
+    private JulyGuild plugin = JulyGuild.getInstance();
     private static final Map<String, String[]> tabMap = new MapBuilder<String, String[]>()
             .put("reload", null).build();
 

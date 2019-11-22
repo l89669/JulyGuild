@@ -1,6 +1,17 @@
 VERSION: 2.0.0
 # 是否开启数据统计
 metrics_enabled: true
+papi:
+  # 没有可供显示的字符串时显示的字符串
+  non_str: '-'
+# gui设置
+gui:
+  # 默认
+  default:
+    # 是否默认使用插件内部变量
+    use_guild_placehoders: true
+    # 是否默认使用PAPI
+    use_papi: false
 guild:
   default_icon:
     material: APPLE

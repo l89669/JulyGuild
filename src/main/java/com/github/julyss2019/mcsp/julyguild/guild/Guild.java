@@ -3,10 +3,9 @@ package com.github.julyss2019.mcsp.julyguild.guild;
 import com.github.julyss2019.mcsp.julyguild.JulyGuild;
 import com.github.julyss2019.mcsp.julyguild.config.setting.MainSettings;
 import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
-import com.github.julyss2019.mcsp.julyguild.guild.player.GuildAdmin;
 import com.github.julyss2019.mcsp.julyguild.guild.player.GuildMember;
 import com.github.julyss2019.mcsp.julyguild.guild.player.GuildOwner;
-import com.github.julyss2019.mcsp.julyguild.guild.player.Permission;
+import com.github.julyss2019.mcsp.julyguild.guild.player.Position;
 import com.github.julyss2019.mcsp.julyguild.guild.request.BaseGuildRequest;
 import com.github.julyss2019.mcsp.julyguild.guild.request.GuildRequest;
 import com.github.julyss2019.mcsp.julyguild.guild.request.GuildRequestType;
@@ -27,7 +26,6 @@ import java.util.stream.Collectors;
 
 public class Guild {
     private final JulyGuild plugin = JulyGuild.getInstance();
-    private final YamlConfiguration guiYaml = plugin.getGuiYamlConfig();
     private final GuildPlayerManager guildPlayerManager = plugin.getGuildPlayerManager();
     private final GuildManager guildManager = plugin.getGuildManager();
 
@@ -51,7 +49,7 @@ public class Guild {
 
     private final OwnedIcon DEFAULT_ICON;
 
-    protected Guild(File file) {
+    Guild(File file) {
         this.file = file;
         this.DEFAULT_ICON = OwnedIcon.createNew(Material.valueOf(MainSettings.getDefaultIconMaterial())
                 , MainSettings.getDefaultIconData(), MainSettings.getDefaultIconFirstLore());
@@ -242,27 +240,20 @@ public class Guild {
 
 
     public void loadMember(String memberName) {
-        Permission permission = Permission.valueOf(yml.getString("members." + memberName + ".permission"));
+        Position position = Position.valueOf(yml.getString("members." + memberName + ".position"));
         GuildPlayer guildPlayer = guildPlayerManager.getGuildPlayer(memberName);
 
-        switch (permission) {
-            case MEMBER:
-                memberMap.put(memberName, new GuildMember(this, guildPlayer));
-                break;
-            case ADMIN:
-                memberMap.put(memberName, new GuildAdmin(this, guildPlayer));
-                break;
-        }
+        memberMap.put(memberName, new GuildMember(this, guildPlayer));
     }
 
-    public void setMemberPermission(GuildMember guildMember, Permission permission) {
+    public void setMemberPermission(GuildMember guildMember, Position position) {
         String memberName = guildMember.getName();
 
         if (!memberMap.containsKey(memberName)) {
             throw new IllegalArgumentException("成员不存在");
         }
 
-        yml.set("members." + memberName + ".permission", permission.name());
+        yml.set("members." + memberName + ".position", position.name());
         save();
         memberMap.remove(memberName);
         loadMember(memberName);
@@ -355,7 +346,7 @@ public class Guild {
     }
 
     public List<GuildMember> getSortedMembers() {
-        return getMembers().stream().sorted((o1, o2) -> o1.getPermission().getLevel() > o2.getPermission().getLevel() ? -1 : 0).collect(Collectors.toList());
+        return getMembers().stream().sorted((o1, o2) -> o1.getPosition().getLevel() > o2.getPosition().getLevel() ? -1 : 0).collect(Collectors.toList());
     }
 
     /**
@@ -369,7 +360,7 @@ public class Guild {
             throw new IllegalArgumentException("成员已存在");
         }
 
-        yml.set("members." + playerName + ".permission", Permission.MEMBER.name());
+        yml.set("members." + playerName + ".permission", Position.MEMBER.name());
         yml.set("members." + playerName + ".join_time", System.currentTimeMillis());
         YamlUtil.saveYaml(yml, file);
         guildPlayer.setGuild(this);
@@ -567,7 +558,7 @@ public class Guild {
         return announcements;
     }
 
-    public YamlConfiguration getYml() {
+    public YamlConfiguration getYaml() {
         return yml;
     }
 
