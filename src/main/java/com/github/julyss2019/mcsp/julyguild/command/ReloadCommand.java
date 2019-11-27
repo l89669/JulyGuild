@@ -4,6 +4,7 @@ import com.github.julyss2019.mcsp.julyguild.JulyGuild;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
 import com.github.julyss2019.mcsp.julyguild.util.Util;
 import com.github.julyss2019.mcsp.julylibrary.command.tab.JulyTabCommand;
+import com.github.julyss2019.mcsp.julylibrary.command.tab.TabCompleter;
 import com.github.julyss2019.mcsp.julylibrary.map.MapBuilder;
 import org.bukkit.command.CommandSender;
 
@@ -11,9 +12,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ReloadCommand implements JulyTabCommand {
-    private JulyGuild plugin = JulyGuild.getInstance();
-    private static final Map<String, String[]> tabMap = new MapBuilder<String, String[]>()
-            .put("reload", null).build();
+    private final JulyGuild plugin = JulyGuild.getInstance();
+    private final TabCompleter tabCompleter = new TabCompleter.Builder().command(this).build();
 
     @Override
     public boolean onCommand(CommandSender cs, String[] args) {
@@ -45,7 +45,7 @@ public class ReloadCommand implements JulyTabCommand {
     }
 
     @Override
-    public Map<String, String[]> getTabCompleterMap() {
-        return tabMap;
+    public TabCompleter getTabCompleter() {
+        return tabCompleter;
     }
 }

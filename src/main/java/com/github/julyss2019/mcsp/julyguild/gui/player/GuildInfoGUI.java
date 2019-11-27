@@ -12,7 +12,6 @@ import com.github.julyss2019.mcsp.julyguild.util.Util;
 import com.github.julyss2019.mcsp.julylibrary.inventory.InventoryBuilder;
 import com.github.julyss2019.mcsp.julylibrary.inventory.ItemListener;
 import com.github.julyss2019.mcsp.julylibrary.item.ItemBuilder;
-import com.github.julyss2019.mcsp.julylibrary.item.SkullItemBuilder;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -24,6 +23,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+/**
+ * 查看公会成员，申请加入公会
+ */
 public class GuildInfoGUI extends BasePlayerGUI {
     private Player bukkitPlayer;
     private Guild guild;
@@ -43,7 +45,6 @@ public class GuildInfoGUI extends BasePlayerGUI {
         build();
     }
 
-
     public void build() {
 
         List<String> memberLores = new ArrayList<>();
@@ -58,8 +59,7 @@ public class GuildInfoGUI extends BasePlayerGUI {
         }
 
         InventoryBuilder inventoryBuilder = new InventoryBuilder().title("&f" + guild.getName()).colored().row(3)
-                .item(1, 3, new SkullItemBuilder()
-                        .owner("Notch")
+                .item(1, 3, new ItemBuilder()
                         .displayName("&f宗门成员")
                         .addLore("&b>> &a点击查看详细信息")
                         .addLore("")

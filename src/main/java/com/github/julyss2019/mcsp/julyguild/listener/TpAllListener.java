@@ -8,7 +8,7 @@ import com.github.julyss2019.mcsp.julyguild.request.player.PlayerRequestType;
 import com.github.julyss2019.mcsp.julyguild.request.player.TpRequest;
 import com.github.julyss2019.mcsp.julyguild.util.Util;
 import com.github.julyss2019.mcsp.julylibrary.message.JulyMessage;
-import com.github.julyss2019.mcsp.julylibrary.message.TitleBuilder;
+import com.github.julyss2019.mcsp.julylibrary.message.Title;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -39,7 +39,7 @@ public class TpAllListener implements Listener {
             if (System.currentTimeMillis() - lastSneakMap.getOrDefault(playerName, 0L) < MainSettings.getTpAllShiftCountInterval()) {
                 sneakCounterMap.put(playerName, sneakCounterMap.getOrDefault(playerName, 0) + 1);
 
-                JulyMessage.sendTitle(player, new TitleBuilder().text("&c再按" + (MainSettings.getTpAllShiftCount() - sneakCounterMap.get(playerName)) + "次").colored().build());
+                JulyMessage.sendTitle(player, new Title.Builder().text("&c再按" + (MainSettings.getTpAllShiftCount() - sneakCounterMap.get(playerName)) + "次").colored().build());
             }
 
             lastSneakMap.put(playerName, System.currentTimeMillis());
@@ -47,7 +47,7 @@ public class TpAllListener implements Listener {
             if (sneakCounterMap.getOrDefault(playerName, 0) == MainSettings.getTpAllShiftCount()) {
                 guildPlayer.removeRequest(tpRequest.getUUID().toString());
                 player.teleport(tpRequest.getLocation());
-                JulyMessage.sendTitle(player, new TitleBuilder().text("&a已传送").colored().build());
+                JulyMessage.sendTitle(player, new Title.Builder().text("&a已传送").colored().build());
 
                 GuildPlayer requester = tpRequest.getRequester();
 

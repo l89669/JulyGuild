@@ -67,6 +67,11 @@ public abstract class PageableGUI implements GUI {
     }
 
     @Override
+    public void reopen() {
+
+    }
+
+    @Override
     public GUIType getType() {
         return guiType;
     }

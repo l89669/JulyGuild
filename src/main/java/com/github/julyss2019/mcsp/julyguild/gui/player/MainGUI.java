@@ -103,7 +103,9 @@ public class MainGUI extends BasePlayerPageableGUI {
                 public void onClicked(InventoryClickEvent event) {
                     close();
                     Util.sendColoredMessage(bukkitPlayer, thisLangSection.getString("create.input.tip"), new Placeholder.Builder().addInner("cancel_str", MainSettings.getCreateInputCancelStr()).build());
-                    new ChatInterceptor.Builder(playerName, plugin)
+                    new ChatInterceptor.Builder()
+                            .plugin(plugin)
+                            .player(bukkitPlayer)
                             .onlyFirst(true)
                             .timeout(MainSettings.getCreateInputWaitSec())
                             .chatListener(new ChatListener() {

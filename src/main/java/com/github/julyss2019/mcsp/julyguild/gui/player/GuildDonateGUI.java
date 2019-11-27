@@ -124,7 +124,10 @@ public class GuildDonateGUI extends BaseMemberGUI {
                 Util.sendColoredMessage(bukkitPlayer, thisLangSection.getString("money.input.message"), new Placeholder.Builder()
                         .addInner("cancel_string", MainSettings.getDonateInputCancelString()).build());
 
-                new ChatInterceptor.Builder(bukkitPlayer, plugin).timeout(MainSettings.getDonateInputWaitSecond()).onlyFirst(true).chatListener(new ChatListener() {
+                new ChatInterceptor.Builder()
+                        .player(bukkitPlayer)
+                        .plugin(plugin)
+                        .timeout(MainSettings.getDonateInputWaitSecond()).onlyFirst(true).chatListener(new ChatListener() {
                     @Override
                     public void onChat(AsyncPlayerChatEvent event) {
                         String message = event.getMessage();
@@ -167,7 +170,10 @@ public class GuildDonateGUI extends BaseMemberGUI {
                     Util.sendColoredMessage(bukkitPlayer, thisLangSection.getString("points.input.message"), new Placeholder.Builder()
                             .addInner("cancel_string", MainSettings.getDonateInputCancelString()).build());
 
-                    new ChatInterceptor.Builder(bukkitPlayer, plugin).timeout(MainSettings.getDonateInputWaitSecond()).onlyFirst(true).chatListener(new ChatListener() {
+                    new ChatInterceptor.Builder()
+                            .plugin(plugin)
+                            .player(bukkitPlayer)
+                            .timeout(MainSettings.getDonateInputWaitSecond()).onlyFirst(true).chatListener(new ChatListener() {
                         @Override
                         public void onChat(AsyncPlayerChatEvent event) {
                             String message = event.getMessage();

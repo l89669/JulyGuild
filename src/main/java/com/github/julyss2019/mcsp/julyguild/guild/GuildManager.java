@@ -68,7 +68,7 @@ public class GuildManager {
 
         // 触发 Bukkit 事件
         Bukkit.getPluginManager().callEvent(new GuildCreateEvent(getGuild(uuid), owner));
-        plugin.writeGuildLog(FileLogger.LoggerLevel.INFO, new GuildCreateLog(uuid, guildName, owner.getName()));
+        plugin.writeGuildLog(new GuildCreateLog(uuid, guildName, owner.getName()));
     }
 
     public int getGuildCount() {

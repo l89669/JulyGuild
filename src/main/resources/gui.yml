@@ -1,9 +1,9 @@
 # 使用指南：
-# 如果你想关闭某个功能，在物品项中添加一行 enabled: false 即可，届时图标也不会显示
-# 如果你要在物品或GUI中使用papi变量，添加一行 use_papi: true 即可
+# 如果你想关闭某个功能，在物品项中添加一行 enabled: false 即可，届时图标也不会显示。
+# 如果你要在物品或GUI中使用papi变量，添加一行 use_papi: true 即可。
+# 如果你想使用插件内部的变量，添加一行 use_guild_placehoders: true。
 # 在 gui.yml 中，被 {} 包括的是插件内部的占位符，被 %% 包括的是PAPI占位符
 
-# 如果你想使用插件内部的变量，添加一行 use_guild_placehoders: true
 # 插件内部变量表
 # {guild_name} 公会名
 # {guild_ranking} 公会排名
@@ -13,7 +13,9 @@
 # {guild_member_count} 公会玩家数量
 # {guild_max_member_count} 公会最大玩家数量
 # {guild_creation_time} 公会创建时间
+# {guild_announcement_1} 公会公告第一条
 
+# 配置文件版本号，禁止人为改动
 VERSION: 2.0.0
 MainGUI:
   row: 6

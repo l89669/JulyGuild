@@ -27,7 +27,6 @@ import com.github.julyss2019.mcsp.julylibrary.command.tab.JulyTabCommand;
 import com.github.julyss2019.mcsp.julylibrary.command.tab.JulyTabCompleter;
 import com.github.julyss2019.mcsp.julylibrary.config.JulyConfig;
 import com.github.julyss2019.mcsp.julylibrary.logger.FileLogger;
-import com.github.julyss2019.mcsp.julylibrary.logger.JulyFileLogger;
 import com.google.gson.Gson;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.milkbowl.vault.economy.Economy;
@@ -108,7 +107,9 @@ public class JulyGuild extends JavaPlugin {
             Util.sendColoredConsoleMessage("bStats统计: 已启用.");
         }
 
-        this.fileLogger = JulyFileLogger.getLogger(new File(getDataFolder(), "logs"), null, 5);
+        this.fileLogger = new FileLogger.Builder()
+                .loggerFolder(new File(getDataFolder(), "logs"))
+                .fileName("%d{yyyy-MM-dd}.log").build();
         this.julyCommandExecutor = new JulyCommandExecutor();
         this.julyTabCompleter = new JulyTabCompleter();
         this.guildPlayerManager = new GuildPlayerManager();
@@ -168,8 +169,6 @@ public class JulyGuild extends JavaPlugin {
         Util.sendColoredConsoleMessage("载入了 " + iconShopConfig.getIcons().size() + "个 图标商店物品.");
         Util.sendColoredConsoleMessage("载入了 " + guildShopConfig.getShopItems().size() + "个 公会商店物品.");
         Util.sendColoredConsoleMessage("插件初始化完毕.");
-
-        writeGuildLog(FileLogger.LoggerLevel.INFO, new GuildCreateLog(UUID.randomUUID().toString(), "w", "w"));
     }
 
     public void onDisable() {
@@ -206,8 +205,8 @@ public class JulyGuild extends JavaPlugin {
         pluginManager.registerEvents(new GuildShopListener(), this);
     }
 
-    public void writeGuildLog(FileLogger.LoggerLevel loggerLevel, GuildLog log) {
-        fileLogger.log(loggerLevel, gson.toJson(log));
+    public void writeGuildLog(GuildLog log) {
+        fileLogger.i(gson.toJson(log));
     }
 
     public FileLogger getFileLogger() {

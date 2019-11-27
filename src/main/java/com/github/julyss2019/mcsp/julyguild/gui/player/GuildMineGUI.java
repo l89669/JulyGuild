@@ -11,8 +11,8 @@ import com.github.julyss2019.mcsp.julyguild.guild.player.GuildMember;
 import com.github.julyss2019.mcsp.julyguild.guild.player.Position;
 import com.github.julyss2019.mcsp.julyguild.placeholder.Placeholder;
 import com.github.julyss2019.mcsp.julyguild.util.Util;
+import com.github.julyss2019.mcsp.julylibrary.chat.ChatInterceptor;
 import com.github.julyss2019.mcsp.julylibrary.chat.ChatListener;
-import com.github.julyss2019.mcsp.julylibrary.chat.JulyChatFilter;
 import com.github.julyss2019.mcsp.julylibrary.inventory.ItemListener;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -113,24 +113,26 @@ public class GuildMineGUI extends BaseMemberGUI {
                     Util.sendColoredMessage(bukkitPlayer, thisLangSection.getString("dismiss.confirm"), new Placeholder.Builder()
                     .add("{WAIT}", MainSettings.getDismissWait())
                     .add("{CONFIRM_STR}", MainSettings.getDismissConfirmStr()).build());
-                    JulyChatFilter.registerChatFilter(bukkitPlayer, new ChatListener() {
-                        @Override
-                        public void onChat(AsyncPlayerChatEvent event) {
-                            JulyChatFilter.unregisterChatFilter(bukkitPlayer);
+                    new ChatInterceptor.Builder()
+                            .player(bukkitPlayer)
+                            .plugin(plugin)
+                            .timeout(MainSettings.getDismissWait())
+                            .chatListener(new ChatListener() {
+                                @Override
+                                public void onChat(AsyncPlayerChatEvent event) {
+                                    if (event.getMessage().equalsIgnoreCase(MainSettings.getDismissConfirmStr())) {
+                                        guild.delete();
+                                        Util.sendColoredMessage(bukkitPlayer, thisLangSection.getString("dismiss.success"));
+                                    } else {
+                                        Util.sendColoredMessage(bukkitPlayer, thisLangSection.getString("dismiss.failed"));
+                                    }
+                                }
 
-                            if (event.getMessage().equalsIgnoreCase(MainSettings.getDismissConfirmStr())) {
-                                guild.delete();
-                                Util.sendColoredMessage(bukkitPlayer, thisLangSection.getString("dismiss.success"));
-                            } else {
-                                Util.sendColoredMessage(bukkitPlayer, thisLangSection.getString("dismiss.failed"));
-                            }
-                        }
-
-                        @Override
-                        public void onTimeout() {
-                            Util.sendColoredMessage(bukkitPlayer, thisLangSection.getString("dismiss.timeout"));
-                        }
-                    }, MainSettings.getDismissWait());
+                                @Override
+                                public void onTimeout(AsyncPlayerChatEvent event) {
+                                    Util.sendColoredMessage(bukkitPlayer, thisLangSection.getString("dismiss.timeout"));
+                                }
+                            }).build().register();
                 }
             });
         } else {
