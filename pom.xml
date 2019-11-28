@@ -9,6 +9,10 @@
     <version>RELEASE</version>
 
     <properties>
+        <!-- 防止中文乱码 -->
+        <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
         <mac_output>/Users/july_ss/Desktop/july_ss/mc_servers/1.12.2/plugins</mac_output>
         <win_output>G:\july_ss\mc_servers\1.12.2_paper\plugins</win_output>
     </properties>
@@ -33,7 +37,6 @@
                 <version>0.6.8</version>
                 <executions>
                     <execution>
-                        <phase>package</phase>
                         <goals>
                             <goal>instrument</goal>
                             <goal>tests-instrument</goal>
@@ -63,9 +66,10 @@
                 <executions>
                     <execution>
                         <id>make-assembly</id>
-                        <!-- bind to the packaging phase -->
+                        <!-- 绑定到 package 阶段 -->
                         <phase>package</phase>
                         <goals>
+                            <!-- 只运行一次 -->
                             <goal>single</goal>
                         </goals>
                     </execution>

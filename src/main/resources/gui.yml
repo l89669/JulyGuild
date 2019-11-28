@@ -1,7 +1,7 @@
 # 使用指南：
 # 如果你想关闭某个功能，在物品项中添加一行 enabled: false 即可，届时图标也不会显示。
 # 如果你要在物品或GUI中使用papi变量，添加一行 use_papi: true 即可。
-# 如果你想使用插件内部的变量，添加一行 use_guild_placehoders: true。
+# 如果你想使用插件内部的变量，添加一行 use_gp: true。
 # 在 gui.yml 中，被 {} 包括的是插件内部的占位符，被 %% 包括的是PAPI占位符
 
 # 插件内部变量表
@@ -35,7 +35,7 @@ MainGUI:
     _guild:
       material: STONE # 该 material 会被强制设置为公会图标
       use_papi: true
-      use_guild_placehoders: true
+      use_gp: true
       display_name: '&bNo.{guild_ranking} {guild_name}'
       lores:
         - ' &f会长: {guild_owner}'
@@ -346,3 +346,13 @@ GuildDonateGUI:
       index: 27
       material: BOOK
       display_name: '&f返回'
+GuildInfoGUI:
+  use_gp: true
+  title: '{guild_name}'
+  row: 3
+  items:
+    members:
+      index: 12
+      material: SKULL_ITEM
+    request_join:
+      index: 16

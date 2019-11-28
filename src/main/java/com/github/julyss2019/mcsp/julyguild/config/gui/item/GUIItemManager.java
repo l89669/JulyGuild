@@ -42,7 +42,7 @@ public class GUIItemManager {
         Guild guild = guildMember.getGuild();
         Placeholder finalPlaceholder;
 
-        if (section.getBoolean("use_guild_placehoders", false)) {
+        if (section.getBoolean("use_gp", false)) {
             finalPlaceholder = placeholderBuilder == null ? new Placeholder.Builder().addGuildPlaceholders(guild).build() : placeholderBuilder.addGuildPlaceholders(guild).build();
         } else {
             finalPlaceholder = placeholderBuilder == null ? null : placeholderBuilder.build();
@@ -78,7 +78,7 @@ public class GUIItemManager {
 
     /**
      * 得到索引物品
-     * 这个物品将根据配置文件中的 use_guild_placehoders 项 来确定是否为其添加内部公会变量
+     * 这个物品将根据配置文件中的 use_gp 项 来确定是否为其添加内部公会变量
      * @param section
      * @param guildMember
      * @return
@@ -89,7 +89,7 @@ public class GUIItemManager {
 
     /**
      * 得到索引物品
-     * 这个物品将根据配置文件中的 use_guild_placehoders 项 来确定是否为其添加内部公会变量
+     * 这个物品将根据配置文件中的 use_gp 项 来确定是否为其添加内部公会变量
      * @param section
      * @param guildMember
      * @param placeholderBuilder
@@ -99,12 +99,11 @@ public class GUIItemManager {
         Guild guild = guildMember.getGuild();
         Placeholder finalPlaceholder;
 
-        if (section.getBoolean("use_guild_placehoders", false)) {
+        if (section.getBoolean("use_gp", false)) {
             finalPlaceholder = placeholderBuilder == null ? new Placeholder.Builder().addGuildPlaceholders(guild).build() : placeholderBuilder.addGuildPlaceholders(guild).build();
         } else {
             finalPlaceholder = placeholderBuilder == null ? null : placeholderBuilder.build();
         }
-
 
         return getIndexItem(section, guildMember.getBukkitPlayer(), finalPlaceholder);
     }

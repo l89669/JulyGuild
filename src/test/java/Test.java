@@ -4,6 +4,7 @@ import com.github.julyss2019.mcsp.julyguild.util.Util;
 import com.scalified.tree.multinode.ArrayMultiTreeNode;
 import org.apache.commons.lang.StringEscapeUtils;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.Random;
 
@@ -15,6 +16,14 @@ public class Test {
 
     public static int random1(int min, int max) {
         return (int) (Math.random() * (max - min + 1) + min);
+    }
+
+    public static int get(String a, String b) {
+        return 1;
+    }
+
+    public static int get(File a, String b) {
+        return 1;
     }
 
     public static void main(String[] args) {

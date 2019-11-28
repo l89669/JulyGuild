@@ -22,19 +22,6 @@ public class PriorityConfigGUI {
             this.availablePositions = availablePositions;
         }
 
-        public Builder fromConfig(ConfigurationSection section, @Nullable Player papiPlayer) {
-            return fromConfig(section, papiPlayer, null, true);
-        }
-
-        public Builder fromConfig(ConfigurationSection section, @Nullable Player papiPlayer, @Nullable Placeholder placeholder) {
-            return fromConfig(section, papiPlayer, placeholder, true);
-        }
-
-        public Builder fromConfig(ConfigurationSection section, @Nullable Player papiPlayer, @Nullable Placeholder placeholder, boolean colored) {
-            super.fromConfig(section, papiPlayer, placeholder, colored);
-            return this;
-        }
-
         public Builder item(PriorityItem priorityItem) {
             this.priorityMap.put(priorityItem, null);
             return this;

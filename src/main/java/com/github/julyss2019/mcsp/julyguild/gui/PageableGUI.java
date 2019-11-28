@@ -68,7 +68,19 @@ public abstract class PageableGUI implements GUI {
 
     @Override
     public void reopen() {
+        close();
 
+        if (isValidPage(currentPage)) {
+            setCurrentPage(currentPage);
+        } else if (isValidPage(currentPage - 1) ){
+            setCurrentPage(currentPage - 1);
+        } else if (isValidPage(currentPage + 1)) {
+            setCurrentPage(currentPage + 1);
+        } else {
+            setCurrentPage(0);
+        }
+
+        open();
     }
 
     @Override

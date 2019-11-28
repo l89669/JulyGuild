@@ -1,8 +1,8 @@
 package com.github.julyss2019.mcsp.julyguild.gui.player;
 
-import com.github.julyss2019.mcsp.julyguild.gui.BasePlayerGUI;
-import com.github.julyss2019.mcsp.julyguild.gui.CommonItem;
-import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
+import com.github.julyss2019.mcsp.julyguild.JulyGuild;
+import com.github.julyss2019.mcsp.julyguild.config.gui.IndexConfigGUI;
+import com.github.julyss2019.mcsp.julyguild.gui.*;
 import com.github.julyss2019.mcsp.julyguild.guild.Guild;
 import com.github.julyss2019.mcsp.julyguild.guild.player.GuildMember;
 import com.github.julyss2019.mcsp.julyguild.guild.request.GuildRequestType;
@@ -13,6 +13,8 @@ import com.github.julyss2019.mcsp.julylibrary.inventory.InventoryBuilder;
 import com.github.julyss2019.mcsp.julylibrary.inventory.ItemListener;
 import com.github.julyss2019.mcsp.julylibrary.item.ItemBuilder;
 import org.bukkit.Material;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -27,25 +29,25 @@ import java.util.List;
  * 查看公会成员，申请加入公会
  */
 public class GuildInfoGUI extends BasePlayerGUI {
-    private Player bukkitPlayer;
-    private Guild guild;
-    private Inventory inventory;
-    private int lastPage;
+    private final GUI lastGUI;
+    private final Player bukkitPlayer;
+    private final Guild guild;
+    private final JulyGuild plugin = JulyGuild.getInstance();
+    private final ConfigurationSection thisGUISection = plugin.getGuiYamlConfig().getConfigurationSection("GuildInfoGUI");
 
     public GuildInfoGUI(GuildPlayer guildPlayer, Guild guild) {
-        this(guildPlayer, guild, 0);
+        this(guildPlayer, guild, null);
     }
 
-    public GuildInfoGUI(GuildPlayer guildPlayer, Guild guild, int lastPage) {
+    public GuildInfoGUI(GuildPlayer guildPlayer, Guild guild, MainGUI lastGUI) {
         super(GUIType.INFO, guildPlayer);
 
         this.bukkitPlayer = guildPlayer.getBukkitPlayer();
         this.guild = guild;
-        this.lastPage = lastPage;
-        build();
+        this.lastGUI = lastGUI;
     }
 
-    public void build() {
+/*    public void build() {
 
         List<String> memberLores = new ArrayList<>();
         List<GuildMember> guildMembers = guild.getSortedMembers();
@@ -130,10 +132,13 @@ public class GuildInfoGUI extends BasePlayerGUI {
         }
 
         this.inventory = inventoryBuilder.build();
-    }
+    }*/
 
     @Override
     public Inventory getGUI() {
-        return inventory;
+        IndexConfigGUI.Builder guiBuilder = new IndexConfigGUI.Builder()
+                .fromConfig(thisGUISection, bukkitPlayer);
+
+        return guiBuilder.build();
     }
 }

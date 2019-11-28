@@ -3,6 +3,8 @@ package com.github.julyss2019.mcsp.julyguild.config.gui;
 import com.github.julyss2019.mcsp.julyguild.JulyGuild;
 import com.github.julyss2019.mcsp.julyguild.config.gui.item.GUIItemManager;
 import com.github.julyss2019.mcsp.julyguild.config.gui.item.IndexItem;
+import com.github.julyss2019.mcsp.julyguild.guild.Guild;
+import com.github.julyss2019.mcsp.julyguild.guild.player.GuildMember;
 import com.github.julyss2019.mcsp.julyguild.placeholder.Placeholder;
 import com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderText;
 import com.github.julyss2019.mcsp.julyguild.util.Util;
@@ -15,7 +17,66 @@ import org.jetbrains.annotations.Nullable;
 
 public class IndexConfigGUI {
     public static class Builder extends InventoryBuilder {
+        /**
+         * 从配置文件载入相关设置
+         * 支持公会变量
+         * @param section
+         * @param guildMember 公会成员
+         * @return
+         */
+        public Builder fromConfig(ConfigurationSection section, GuildMember guildMember) {
+            return fromConfig(section, guildMember, null);
+        }
 
+        /**
+         * 从配置文件载入相关设置
+         * 支持公会变量
+         * @param section
+         * @param guildMember
+         * @param placeholderBuilder
+         * @return
+         */
+        public Builder fromConfig(ConfigurationSection section, GuildMember guildMember, @Nullable Placeholder.Builder placeholderBuilder) {
+            Placeholder finalPlaceholder;
+            Guild guild = guildMember.getGuild();
+
+            if (section.getBoolean("use_gp", false)) {
+                finalPlaceholder = placeholderBuilder == null ? new Placeholder.Builder().addGuildPlaceholders(guild).build() : placeholderBuilder.addGuildPlaceholders(guild).build();
+            } else {
+                finalPlaceholder = placeholderBuilder == null ? null : placeholderBuilder.build();
+            }
+
+            return fromConfig(section, guildMember.getBukkitPlayer(), finalPlaceholder);
+        }
+
+        /**
+         * 从配置载入相关设置
+         * @param section
+         * @param papiPlayer
+         * @return
+         */
+        public Builder fromConfig(ConfigurationSection section, @Nullable Player papiPlayer) {
+            return fromConfig(section, papiPlayer, null);
+        }
+
+        /**
+         * 从配置载入相关设置
+         * @param section
+         * @param papiPlayer
+         * @return
+         */
+        public Builder fromConfig(ConfigurationSection section, @Nullable Player papiPlayer, @Nullable Placeholder placeholder) {
+            return fromConfig(section, papiPlayer, placeholder, section.getBoolean("colored", true));
+        }
+
+        /**
+         * 从配置文件载入相关设置
+         * @param section
+         * @param papiPlayer
+         * @param placeholder
+         * @param colored
+         * @return
+         */
         public Builder fromConfig(ConfigurationSection section, @Nullable Player papiPlayer, @Nullable Placeholder placeholder, boolean colored) {
             row(section.getInt( "row"));
 
@@ -38,14 +99,6 @@ public class IndexConfigGUI {
             }
 
             return this;
-        }
-
-        public Builder fromConfig(ConfigurationSection section, @Nullable Player papiPlayer) {
-            return fromConfig(section, papiPlayer, null, true);
-        }
-
-        public Builder fromConfig(ConfigurationSection section, @Nullable Player papiPlayer, @Nullable Placeholder placeholder) {
-            return fromConfig(section, papiPlayer, placeholder, true);
         }
 
         private Builder setCustomItems(ConfigurationSection section, Player player) {
