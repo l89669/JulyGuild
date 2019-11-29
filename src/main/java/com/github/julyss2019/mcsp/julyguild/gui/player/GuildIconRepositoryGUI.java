@@ -108,7 +108,7 @@ public class GuildIconRepositoryGUI extends BaseMemberPageableGUI {
     }
 
     @Override
-    public Inventory getGUI() {
+    public Inventory getInventory() {
         return inventory;
     }
 }

@@ -40,7 +40,7 @@ public class GuildUpgradeGUI extends BaseMemberGUI {
     }
 
     @Override
-    public Inventory getGUI() {
+    public Inventory getInventory() {
         IndexConfigGUI.Builder guiBuilder = (IndexConfigGUI.Builder) new IndexConfigGUI.Builder()
                 .fromConfig(thisGUISection, bukkitPlayer)
                 .colored();

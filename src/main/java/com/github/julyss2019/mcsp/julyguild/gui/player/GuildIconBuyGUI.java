@@ -105,7 +105,7 @@ public class GuildIconBuyGUI extends BaseMemberGUI {
     }
 
     @Override
-    public Inventory getGUI() {
+    public Inventory getInventory() {
         return inventory;
     }
 }

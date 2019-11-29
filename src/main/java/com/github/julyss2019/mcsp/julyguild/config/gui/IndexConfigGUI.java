@@ -15,12 +15,15 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * 提供了各种方法：支持了PAPI变量，公会变量，内部变量
+ */
 public class IndexConfigGUI {
     public static class Builder extends InventoryBuilder {
         /**
          * 从配置文件载入相关设置
          * 支持公会变量
-         * @param section
+         * @param section 配置节点
          * @param guildMember 公会成员
          * @return
          */
@@ -31,14 +34,36 @@ public class IndexConfigGUI {
         /**
          * 从配置文件载入相关设置
          * 支持公会变量
-         * @param section
-         * @param guildMember
-         * @param placeholderBuilder
+         * @param section 配置节点
+         * @param guildMember 公会成员
+         * @param placeholderBuilder 内部占位符构造器
          * @return
          */
         public Builder fromConfig(ConfigurationSection section, GuildMember guildMember, @Nullable Placeholder.Builder placeholderBuilder) {
+            return fromConfig(section, guildMember.getBukkitPlayer(), guildMember.getGuild(), placeholderBuilder);
+        }
+
+        /**
+         * 从配置文件载入相关设置
+         * @param section 配置节点
+         * @param papiPlayer 玩家
+         * @param guild 公会
+         * @return
+         */
+        public Builder fromConfig(ConfigurationSection section, Player papiPlayer, Guild guild) {
+            return fromConfig(section, papiPlayer, guild, null);
+        }
+
+        /**
+         * 从配置文件载入相关设置
+         * @param section 配置节点
+         * @param papiPlayer 玩家
+         * @param guild 公会
+         * @param placeholderBuilder 内部占位符构造器
+         * @return
+         */
+        public Builder fromConfig(ConfigurationSection section, Player papiPlayer, Guild guild, @Nullable Placeholder.Builder placeholderBuilder) {
             Placeholder finalPlaceholder;
-            Guild guild = guildMember.getGuild();
 
             if (section.getBoolean("use_gp", false)) {
                 finalPlaceholder = placeholderBuilder == null ? new Placeholder.Builder().addGuildPlaceholders(guild).build() : placeholderBuilder.addGuildPlaceholders(guild).build();
@@ -46,23 +71,23 @@ public class IndexConfigGUI {
                 finalPlaceholder = placeholderBuilder == null ? null : placeholderBuilder.build();
             }
 
-            return fromConfig(section, guildMember.getBukkitPlayer(), finalPlaceholder);
+            return fromConfig(section, papiPlayer, finalPlaceholder);
         }
 
         /**
-         * 从配置载入相关设置
-         * @param section
-         * @param papiPlayer
+         * 从配置文件载入相关设置
+         * @param section 配置节点
+         * @param papiPlayer 玩家
          * @return
          */
-        public Builder fromConfig(ConfigurationSection section, @Nullable Player papiPlayer) {
-            return fromConfig(section, papiPlayer, null);
+        public Builder fromConfig(ConfigurationSection section, Player papiPlayer) {
+            return fromConfig(section, papiPlayer, (Placeholder) null);
         }
 
         /**
-         * 从配置载入相关设置
-         * @param section
-         * @param papiPlayer
+         * 从配置文件载入相关设置
+         * @param section 配置节点
+         * @param papiPlayer 玩家
          * @return
          */
         public Builder fromConfig(ConfigurationSection section, @Nullable Player papiPlayer, @Nullable Placeholder placeholder) {
@@ -71,10 +96,10 @@ public class IndexConfigGUI {
 
         /**
          * 从配置文件载入相关设置
-         * @param section
-         * @param papiPlayer
-         * @param placeholder
-         * @param colored
+         * @param section 配置节点
+         * @param papiPlayer 玩家
+         * @param placeholder 内部占位符
+         * @param colored 着色
          * @return
          */
         public Builder fromConfig(ConfigurationSection section, @Nullable Player papiPlayer, @Nullable Placeholder placeholder, boolean colored) {
@@ -117,7 +142,12 @@ public class IndexConfigGUI {
             return this;
         }
 
-
+        /**
+         * 应用索引物品
+         * @param item 物品
+         * @param itemListener 物品监听器
+         * @return
+         */
         public Builder item(@Nullable IndexItem item, ItemListener itemListener) {
             if (item != null) {
                 item(item.getIndex(), item.getItemBuilder().build(), itemListener);
@@ -126,6 +156,11 @@ public class IndexConfigGUI {
             return this;
         }
 
+        /**
+         * 应用索引物品
+         * @param item 物品
+         * @return
+         */
         public Builder item(@Nullable IndexItem item) {
             item(item, null);
             return this;

@@ -13,6 +13,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -21,9 +22,40 @@ import java.util.List;
 public class GUIItemManager {
     /**
      * 得到优先级物品
+     * @param section 配置节点
+     * @param papiPlayer 玩家
+     * @param guild 公会
+     * @return
+     */
+    public static PriorityItem getPriorityItem(ConfigurationSection section, Player papiPlayer, Guild guild) {
+        return getPriorityItem(section, papiPlayer, guild, null);
+    }
+
+    /**
+     * 得到优先级物品
+     * @param section 配置节点
+     * @param papiPlayer 玩家
+     * @param guild 公会
+     * @param placeholderBuilder 内部占位符构造器
+     * @return
+     */
+    public static PriorityItem getPriorityItem(ConfigurationSection section, Player papiPlayer, Guild guild, @Nullable Placeholder.Builder placeholderBuilder) {
+        Placeholder finalPlaceholder;
+
+        if (section.getBoolean("use_gp", false)) {
+            finalPlaceholder = placeholderBuilder == null ? new Placeholder.Builder().addGuildPlaceholders(guild).build() : placeholderBuilder.addGuildPlaceholders(guild).build();
+        } else {
+            finalPlaceholder = placeholderBuilder == null ? null : placeholderBuilder.build();
+        }
+
+        return getPriorityItem(section, papiPlayer, finalPlaceholder);
+    }
+
+    /**
+     * 得到优先级物品
      * 该物品支持插件内部占位符（由配置文件决定）
-     * @param section
-     * @param guildMember
+     * @param section 配置节点
+     * @param guildMember 公会成员
      * @return
      */
     public static PriorityItem getPriorityItem(ConfigurationSection section, GuildMember guildMember) {
@@ -33,13 +65,62 @@ public class GUIItemManager {
     /**
      * 得到优先级物品
      * 该物品支持插件内部占位符（由配置文件决定）
-     * @param section
-     * @param guildMember
-     * @param placeholderBuilder
+     * @param section 配置节点
+     * @param guildMember 公会成员
+     * @param placeholderBuilder 内部占位符构造器
      * @return
      */
     public static PriorityItem getPriorityItem(ConfigurationSection section, GuildMember guildMember, @Nullable Placeholder.Builder placeholderBuilder) {
-        Guild guild = guildMember.getGuild();
+
+
+        return getPriorityItem(section, guildMember.getBukkitPlayer(), guildMember.getGuild(), placeholderBuilder);
+    }
+
+    /**
+     * 得到优先级物品
+     * @param section 配置节点
+     * @param papiPlayer 玩家
+     * @return
+     */
+    public static PriorityItem getPriorityItem(ConfigurationSection section, Player papiPlayer) {
+        return getPriorityItem(section, papiPlayer, (Placeholder) null);
+    }
+
+    /**
+     * 得到优先级物品
+     * @param section 配置节点
+     * @param placeholder 内部占位符
+     * @param papiPlayer 玩家
+     * @return
+     */
+    public static PriorityItem getPriorityItem(ConfigurationSection section, Player papiPlayer, @Nullable Placeholder placeholder) {
+        if (!section.getBoolean("enabled", true)) {
+            return null;
+        }
+
+        return new PriorityItem(section.getInt("priority"), getItemBuilder(section, papiPlayer, placeholder));
+    }
+
+    /**
+     * 得到索引物品
+     * @param section 配置节点
+     * @param player 玩家
+     * @param guild 公会
+     * @return
+     */
+    public static IndexItem getIndexItem(ConfigurationSection section, Player player, Guild guild) {
+        return getIndexItem(section, player, guild, null);
+    }
+
+    /**
+     * 得到索引物品
+     * @param section 配置节点
+     * @param papiPlayer 玩家
+     * @param guild 公会
+     * @param placeholderBuilder 内部变量构造器
+     * @return
+     */
+    public static IndexItem getIndexItem(ConfigurationSection section, Player papiPlayer, Guild guild, @Nullable Placeholder.Builder placeholderBuilder) {
         Placeholder finalPlaceholder;
 
         if (section.getBoolean("use_gp", false)) {
@@ -48,32 +129,7 @@ public class GUIItemManager {
             finalPlaceholder = placeholderBuilder == null ? null : placeholderBuilder.build();
         }
 
-        return getPriorityItem(section, guildMember.getBukkitPlayer(), finalPlaceholder);
-    }
-
-    /**
-     * 得到优先级物品
-     * @param section
-     * @param player
-     * @return
-     */
-    public static PriorityItem getPriorityItem(ConfigurationSection section, Player player) {
-        return getPriorityItem(section, player, null);
-    }
-
-    /**
-     * 得到优先级物品
-     * @param section 配置
-     * @param placeholder 占位符
-     * @param player 玩家，用于PAPI
-     * @return
-     */
-    public static PriorityItem getPriorityItem(ConfigurationSection section, Player player, @Nullable Placeholder placeholder) {
-        if (!section.getBoolean("enabled", true)) {
-            return null;
-        }
-
-        return new PriorityItem(section.getInt("priority"), getItemBuilder(section, player, placeholder));
+        return getIndexItem(section, papiPlayer, finalPlaceholder);
     }
 
     /**
@@ -90,42 +146,35 @@ public class GUIItemManager {
     /**
      * 得到索引物品
      * 这个物品将根据配置文件中的 use_gp 项 来确定是否为其添加内部公会变量
-     * @param section
-     * @param guildMember
-     * @param placeholderBuilder
+     * @param section 配置节点
+     * @param guildMember 公会成员
+     * @param placeholderBuilder 内部占位符构造器
      * @return
      */
     public static IndexItem getIndexItem(ConfigurationSection section, GuildMember guildMember, @Nullable Placeholder.Builder placeholderBuilder) {
-        Guild guild = guildMember.getGuild();
-        Placeholder finalPlaceholder;
 
-        if (section.getBoolean("use_gp", false)) {
-            finalPlaceholder = placeholderBuilder == null ? new Placeholder.Builder().addGuildPlaceholders(guild).build() : placeholderBuilder.addGuildPlaceholders(guild).build();
-        } else {
-            finalPlaceholder = placeholderBuilder == null ? null : placeholderBuilder.build();
-        }
 
-        return getIndexItem(section, guildMember.getBukkitPlayer(), finalPlaceholder);
+        return getIndexItem(section, guildMember.getBukkitPlayer(), guildMember.getGuild(), placeholderBuilder);
     }
 
     /**
      * 得到索引物品
-     * @param section
-     * @param player
+     * @param section 配置节点
+     * @param player 玩家
      * @return
      */
-    public static IndexItem getIndexItem(ConfigurationSection section, @Nullable Player player) {
-        return getIndexItem(section, player, null);
+    public static IndexItem getIndexItem(ConfigurationSection section, Player player) {
+        return getIndexItem(section, player, (Placeholder) null);
     }
 
     /**
      * 得到索引物品
-     * @param section 配置
+     * @param section 配置节点
+     * @param papiPlayer 玩家
      * @param placeholder 占位符
-     * @param player 玩家，用于PAPI
      * @return
      */
-    public static IndexItem getIndexItem(ConfigurationSection section, @Nullable Player player,  @Nullable Placeholder placeholder) {
+    public static IndexItem getIndexItem(ConfigurationSection section, Player papiPlayer, @Nullable Placeholder placeholder) {
         if (!section.getBoolean("enabled", true)) {
             return null;
         }
@@ -134,30 +183,30 @@ public class GUIItemManager {
             throw new RuntimeException(section.getCurrentPath() + ".index 不合法");
         }
 
-        return new IndexItem(section.getInt("index") - 1, getItemBuilder(section, player, placeholder));
+        return new IndexItem(section.getInt("index") - 1, getItemBuilder(section, papiPlayer, placeholder));
     }
 
     /**
      * 得到 ItemBuilder
      * 这个 ItemBuilder 是否着色将由配置文件的 colored 节点确定，默认为 true
-     * @param section
-     * @param player
-     * @param placeholder
+     * @param section 配置节点
+     * @param papiPlayer 玩家
+     * @param placeholder 内部占位符
      * @return
      */
-    public static ItemBuilder getItemBuilder(ConfigurationSection section, @Nullable Player player, @Nullable Placeholder placeholder) {
-        return getItemBuilder(section, player, placeholder, section.getBoolean("colored", true));
+    public static ItemBuilder getItemBuilder(ConfigurationSection section, @Nullable Player papiPlayer, @Nullable Placeholder placeholder) {
+        return getItemBuilder(section, papiPlayer, placeholder, section.getBoolean("colored", true));
     }
 
     /**
      * 得到 ItemBuilder
      * @param section 配置
      * @param placeholder 占位符
-     * @param player 玩家，用于PAPI
+     * @param papiPlayer 玩家
      * @param colored 是否着色
      * @return
      */
-    public static ItemBuilder getItemBuilder(ConfigurationSection section, @Nullable Player player, @Nullable Placeholder placeholder, boolean colored) {
+    public static ItemBuilder getItemBuilder(ConfigurationSection section, @Nullable Player papiPlayer, @Nullable Placeholder placeholder, boolean colored) {
         ItemBuilder itemBuilder = new ItemBuilder();
 
         try {
@@ -174,19 +223,19 @@ public class GUIItemManager {
         boolean usePapi = section.getBoolean("use_papi");
 
         if (section.contains("display_name")) {
-            itemBuilder.displayName(replacePlaceholders(section.getString("display_name"), placeholder, !usePapi ? null : player));
+            itemBuilder.displayName(replacePlaceholders(section.getString("display_name"), placeholder, !usePapi ? null : papiPlayer));
         }
 
         if (section.contains("lores")) {
-            itemBuilder.lores(replacePlaceholders(section.getStringList("lores"), placeholder, !usePapi ? null : player));
+            itemBuilder.lores(replacePlaceholders(section.getStringList("lores"), placeholder, !usePapi ? null : papiPlayer));
         }
 
-        if (section.contains("skullOwner")) {
-            itemBuilder.skullOwner(placeholder == null ? section.getString("skull") : replacePlaceholders(section.getString("skull"), placeholder, !usePapi ? null : player));
+        if (section.contains("skull_owner")) {
+            itemBuilder.skullOwner(placeholder == null ? section.getString("skull_owner") : replacePlaceholders(section.getString("skull_owner"), placeholder, !usePapi ? null : papiPlayer));
         }
 
-        if (section.contains("skullTexture")) {
-            itemBuilder.skullTexture(placeholder == null ? section.getString("skullTexture") : replacePlaceholders(section.getString("skullTexture"), placeholder, !usePapi ? null : player));
+        if (section.contains("skull_texture")) {
+            itemBuilder.skullTexture(placeholder == null ? section.getString("skull_texture") : replacePlaceholders(section.getString("skull_texture"), placeholder, !usePapi ? null : papiPlayer));
         }
 
         if (section.contains("flags")) {
@@ -212,7 +261,7 @@ public class GUIItemManager {
      * @param player
      * @return
      */
-    private static String replacePlaceholders(String text, @Nullable Placeholder placeholder, @Nullable Player player) {
+    private static String replacePlaceholders(@NotNull String text, @Nullable Placeholder placeholder, @Nullable Player player) {
         String result = text;
 
         if (placeholder != null) {
@@ -233,7 +282,7 @@ public class GUIItemManager {
      * @param player
      * @return
      */
-    private static List<String> replacePlaceholders(List<String> list, @Nullable Placeholder placeholder, @Nullable Player player) {
+    private static List<String> replacePlaceholders(@NotNull List<String> list, @Nullable Placeholder placeholder, @Nullable Player player) {
         List<String> result = new ArrayList<>();
 
         for (String s : list) {

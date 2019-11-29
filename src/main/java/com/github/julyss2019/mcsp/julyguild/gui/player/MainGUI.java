@@ -51,7 +51,7 @@ public class MainGUI extends BasePlayerPageableGUI {
     }
 
     @Override
-    public Inventory getGUI() {
+    public Inventory getInventory() {
         IndexConfigGUI.Builder guiBuilder = (IndexConfigGUI.Builder) new IndexConfigGUI.Builder()
                 .fromConfig(thisGUISection, bukkitPlayer, new Placeholder.Builder()
                         .addInner("page", String.valueOf(getCurrentPage() + 1))
@@ -64,7 +64,7 @@ public class MainGUI extends BasePlayerPageableGUI {
 
                         if (guildIndexMap.containsKey(slot)) {
                             close();
-                            new GuildInfoGUI(guildPlayer, guildManager.getGuild(guildIndexMap.get(slot)), getCurrentPage()).open();
+                            new GuildInfoGUI(guildPlayer, guildManager.getGuild(guildIndexMap.get(slot)), MainGUI.this).open();
                         }
                     }
                 });

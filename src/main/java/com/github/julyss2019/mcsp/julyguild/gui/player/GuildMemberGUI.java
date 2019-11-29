@@ -8,6 +8,7 @@ import com.github.julyss2019.mcsp.julyguild.guild.Guild;
 import com.github.julyss2019.mcsp.julyguild.guild.player.GuildMember;
 import com.github.julyss2019.mcsp.julyguild.guild.player.Permission;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
+import com.github.julyss2019.mcsp.julyguild.util.Util;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -26,6 +27,7 @@ public class GuildMemberGUI extends BasePlayerPageableGUI {
     private final Guild guild;
     private final Player bukkitPlayer = getBukkitPlayer();
     private final List<GuildMember> guildMembers = new ArrayList<>();
+    private final List<Integer> positions = Util.getIntegerList(thisGUISection.getString("positions")); // 得到所有可供公会设置的位置
 
     public GuildMemberGUI(Guild guild, GuildMember guildMember) {
         this(guild, guildMember.getGuildPlayer());
@@ -55,7 +57,7 @@ public class GuildMemberGUI extends BasePlayerPageableGUI {
     }
 
     @Override
-    public Inventory getGUI() {
+    public Inventory getInventory() {
         IndexConfigGUI.Builder guiBuilder = new IndexConfigGUI.Builder()
                 .fromConfig(thisGUISection.getConfigurationSection(viewerType.name().toLowerCase()), bukkitPlayer);
 

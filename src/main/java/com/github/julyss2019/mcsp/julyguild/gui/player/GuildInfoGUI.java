@@ -2,6 +2,7 @@ package com.github.julyss2019.mcsp.julyguild.gui.player;
 
 import com.github.julyss2019.mcsp.julyguild.JulyGuild;
 import com.github.julyss2019.mcsp.julyguild.config.gui.IndexConfigGUI;
+import com.github.julyss2019.mcsp.julyguild.config.gui.item.GUIItemManager;
 import com.github.julyss2019.mcsp.julyguild.gui.*;
 import com.github.julyss2019.mcsp.julyguild.guild.Guild;
 import com.github.julyss2019.mcsp.julyguild.guild.player.GuildMember;
@@ -39,7 +40,7 @@ public class GuildInfoGUI extends BasePlayerGUI {
         this(guildPlayer, guild, null);
     }
 
-    public GuildInfoGUI(GuildPlayer guildPlayer, Guild guild, MainGUI lastGUI) {
+    public GuildInfoGUI(GuildPlayer guildPlayer, Guild guild, GUI lastGUI) {
         super(GUIType.INFO, guildPlayer);
 
         this.bukkitPlayer = guildPlayer.getBukkitPlayer();
@@ -135,9 +136,26 @@ public class GuildInfoGUI extends BasePlayerGUI {
     }*/
 
     @Override
-    public Inventory getGUI() {
+    public Inventory getInventory() {
         IndexConfigGUI.Builder guiBuilder = new IndexConfigGUI.Builder()
-                .fromConfig(thisGUISection, bukkitPlayer);
+                .fromConfig(thisGUISection, bukkitPlayer, guild)
+                .item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.request_join"), bukkitPlayer, guild), new ItemListener() {
+                    @Override
+                    public void onClick(InventoryClickEvent event) {
+
+                    }
+                }).item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.members"), bukkitPlayer, guild), new ItemListener() {
+                    @Override
+                    public void onClick(InventoryClickEvent event) {
+
+                    }
+                }).item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.back"), bukkitPlayer, guild), new ItemListener() {
+                    @Override
+                    public void onClick(InventoryClickEvent event) {
+                        close();
+                        lastGUI.reopen();
+                    }
+                });
 
         return guiBuilder.build();
     }

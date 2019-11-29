@@ -44,7 +44,7 @@ public class GuildDonateGUI extends BaseMemberGUI {
         }
 
         @Override
-        public Inventory getGUI() {
+        public Inventory getInventory() {
             double fee = donateAmount * (donateType == MONEY ? MainSettings.getDonateMoneyFee() : MainSettings.getDonatePointsFee());
             double exactlyDonateAmount = donateAmount - fee;
 
@@ -113,7 +113,7 @@ public class GuildDonateGUI extends BaseMemberGUI {
     }
 
     @Override
-    public Inventory getGUI() {
+    public Inventory getInventory() {
         IndexConfigGUI.Builder guiBuilder = new IndexConfigGUI.Builder()
                 .fromConfig(thisGUISection, bukkitPlayer);
 

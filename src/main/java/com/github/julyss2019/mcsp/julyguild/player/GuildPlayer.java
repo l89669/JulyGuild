@@ -39,6 +39,18 @@ public class GuildPlayer {
     }
 
     /**
+     * 关闭GUI
+     */
+    public void closeGUI() {
+        if (!isOnline()) {
+            throw new RuntimeException("离线状态下不能更新GUI");
+        }
+
+        setUsingGUI(null);
+        getBukkitPlayer().closeInventory();
+    }
+
+    /**
      * 设置当前使用的GUI
      * @param usingGUI
      */
