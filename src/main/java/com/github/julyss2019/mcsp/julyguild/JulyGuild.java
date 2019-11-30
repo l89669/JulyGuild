@@ -108,6 +108,7 @@ public class JulyGuild extends JavaPlugin {
         }
 
         this.fileLogger = new FileLogger.Builder()
+                .autoFlush(true)
                 .loggerFolder(new File(getDataFolder(), "logs"))
                 .fileName("%d{yyyy-MM-dd}.log").build();
         this.julyCommandExecutor = new JulyCommandExecutor();

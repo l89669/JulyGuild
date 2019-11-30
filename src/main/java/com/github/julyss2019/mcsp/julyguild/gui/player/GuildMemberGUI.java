@@ -13,7 +13,6 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 
-import javax.naming.ldap.PagedResultsControl;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -27,7 +26,7 @@ public class GuildMemberGUI extends BasePlayerPageableGUI {
     private final Guild guild;
     private final Player bukkitPlayer = getBukkitPlayer();
     private final List<GuildMember> guildMembers = new ArrayList<>();
-    private final List<Integer> positions = Util.getIntegerList(thisGUISection.getString("positions")); // 得到所有可供公会设置的位置
+    private final List<Integer> positions = Util.getRangeIntegerList(thisGUISection.getString("positions")); // 得到所有可供公会设置的位置
 
     public GuildMemberGUI(Guild guild, GuildMember guildMember) {
         this(guild, guildMember.getGuildPlayer());

@@ -81,7 +81,7 @@ public class GuildCreateGUI extends BasePlayerGUI {
                     return;
                 }
 
-                if (vaultEconomy.has(bukkitPlayer, MainSettings.getCreateCostMoneyAmount())) {
+                if (!vaultEconomy.has(bukkitPlayer, MainSettings.getCreateCostMoneyAmount())) {
                     Util.sendColoredMessage(bukkitPlayer, PlaceholderText.replacePlaceholders(thisLangSection.getString("money.not_enough"), new Placeholder.Builder()
                             .addInner("need", vaultEconomy.getBalance(bukkitPlayer) - MainSettings.getCreateCostMoneyAmount()).build()));
                     return;
@@ -107,11 +107,9 @@ public class GuildCreateGUI extends BasePlayerGUI {
                     return;
                 }
 
-                int playerPoints = playerPointsEconomy.getBalance(bukkitPlayer);
-
-                if (playerPoints < MainSettings.getCreateCostPointsAmount()) {
+                if (!playerPointsEconomy.has(bukkitPlayer, MainSettings.getCreateCostPointsAmount())) {
                     Util.sendColoredMessage(bukkitPlayer, PlaceholderText.replacePlaceholders(thisLangSection.getString("points.not_enough"), new Placeholder.Builder()
-                            .addInner("need", String.valueOf(MainSettings.getCreateCostPointsAmount() - playerPoints)).build()));
+                            .addInner("need", String.valueOf(playerPointsEconomy.getBalance(bukkitPlayer) - MainSettings.getCreateCostPointsAmount())).build()));
                     return;
                 }
 

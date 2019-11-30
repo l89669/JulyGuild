@@ -133,7 +133,7 @@ public class IndexConfigGUI {
                 if (keySection.isInt("index")) {
                     item(new IndexItem(section.getInt("index") - 1, GUIItemManager.getItemBuilder(keySection, player, null)));
                 } else {
-                    for (int index : Util.getIntegerList(keySection.getString("index"))) {
+                    for (int index : Util.getRangeIntegerList(keySection.getString("index"))) {
                         item(new IndexItem(index - 1, GUIItemManager.getItemBuilder(keySection, player, null)));
                     }
                 }

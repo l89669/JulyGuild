@@ -35,23 +35,23 @@ import java.util.*;
 public class MainGUI extends BasePlayerPageableGUI {
     private final JulyGuild plugin = JulyGuild.getInstance();
     private final GuildManager guildManager = plugin.getGuildManager();
-    private final List<Guild> guilds = new ArrayList<>();
     private final Player bukkitPlayer = guildPlayer.getBukkitPlayer();
     private final String playerName = bukkitPlayer.getName();
     private final ConfigurationSection thisGUISection = plugin.getGuiYamlConfig().getConfigurationSection("MainGUI");
     private final ConfigurationSection thisLangSection = plugin.getLangYamlConfig().getConfigurationSection("MainGUI");
-    private final List<Integer> positions = Util.getIntegerList(thisGUISection.getString("positions")); // 得到所有可供公会设置的位置
+    private final List<Guild> guilds = plugin.getCacheGuildManager().getSortedGuilds();
+    private final List<Integer> positions = Util.getRangeIntegerList(thisGUISection.getString("positions")); // 得到所有可供公会设置的位置
     private final int positionCount = positions.size();
-    private final Map<Integer, UUID> guildIndexMap = new HashMap<>();
+
 
     public MainGUI(GuildPlayer guildPlayer) {
         super(GUIType.MAIN, guildPlayer);
-
-        this.guilds.addAll(plugin.getCacheGuildManager().getSortedGuilds());
     }
 
     @Override
     public Inventory getInventory() {
+        final Map<Integer, UUID> guildIndexMap = new HashMap<>(); // slot 对应的公会uuid
+
         IndexConfigGUI.Builder guiBuilder = (IndexConfigGUI.Builder) new IndexConfigGUI.Builder()
                 .fromConfig(thisGUISection, bukkitPlayer, new Placeholder.Builder()
                         .addInner("page", String.valueOf(getCurrentPage() + 1))

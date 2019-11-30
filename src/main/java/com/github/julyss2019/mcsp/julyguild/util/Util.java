@@ -21,7 +21,7 @@ public class Util {
      * @param str 以 "," 作为分隔符的字符串 以 "-" 作为范围界定符的字符串 单个字符串
      * @return
      */
-    public static List<Integer> getIntegerList(String str) {
+    public static List<Integer> getRangeIntegerList(String str) {
         List<Integer> result = new ArrayList<>();
 
         try {

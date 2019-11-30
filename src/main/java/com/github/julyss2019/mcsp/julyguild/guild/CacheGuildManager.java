@@ -32,7 +32,7 @@ public class CacheGuildManager {
     }
 
     public List<Guild> getSortedGuilds() {
-        return sortedGuilds;
+        return new ArrayList<>(sortedGuilds);
     }
 
     public int getRanking(@NotNull Guild guild) {

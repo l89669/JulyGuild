@@ -153,7 +153,7 @@ public class GuildInfoGUI extends BasePlayerGUI {
                     @Override
                     public void onClick(InventoryClickEvent event) {
                         close();
-                        lastGUI.reopen();
+                        lastGUI.open();
                     }
                 });
 

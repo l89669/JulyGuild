@@ -39,27 +39,8 @@ public class GuildMineGUI extends BaseMemberGUI {
 
     @Override
     public Inventory getInventory() {
-        List<Integer> positions = new ArrayList<>(); // 可供填充的位置
-
-        try {
-            for (String configPosStr : thisGUISection.getString("positions").split(",")) {
-                String[] range = configPosStr.split("-"); // 范围界定符
-
-                if (range.length == 1) {
-                    positions.add(Integer.parseInt(range[0]));
-                } else if (range.length == 2) {
-                    for (int i = Integer.parseInt(range[0]); i <= Integer.parseInt(range[1]); i++) {
-                        positions.add(i);
-                    }
-                } else {
-                    throw new RuntimeException("位置不合法");
-                }
-            }
-        } catch (Exception e) {
-            throw new RuntimeException("位置不合法", e.getCause());
-        }
-
-        PriorityConfigGUI.Builder guiBuilder = (PriorityConfigGUI.Builder) new PriorityConfigGUI.Builder(positions)
+        PriorityConfigGUI.Builder guiBuilder = (PriorityConfigGUI.Builder) new PriorityConfigGUI.Builder()
+                .avaiablePositions(Util.getRangeIntegerList(thisGUISection.getString("positions")))
                 .fromConfig(thisGUISection, bukkitPlayer)
                 .item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.back"), bukkitPlayer), new ItemListener() {
                     @Override

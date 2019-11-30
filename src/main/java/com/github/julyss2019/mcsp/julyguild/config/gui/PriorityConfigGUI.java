@@ -3,6 +3,7 @@ package com.github.julyss2019.mcsp.julyguild.config.gui;
 import com.github.julyss2019.mcsp.julyguild.config.gui.item.PriorityItem;
 import com.github.julyss2019.mcsp.julyguild.placeholder.Placeholder;
 import com.github.julyss2019.mcsp.julylibrary.inventory.ItemListener;
+import org.apache.commons.lang3.Validate;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -18,8 +19,12 @@ public class PriorityConfigGUI {
         private List<Integer> availablePositions;
         private Map<PriorityItem, ItemListener> priorityMap = new HashMap<>();
 
-        public Builder(List<Integer> availablePositions) {
+        public Builder() {
+        }
+
+        public Builder avaiablePositions(List<Integer> availablePositions) {
             this.availablePositions = availablePositions;
+            return this;
         }
 
         public Builder item(PriorityItem priorityItem) {
@@ -34,6 +39,8 @@ public class PriorityConfigGUI {
 
         @Override
         public Inventory build() {
+            Validate.notNull(availablePositions, "availablePositions 未设置");
+
             if (availablePositions.size() < priorityMap.size()) {
                 throw new IllegalArgumentException("物品数量超过了可供设置的数量");
             }
