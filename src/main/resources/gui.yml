@@ -65,7 +65,7 @@ MainGUI:
       display_name: '&f我的公会'
       skull_texture: 'eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjU1ZmU2MDdiMDZiMTQwNTQxM2U2ZTI5OTljMmYzNjA0N2ZmNzhmZTc2Njk3MWMxMWIzOTIzNWY2MGUyMmEzZiJ9fX0='
       data: 3
-    pageable:
+    page_items:
       precious_page:
         have:
           index: 46
@@ -135,6 +135,10 @@ GuildCreateGUI:
         - ' &f拥有: {owned}个'
         - ' &f公会名: {name}'
         - ' &c点击支付'
+    back:
+      index: 27
+      material: ARROW
+      display_name: '&c返回'
 # 最重要的GUI,集成了所有功能
 # 该GUI除了 back 以外的物品都不允许自定义位置，将根据 positions 属性排序
 GuildMineGUI:
@@ -276,7 +280,7 @@ GuildMemberGUI:
           - ' &f公会: {guild_name}'
           - ' &f入会时间: {member_join_time}'
           - ' &c点击转到管理界面'
-      pageable:
+      page_items:
         precious_page:
           have:
             index: 46
@@ -329,7 +333,7 @@ GuildMemberGUI:
         display_name: '{member_name}'
         lores:
           - ' &f入会时间: {member_join_time}'
-      pageable:
+      page_items:
         precious_page:
           have:
             index: 46
@@ -379,7 +383,7 @@ GuildDonateGUI:
         back:
           index: 27
           display_name: '&f返回'
-          material: BOOK
+          material: ARROW
         confirm:
           index: 14
           material: GOLDEN_APPLE
@@ -394,7 +398,7 @@ GuildDonateGUI:
         back:
           index: 27
           display_name: '&f返回'
-          material: BOOK
+          material: ARROW
         confirm:
           index: 14
           material: GOLDEN_APPLE
@@ -424,7 +428,7 @@ GuildDonateGUI:
       display_name: '&f捐赠点券'
     back:
       index: 27
-      material: BOOK
+      material: ARROW
       display_name: '&f返回'
 GuildInfoGUI:
   use_gp: true
@@ -433,7 +437,7 @@ GuildInfoGUI:
   items:
     back:
       index: 27
-      material: BOOK
+      material: ARROW
       display_name: '&c返回'
     members:
       index: 12

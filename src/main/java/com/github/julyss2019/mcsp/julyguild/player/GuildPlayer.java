@@ -12,6 +12,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.IOException;
@@ -169,7 +170,7 @@ public class GuildPlayer {
         return JulyGuild.getInstance().getGuildManager().getGuild(yml.getString("guild"));
     }
 
-    public void setGuild(Guild guild) {
+    public void setGuild(@Nullable Guild guild) {
         yml.set("guild", guild == null ? null : guild.getUUID().toString());
         save();
     }

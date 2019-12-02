@@ -5,6 +5,7 @@ import com.github.julyss2019.mcsp.julyguild.config.gui.IndexConfigGUI;
 import com.github.julyss2019.mcsp.julyguild.config.gui.item.GUIItemManager;
 import com.github.julyss2019.mcsp.julyguild.config.setting.MainSettings;
 import com.github.julyss2019.mcsp.julyguild.gui.BasePlayerGUI;
+import com.github.julyss2019.mcsp.julyguild.gui.GUI;
 import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
 import com.github.julyss2019.mcsp.julyguild.guild.GuildManager;
 import com.github.julyss2019.mcsp.julyguild.placeholder.Placeholder;
@@ -25,6 +26,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * 公会创建GUI
@@ -44,8 +46,9 @@ public class GuildCreateGUI extends BasePlayerGUI {
     private final PlayerPointsEconomy playerPointsEconomy = plugin.getPlayerPointsEconomy();
     private final GuildManager guildManager = plugin.getGuildManager();
 
-    public GuildCreateGUI(GuildPlayer guildPlayer, String guildName) {
-        super(GUIType.CREATE, guildPlayer);
+
+    public GuildCreateGUI(GuildPlayer guildPlayer, String guildName, @Nullable GUI lastGUI) {
+        super(GUIType.CREATE, guildPlayer, lastGUI);
 
         this.bukkitPlayer = getBukkitPlayer();
         this.playerName = bukkitPlayer.getName();
@@ -63,6 +66,13 @@ public class GuildCreateGUI extends BasePlayerGUI {
                 if (noAction) {
                     Util.sendColoredMessage(bukkitPlayer, thisLangSection.getString("on_close"));
                 }
+            }
+        });
+
+        guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.back"), bukkitPlayer), new ItemListener() {
+            @Override
+            public void onClick(InventoryClickEvent event) {
+                back();
             }
         });
 
@@ -120,7 +130,8 @@ public class GuildCreateGUI extends BasePlayerGUI {
 
         // 建帮令
         guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.item"), bukkitPlayer,
-                new Placeholder.Builder().addInner("AMOUNT", String.valueOf(MainSettings.getCreateCostItemAmount()))
+                new Placeholder.Builder()
+                        .addInner("amount", String.valueOf(MainSettings.getCreateCostItemAmount()))
                         .addInner("owned", String.valueOf(PlayerUtil.getItemAmount(bukkitPlayer, itemStack -> ItemUtil.containsLore(itemStack, MainSettings.getCreateCostItemKeyLore()))))
                         .addInner("name", guildName)
                         .build()), new ItemListener() {

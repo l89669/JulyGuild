@@ -5,6 +5,7 @@ import com.github.julyss2019.mcsp.julyguild.config.gui.IndexConfigGUI;
 import com.github.julyss2019.mcsp.julyguild.config.gui.item.GUIItemManager;
 import com.github.julyss2019.mcsp.julyguild.config.setting.MainSettings;
 import com.github.julyss2019.mcsp.julyguild.gui.BaseMemberGUI;
+import com.github.julyss2019.mcsp.julyguild.gui.GUI;
 import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
 import com.github.julyss2019.mcsp.julyguild.guild.Guild;
 import com.github.julyss2019.mcsp.julyguild.guild.GuildBank;
@@ -18,6 +19,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.jetbrains.annotations.Nullable;
 import parsii.eval.Parser;
 import parsii.tokenizer.ParseException;
 
@@ -31,11 +33,11 @@ public class GuildUpgradeGUI extends BaseMemberGUI {
     private final ConfigurationSection thisGUISection = plugin.getGuiYamlConfig().getConfigurationSection("GuildUpgradeGUI");
     private final ConfigurationSection thisLangSection = plugin.getLangYamlConfig().getConfigurationSection("GuildUpgradeGUI");
 
-    public GuildUpgradeGUI(GuildMember guildMember) {
-        super(GUIType.PROMOTE, guildMember);
+    public GuildUpgradeGUI(GuildMember guildMember, @Nullable GUI lastGUI) {
+        super(GUIType.PROMOTE, guildMember, lastGUI);
 
         this.bukkitPlayer = getBukkitPlayer();
-        this.guild = getGuild();
+        this.guild = guildMember.getGuild();
         this.guildBank = guild.getGuildBank();
     }
 
@@ -48,7 +50,7 @@ public class GuildUpgradeGUI extends BaseMemberGUI {
         guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.back"), bukkitPlayer), new ItemListener() {
             @Override
             public void onClick(InventoryClickEvent event) {
-                new GuildMineGUI(guildMember).open();
+                back();
             }
         });
 

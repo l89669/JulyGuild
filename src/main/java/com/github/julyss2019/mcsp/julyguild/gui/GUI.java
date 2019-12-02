@@ -4,10 +4,14 @@ import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 
+import java.util.Optional;
+
 public interface GUI {
     GuildPlayer getGuildPlayer();
 
     Inventory getInventory();
+
+    GUIType getType();
 
     default Player getBukkitPlayer() {
         return getGuildPlayer().getBukkitPlayer();
@@ -26,6 +30,4 @@ public interface GUI {
         close();
         open();
     }
-
-    GUIType getType();
 }

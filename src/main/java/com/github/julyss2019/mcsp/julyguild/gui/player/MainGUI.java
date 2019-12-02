@@ -34,7 +34,6 @@ import java.util.*;
  */
 public class MainGUI extends BasePlayerPageableGUI {
     private final JulyGuild plugin = JulyGuild.getInstance();
-    private final GuildManager guildManager = plugin.getGuildManager();
     private final Player bukkitPlayer = guildPlayer.getBukkitPlayer();
     private final String playerName = bukkitPlayer.getName();
     private final ConfigurationSection thisGUISection = plugin.getGuiYamlConfig().getConfigurationSection("MainGUI");
@@ -44,14 +43,14 @@ public class MainGUI extends BasePlayerPageableGUI {
     private int guildSize;
 
     public MainGUI(GuildPlayer guildPlayer) {
-        super(GUIType.MAIN, guildPlayer);
+        super(GUIType.MAIN, guildPlayer, null);
     }
 
     @Override
     public Inventory getInventory() {
         List<Guild> guilds = plugin.getCacheGuildManager().getSortedGuilds();
         this.guildSize = guilds.size();
-        final Map<Integer, UUID> guildIndexMap = new HashMap<>(); // slot 对应的公会uuid
+        final Map<Integer, Guild> guildIndexMap = new HashMap<>(); // slot 对应的公会uuid
 
         IndexConfigGUI.Builder guiBuilder = (IndexConfigGUI.Builder) new IndexConfigGUI.Builder()
                 .fromConfig(thisGUISection, bukkitPlayer, new Placeholder.Builder()
@@ -65,13 +64,13 @@ public class MainGUI extends BasePlayerPageableGUI {
 
                         if (guildIndexMap.containsKey(slot)) {
                             close();
-                            new GuildInfoGUI(guildPlayer, guildManager.getGuild(guildIndexMap.get(slot)), MainGUI.this).open();
+                            new GuildInfoGUI(guildPlayer, guildIndexMap.get(slot), MainGUI.this).open();
                         }
                     }
                 });
 
 
-        guiBuilder.pageable(thisGUISection.getConfigurationSection("items.pageable"), this, bukkitPlayer);
+        guiBuilder.pageItems(thisGUISection.getConfigurationSection("items.page_items"), this, bukkitPlayer);
         guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.close"), bukkitPlayer), new ItemListener() {
             @Override
             public void onClick(InventoryClickEvent event) {
@@ -82,15 +81,15 @@ public class MainGUI extends BasePlayerPageableGUI {
         if (guildPlayer.isInGuild()) {
             guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.my_guild"), bukkitPlayer, new Placeholder.Builder().add("%PLAYER%", playerName).build()), new ItemListener() {
                 @Override
-                public void onClicked(InventoryClickEvent event) {
+                public void onClick(InventoryClickEvent event) {
                     close();
-                    new GuildMineGUI(guildPlayer.getGuild().getMember(guildPlayer)).open();
+                    new GuildMineGUI(guildPlayer.getGuild().getMember(guildPlayer), null).open();
                 }
             });
         } else {
             guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.create_guild"), bukkitPlayer), new ItemListener() {
                 @Override
-                public void onClicked(InventoryClickEvent event) {
+                public void onClick(InventoryClickEvent event) {
                     close();
                     Util.sendColoredMessage(bukkitPlayer, thisLangSection.getString("create.input.tip"), new Placeholder.Builder().addInner("cancel_str", MainSettings.getCreateInputCancelStr()).build());
                     new ChatInterceptor.Builder()
@@ -124,7 +123,7 @@ public class MainGUI extends BasePlayerPageableGUI {
                                         @Override
                                         public void run() {
                                             close();
-                                            new GuildCreateGUI(guildPlayer, guildName).open();
+                                            new GuildCreateGUI(guildPlayer, guildName, MainGUI.this).open();
                                         }
                                     }.runTaskLater(plugin, 1L);
                                 }
@@ -150,7 +149,7 @@ public class MainGUI extends BasePlayerPageableGUI {
                     .data(ownedIcon.getData())
                     .insertLore(0, ownedIcon.getFirstLore());
 
-            guildIndexMap.put(positions.get(i) - 1, guild.getUUID());
+            guildIndexMap.put(positions.get(i) - 1, guild);
             guiBuilder.item(positions.get(i) - 1, itemBuilder.build());
         }
 

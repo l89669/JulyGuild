@@ -16,7 +16,7 @@ public class GuildShopItemBuyGUI extends BaseMemberGUI {
     private boolean pointsEnabled;
 
     public GuildShopItemBuyGUI(GuildMember guildMember, ConfigGuildShopItem shopItem) {
-        super(GUIType.SHOP_BUY, guildMember);
+        super(GUIType.SHOP_BUY, guildMember, null);
 
         this.guildBank = guild.getGuildBank();
         this.shopItem = shopItem;

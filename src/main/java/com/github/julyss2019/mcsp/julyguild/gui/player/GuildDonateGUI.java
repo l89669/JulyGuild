@@ -5,6 +5,7 @@ import com.github.julyss2019.mcsp.julyguild.config.gui.IndexConfigGUI;
 import com.github.julyss2019.mcsp.julyguild.config.gui.item.GUIItemManager;
 import com.github.julyss2019.mcsp.julyguild.config.setting.MainSettings;
 import com.github.julyss2019.mcsp.julyguild.gui.BaseMemberGUI;
+import com.github.julyss2019.mcsp.julyguild.gui.GUI;
 import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
 import com.github.julyss2019.mcsp.julyguild.guild.GuildBank;
 import com.github.julyss2019.mcsp.julyguild.guild.GuildMember;
@@ -20,6 +21,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.inventory.Inventory;
+import org.jetbrains.annotations.Nullable;
 
 import static com.github.julyss2019.mcsp.julyguild.guild.GuildBank.BalanceType.MONEY;
 import static com.github.julyss2019.mcsp.julyguild.guild.GuildBank.BalanceType.POINTS;
@@ -35,8 +37,8 @@ public class GuildDonateGUI extends BaseMemberGUI {
         private final GuildBank.BalanceType donateType;
         private final int donateAmount;
 
-        public ConfirmGUI(GuildMember guildMember, GuildBank.BalanceType donateType, int donateAmount) {
-            super(GUIType.DONATE_CONFIRM, guildMember);
+        public ConfirmGUI(GuildMember guildMember, GuildBank.BalanceType donateType, int donateAmount, @Nullable GUI lastGUI) {
+            super(GUIType.DONATE_CONFIRM, guildMember, lastGUI);
 
             this.donateType = donateType;
             this.donateAmount = donateAmount;
@@ -92,8 +94,7 @@ public class GuildDonateGUI extends BaseMemberGUI {
             guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.back"), bukkitPlayer), new ItemListener() {
                 @Override
                 public void onClick(InventoryClickEvent event) {
-                    close();
-                    new GuildDonateGUI(guildMember).open();
+                back();
                 }
             });
 
@@ -108,8 +109,8 @@ public class GuildDonateGUI extends BaseMemberGUI {
     private final ConfigurationSection thisLangSection = plugin.getLangYamlConfig().getConfigurationSection("GuildDonateGUI");
     private final ConfigurationSection thisGUISection = plugin.getGuiYamlConfig().getConfigurationSection("GuildDonateGUI");
 
-    public GuildDonateGUI(GuildMember guildMember) {
-        super(GUIType.DONATE, guildMember);
+    public GuildDonateGUI(GuildMember guildMember, @Nullable GUI lastGUI) {
+        super(GUIType.DONATE, guildMember, lastGUI);
     }
 
     @Override
@@ -151,7 +152,7 @@ public class GuildDonateGUI extends BaseMemberGUI {
                             return;
                         }
 
-                        new GuildDonateGUI.ConfirmGUI(guildMember, MONEY, amount).open();
+                        new GuildDonateGUI.ConfirmGUI(guildMember, MONEY, amount, GuildDonateGUI.this).open();
                     }
 
                     @Override
@@ -200,7 +201,7 @@ public class GuildDonateGUI extends BaseMemberGUI {
                             }
 
                             // 打开确认GUI
-                            new GuildDonateGUI.ConfirmGUI(guildMember, POINTS, amount).open();
+                            new GuildDonateGUI.ConfirmGUI(guildMember, POINTS, amount, GuildDonateGUI.this).open();
                         }
 
                         @Override
@@ -216,7 +217,7 @@ public class GuildDonateGUI extends BaseMemberGUI {
             @Override
             public void onClick(InventoryClickEvent event) {
                 close();
-                new GuildMineGUI(guildMember).open();
+                new GuildMineGUI(guildMember, null).open();
             }
         });
 

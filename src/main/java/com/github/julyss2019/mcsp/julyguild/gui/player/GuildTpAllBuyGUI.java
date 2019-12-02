@@ -16,7 +16,7 @@ public class GuildTpAllBuyGUI extends BaseMemberGUI {
     private GuildBank guildBank;
 
     public GuildTpAllBuyGUI(GuildMember guildMember) {
-        super(GUIType.TP_ALL_BUY, guildMember);
+        super(GUIType.TP_ALL_BUY, guildMember, null);
 
         this.guild = guildPlayer.getGuild();
         this.guildBank = guild.getGuildBank();

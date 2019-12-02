@@ -19,7 +19,7 @@ public class GuildIconRepositoryGUI extends BaseMemberPageableGUI {
     private List<OwnedIcon> icons = new ArrayList<>();
 
     public GuildIconRepositoryGUI(GuildMember guildMember) {
-        super(GUIType.ICON_REPOSITORY, guildMember);
+        super(GUIType.ICON_REPOSITORY, guildMember, null);
 
         this.guild = guildPlayer.getGuild();
         setCurrentPage(0);

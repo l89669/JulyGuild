@@ -29,7 +29,7 @@ public class GuildIconBuyGUI extends BaseMemberGUI {
     private boolean moneyPayEnabled;
 
     public GuildIconBuyGUI(GuildMember guildMember, ConfigGuildIcon configGuildIcon) {
-        super(GUIType.ICON_SHOP_BUY, guildMember);
+        super(GUIType.ICON_SHOP_BUY, guildMember, null);
 
         this.guild = guildPlayer.getGuild();
         this.bukkitPlayer = guildPlayer.getBukkitPlayer();

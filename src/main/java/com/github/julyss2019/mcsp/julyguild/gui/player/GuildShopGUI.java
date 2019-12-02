@@ -9,7 +9,7 @@ public class GuildShopGUI extends BaseMemberPageableGUI {
     private Inventory inventory;
 
     public GuildShopGUI(GuildMember guildMember) {
-        super(GUIType.SHOP, guildMember);
+        super(GUIType.SHOP, guildMember, null);
 
 
     }

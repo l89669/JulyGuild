@@ -19,10 +19,9 @@ public class PriorityConfigGUI {
         private List<Integer> availablePositions;
         private Map<PriorityItem, ItemListener> priorityMap = new HashMap<>();
 
-        public Builder() {
-        }
+        public Builder() {}
 
-        public Builder avaiablePositions(List<Integer> availablePositions) {
+        public Builder availablePositions(List<Integer> availablePositions) {
             this.availablePositions = availablePositions;
             return this;
         }

@@ -18,5 +18,5 @@ public enum GUIType {
     CUSTOM,
     DONATE,
     DONATE_CONFIRM,
-    SHOP_BUY
+    SHOP_BUY,
 }

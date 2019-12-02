@@ -1,9 +1,19 @@
 package com.github.julyss2019.mcsp.julyguild.gui;
 
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
+import org.jetbrains.annotations.Nullable;
 
-public abstract class BasePlayerPageableGUI extends PageableGUI {
-    public BasePlayerPageableGUI(GUIType guiType, GuildPlayer guildPlayer) {
+public abstract class BasePlayerPageableGUI extends PageableGUI implements BackableGUI {
+    private final GUI lastGUI;
+
+    public BasePlayerPageableGUI(GUIType guiType, GuildPlayer guildPlayer, @Nullable GUI lastGUI) {
         super(guiType, guildPlayer);
+
+        this.lastGUI = lastGUI;
+    }
+
+    @Override
+    public GUI getLastGUI() {
+        return lastGUI;
     }
 }

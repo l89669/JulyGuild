@@ -10,12 +10,16 @@ import com.github.julyss2019.mcsp.julyguild.placeholder.Placeholder;
 import com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderText;
 import com.github.julyss2019.mcsp.julyguild.util.Util;
 import com.github.julyss2019.mcsp.julylibrary.inventory.InventoryBuilder;
+import com.github.julyss2019.mcsp.julylibrary.inventory.InventoryListener;
 import com.github.julyss2019.mcsp.julylibrary.inventory.ItemListener;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -145,7 +149,7 @@ public class IndexConfigGUI {
             return this;
         }
 
-        public Builder pageable(ConfigurationSection section, PageableGUI pageableGUI, OfflinePlayer offlinePlayer, Guild guild) {
+        public Builder pageItems(ConfigurationSection section, PageableGUI pageableGUI, OfflinePlayer offlinePlayer, Guild guild) {
             item(GUIItemManager.getIndexItem(section.getConfigurationSection("precious_page").getConfigurationSection(pageableGUI.hasPreciousPage() ? "have" : "not_have"), offlinePlayer, guild), !pageableGUI.hasPreciousPage() ? null : new ItemListener() {
                 @Override
                 public void onClick(InventoryClickEvent event) {
@@ -162,7 +166,7 @@ public class IndexConfigGUI {
             return this;
         }
 
-        public Builder pageable(ConfigurationSection section, PageableGUI pageableGUI, OfflinePlayer offlinePlayer) {
+        public Builder pageItems(ConfigurationSection section, PageableGUI pageableGUI, OfflinePlayer offlinePlayer) {
             item(GUIItemManager.getIndexItem(section.getConfigurationSection("precious_page").getConfigurationSection(pageableGUI.hasPreciousPage() ? "have" : "not_have"), offlinePlayer), !pageableGUI.hasPreciousPage() ? null : new ItemListener() {
                 @Override
                 public void onClick(InventoryClickEvent event) {
@@ -179,14 +183,14 @@ public class IndexConfigGUI {
             return this;
         }
 
-        public Builder pageable(ConfigurationSection section, PageableGUI pageableGUI, GuildMember guildMember) {
+        public Builder pageItems(ConfigurationSection section, PageableGUI pageableGUI, GuildMember guildMember) {
             item(GUIItemManager.getIndexItem(section.getConfigurationSection("precious_page").getConfigurationSection(pageableGUI.hasPreciousPage() ? "have" : "not_have"), guildMember), !pageableGUI.hasPreciousPage() ? null : new ItemListener() {
                 @Override
                 public void onClick(InventoryClickEvent event) {
                     pageableGUI.previousPage();
                 }
             });
-            item(GUIItemManager.getIndexItem(section.getConfigurationSection("items.next_page").getConfigurationSection(pageableGUI.hasNextPage() ? "have" : "not_have"), guildMember), !pageableGUI.hasNextPage() ? null : new ItemListener() {
+            item(GUIItemManager.getIndexItem(section.getConfigurationSection("next_page").getConfigurationSection(pageableGUI.hasNextPage() ? "have" : "not_have"), guildMember), !pageableGUI.hasNextPage() ? null : new ItemListener() {
                 @Override
                 public void onClick(InventoryClickEvent event) {
                     pageableGUI.nextPage();

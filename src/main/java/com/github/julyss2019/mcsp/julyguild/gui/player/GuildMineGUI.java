@@ -6,6 +6,7 @@ import com.github.julyss2019.mcsp.julyguild.config.gui.item.GUIItemManager;
 import com.github.julyss2019.mcsp.julyguild.config.gui.item.PriorityItem;
 import com.github.julyss2019.mcsp.julyguild.config.setting.MainSettings;
 import com.github.julyss2019.mcsp.julyguild.gui.BaseMemberGUI;
+import com.github.julyss2019.mcsp.julyguild.gui.GUI;
 import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
 import com.github.julyss2019.mcsp.julyguild.guild.GuildMember;
 import com.github.julyss2019.mcsp.julyguild.guild.Position;
@@ -19,6 +20,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.inventory.Inventory;
+import org.jetbrains.annotations.Nullable;
 
 public class GuildMineGUI extends BaseMemberGUI {
     private final JulyGuild plugin = JulyGuild.getInstance();
@@ -27,8 +29,8 @@ public class GuildMineGUI extends BaseMemberGUI {
     private final Player bukkitPlayer;
     private final Position position;
 
-    public GuildMineGUI(GuildMember guildMember) {
-        super(GUIType.MINE, guildMember);
+    public GuildMineGUI(GuildMember guildMember, @Nullable GUI lastGUI) {
+        super(GUIType.MINE, guildMember, lastGUI);
 
         this.bukkitPlayer = guildPlayer.getBukkitPlayer();
         this.position = guildMember.getPosition();
@@ -37,7 +39,7 @@ public class GuildMineGUI extends BaseMemberGUI {
     @Override
     public Inventory getInventory() {
         PriorityConfigGUI.Builder guiBuilder = (PriorityConfigGUI.Builder) new PriorityConfigGUI.Builder()
-                .avaiablePositions(Util.getRangeIntegerList(thisGUISection.getString("positions")))
+                .availablePositions(Util.getRangeIntegerList(thisGUISection.getString("positions")))
                 .fromConfig(thisGUISection, bukkitPlayer)
                 .item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.back"), bukkitPlayer), new ItemListener() {
                     @Override
@@ -47,7 +49,6 @@ public class GuildMineGUI extends BaseMemberGUI {
                     }
                 });
 
-
         guiBuilder
                 .item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.guild_info"), bukkitPlayer, new Placeholder.Builder().addGuildPlaceholders(guild).build()))
                 .item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.self_info"), bukkitPlayer))
@@ -55,21 +56,21 @@ public class GuildMineGUI extends BaseMemberGUI {
                     @Override
                     public void onClick(InventoryClickEvent event) {
                         close();
-                        new GuildMemberGUI(guild, guildMember).open();
+                        new GuildMemberListGUI(guild, guildMember, GuildMineGUI.this).open();
                     }
                 })
                 .item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.guild_donate"), bukkitPlayer), new ItemListener() {
                     @Override
                     public void onClick(InventoryClickEvent event) {
                         close();
-                        new GuildDonateGUI(guildMember).open();
+                        new GuildDonateGUI(guildMember, GuildMineGUI.this).open();
                     }
                 })
                 .item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.guild_upgrade"), bukkitPlayer), new ItemListener() {
                     @Override
                     public void onClick(InventoryClickEvent event) {
                         close();
-                        new GuildUpgradeGUI(guildMember).open();
+                        new GuildUpgradeGUI(guildMember, null).open();
                     }
                 });
 
@@ -89,8 +90,8 @@ public class GuildMineGUI extends BaseMemberGUI {
                 public void onClick(InventoryClickEvent event) {
                     close();
                     Util.sendColoredMessage(bukkitPlayer, thisLangSection.getString("dismiss.confirm"), new Placeholder.Builder()
-                    .add("{WAIT}", MainSettings.getDismissWait())
-                    .add("{CONFIRM_STR}", MainSettings.getDismissConfirmStr()).build());
+                    .addInner("wait", MainSettings.getDismissWait())
+                    .addInner("confirm_str", MainSettings.getDismissConfirmStr()).build());
                     new ChatInterceptor.Builder()
                             .player(bukkitPlayer)
                             .plugin(plugin)
