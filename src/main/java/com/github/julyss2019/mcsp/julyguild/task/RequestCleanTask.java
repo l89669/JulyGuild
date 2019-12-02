@@ -4,7 +4,7 @@ import com.github.julyss2019.mcsp.julyguild.JulyGuild;
 import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
 import com.github.julyss2019.mcsp.julyguild.guild.Guild;
 import com.github.julyss2019.mcsp.julyguild.guild.GuildManager;
-import com.github.julyss2019.mcsp.julyguild.guild.request.GuildRequest;
+import com.github.julyss2019.mcsp.julyguild.request.guild.GuildRequest;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class RequestCleanTask extends BukkitRunnable {

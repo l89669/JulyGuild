@@ -9,6 +9,7 @@ import com.github.julyss2019.mcsp.julyguild.request.player.PlayerRequest;
 import com.github.julyss2019.mcsp.julyguild.request.player.PlayerRequestType;
 import com.github.julyss2019.mcsp.julylibrary.utils.YamlUtil;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
@@ -186,6 +187,11 @@ public class GuildPlayer {
     public boolean isInGuild() {
         return getGuild() != null;
     }
+
+    public OfflinePlayer getOfflineBukkitPlayer() {
+        return Bukkit.getOfflinePlayer(getName());
+    }
+
 
     @Override
     public boolean equals(Object o) {

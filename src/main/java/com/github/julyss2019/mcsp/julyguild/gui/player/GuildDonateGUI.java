@@ -7,7 +7,7 @@ import com.github.julyss2019.mcsp.julyguild.config.setting.MainSettings;
 import com.github.julyss2019.mcsp.julyguild.gui.BaseMemberGUI;
 import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
 import com.github.julyss2019.mcsp.julyguild.guild.GuildBank;
-import com.github.julyss2019.mcsp.julyguild.guild.player.GuildMember;
+import com.github.julyss2019.mcsp.julyguild.guild.GuildMember;
 import com.github.julyss2019.mcsp.julyguild.placeholder.Placeholder;
 import com.github.julyss2019.mcsp.julyguild.thirdparty.economy.PlayerPointsEconomy;
 import com.github.julyss2019.mcsp.julyguild.thirdparty.economy.VaultEconomy;
@@ -147,7 +147,7 @@ public class GuildDonateGUI extends BaseMemberGUI {
                         int amount = Integer.parseInt(message);
 
                         if (!vaultEconomy.has(bukkitPlayer, amount)) {
-                            Util.sendColoredMessage(bukkitPlayer, thisLangSection.getString("money.not_enough"));
+                            Util.sendColoredMessage(bukkitPlayer, thisLangSection.getString("money.not_enough"), new Placeholder.Builder().add("owned", String.valueOf(vaultEconomy.getBalance(bukkitPlayer))).build());
                             return;
                         }
 
@@ -194,7 +194,8 @@ public class GuildDonateGUI extends BaseMemberGUI {
                             int amount = Integer.parseInt(message);
 
                             if (!playerPointsEconomy.has(bukkitPlayer, amount)) {
-                                Util.sendColoredMessage(bukkitPlayer, thisLangSection.getString("points.not_enough"));
+                                Util.sendColoredMessage(bukkitPlayer, thisLangSection.getString("points.not_enough")
+                                        , new Placeholder.Builder().addInner("owned", String.valueOf(playerPointsEconomy.getBalance(bukkitPlayer))).build());
                                 return;
                             }
 

@@ -2,22 +2,10 @@ package com.github.julyss2019.mcsp.julyguild.gui.player;
 
 import com.github.julyss2019.mcsp.julyguild.config.ConfigGuildShopItem;
 import com.github.julyss2019.mcsp.julyguild.gui.BaseMemberGUI;
-import com.github.julyss2019.mcsp.julyguild.gui.BasePlayerGUI;
-import com.github.julyss2019.mcsp.julyguild.gui.CommonItem;
 import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
 import com.github.julyss2019.mcsp.julyguild.guild.GuildBank;
-import com.github.julyss2019.mcsp.julyguild.guild.player.GuildMember;
-import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
-import com.github.julyss2019.mcsp.julyguild.util.Util;
-import com.github.julyss2019.mcsp.julylibrary.inventory.InventoryBuilder;
-import com.github.julyss2019.mcsp.julylibrary.inventory.ItemListener;
-import com.github.julyss2019.mcsp.julylibrary.item.ItemBuilder;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.event.inventory.InventoryClickEvent;
+import com.github.julyss2019.mcsp.julyguild.guild.GuildMember;
 import org.bukkit.inventory.Inventory;
-import parsii.eval.Parser;
-import parsii.tokenizer.ParseException;
 
 public class GuildShopItemBuyGUI extends BaseMemberGUI {
     private Inventory inventory;

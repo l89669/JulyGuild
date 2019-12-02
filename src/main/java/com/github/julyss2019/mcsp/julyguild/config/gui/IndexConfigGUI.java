@@ -3,16 +3,19 @@ package com.github.julyss2019.mcsp.julyguild.config.gui;
 import com.github.julyss2019.mcsp.julyguild.JulyGuild;
 import com.github.julyss2019.mcsp.julyguild.config.gui.item.GUIItemManager;
 import com.github.julyss2019.mcsp.julyguild.config.gui.item.IndexItem;
+import com.github.julyss2019.mcsp.julyguild.gui.PageableGUI;
 import com.github.julyss2019.mcsp.julyguild.guild.Guild;
-import com.github.julyss2019.mcsp.julyguild.guild.player.GuildMember;
+import com.github.julyss2019.mcsp.julyguild.guild.GuildMember;
 import com.github.julyss2019.mcsp.julyguild.placeholder.Placeholder;
 import com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderText;
 import com.github.julyss2019.mcsp.julyguild.util.Util;
 import com.github.julyss2019.mcsp.julylibrary.inventory.InventoryBuilder;
 import com.github.julyss2019.mcsp.julylibrary.inventory.ItemListener;
 import me.clip.placeholderapi.PlaceholderAPI;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -40,7 +43,7 @@ public class IndexConfigGUI {
          * @return
          */
         public Builder fromConfig(ConfigurationSection section, GuildMember guildMember, @Nullable Placeholder.Builder placeholderBuilder) {
-            return fromConfig(section, guildMember.getBukkitPlayer(), guildMember.getGuild(), placeholderBuilder);
+            return fromConfig(section, guildMember.getGuildPlayer().getBukkitPlayer(), guildMember.getGuild(), placeholderBuilder);
         }
 
         /**
@@ -131,13 +134,64 @@ public class IndexConfigGUI {
                 ConfigurationSection keySection = section.getConfigurationSection(key);
 
                 if (keySection.isInt("index")) {
-                    item(new IndexItem(section.getInt("index") - 1, GUIItemManager.getItemBuilder(keySection, player, null)));
+                    item(new IndexItem(section.getInt("index") - 1, GUIItemManager.getItemBuilder(keySection, player)));
                 } else {
                     for (int index : Util.getRangeIntegerList(keySection.getString("index"))) {
-                        item(new IndexItem(index - 1, GUIItemManager.getItemBuilder(keySection, player, null)));
+                        item(new IndexItem(index - 1, GUIItemManager.getItemBuilder(keySection, player)));
                     }
                 }
             }
+
+            return this;
+        }
+
+        public Builder pageable(ConfigurationSection section, PageableGUI pageableGUI, OfflinePlayer offlinePlayer, Guild guild) {
+            item(GUIItemManager.getIndexItem(section.getConfigurationSection("precious_page").getConfigurationSection(pageableGUI.hasPreciousPage() ? "have" : "not_have"), offlinePlayer, guild), !pageableGUI.hasPreciousPage() ? null : new ItemListener() {
+                @Override
+                public void onClick(InventoryClickEvent event) {
+                    pageableGUI.previousPage();
+                }
+            });
+            item(GUIItemManager.getIndexItem(section.getConfigurationSection("next_page").getConfigurationSection(pageableGUI.hasNextPage() ? "have" : "not_have"), offlinePlayer, guild), !pageableGUI.hasNextPage() ? null : new ItemListener() {
+                @Override
+                public void onClick(InventoryClickEvent event) {
+                    pageableGUI.nextPage();
+                }
+            });
+
+            return this;
+        }
+
+        public Builder pageable(ConfigurationSection section, PageableGUI pageableGUI, OfflinePlayer offlinePlayer) {
+            item(GUIItemManager.getIndexItem(section.getConfigurationSection("precious_page").getConfigurationSection(pageableGUI.hasPreciousPage() ? "have" : "not_have"), offlinePlayer), !pageableGUI.hasPreciousPage() ? null : new ItemListener() {
+                @Override
+                public void onClick(InventoryClickEvent event) {
+                    pageableGUI.previousPage();
+                }
+            });
+            item(GUIItemManager.getIndexItem(section.getConfigurationSection("next_page").getConfigurationSection(pageableGUI.hasNextPage() ? "have" : "not_have"), offlinePlayer), !pageableGUI.hasNextPage() ? null : new ItemListener() {
+                @Override
+                public void onClick(InventoryClickEvent event) {
+                    pageableGUI.nextPage();
+                }
+            });
+
+            return this;
+        }
+
+        public Builder pageable(ConfigurationSection section, PageableGUI pageableGUI, GuildMember guildMember) {
+            item(GUIItemManager.getIndexItem(section.getConfigurationSection("precious_page").getConfigurationSection(pageableGUI.hasPreciousPage() ? "have" : "not_have"), guildMember), !pageableGUI.hasPreciousPage() ? null : new ItemListener() {
+                @Override
+                public void onClick(InventoryClickEvent event) {
+                    pageableGUI.previousPage();
+                }
+            });
+            item(GUIItemManager.getIndexItem(section.getConfigurationSection("items.next_page").getConfigurationSection(pageableGUI.hasNextPage() ? "have" : "not_have"), guildMember), !pageableGUI.hasNextPage() ? null : new ItemListener() {
+                @Override
+                public void onClick(InventoryClickEvent event) {
+                    pageableGUI.nextPage();
+                }
+            });
 
             return this;
         }

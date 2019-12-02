@@ -3,13 +3,12 @@ package com.github.julyss2019.mcsp.julyguild.guild;
 import com.github.julyss2019.mcsp.julyguild.JulyGuild;
 import com.github.julyss2019.mcsp.julyguild.config.setting.MainSettings;
 import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
-import com.github.julyss2019.mcsp.julyguild.guild.player.GuildMember;
-import com.github.julyss2019.mcsp.julyguild.guild.player.GuildOwner;
-import com.github.julyss2019.mcsp.julyguild.guild.player.Position;
-import com.github.julyss2019.mcsp.julyguild.guild.request.BaseGuildRequest;
-import com.github.julyss2019.mcsp.julyguild.guild.request.GuildRequest;
-import com.github.julyss2019.mcsp.julyguild.guild.request.GuildRequestType;
-import com.github.julyss2019.mcsp.julyguild.guild.request.JoinGuildRequest;
+import com.github.julyss2019.mcsp.julyguild.request.guild.BaseGuildRequest;
+import com.github.julyss2019.mcsp.julyguild.request.guild.GuildRequest;
+import com.github.julyss2019.mcsp.julyguild.request.guild.GuildRequestType;
+import com.github.julyss2019.mcsp.julyguild.request.guild.JoinGuildRequest;
+import com.github.julyss2019.mcsp.julyguild.placeholder.Placeholder;
+import com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderText;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayerManager;
 import com.github.julyss2019.mcsp.julyguild.util.Util;
@@ -567,23 +566,20 @@ public class Guild {
     }
 
     public int getRank() {
+        String formula = PlaceholderText.replacePlaceholders(MainSettings.getRankingListFormula(), new Placeholder.Builder().addGuildPlaceholders(this).build());
+
         try {
-            return (int) Parser.parse(MainSettings.getRankingListFormula()
-                    .replace("%GUILD_MONEY%", String.valueOf(getGuildBank().getBalance(GuildBank.BalanceType.MONEY)))
-                    .replace("%GUILD_POINTS%", String.valueOf(getGuildBank().getBalance(GuildBank.BalanceType.POINTS)))
-                    .replace("%GUILD_MEMBER_COUNT%", String.valueOf(getMemberCount()))
-                    .replace("%GUILD_MAX_MEMBER_COUNT%", String.valueOf(getMaxMemberCount())))
-                    .evaluate();
+            return (int) Parser.parse(formula).evaluate();
         } catch (ParseException e) {
             e.printStackTrace();
-            throw new RuntimeException("公会等级计算公式不合法");
+            throw new RuntimeException("公会等级计算公式不合法: " + formula);
         }
     }
 
     public void broadcastMessage(String message) {
         for (GuildMember member : getMembers()) {
             if (member.isOnline()) {
-                Util.sendColoredMessage(member.getBukkitPlayer(), message);
+                Util.sendColoredMessage(member.getGuildPlayer().getBukkitPlayer(), message);
             }
         }
     }

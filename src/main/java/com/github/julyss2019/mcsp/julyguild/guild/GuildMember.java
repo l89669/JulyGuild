@@ -1,9 +1,8 @@
-package com.github.julyss2019.mcsp.julyguild.guild.player;
+package com.github.julyss2019.mcsp.julyguild.guild;
 
-import com.github.julyss2019.mcsp.julyguild.guild.Guild;
-import com.github.julyss2019.mcsp.julyguild.guild.GuildBank;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
@@ -103,10 +102,6 @@ public class GuildMember {
     public void setDonated(GuildBank.BalanceType balanceType, BigDecimal value) {
         memberSection.set("donated." + balanceType.name(), value.toString());
         save();
-    }
-
-    public Player getBukkitPlayer() {
-        return Bukkit.getPlayer(getName());
     }
 
     public long getJoinTime() {

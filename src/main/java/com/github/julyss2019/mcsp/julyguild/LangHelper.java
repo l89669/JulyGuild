@@ -1,6 +1,6 @@
 package com.github.julyss2019.mcsp.julyguild;
 
-import com.github.julyss2019.mcsp.julyguild.guild.player.GuildMember;
+import com.github.julyss2019.mcsp.julyguild.guild.GuildMember;
 import com.github.julyss2019.mcsp.julyguild.placeholder.Placeholder;
 import com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderText;
 import org.bukkit.configuration.ConfigurationSection;

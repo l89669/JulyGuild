@@ -8,8 +8,8 @@ papi:
 gui:
   # 默认
   default:
-    # 是否默认使用插件内部变量
-    use_guild_placehoders: true
+    # 是否默认使用公会内部变量
+    use_gp: false
     # 是否默认使用PAPI
     use_papi: false
 guild:
@@ -20,11 +20,11 @@ guild:
   # 排行榜
   ranking_list:
     # 计算公式，可用变量：
-    # %GUILD_MONEY% 公会金币
-    # %GUILD_POINTS% 公会点券
-    # %GUILD_MEMBER_COUNT% 公会成员数
-    # %GUILD_MAX_MEMBER_COUNT% 公会最大成员数
-    formula: '%GUILD_MONEY%*0.3+%GUILD_POINTS%*0.5+%GUILD_MEMBER_COUNT%*0.2'
+    # {guild_money} 公会金币储备
+    # {guild_points} 公会点券储备
+    # {guild_member_count} 公会玩家数量
+    # {guild_max_member_count} 公会最大玩家数量
+    formula: '{guild_money}*0.3+{guild_points}*0.5+{guild_member_count}*0.2'
   # 全员传送
   tp_all:
     # 允许发送请求的世界

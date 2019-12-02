@@ -54,7 +54,7 @@ GuildDonateGUI:
       timeout: '&e捐赠已超时.'
       amount_invalid: '&c捐赠数量不合法, 请输入一个整数.'
     success: '&d你捐赠了 &e{exactly_donate_amount}个 &d金币, 手续费 &e{fee}&d.'
-    not_enough: '&c金币不足.'
+    not_enough: '&c金币不足, 你只有 {owned}个 金币.'
   points:
     input:
       message: '&e请在聊天栏输入并发送你要捐赠的点券数量(发送 &c{cancel_string} &e以取消): '
@@ -62,4 +62,9 @@ GuildDonateGUI:
       timeout: '&e捐赠已超时.'
       amount_invalid: '&c捐赠数量不合法.'
     success: '&d你捐赠了 &e{exactly_donate_amount}个 &d点券, 手续费 &e{fee}&d.'
-    not_enough: '&c点券不足.'
+    not_enough: '&c点券不足, 你只有 {owned}个 点券.'
+GuildInfoGUI:
+  request_join:
+    already_have: '&c你已经有一个申请加入请求了, 请等待审批.'
+    guild_full: '&c公会人数已满({max}/{max}).'
+    success: '&c已向公会发送加入申请, 请等待审批.'

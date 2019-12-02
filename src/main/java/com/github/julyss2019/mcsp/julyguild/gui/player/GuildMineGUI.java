@@ -7,8 +7,8 @@ import com.github.julyss2019.mcsp.julyguild.config.gui.item.PriorityItem;
 import com.github.julyss2019.mcsp.julyguild.config.setting.MainSettings;
 import com.github.julyss2019.mcsp.julyguild.gui.BaseMemberGUI;
 import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
-import com.github.julyss2019.mcsp.julyguild.guild.player.GuildMember;
-import com.github.julyss2019.mcsp.julyguild.guild.player.Position;
+import com.github.julyss2019.mcsp.julyguild.guild.GuildMember;
+import com.github.julyss2019.mcsp.julyguild.guild.Position;
 import com.github.julyss2019.mcsp.julyguild.placeholder.Placeholder;
 import com.github.julyss2019.mcsp.julyguild.util.Util;
 import com.github.julyss2019.mcsp.julylibrary.chat.ChatInterceptor;
@@ -19,9 +19,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.inventory.Inventory;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class GuildMineGUI extends BaseMemberGUI {
     private final JulyGuild plugin = JulyGuild.getInstance();

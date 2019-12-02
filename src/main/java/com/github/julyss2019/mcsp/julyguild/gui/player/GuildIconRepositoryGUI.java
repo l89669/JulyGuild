@@ -4,7 +4,7 @@ import com.github.julyss2019.mcsp.julyguild.gui.BaseMemberPageableGUI;
 import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
 import com.github.julyss2019.mcsp.julyguild.guild.Guild;
 import com.github.julyss2019.mcsp.julyguild.guild.OwnedIcon;
-import com.github.julyss2019.mcsp.julyguild.guild.player.GuildMember;
+import com.github.julyss2019.mcsp.julyguild.guild.GuildMember;
 import org.bukkit.inventory.Inventory;
 
 import java.util.ArrayList;

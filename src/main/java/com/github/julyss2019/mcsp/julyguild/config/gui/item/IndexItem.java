@@ -11,6 +11,14 @@ public class IndexItem {
         this.itemBuilder = itemBuilder;
     }
 
+    public void setIndex(int index) {
+        this.index = index;
+    }
+
+    public void setItemBuilder(ItemBuilder itemBuilder) {
+        this.itemBuilder = itemBuilder;
+    }
+
     public ItemBuilder getItemBuilder() {
         return itemBuilder;
     }
@@ -18,6 +26,4 @@ public class IndexItem {
     public int getIndex() {
         return index;
     }
-
-
 }

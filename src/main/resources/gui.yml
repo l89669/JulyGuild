@@ -1,10 +1,10 @@
 # 使用指南：
 # 如果你想关闭某个功能，在物品项中添加一行 enabled: false 即可，届时图标也不会显示。
 # 如果你要在物品或GUI中使用papi变量，添加一行 use_papi: true 即可。
-# 如果你想使用插件内部的变量，添加一行 use_gp: true。
+# 如果你想使用公会内部变量，添加一行 use_gp: true。
 # 在 gui.yml 中，被 {} 包括的是插件内部的占位符，被 %% 包括的是PAPI占位符
 
-# 插件内部变量表
+# 公会变量表
 # {guild_name} 公会名
 # {guild_ranking} 公会排名
 # {guild_owner} 公会会长
@@ -27,7 +27,7 @@
 VERSION: 2.0.0
 MainGUI:
   row: 6
-  title: '&e&l公会({PAGE}/{TOTAL_PAGE})'
+  title: '&e&l公会({page}/{total_page})'
   # 公会可显示的位置，支持使用 '-' 作为范围界定符，使用 ',' 分隔
   positions: '11-17,20-26,29-35'
   # 其他物品
@@ -40,7 +40,8 @@ MainGUI:
         - '&cby July_ss'
   # 插件物品
   items:
-    _guild:
+    guild:
+      index: -1
       material: STONE # 该 material 会被强制设置为公会图标
       use_papi: true
       use_gp: true
@@ -64,42 +65,43 @@ MainGUI:
       display_name: '&f我的公会'
       skull_texture: 'eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjU1ZmU2MDdiMDZiMTQwNTQxM2U2ZTI5OTljMmYzNjA0N2ZmNzhmZTc2Njk3MWMxMWIzOTIzNWY2MGUyMmEzZiJ9fX0='
       data: 3
-    precious_page:
-      have:
-        index: 46
-        material: BOOK
-        display_name: '&f上一页'
-        enchantments:
-          DAMAGE_ALL: 1
-        flags:
-          - 'HIDE_ATTRIBUTES'
-          - 'HIDE_ENCHANTS'
-        lores:
-          - ' &f点击切换'
-      not_have:
-        index: 46
-        material: BOOK
-        display_name: '&f上一页'
-        lores:
-          - ' &7没有上一页了'
-    next_page:
-      have:
-        index: 54
-        material: BOOK
-        display_name: '&f下一页'
-        enchantments:
-          DAMAGE_ALL: 1
-        flags:
-          - 'HIDE_ATTRIBUTES'
-          - 'HIDE_ENCHANTS'
-        lores:
-          - ' &f点击切换'
-      not_have:
-        index: 54
-        material: BOOK
-        display_name: '&f下一页'
-        lores:
-          - ' &7没有下一页了'
+    pageable:
+      precious_page:
+        have:
+          index: 46
+          material: BOOK
+          display_name: '&f上一页'
+          enchantments:
+            DAMAGE_ALL: 1
+          flags:
+            - 'HIDE_ATTRIBUTES'
+            - 'HIDE_ENCHANTS'
+          lores:
+            - ' &f点击切换'
+        not_have:
+          index: 46
+          material: BOOK
+          display_name: '&f上一页'
+          lores:
+            - ' &7没有上一页了'
+      next_page:
+        have:
+          index: 54
+          material: BOOK
+          display_name: '&f下一页'
+          enchantments:
+            DAMAGE_ALL: 1
+          flags:
+            - 'HIDE_ATTRIBUTES'
+            - 'HIDE_ENCHANTS'
+          lores:
+            - ' &f点击切换'
+        not_have:
+          index: 54
+          material: BOOK
+          display_name: '&f下一页'
+          lores:
+            - ' &7没有下一页了'
     close:
       enabled: false
       index: 45
@@ -114,21 +116,24 @@ GuildCreateGUI:
       material: GOLD_INGOT
       display_name: '&a使用 &e{amount}个 &a金币'
       lores:
-        - ' &f公会名: {NAME}'
+        - ' &f拥有: {vault_eco_balance}个'
+        - ' &f公会名: {name}'
         - ' &c点击支付'
     points:
       index: 14
       material: DIAMOND
       display_name: '&a使用 &e{amount}个 &a点券'
       lores:
-        - ' &f公会名: {NAME}'
+        - ' &f拥有: {playerpoints_points}个'
+        - ' &f公会名: {name}'
         - ' &c点击支付'
     item:
       index: 16
       material: PAPER
       display_name: '&a使用 &e{amount}个 &a建帮令'
       lores:
-        - ' &f公会名: {NAME}'
+        - ' &f拥有: {owned}个'
+        - ' &f公会名: {name}'
         - ' &c点击支付'
 # 最重要的GUI,集成了所有功能
 # 该GUI除了 back 以外的物品都不允许自定义位置，将根据 positions 属性排序
@@ -262,21 +267,52 @@ GuildMemberGUI:
     title: '&e&l成员管理'
     items:
       member:
+        use_gp: true
         material: SKULL_ITEM
         data: 3
         skull_texture: 'eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjU1ZmU2MDdiMDZiMTQwNTQxM2U2ZTI5OTljMmYzNjA0N2ZmNzhmZTc2Njk3MWMxMWIzOTIzNWY2MGUyMmEzZiJ9fX0='
         display_name: '{member_name}'
         lores:
-          - ' &f入会时间: %%'
+          - ' &f公会: {guild_name}'
+          - ' &f入会时间: {member_join_time}'
           - ' &c点击转到管理界面'
-      precious_page:
-        index: 46
-        material: BOOK
-        display_name: '&f上一页'
-      next_page:
-        index: 54
-        material: BOOK
-        display_name: '&f下一页'
+      pageable:
+        precious_page:
+          have:
+            index: 46
+            material: BOOK
+            display_name: '&f上一页'
+            enchantments:
+              DAMAGE_ALL: 1
+            flags:
+              - 'HIDE_ATTRIBUTES'
+              - 'HIDE_ENCHANTS'
+            lores:
+              - ' &f点击切换'
+          not_have:
+            index: 46
+            material: BOOK
+            display_name: '&f上一页'
+            lores:
+              - ' &7没有上一页了'
+        next_page:
+          have:
+            index: 54
+            material: BOOK
+            display_name: '&f下一页'
+            enchantments:
+              DAMAGE_ALL: 1
+            flags:
+              - 'HIDE_ATTRIBUTES'
+              - 'HIDE_ENCHANTS'
+            lores:
+              - ' &f点击切换'
+          not_have:
+            index: 54
+            material: BOOK
+            display_name: '&f下一页'
+            lores:
+              - ' &7没有下一页了'
       back:
         index: 50
         material: ARROW
@@ -286,14 +322,50 @@ GuildMemberGUI:
     row: 6
     title: '&e&l成员列表'
     items:
-      precious_page:
-        index: 46
-        material: BOOK
-        display_name: '&f上一页'
-      next_page:
-        index: 54
-        material: BOOK
-        display_name: '&f下一页'
+      member:
+        material: SKULL_ITEM
+        data: 3
+        skull_texture: 'eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjU1ZmU2MDdiMDZiMTQwNTQxM2U2ZTI5OTljMmYzNjA0N2ZmNzhmZTc2Njk3MWMxMWIzOTIzNWY2MGUyMmEzZiJ9fX0='
+        display_name: '{member_name}'
+        lores:
+          - ' &f入会时间: {member_join_time}'
+      pageable:
+        precious_page:
+          have:
+            index: 46
+            material: BOOK
+            display_name: '&f上一页'
+            enchantments:
+              DAMAGE_ALL: 1
+            flags:
+              - 'HIDE_ATTRIBUTES'
+              - 'HIDE_ENCHANTS'
+            lores:
+              - ' &f点击切换'
+          not_have:
+            index: 46
+            material: BOOK
+            display_name: '&f上一页'
+            lores:
+              - ' &7没有上一页了'
+        next_page:
+          have:
+            index: 54
+            material: BOOK
+            display_name: '&f下一页'
+            enchantments:
+              DAMAGE_ALL: 1
+            flags:
+              - 'HIDE_ATTRIBUTES'
+              - 'HIDE_ENCHANTS'
+            lores:
+              - ' &f点击切换'
+          not_have:
+            index: 54
+            material: BOOK
+            display_name: '&f下一页'
+            lores:
+              - ' &7没有下一页了'
       back:
         index: 50
         material: ARROW

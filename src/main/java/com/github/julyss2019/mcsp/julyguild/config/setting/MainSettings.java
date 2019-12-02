@@ -119,18 +119,19 @@ public class MainSettings {
     @Config(path = "papi.non_str")
     private static String papiNonStr;
 
-    @Config(path = "gui.default.use_guild_placehoders")
-    private static boolean guiDefaultUseGuildPlacehoders;
+    @Config(path = "gui.default.use_gp")
+    private static boolean guiDefaultUseGp;
 
     @Config(path = "gui.default.use_papi")
     private static boolean guiDefaultUsePapi;
+
 
     public static String getPapiNonStr() {
         return papiNonStr;
     }
 
-    public static boolean isGuiDefaultUseGuildPlacehoders() {
-        return guiDefaultUseGuildPlacehoders;
+    public static boolean isGuiDefaultUseGp() {
+        return guiDefaultUseGp;
     }
 
     public static boolean isGuiDefaultUsePapi() {

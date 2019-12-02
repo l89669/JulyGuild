@@ -1,7 +1,7 @@
 package com.github.julyss2019.mcsp.julyguild.gui;
 
 import com.github.julyss2019.mcsp.julyguild.guild.Guild;
-import com.github.julyss2019.mcsp.julyguild.guild.player.GuildMember;
+import com.github.julyss2019.mcsp.julyguild.guild.GuildMember;
 
 public abstract class BaseMemberGUI extends BasePlayerGUI {
     protected final GuildMember guildMember;

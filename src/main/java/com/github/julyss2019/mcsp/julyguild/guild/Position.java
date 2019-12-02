@@ -1,4 +1,4 @@
-package com.github.julyss2019.mcsp.julyguild.guild.player;
+package com.github.julyss2019.mcsp.julyguild.guild;
 
 import com.github.julyss2019.mcsp.julyguild.JulyGuild;
 
@@ -14,8 +14,8 @@ public enum Position {
         this.level = level;
     }
 
-    public static String getChineseName(Position position) {
-        return JulyGuild.getInstance().getLangYamlConfig().getString("Position." + position.name().toLowerCase());
+    public String getChineseName() {
+        return JulyGuild.getInstance().getLangYamlConfig().getString("Position." + name().toLowerCase());
     }
 
     public int getLevel() {

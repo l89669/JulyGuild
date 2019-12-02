@@ -1,8 +1,10 @@
 package com.github.julyss2019.mcsp.julyguild.placeholder;
 
 import com.github.julyss2019.mcsp.julyguild.JulyGuild;
+import com.github.julyss2019.mcsp.julyguild.LangHelper;
 import com.github.julyss2019.mcsp.julyguild.guild.Guild;
 import com.github.julyss2019.mcsp.julyguild.guild.GuildBank;
+import com.github.julyss2019.mcsp.julyguild.guild.GuildMember;
 import com.github.julyss2019.mcsp.julyguild.util.Util;
 import com.github.julyss2019.mcsp.julylibrary.utils.TimeUtil;
 
@@ -54,6 +56,15 @@ public class Placeholder {
             addInner("guild_member_count", guild.getMemberCount());
             addInner("guild_max_member_count", guild.getMaxMemberCount());
             addInner("guild_creation_time", TimeUtil.YMD_SDF.format(guild.getCreationTime()));
+            return this;
+        }
+
+        public Builder addGuildMemberPlaceholders(GuildMember guildMember) {
+            addInner("member_name", guildMember.getName());
+            addInner("member_join_time", LangHelper.Global.getDateTimeFormat().format(guildMember.getJoinTime()));
+            addInner("member_donate_money", String.valueOf(guildMember.getDonated(GuildBank.BalanceType.MONEY)));
+            addInner("member_donate_points", String.valueOf(guildMember.getDonated(GuildBank.BalanceType.POINTS)));
+            addInner("member_donate_points", String.valueOf(guildMember.getPosition().getChineseName()));
             return this;
         }
 

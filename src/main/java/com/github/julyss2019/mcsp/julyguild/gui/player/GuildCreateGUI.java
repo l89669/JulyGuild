@@ -121,6 +121,7 @@ public class GuildCreateGUI extends BasePlayerGUI {
         // 建帮令
         guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.item"), bukkitPlayer,
                 new Placeholder.Builder().addInner("AMOUNT", String.valueOf(MainSettings.getCreateCostItemAmount()))
+                        .addInner("owned", String.valueOf(PlayerUtil.getItemAmount(bukkitPlayer, itemStack -> ItemUtil.containsLore(itemStack, MainSettings.getCreateCostItemKeyLore()))))
                         .addInner("name", guildName)
                         .build()), new ItemListener() {
             @Override

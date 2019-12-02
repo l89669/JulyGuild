@@ -11,8 +11,6 @@ public class TestCommand implements Command {
     @Override
     public boolean onCommand(CommandSender cs, String[] args) {
         if (args.length == 1) {
-            GuildPlayer guildPlayer = JulyGuild.getInstance().getGuildPlayerManager().getGuildPlayer((Player) cs);
-
             for (int i = 0; i < Integer.parseInt(args[0]); i++) {
                 JulyGuild.getInstance().getGuildManager().createGuild(JulyGuild.getInstance().getGuildPlayerManager().getGuildPlayer(UUID.randomUUID().toString()), System.currentTimeMillis() + "");
             }
@@ -21,6 +19,11 @@ public class TestCommand implements Command {
         }
 
         return true;
+    }
+
+    @Override
+    public boolean isOnlyPlayerCanUse() {
+        return false;
     }
 
     @Override

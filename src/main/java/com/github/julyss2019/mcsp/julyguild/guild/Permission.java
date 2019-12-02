@@ -1,4 +1,4 @@
-package com.github.julyss2019.mcsp.julyguild.guild.player;
+package com.github.julyss2019.mcsp.julyguild.guild;
 
 import com.github.julyss2019.mcsp.julyguild.JulyGuild;
 
