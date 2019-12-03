@@ -2,11 +2,13 @@ package com.github.julyss2019.mcsp.julyguild.guild;
 
 import com.github.julyss2019.mcsp.julyguild.JulyGuild;
 import com.github.julyss2019.mcsp.julyguild.event.GuildCreateEvent;
+import com.github.julyss2019.mcsp.julyguild.gui.GUI;
 import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
+import com.github.julyss2019.mcsp.julyguild.gui.player.GuildInfoGUI;
+import com.github.julyss2019.mcsp.julyguild.gui.player.MainGUI;
 import com.github.julyss2019.mcsp.julyguild.log.guild.GuildCreateLog;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayerManager;
-import com.github.julyss2019.mcsp.julylibrary.logger.FileLogger;
 import com.github.julyss2019.mcsp.julylibrary.utils.YamlUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -18,10 +20,9 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class GuildManager {
-    private static JulyGuild plugin = JulyGuild.getInstance();
-    private GuildPlayerManager guildPlayerManager = plugin.getGuildPlayerManager();
-    private FileLogger fileLogger = plugin.getFileLogger();
-    private Map<String, Guild> guildMap = new HashMap<>();
+    private final JulyGuild plugin = JulyGuild.getInstance();
+    private final GuildPlayerManager guildPlayerManager = plugin.getGuildPlayerManager();
+    private final Map<String, Guild> guildMap = new HashMap<>();
 
     public GuildManager() {}
 
@@ -62,7 +63,7 @@ public class GuildManager {
         owner.setGuild(getGuild(uuid));
 
         // 更新所有玩家的GUI
-        for (GuildPlayer guildPlayer : guildPlayerManager.getSortedOnlineGuildPlayers()) {
+        for (GuildPlayer guildPlayer : guildPlayerManager.getOnlineGuildPlayers()) {
             guildPlayer.updateGUI(GUIType.MAIN);
         }
 
@@ -92,12 +93,33 @@ public class GuildManager {
      * @param guild
      */
     public void unload(Guild guild) {
-        guildMap.remove(guild.getUUID().toString());
-        JulyGuild.getInstance().getCacheGuildManager().updateSortedGuilds();
+        // 面向公会成员
+        guild.getOnlineMembers().forEach(guildMember -> {
+            GuildPlayer guildPlayer = guildMember.getGuildPlayer();
+            GUI usingGUI = guildPlayer.getUsingGUI();
 
-        for (GuildPlayer guildPlayer : guildPlayerManager.getSortedOnlineGuildPlayers()) {
-            guildPlayer.updateGUI(GUIType.MAIN);
-        }
+            // 重新打开 MainGUI
+            if (usingGUI.getType() == GUIType.MAIN) {
+                usingGUI.reopen();
+            } else {
+                guildPlayer.setUsingGUI(new MainGUI(guildPlayer).open());
+            }
+        });
+
+        // 面向所有玩家
+        guildPlayerManager.getOnlineGuildPlayers().forEach(guildPlayer -> {
+            GUI usingGUI = guildPlayer.getUsingGUI();
+
+            if (usingGUI.getType() == GUIType.MAIN) {
+                guildPlayer.getUsingGUI().reopen();
+            // 正在查看即将被 unload 的 GUI 的玩家
+            } else if (usingGUI instanceof GuildInfoGUI && ((GuildInfoGUI) usingGUI).getGuild().equals(guild)) {
+                guildPlayer.setUsingGUI(new MainGUI(guildPlayer).open());
+            }
+        });
+
+        guildMap.remove(guild.getUniqueId().toString());
+        JulyGuild.getInstance().getCacheGuildManager().updateSortedGuilds();
     }
 
     /**
@@ -107,18 +129,15 @@ public class GuildManager {
     private void load(File file) {
         Guild guild = new Guild(file);
 
-        guild.init();
-
         // 如果没有删除则存入Map
         if (guild.isDeleted()) {
             return;
         }
 
-        guildMap.put(guild.getUUID().toString(), guild);
-        guild.load();
+        guildMap.put(guild.getUniqueId().toString(), guild);
         JulyGuild.getInstance().getCacheGuildManager().updateSortedGuilds();
 
-        for (GuildPlayer guildPlayer : guildPlayerManager.getSortedOnlineGuildPlayers()) {
+        for (GuildPlayer guildPlayer : guildPlayerManager.getOnlineGuildPlayers()) {
             guildPlayer.updateGUI(GUIType.MAIN);
         }
     }

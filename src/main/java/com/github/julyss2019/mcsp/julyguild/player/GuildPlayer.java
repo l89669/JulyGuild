@@ -4,7 +4,6 @@ import com.github.julyss2019.mcsp.julyguild.JulyGuild;
 import com.github.julyss2019.mcsp.julyguild.gui.GUI;
 import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
 import com.github.julyss2019.mcsp.julyguild.guild.Guild;
-import com.github.julyss2019.mcsp.julyguild.guild.GuildManager;
 import com.github.julyss2019.mcsp.julyguild.request.player.PlayerRequest;
 import com.github.julyss2019.mcsp.julyguild.request.player.PlayerRequestType;
 import com.github.julyss2019.mcsp.julylibrary.utils.YamlUtil;
@@ -15,21 +14,49 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
-import java.io.IOException;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 public class GuildPlayer {
-    private String name;
+    private UUID uniqueId;
     private File file;
     private YamlConfiguration yml;
     private GUI usingGUI;
     private Map<String, PlayerRequest> requestMap = new HashMap<>();
 
-    protected GuildPlayer(String name) {
-        this.name = name;
+    GuildPlayer(UUID uniqueId) {
+        this.uniqueId = uniqueId;
+
+        load();
+    }
+
+    public String getName() {
+        return yml.getString("name");
+    }
+
+    /**
+     * 初始化
+     * @return
+     */
+    public GuildPlayer load() {
+        this.file = new File(JulyGuild.getInstance().getDataFolder(), "players" + File.separator + getUniqueId() + ".yml");
+        this.yml = YamlConfiguration.loadConfiguration(file);
+        return this;
+    }
+
+    public boolean isUsingGUI() {
+        return usingGUI != null;
+    }
+
+    public boolean isUsingGUI(GUIType... types) {
+        return Optional.ofNullable(usingGUI).filter(gui -> {
+            for (GUIType type : types) {
+                if (usingGUI.getType() == type) {
+                    return true;
+                }
+            }
+
+            return false;
+        }).isPresent();
     }
 
     /**
@@ -130,40 +157,24 @@ public class GuildPlayer {
             throw new IllegalStateException("离线状态下不能更新GUI");
         }
 
-        GUI usingGUI = this.usingGUI;
-
         if (usingGUI != null) {
             for (GUIType guiType : guiTypes) {
                 if (usingGUI.getType() == guiType) {
                     usingGUI.reopen();
                 }
             }
-        }
-    }
 
-    /**
-     * 初始化
-     * @return
-     */
-    public GuildPlayer load() {
-        this.file = new File(JulyGuild.getInstance().getDataFolder(), "players" + File.separator + name + ".yml");
+            GUI lastGUI = usingGUI;
 
-        if (!file.exists()) {
-            try {
-                if (!file.createNewFile()) {
-                    return null;
+            // 遍历所有 lastGUI
+            while ((lastGUI = lastGUI.getLastGUI()) != null) {
+                for (GUIType guiType : guiTypes) {
+                    if (usingGUI.getType() == guiType) {
+                        usingGUI.reopen();
+                    }
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
             }
         }
-
-        this.yml = YamlConfiguration.loadConfiguration(file);
-        return this;
-    }
-
-    public String getName() {
-        return name;
     }
 
     public Guild getGuild() {
@@ -171,12 +182,12 @@ public class GuildPlayer {
     }
 
     public void setGuild(@Nullable Guild guild) {
-        yml.set("guild", guild == null ? null : guild.getUUID().toString());
+        yml.set("guild", guild == null ? null : guild.getUniqueId().toString());
         save();
     }
 
     public Player getBukkitPlayer() {
-        return Bukkit.getPlayer(name);
+        return Bukkit.getPlayer(uniqueId);
     }
 
     public boolean isOnline() {
@@ -189,25 +200,28 @@ public class GuildPlayer {
         return getGuild() != null;
     }
 
-    public OfflinePlayer getOfflineBukkitPlayer() {
-        return Bukkit.getOfflinePlayer(getName());
+    public UUID getUniqueId() {
+        return uniqueId;
     }
 
+    public OfflinePlayer getOfflineBukkitPlayer() {
+        return Bukkit.getOfflinePlayer(getUniqueId());
+    }
+
+    public void save() {
+        YamlUtil.saveYaml(yml, file);
+    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof GuildPlayer)) return false;
         GuildPlayer that = (GuildPlayer) o;
-        return name.equals(that.name);
+        return getUniqueId().equals(that.getUniqueId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name);
-    }
-
-    public void save() {
-        YamlUtil.saveYaml(yml, file);
+        return Objects.hash(getUniqueId());
     }
 }

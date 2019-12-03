@@ -13,6 +13,15 @@ public interface GUI {
 
     GUIType getType();
 
+    GUI getLastGUI();
+
+    default void back() {
+        GUI gui = Optional.ofNullable(getLastGUI()).orElseThrow(() -> new RuntimeException("没有上一个GUI了"));
+
+        close();
+        gui.reopen();
+    }
+
     default Player getBukkitPlayer() {
         return getGuildPlayer().getBukkitPlayer();
     }
@@ -21,10 +30,15 @@ public interface GUI {
         getGuildPlayer().closeGUI();
     }
 
-    default void open() {
+    default GUI open() {
         getGuildPlayer().getBukkitPlayer().openInventory(getInventory());
         getGuildPlayer().setUsingGUI(this);
+        return this;
     }
+
+    /**
+     * 关闭，更新，打开
+     */
 
     default void reopen() {
         close();

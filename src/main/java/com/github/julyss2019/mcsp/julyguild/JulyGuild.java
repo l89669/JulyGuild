@@ -271,12 +271,6 @@ public class JulyGuild extends JavaPlugin {
         this.guiYamlConfig = YamlConfiguration.loadConfiguration(new File(getDataFolder(), "gui.yml"));
     }
 
-    public void reloadPlugin() {
-        guildManager.unloadAll();
-        cacheGuildManager.reset();
-        guildPlayerManager.unloadAll();
-    }
-
     private void onCoding() {
         for (String name : VERSION_YML_FILES) {
             YamlConfiguration yml = YamlConfiguration.loadConfiguration(new File(getDataFolder(), name));

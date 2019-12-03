@@ -4,6 +4,7 @@ import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
 
 public abstract class PageableGUI implements GUI {
     private int currentPage;
+    private int totalPage;
     protected final GUIType guiType;
     protected final GuildPlayer guildPlayer;
 
@@ -47,14 +48,20 @@ public abstract class PageableGUI implements GUI {
     // 打开指定页
     public void setCurrentPage(int page) {
         if (!isValidPage(page)) {
-            throw new RuntimeException("页数不合法");
+            throw new IllegalArgumentException("页数不合法");
         }
 
         this.currentPage = page;
     }
 
     // 得到总页数
-    public abstract int getTotalPage();
+    public int getTotalPage() {
+        return totalPage;
+    }
+
+    public void setTotalPage(int totalPage) {
+        this.totalPage = totalPage;
+    }
 
     // 得到当前页数
     public int getCurrentPage() {
@@ -66,6 +73,7 @@ public abstract class PageableGUI implements GUI {
         return p >= 0 && p < getTotalPage();
     }
 
+    // 覆盖 GUI 的 reopen() 实现，尽量使页数靠近最近页数
     @Override
     public void reopen() {
         close();

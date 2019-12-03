@@ -80,4 +80,8 @@ public class GuildInfoGUI extends BasePlayerGUI {
 
         return guiBuilder.build();
     }
+
+    public Guild getGuild() {
+        return guild;
+    }
 }

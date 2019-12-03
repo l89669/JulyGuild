@@ -31,12 +31,11 @@ public class GuildMemberListGUI extends BasePlayerPageableGUI {
     private static final List<Permission> managerPermissions = Arrays.asList(Permission.MEMBER_KICK, Permission.MEMBER_SET_ADMIN, Permission.MEMBER_SET_PERMISSION);
     private final JulyGuild plugin = JulyGuild.getInstance();
     private final ViewerType viewerType;
-    private ConfigurationSection thisGUISection;
     private final Guild guild;
     private final Player bukkitPlayer = getBukkitPlayer();
+    private ConfigurationSection thisGUISection;
     private List<Integer> positions;
     private int positionCount;
-    private int memberCount;
 
     public GuildMemberListGUI(Guild guild, GuildMember guildMember, @Nullable GUI lastGUI) {
         this(guild, guildMember.getGuildPlayer(), lastGUI);
@@ -44,6 +43,7 @@ public class GuildMemberListGUI extends BasePlayerPageableGUI {
 
     public GuildMemberListGUI(Guild guild, GuildPlayer guildPlayer, @Nullable GUI lastGUI) {
         super(GUIType.MEMBER, guildPlayer, lastGUI);
+
         this.guild = guild;
 
         GuildMember member = guild.getMember(guildPlayer);
@@ -70,7 +70,10 @@ public class GuildMemberListGUI extends BasePlayerPageableGUI {
     @Override
     public Inventory getInventory() {
         List<GuildMember> members = guild.getMembers();
-        this.memberCount = members.size();
+        int memberCount = members.size();
+
+        setTotalPage(memberCount == 0 ? 1 : memberCount % positionCount == 0 ? memberCount / positionCount : memberCount / positionCount + 1);
+
         Map<Integer, GuildMember> positionMap = new HashMap<>();
         IndexConfigGUI.Builder guiBuilder = (IndexConfigGUI.Builder) new IndexConfigGUI.Builder()
                 .fromConfig(thisGUISection, bukkitPlayer)
@@ -91,6 +94,7 @@ public class GuildMemberListGUI extends BasePlayerPageableGUI {
                         }
                     }
                 });
+
         int itemCounter = getCurrentPage() * positions.size();
         int loopCount = memberCount - itemCounter < memberCount ? memberCount - itemCounter : memberCount;
 
@@ -104,10 +108,5 @@ public class GuildMemberListGUI extends BasePlayerPageableGUI {
         }
 
         return guiBuilder.build();
-    }
-
-    @Override
-    public int getTotalPage() {
-        return memberCount == 0 ? 1 : memberCount % positionCount == 0 ? memberCount / positionCount : memberCount / positionCount + 1;
     }
 }

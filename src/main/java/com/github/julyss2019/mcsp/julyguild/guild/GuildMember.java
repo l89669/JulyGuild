@@ -1,39 +1,33 @@
 package com.github.julyss2019.mcsp.julyguild.guild;
 
+import com.github.julyss2019.mcsp.julyguild.JulyGuild;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.Player;
 
 import java.math.BigDecimal;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class GuildMember {
     private Guild guild;
-    private GuildPlayer guildPlayer;
-    private String name;
+    private UUID uniqueId;
     private ConfigurationSection memberSection;
     private Set<Permission> permissions = new HashSet<>();
+    private long joinTime;
+    private Map<GuildBank.BalanceType, BigDecimal> donatedMap = new HashMap<>();
 
-    public GuildMember(Guild guild, GuildPlayer guildPlayer) {
-        this(guild, guildPlayer, guild.getYaml().getConfigurationSection("members." + guildPlayer.getName()));
-    }
-
-    public GuildMember(Guild guild, GuildPlayer player, ConfigurationSection memberSection) {
+    GuildMember(Guild guild, UUID uniqueId) {
         this.guild = guild;
-        this.guildPlayer = player;
-        this.name = player.getName();
-        this.memberSection = memberSection;
+        this.uniqueId = uniqueId;
 
         load();
     }
 
-    public void load() {
-        if (memberSection == null) {
-            this.memberSection = guild.getYaml().createSection("members." + guildPlayer.getName());
+    private void load() {
+        if (!guild.getYaml().contains("members")) {
+            guild.getYaml().createSection("members");
         }
+
+        this.memberSection = guild.getYaml().getConfigurationSection("members").getConfigurationSection(uniqueId.toString());
 
         if (memberSection.contains("permissions")) {
             Set<String> permissions = memberSection.getConfigurationSection("permissions").getKeys(false);
@@ -42,6 +36,18 @@ public class GuildMember {
                 permissions.forEach(s -> this.permissions.add(Permission.valueOf(s)));
             }
         }
+
+        for (String type : memberSection.getConfigurationSection("donated").getKeys(false)) {
+            GuildBank.BalanceType balanceType = GuildBank.BalanceType.valueOf(type);
+
+            donatedMap.put(balanceType, new BigDecimal(memberSection.getString("donated." + balanceType.name(), "0")));
+        }
+
+        this.joinTime = memberSection.getLong("join_time");
+    }
+
+    public UUID getUniqueId() {
+        return uniqueId;
     }
 
     public void removePermission(Permission permission) {
@@ -58,6 +64,10 @@ public class GuildMember {
      * @param b true 为设置 false 为删除
      */
     public void setPermission(Permission permission, boolean b) {
+        if (getPosition() == Position.OWNER) {
+            throw new RuntimeException("会长不允许被设置权限");
+        }
+
         if (b && permissions.contains(permission)) {
             throw new RuntimeException("成员已经有该权限了");
         } else if (!b && !permissions.contains(permission)) {
@@ -80,11 +90,18 @@ public class GuildMember {
     }
 
     public Set<Permission> getPermissions() {
+        if (getPosition() == Position.OWNER) {
+            Set<Permission> result = new HashSet<>();
+
+            Collections.addAll(result, Permission.values());
+            return result;
+        }
+
         return new HashSet<>(permissions);
     }
 
     public boolean hasPermission(Permission permission) {
-        return getPermissions().contains(permission);
+        return getPosition() == Position.OWNER || getPermissions().contains(permission);
     }
 
     public void addDonated(GuildBank.BalanceType balanceType, double amount) {
@@ -96,16 +113,17 @@ public class GuildMember {
     }
 
     public BigDecimal getDonated(GuildBank.BalanceType balanceType) {
-        return new BigDecimal(memberSection.getString("donated." + balanceType.name(), "0"));
+        return donatedMap.get(balanceType);
     }
 
     public void setDonated(GuildBank.BalanceType balanceType, BigDecimal value) {
         memberSection.set("donated." + balanceType.name(), value.toString());
         save();
+        donatedMap.put(balanceType, value);
     }
 
     public long getJoinTime() {
-        return memberSection.getLong("join_time");
+        return joinTime;
     }
 
     public Guild getGuild() {
@@ -113,11 +131,7 @@ public class GuildMember {
     }
 
     public GuildPlayer getGuildPlayer() {
-        return guildPlayer;
-    }
-
-    public String getName() {
-        return name;
+        return JulyGuild.getInstance().getGuildPlayerManager().getGuildPlayer(uniqueId);
     }
 
     public boolean isOnline() {

@@ -19,7 +19,7 @@ public class ReloadCommand implements JulyTabCommand {
     public boolean onCommand(CommandSender cs, String[] args) {
         plugin.reloadPluginConfig();
 
-        for (GuildPlayer guildPlayer : plugin.getGuildPlayerManager().getSortedOnlineGuildPlayers()) {
+        for (GuildPlayer guildPlayer : plugin.getGuildPlayerManager().getOnlineGuildPlayers()) {
             if (guildPlayer.getUsingGUI() != null) {
                 guildPlayer.getUsingGUI().close();
             }

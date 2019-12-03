@@ -26,20 +26,13 @@ import java.util.stream.Collectors;
 public class Guild {
     private final JulyGuild plugin = JulyGuild.getInstance();
     private final GuildPlayerManager guildPlayerManager = plugin.getGuildPlayerManager();
-    private final GuildManager guildManager = plugin.getGuildManager();
-
     private final File file;
-    private YamlConfiguration yml;
+    private final YamlConfiguration yml;
 
     private boolean valid;
-    private boolean deleted;
     private UUID uuid;
     private GuildOwner owner;
-    private String name;
     private Map<String, GuildMember> memberMap = new HashMap<>();
-    private int maxMemberCount;
-    private long creationTime;
-    private List<String> announcements;
     private Map<String, GuildRequest> uuidRequestMap = new HashMap<>();
     private Map<String, List<GuildRequest>> playerRequestMap = new HashMap<>();
     private Map<String, OwnedIcon> iconMap = new HashMap<>();
@@ -50,46 +43,30 @@ public class Guild {
 
     Guild(File file) {
         this.file = file;
-        this.DEFAULT_ICON = OwnedIcon.createNew(Material.valueOf(MainSettings.getDefaultIconMaterial())
-                , MainSettings.getDefaultIconData(), MainSettings.getDefaultIconFirstLore());
-    }
 
-    public void init() {
         if (!file.exists()) {
             throw new RuntimeException("公会不存在!");
         }
 
         this.yml = YamlConfiguration.loadConfiguration(file);
-        this.deleted = yml.getBoolean("deleted");
-        this.valid = !deleted;
-        this.uuid = UUID.fromString(yml.getString("uuid"));
+        this.DEFAULT_ICON = OwnedIcon.createNew(Material.valueOf(MainSettings.getDefaultIconMaterial())
+                , MainSettings.getDefaultIconData(), MainSettings.getDefaultIconFirstLore());
+
+        load();
+    }
+
+    public boolean isDeleted() {
+        return yml.getBoolean("deleted");
     }
 
     /**
      * 载入（或初始化）
      * @return
      */
-    public Guild load() {
-        if (isDeleted()) {
-            throw new RuntimeException("公会已被删除");
-        }
-
-        memberMap.clear();
-
-        this.owner = new GuildOwner(this, guildPlayerManager.getGuildPlayer(yml.getString("owner.name")));
-        this.name = yml.getString("name");
-        this.maxMemberCount = yml.getInt("max_member_count", MainSettings.getDefaultMaxMemberCount());
-        this.announcements = yml.getStringList("announcements");
-        this.creationTime = yml.getLong("creation_time");
+    private Guild load() {
+        this.uuid = UUID.fromString(yml.getString("uuid"));
+        this.owner = new GuildOwner(this, yml.getString("owner.name"));
         this.guildBank = new GuildBank(this).load();
-
-        if (this.announcements == null) {
-            this.announcements = new ArrayList<>();
-        }
-
-        if (announcements.size() == 0) {
-            announcements.addAll(MainSettings.getAnnouncementDefault());
-        }
 
         if (yml.contains("members")) {
             for (String memberName : yml.getConfigurationSection("members").getKeys(false)) {
@@ -97,7 +74,7 @@ public class Guild {
             }
         }
 
-        memberMap.put(owner.getName(), owner);
+        memberMap.put(owner., owner);
 
         if (yml.contains("requests")) {
             // 载入玩家请求
@@ -105,7 +82,7 @@ public class Guild {
                 ConfigurationSection requestSection = yml.getConfigurationSection("requests").getConfigurationSection(uuid);
                 GuildRequestType guildRequestType = GuildRequestType.valueOf(requestSection.getString("type"));
                 BaseGuildRequest request = null;
-                String playerName = requestSection.getString("player");
+                String requester = requestSection.getString("requester");
 
                 switch (guildRequestType) {
                     case JOIN:
@@ -113,17 +90,17 @@ public class Guild {
                         break;
                 }
 
-                request.setRequester(guildPlayerManager.getGuildPlayer(playerName));
+                request.setRequester(guildPlayerManager.getGuildPlayer(request));
                 request.setTime(requestSection.getLong("time"));
                 request.setUuid(UUID.fromString(uuid));
 
                 uuidRequestMap.put(uuid, request);
 
-                if (!playerRequestMap.containsKey(playerName)) {
+                if (!playerRequestMap.containsKey(requester)) {
                     playerRequestMap.put(playerName, new ArrayList<>());
                 }
 
-                playerRequestMap.get(playerName).add(request);
+                playerRequestMap.get(requester).add(request);
             }
         }
 
@@ -165,7 +142,7 @@ public class Guild {
         yml.set("owner.join_time", System.currentTimeMillis());
         save();
         memberMap.remove(oldOwner.getName()); // 删除旧宗主
-        this.owner = new GuildOwner(this, guildPlayerManager.getGuildPlayer(newOwnerName));
+        this.owner = new GuildOwner(this, newOwnerName);
         memberMap.put(newOwnerName, owner);
         addMember(oldOwner.getGuildPlayer());
 
@@ -239,10 +216,7 @@ public class Guild {
 
 
     public void loadMember(String memberName) {
-        Position position = Position.valueOf(yml.getString("members." + memberName + ".position"));
-        GuildPlayer guildPlayer = guildPlayerManager.getGuildPlayer(memberName);
-
-        memberMap.put(memberName, new GuildMember(this, guildPlayer));
+        memberMap.put(memberName, new GuildMember(this, memberName));
     }
 
     public void setMemberPermission(GuildMember guildMember, Position position) {
@@ -277,11 +251,11 @@ public class Guild {
      * @return
      */
     public GuildMember getMember(String name) {
-        if (!memberMap.containsKey(name)) {
+        if (!memberMap.containsKey(name.toLowerCase())) {
             throw new IllegalArgumentException("成员不存在.");
         }
 
-        return memberMap.get(name);
+        return memberMap.get(name.toLowerCase());
     }
 
     /**
@@ -297,15 +271,7 @@ public class Guild {
      * @return
      */
     public String getName() {
-        return name;
-    }
-
-    /**
-     * 是否已被解散
-     * @return
-     */
-    public boolean isDeleted() {
-        return deleted;
+        return yml.getString("name");
     }
 
     /**
@@ -363,7 +329,7 @@ public class Guild {
         yml.set("members." + playerName + ".join_time", System.currentTimeMillis());
         YamlUtil.saveYaml(yml, file);
         guildPlayer.setGuild(this);
-        memberMap.put(playerName, new GuildMember(this, guildPlayer));
+        memberMap.put(playerName, new GuildMember(this, playerName));
         updateMembersGUI(GUIType.MEMBER, GUIType.MAIN);
     }
 
@@ -372,11 +338,11 @@ public class Guild {
      * @param guildMember
      */
     public void removeMember(GuildMember guildMember) {
-        String memberName = guildMember.getName();
-
         if (guildMember instanceof GuildOwner) {
-            throw new IllegalArgumentException("不能删除宗主成员");
+            throw new IllegalArgumentException("不能删除会长成员");
         }
+
+        String memberName = guildMember.getName();
 
         if (!memberMap.containsKey(memberName)) {
             throw new IllegalArgumentException("成员不存在");
@@ -398,14 +364,16 @@ public class Guild {
         YamlUtil.saveYaml(yml, file);
 
         for (GuildMember guildMember : getMembers()) {
-            guildMember.getGuildPlayer().setGuild(null);
+            GuildPlayer guildPlayer = guildMember.getGuildPlayer();
 
-            if (guildMember.getGuildPlayer().isOnline()) {
-                guildMember.getGuildPlayer().updateGUI(GUIType.values());
+            guildPlayer.setGuild(null);
+
+            if (guildPlayer.isOnline() && guildPlayer.getUsingGUI() != null) {
+                guildPlayer.closeGUI();
             }
         }
 
-        guildManager.unload(this);
+        JulyGuild.getInstance().getGuildManager().unload(this);
         this.valid = false;
     }
 
@@ -413,7 +381,7 @@ public class Guild {
      * 宗门唯一区别符
      * @return
      */
-    public UUID getUUID() {
+    public UUID getUniqueId() {
         return uuid;
     }
 
@@ -430,7 +398,7 @@ public class Guild {
      * @return
      */
     public int getMaxMemberCount() {
-        return maxMemberCount;
+        return yml.getInt("max_member_count");
     }
 
     /**
@@ -441,7 +409,6 @@ public class Guild {
     public void setMaxMemberCount(int maxMemberCount) {
         yml.set("max_member_count", maxMemberCount);
         YamlUtil.saveYaml(yml, file);
-        this.maxMemberCount = maxMemberCount;
     }
 
     /**
@@ -449,7 +416,7 @@ public class Guild {
      * @return
      */
     public long getCreationTime() {
-        return creationTime;
+        return yml.getLong("creation_time");
     }
 
     /**
@@ -459,7 +426,6 @@ public class Guild {
     public void setAnnouncements(List<String> announcements) {
         yml.set("announcements", announcements);
         YamlUtil.saveYaml(yml, file);
-        this.announcements = announcements;
     }
 
     /**
@@ -554,7 +520,7 @@ public class Guild {
      * @return
      */
     public List<String> getAnnouncements() {
-        return announcements;
+        return yml.getStringList("announcements");
     }
 
     public YamlConfiguration getYaml() {

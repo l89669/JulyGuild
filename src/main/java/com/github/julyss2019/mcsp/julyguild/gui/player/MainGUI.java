@@ -29,7 +29,6 @@ import java.util.*;
 
 /**
  * 主GUI
- * 新公会创建后GUI会被自动 reopen()
  * @version 1.0.0
  */
 public class MainGUI extends BasePlayerPageableGUI {
@@ -40,7 +39,6 @@ public class MainGUI extends BasePlayerPageableGUI {
     private final ConfigurationSection thisLangSection = plugin.getLangYamlConfig().getConfigurationSection("MainGUI");
     private final List<Integer> positions = Util.getRangeIntegerList(thisGUISection.getString("positions")); // 得到所有可供公会设置的位置
     private final int positionCount = positions.size();
-    private int guildSize;
 
     public MainGUI(GuildPlayer guildPlayer) {
         super(GUIType.MAIN, guildPlayer, null);
@@ -49,8 +47,10 @@ public class MainGUI extends BasePlayerPageableGUI {
     @Override
     public Inventory getInventory() {
         List<Guild> guilds = plugin.getCacheGuildManager().getSortedGuilds();
-        this.guildSize = guilds.size();
-        final Map<Integer, Guild> guildIndexMap = new HashMap<>(); // slot 对应的公会uuid
+        int guildSize = guilds.size();
+        Map<Integer, Guild> guildIndexMap = new HashMap<>(); // slot 对应的公会uuid
+
+        setTotalPage(guildSize == 0 ? 1 : guildSize % positionCount == 0 ? guildSize / positionCount : guildSize / positionCount + 1);
 
         IndexConfigGUI.Builder guiBuilder = (IndexConfigGUI.Builder) new IndexConfigGUI.Builder()
                 .fromConfig(thisGUISection, bukkitPlayer, new Placeholder.Builder()
@@ -154,10 +154,5 @@ public class MainGUI extends BasePlayerPageableGUI {
         }
 
         return guiBuilder.build();
-    }
-
-    @Override
-    public int getTotalPage() {
-        return guildSize == 0 ? 1 : guildSize % positionCount == 0 ? guildSize / positionCount : guildSize / positionCount + 1;
     }
 }

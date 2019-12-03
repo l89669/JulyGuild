@@ -260,7 +260,7 @@ GuildUpgradeGUI:
           - '&e点击升级'
           - ' &f最大人数: {old} -> {new}'
           - ' &f花费: {cost}'
-GuildMemberGUI:
+GuildMemberListGUI:
   # manager 管理者的定义：
   # 拥有：MEMBER_KICK, MEMBER_SET_ADMIN 中一个或多个权限的成员
   manager:

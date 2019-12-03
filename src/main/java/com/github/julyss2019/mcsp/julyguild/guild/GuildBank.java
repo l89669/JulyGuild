@@ -2,7 +2,6 @@ package com.github.julyss2019.mcsp.julyguild.guild;
 
 import com.github.julyss2019.mcsp.julyguild.JulyGuild;
 import com.github.julyss2019.mcsp.julyguild.log.guild.GuildBalanceChangedLog;
-import com.github.julyss2019.mcsp.julylibrary.logger.FileLogger;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.NotNull;
 
@@ -22,14 +21,16 @@ public class GuildBank {
     public GuildBank(Guild guild) {
         this.guild = guild;
 
+        load();
+    }
+
+    private GuildBank load() {
         if (!guild.getYaml().contains("bank")) {
             guild.getYaml().createSection("bank");
         }
 
         this.section = guild.getYaml().getConfigurationSection("bank");
-    }
 
-    public GuildBank load() {
         Set<String> keys = section.getKeys(false);
 
         for (String key : keys) {
@@ -118,7 +119,7 @@ public class GuildBank {
         section.set(balanceType.name(), bigDecimal.toString());
         guild.save();
         balanceMap.put(balanceType, bigDecimal);
-        plugin.writeGuildLog(new GuildBalanceChangedLog(guild.getUUID().toString(), BalanceType.POINTS, old, bigDecimal));
+        plugin.writeGuildLog(new GuildBalanceChangedLog(guild.getUniqueId().toString(), BalanceType.POINTS, old, bigDecimal));
     }
 
     /**

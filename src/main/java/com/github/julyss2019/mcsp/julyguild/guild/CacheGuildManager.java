@@ -13,9 +13,7 @@ public class CacheGuildManager {
     private final GuildManager guildManager = plugin.getGuildManager();
     private List<Guild> sortedGuilds = new ArrayList<>();
 
-    public CacheGuildManager() {
-
-    }
+    public CacheGuildManager() {}
 
     public void startTask() {
         new BukkitRunnable() {
