@@ -60,7 +60,7 @@ public class GuildManager {
 
         YamlUtil.saveYaml(yml, file);
         load(file);
-        owner.setGuild(getGuild(uuid));
+        owner.pointerGuild(getGuild(uuid));
 
         // 更新所有玩家的GUI
         for (GuildPlayer guildPlayer : guildPlayerManager.getOnlineGuildPlayers()) {

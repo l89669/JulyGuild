@@ -6,7 +6,7 @@ import com.github.julyss2019.mcsp.julyguild.JulyGuild;
  * 职位
  */
 public enum Position {
-    MEMBER(0), ADMIN(1), OWNER(2);
+    MEMBER(0), OWNER(1);
 
     int level;
 

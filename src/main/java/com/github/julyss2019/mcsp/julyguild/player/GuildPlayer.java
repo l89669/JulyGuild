@@ -11,26 +11,32 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.util.*;
 
 public class GuildPlayer {
-    private UUID uniqueId;
+    private final UUID uuid;
     private File file;
     private YamlConfiguration yml;
+    private String lastName;
     private GUI usingGUI;
     private Map<String, PlayerRequest> requestMap = new HashMap<>();
 
-    GuildPlayer(UUID uniqueId) {
-        this.uniqueId = uniqueId;
+    GuildPlayer(UUID uuid) {
+        this.uuid = uuid;
 
         load();
     }
 
     public String getName() {
-        return yml.getString("name");
+        return getLastName();
+    }
+
+    public String getLastName() {
+        return lastName;
     }
 
     /**
@@ -38,8 +44,9 @@ public class GuildPlayer {
      * @return
      */
     public GuildPlayer load() {
-        this.file = new File(JulyGuild.getInstance().getDataFolder(), "players" + File.separator + getUniqueId() + ".yml");
+        this.file = new File(JulyGuild.getInstance().getDataFolder(), "players" + File.separator + getUuid() + ".yml");
         this.yml = YamlConfiguration.loadConfiguration(file);
+        this.lastName = yml.getString("last_name");
         return this;
     }
 
@@ -181,13 +188,26 @@ public class GuildPlayer {
         return JulyGuild.getInstance().getGuildManager().getGuild(yml.getString("guild"));
     }
 
-    public void setGuild(@Nullable Guild guild) {
-        yml.set("guild", guild == null ? null : guild.getUniqueId().toString());
+    /**
+     * 指向公会
+     * @param newGuild
+     */
+    public void pointerGuild(Guild newGuild) {
+        Guild oldGuild = getGuild();
+
+        if (newGuild == null &&
+                (oldGuild == null || Optional.of(oldGuild).filter(guild1 -> guild1.isMember(this)).isPresent())) {
+            System.out.println("T");
+        }
+
+        Optional.ofNullable(getGuild()).ifPresent(guild1 -> guild1.removeMember(guild1.getMember(this)));
+
+        //yml.set("guild", newGuild.getUniqueId().toString());
         save();
     }
 
     public Player getBukkitPlayer() {
-        return Bukkit.getPlayer(uniqueId);
+        return Bukkit.getPlayer(uuid);
     }
 
     public boolean isOnline() {
@@ -200,12 +220,12 @@ public class GuildPlayer {
         return getGuild() != null;
     }
 
-    public UUID getUniqueId() {
-        return uniqueId;
+    public UUID getUuid() {
+        return uuid;
     }
 
     public OfflinePlayer getOfflineBukkitPlayer() {
-        return Bukkit.getOfflinePlayer(getUniqueId());
+        return Bukkit.getOfflinePlayer(getUuid());
     }
 
     public void save() {
@@ -217,11 +237,11 @@ public class GuildPlayer {
         if (this == o) return true;
         if (!(o instanceof GuildPlayer)) return false;
         GuildPlayer that = (GuildPlayer) o;
-        return getUniqueId().equals(that.getUniqueId());
+        return getUuid().equals(that.getUuid());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getUniqueId());
+        return Objects.hash(getUuid());
     }
 }

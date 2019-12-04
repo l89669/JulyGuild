@@ -9,15 +9,15 @@ import java.util.*;
 
 public class GuildMember {
     private Guild guild;
-    private UUID uniqueId;
+    private UUID uuid;
     private ConfigurationSection memberSection;
     private Set<Permission> permissions = new HashSet<>();
     private long joinTime;
     private Map<GuildBank.BalanceType, BigDecimal> donatedMap = new HashMap<>();
 
-    GuildMember(Guild guild, UUID uniqueId) {
+    GuildMember(Guild guild, UUID uuid) {
         this.guild = guild;
-        this.uniqueId = uniqueId;
+        this.uuid = uuid;
 
         load();
     }
@@ -27,7 +27,7 @@ public class GuildMember {
             guild.getYaml().createSection("members");
         }
 
-        this.memberSection = guild.getYaml().getConfigurationSection("members").getConfigurationSection(uniqueId.toString());
+        this.memberSection = guild.getYaml().getConfigurationSection("members").getConfigurationSection(uuid.toString());
 
         if (memberSection.contains("permissions")) {
             Set<String> permissions = memberSection.getConfigurationSection("permissions").getKeys(false);
@@ -46,8 +46,8 @@ public class GuildMember {
         this.joinTime = memberSection.getLong("join_time");
     }
 
-    public UUID getUniqueId() {
-        return uniqueId;
+    public UUID getUuid() {
+        return uuid;
     }
 
     public void removePermission(Permission permission) {
@@ -131,7 +131,7 @@ public class GuildMember {
     }
 
     public GuildPlayer getGuildPlayer() {
-        return JulyGuild.getInstance().getGuildPlayerManager().getGuildPlayer(uniqueId);
+        return JulyGuild.getInstance().getGuildPlayerManager().getGuildPlayer(uuid);
     }
 
     public boolean isOnline() {
