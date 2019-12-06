@@ -32,7 +32,7 @@ public class GuildIconShopGUI extends BasePlayerPageableGUI {
         super.setCurrentPage(page);
 /*
         icons.clear();
-        icons.addAll(iconShopConfig.getIcons());
+        icons.addAll(iconShopConfig.getIconMap());
 
         InventoryBuilder inventoryBuilder = new InventoryBuilder().title(ConfigHandler.getString("GuildIconShopGUI.title")).row(6).colored().listener(new InventoryListener() {
             @Override

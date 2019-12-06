@@ -14,7 +14,6 @@ import com.github.julyss2019.mcsp.julyguild.listener.GUIListener;
 import com.github.julyss2019.mcsp.julyguild.listener.GuildShopListener;
 import com.github.julyss2019.mcsp.julyguild.listener.TpAllListener;
 import com.github.julyss2019.mcsp.julyguild.log.GuildLog;
-import com.github.julyss2019.mcsp.julyguild.log.guild.GuildCreateLog;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayerManager;
 import com.github.julyss2019.mcsp.julyguild.task.RequestCleanTask;
@@ -45,7 +44,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
-import java.util.UUID;
 
 /**
  * 强制依赖：JulyLibrary, Vault
@@ -63,7 +61,7 @@ public class JulyGuild extends JavaPlugin {
     private final String[] VERSION_YML_FILES = new String[] {"config.yml", "lang.yml", "gui.yml"};
     private final String[] DEPEND_PLUGINS = new String[] {"JulyLibrary", "Vault"};
     private final String[] INIT_FOLDERS = new String[] {"players", "guilds", "logs"};
-    private final String[] INIT_FILES = new String[] {"gui.yml", "config.yml", "icon_shop.yml", "guild_shop.yml", "lang.yml"};
+    private final String[] INIT_FILES = new String[] {"gui.yml", "config.yml", "icon_shop_1.yml", "guild_shop.yml", "lang.yml"};
 
     private JulyCommandExecutor julyCommandExecutor;
     private JulyTabCompleter julyTabCompleter;
@@ -167,7 +165,7 @@ public class JulyGuild extends JavaPlugin {
         registerListeners();
         runTasks();
         Util.sendColoredConsoleMessage("载入了 " + guildManager.getGuilds().size() + "个 公会.");
-        Util.sendColoredConsoleMessage("载入了 " + iconShopConfig.getIcons().size() + "个 图标商店物品.");
+        Util.sendColoredConsoleMessage("载入了 " + iconShopConfig.getIconMap().size() + "个 图标商店物品.");
         Util.sendColoredConsoleMessage("载入了 " + guildShopConfig.getShopItems().size() + "个 公会商店物品.");
         Util.sendColoredConsoleMessage("插件初始化完毕.");
     }
@@ -266,7 +264,7 @@ public class JulyGuild extends JavaPlugin {
         guildShopConfig.reset();
 
         loadSpecialConfig();
-        JulyConfig.loadConfig(this, YamlConfiguration.loadConfiguration(new File(getDataFolder(), "icon_shop.yml")), IconShopConfig.class);
+        JulyConfig.loadConfig(this, YamlConfiguration.loadConfiguration(new File(getDataFolder(), "icon_shop_1.yml")), IconShopConfig.class);
         this.langYamlConfig = YamlConfiguration.loadConfiguration(new File(getDataFolder(), "lang.yml"));
         this.guiYamlConfig = YamlConfiguration.loadConfiguration(new File(getDataFolder(), "gui.yml"));
     }
@@ -342,7 +340,7 @@ public class JulyGuild extends JavaPlugin {
      * 载入特殊的配置
      */
     private void loadSpecialConfig() {
-        YamlConfiguration iconShopYml = YamlConfiguration.loadConfiguration(new File(getDataFolder(), "icon_shop.yml"));
+        YamlConfiguration iconShopYml = YamlConfiguration.loadConfiguration(new File(getDataFolder(), "icon_shop_1.yml"));
 
         if (iconShopYml.contains("items")) {
             ConfigurationSection itemsSection = iconShopYml.getConfigurationSection("items");
@@ -426,5 +424,13 @@ public class JulyGuild extends JavaPlugin {
 
     public IconShopConfig getIconShopConfig() {
         return iconShopConfig;
+    }
+
+    public void warning(String msg) {
+        Util.sendColoredConsoleMessage("&e" + msg);
+    }
+
+    public void info(String msg) {
+        Util.sendColoredConsoleMessage("&f" + msg);
     }
 }

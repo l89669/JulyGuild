@@ -2,6 +2,7 @@ package com.github.julyss2019.mcsp.julyguild.guild;
 
 import com.github.julyss2019.mcsp.julyguild.JulyGuild;
 import com.github.julyss2019.mcsp.julyguild.config.ConfigGuildIcon;
+import com.github.julyss2019.mcsp.julyguild.config.IconShopConfig;
 import com.github.julyss2019.mcsp.julyguild.config.setting.MainSettings;
 import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
 import com.github.julyss2019.mcsp.julyguild.request.guild.BaseGuildRequest;
@@ -35,12 +36,10 @@ public class Guild {
     private GuildOwner owner;
     private Map<UUID, GuildMember> memberMap = new HashMap<>();
     private Map<UUID, List<GuildRequest>> playerRequestMap = new HashMap<>();
-    private Map<UUID, OwnedIcon> iconMap = new HashMap<>();
+    private Map<String, OwnedIcon> iconMap = new HashMap<>();
     private OwnedIcon currentIcon;
     private GuildBank guildBank;
     private List<String> announcements;
-
-    private OwnedIcon DEFAULT_ICON;
     private long creationTime;
     private int maxMemberCount;
 
@@ -64,6 +63,11 @@ public class Guild {
                         .getConfigurationSection(memberUuidStr)
                         .getString("position"));
                 UUID memberUuid = UUID.fromString(memberUuidStr);
+
+                if (!guildPlayerManager.getGuildPlayer(memberUuid).getGuild().equals(this)) {
+                    throw new RuntimeException("公会成员 " + memberUuid + " 指向的公会不是本公会");
+                }
+
                 GuildMember member = position == Position.MEMBER
                         ? new GuildMember(this, memberUuid)
                         : new GuildOwner(this, memberUuid);
@@ -114,20 +118,21 @@ public class Guild {
     private void loadIcons() {
         iconMap.clear();
 
-        if (yml.contains("icons")) {
+/*        if (yml.contains("icons")) {
             for (String uuid : yml.getConfigurationSection("icons").getKeys(false)) {
                 ConfigurationSection iconSection = yml.getConfigurationSection("icons").getConfigurationSection(uuid);
-                OwnedIcon icon = new OwnedIcon(Material.valueOf(iconSection.getString("material")), (short) iconSection.getInt("durability"), UUID.fromString(uuid));
+                ConfigGuildIcon configGuildIcon = IconShopConfig.getIcon(iconSection.getName());
 
-                iconMap.put(UUID.fromString(uuid), icon);
+                if (configGuildIcon == null) {
+                    JulyGuild.getInstance().warning("公会图标 " + iconSection.getName() + " 在");
+                    continue;
+                }
+
+                OwnedIcon icon = new OwnedIcon(this, Optional.ofNullable().orElseThrow());
+
+                iconMap.put(icon.getName(), icon);
             }
-        }
-
-        iconMap.put(DEFAULT_ICON.getUuid().toString(), DEFAULT_ICON);
-
-        if (currentIcon == null) {
-            this.currentIcon = DEFAULT_ICON;
-        }
+        }*/
     }
 
     /**
@@ -136,8 +141,6 @@ public class Guild {
      */
     private void load() {
         this.yml = YamlConfiguration.loadConfiguration(file);
-        this.DEFAULT_ICON = OwnedIcon.createNew(Material.valueOf(MainSettings.getDefaultIconMaterial())
-                , MainSettings.getDefaultIconData(), MainSettings.getDefaultIconFirstLore());
         this.deleted = yml.getBoolean("deleted");
         this.uuid = UUID.fromString(yml.getString("uuid"));
         this.guildBank = new GuildBank(this);
@@ -176,6 +179,7 @@ public class Guild {
 
     /**
      * 设置主人
+     * 旧主人将变成普通成员
      * @param newOwner
      */
     public void setOwner(GuildMember newOwner) {
@@ -209,60 +213,36 @@ public class Guild {
         return memberMap.containsKey(guildPlayer.getUuid());
     }
 
-    public boolean isOwnedIcon(Material material, short durability) {
-        for (OwnedIcon ownedIcon : getIcons()) {
-            if (ownedIcon.getMaterial() == material && ownedIcon.getData() == durability) {
-                return true;
-            }
-        }
-
-        return false;
+    public boolean isOwnedIcon(ConfigGuildIcon configGuildIcon) {
+        return iconMap.containsKey(configGuildIcon.getName());
     }
 
     public OwnedIcon getCurrentIcon() {
         return currentIcon;
     }
 
-    public void setCurrentIcon(UUID uuid) {
-        // 默认图标不存配置
-        if (uuid.equals(DEFAULT_ICON.getUuid())) {
-            yml.set("current_icon", null);
-            save();
-            this.currentIcon = iconMap.get(uuid.toString());
-            return;
-        }
+    public void setCurrentIcon(OwnedIcon ownedIcon) {
+        String iconName = ownedIcon.getName();
 
-        String uuidStr = uuid.toString();
-
-        if (!iconMap.containsKey(uuidStr)) {
+        if (!iconMap.containsKey(iconName)) {
             throw new IllegalArgumentException("图标不存在");
         }
 
-        yml.set("current_icon", uuidStr);
+        yml.set("current_icon", iconName);
         save();
-        this.currentIcon = iconMap.get(uuidStr);
+        this.currentIcon = iconMap.get(iconName);
     }
 
-    public void setCurrentIcon(OwnedIcon ownedIcon) {
-        setCurrentIcon(ownedIcon.getUuid());
-    }
-
-    public UUID giveIcon(ConfigGuildIcon configGuildIcon) {
-        for (OwnedIcon icon : getIcons()) {
-            if (icon.getMaterial() == material && icon.getData() == durability) {
+    public void giveIcon(ConfigGuildIcon configGuildIcon) {
+        for (OwnedIcon ownedIcon : getIcons()) {
+            if (ownedIcon.getConfigGuildIcon().equals(configGuildIcon)) {
                 throw new IllegalArgumentException("图标已拥有");
             }
         }
 
-        UUID uuid = UUID.randomUUID();
-        String uuidStr = uuid.toString();
-
-        yml.set("icons." + uuidStr + ".first_lore", configGuildIcon.g);
-        yml.set("icons." + uuidStr + ".material", material.name());
-        yml.set("icons." + uuidStr + ".durability", durability);
+        yml.set("icons." + configGuildIcon.getName() + ".create_time", System.currentTimeMillis());
         save();
         loadIcons();
-        return uuid;
     }
 
     public Collection<OwnedIcon> getIcons() {
@@ -350,7 +330,7 @@ public class Guild {
         yml.set("members." + playerName + ".join_time", System.currentTimeMillis());
         YamlUtil.saveYaml(yml, file);
         loadMembers();
-        guildPlayer.pointerGuild(this);
+        guildPlayer.pointGuild(this);
         updateMembersGUI(GUIType.MEMBER);
     }
 
@@ -370,7 +350,7 @@ public class Guild {
         yml.set("members." + guildMember.getUuid().toString(), null);
         save();
         loadMembers();
-        guildMember.getGuildPlayer().pointerGuild(null);
+        guildMember.getGuildPlayer().pointGuild(null);
         updateMembersGUI(GUIType.MEMBER);
     }
 
@@ -385,7 +365,7 @@ public class Guild {
         for (GuildMember guildMember : getMembers()) {
             GuildPlayer guildPlayer = guildMember.getGuildPlayer();
 
-            guildPlayer.pointerGuild(null);
+            guildPlayer.pointGuild(null);
 
             if (guildPlayer.isOnline() && guildPlayer.getUsingGUI() != null) {
                 guildPlayer.closeGUI();

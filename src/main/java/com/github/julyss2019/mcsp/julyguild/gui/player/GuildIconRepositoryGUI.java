@@ -83,7 +83,7 @@ public class GuildIconRepositoryGUI extends BaseMemberPageableGUI {
 //            });
 //        }
 //
-//        this.icons = guild.getIcons();
+//        this.icons = guild.getIconMap();
 //
 //        int iconSize = icons.size();
 //        int itemCounter = page * 51;

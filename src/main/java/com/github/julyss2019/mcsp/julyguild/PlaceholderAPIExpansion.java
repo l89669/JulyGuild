@@ -38,8 +38,7 @@ public class PlaceholderAPIExpansion extends PlaceholderExpansion {
 
     @Override
     public String onRequest(OfflinePlayer p, String params) {
-        String playerName = p.getName();
-        GuildPlayer guildPlayer = guildPlayerManager.getGuildPlayer(playerName);
+        GuildPlayer guildPlayer = guildPlayerManager.getGuildPlayer(p.getUniqueId());
         Guild guild = guildPlayer.getGuild();
         boolean isInGuild = guild != null;
 
@@ -63,7 +62,7 @@ public class PlaceholderAPIExpansion extends PlaceholderExpansion {
             case "member_donate_points":
                 return Util.SIMPLE_DECIMAL_FORMAT.format(guild.getMember(guildPlayer).getDonated(GuildBank.BalanceType.POINTS));
             case "member_join_time":
-                return LangHelper.Global.getDateTimeFormat().format(guild.getMember(playerName).getJoinTime());
+                return LangHelper.Global.getDateTimeFormat().format(guild.getMember(guildPlayer).getJoinTime());
             case "ranking":
                 return String.valueOf(cacheGuildManager.getRanking(guild));
             case "owner":

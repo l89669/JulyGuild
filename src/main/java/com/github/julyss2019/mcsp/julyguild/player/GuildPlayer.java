@@ -21,7 +21,8 @@ public class GuildPlayer {
     private final UUID uuid;
     private File file;
     private YamlConfiguration yml;
-    private String lastName;
+    private UUID guildUuid;
+    private String name;
     private GUI usingGUI;
     private Map<String, PlayerRequest> requestMap = new HashMap<>();
 
@@ -31,14 +32,6 @@ public class GuildPlayer {
         load();
     }
 
-    public String getName() {
-        return getLastName();
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
     /**
      * 初始化
      * @return
@@ -46,8 +39,16 @@ public class GuildPlayer {
     public GuildPlayer load() {
         this.file = new File(JulyGuild.getInstance().getDataFolder(), "players" + File.separator + getUuid() + ".yml");
         this.yml = YamlConfiguration.loadConfiguration(file);
-        this.lastName = yml.getString("last_name");
+        this.guildUuid = UUID.fromString(yml.getString("guild"));
+        this.name = Optional
+                .ofNullable(Bukkit.getOfflinePlayer(getUuid()))
+                .map(OfflinePlayer::getName)
+                .orElse(uuid.toString());
         return this;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public boolean isUsingGUI() {
@@ -185,24 +186,20 @@ public class GuildPlayer {
     }
 
     public Guild getGuild() {
-        return JulyGuild.getInstance().getGuildManager().getGuild(yml.getString("guild"));
+        return Optional
+                .ofNullable(guildUuid)
+                .map(uuid1 -> JulyGuild.getInstance().getGuildManager().getGuild(guildUuid))
+                .filter(guild -> guild.isMember(this))
+                .orElseThrow(() -> new RuntimeException("该玩家在指向的公会不是成员"));
     }
 
     /**
      * 指向公会
      * @param newGuild
      */
-    public void pointerGuild(Guild newGuild) {
-        Guild oldGuild = getGuild();
-
-        if (newGuild == null &&
-                (oldGuild == null || Optional.of(oldGuild).filter(guild1 -> guild1.isMember(this)).isPresent())) {
-            System.out.println("T");
-        }
-
-        Optional.ofNullable(getGuild()).ifPresent(guild1 -> guild1.removeMember(guild1.getMember(this)));
-
-        //yml.set("guild", newGuild.getUniqueId().toString());
+    public void pointGuild(Guild newGuild) {
+        yml.set("guild", newGuild == null ? null : newGuild.getUuid().toString());
+        this.guildUuid = newGuild == null ? null : newGuild.getUuid();
         save();
     }
 

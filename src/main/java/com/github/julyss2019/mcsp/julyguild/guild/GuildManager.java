@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 public class GuildManager {
     private final JulyGuild plugin = JulyGuild.getInstance();
     private final GuildPlayerManager guildPlayerManager = plugin.getGuildPlayerManager();
-    private final Map<String, Guild> guildMap = new HashMap<>();
+    private final Map<UUID, Guild> guildMap = new HashMap<>();
 
     public GuildManager() {}
 
@@ -60,7 +60,7 @@ public class GuildManager {
 
         YamlUtil.saveYaml(yml, file);
         load(file);
-        owner.pointerGuild(getGuild(uuid));
+        owner.pointGuild(getGuild(uuid));
 
         // 更新所有玩家的GUI
         for (GuildPlayer guildPlayer : guildPlayerManager.getOnlineGuildPlayers()) {
@@ -118,7 +118,7 @@ public class GuildManager {
             }
         });
 
-        guildMap.remove(guild.getUniqueId().toString());
+        guildMap.remove(guild.getUuid());
         JulyGuild.getInstance().getCacheGuildManager().updateSortedGuilds();
     }
 
@@ -134,7 +134,7 @@ public class GuildManager {
             return;
         }
 
-        guildMap.put(guild.getUniqueId().toString(), guild);
+        guildMap.put(guild.getUuid(), guild);
         JulyGuild.getInstance().getCacheGuildManager().updateSortedGuilds();
 
         for (GuildPlayer guildPlayer : guildPlayerManager.getOnlineGuildPlayers()) {

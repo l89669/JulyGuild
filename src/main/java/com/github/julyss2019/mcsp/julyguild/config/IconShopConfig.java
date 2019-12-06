@@ -1,39 +1,42 @@
 package com.github.julyss2019.mcsp.julyguild.config;
 
-import org.jetbrains.annotations.NotNull;
-
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 public class IconShopConfig {
-    private ConfigGuildIcon defaultIcon; // 默认图标
-    private List<ConfigGuildIcon> icons = new ArrayList<>();
+    private static ConfigGuildIcon defaultIcon; // 默认图标
+    private static Map<String, ConfigGuildIcon> iconMap = new HashMap<>();
 
-    public void reset() {
-        icons.clear();
+    public static void reset() {
+        iconMap.clear();
+    }
+
+    public static ConfigGuildIcon getIcon(String name) {
+        return iconMap.get(name);
     }
 
     /**
      * 添加图标
      * @param icon
      */
-    public void addIcon(@NotNull ConfigGuildIcon icon) {
-        icons.add(icon);
+    public static void addIcon(ConfigGuildIcon icon) {
+        iconMap.put(icon.getName(), icon);
     }
 
     /**
      * 得到所有图标
      * @return
      */
-    public List<ConfigGuildIcon> getIcons() {
-        return new ArrayList<>(icons);
+    public static Collection<ConfigGuildIcon> getIconMap() {
+        return iconMap.values();
     }
 
     /**
      * 得到默认图标
      * @return
      */
-    public ConfigGuildIcon getDefaultIcon() {
+    public static ConfigGuildIcon getDefaultIcon() {
         return defaultIcon;
     }
 
@@ -41,7 +44,7 @@ public class IconShopConfig {
      * 设置默认图标
      * @param defaultIcon
      */
-    public void setDefaultIcon(ConfigGuildIcon defaultIcon) {
-        this.defaultIcon = defaultIcon;
+    public static void setDefaultIcon(ConfigGuildIcon defaultIcon) {
+        IconShopConfig.defaultIcon = defaultIcon;
     }
 }

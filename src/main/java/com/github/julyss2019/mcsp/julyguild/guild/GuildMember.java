@@ -46,6 +46,10 @@ public class GuildMember {
         this.joinTime = memberSection.getLong("join_time");
     }
 
+    public String getName() {
+        return getGuildPlayer().getName();
+    }
+
     public UUID getUuid() {
         return uuid;
     }

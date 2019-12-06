@@ -12,7 +12,7 @@ public class TestCommand implements Command {
     public boolean onCommand(CommandSender cs, String[] args) {
         if (args.length == 1) {
             for (int i = 0; i < Integer.parseInt(args[0]); i++) {
-                JulyGuild.getInstance().getGuildManager().createGuild(JulyGuild.getInstance().getGuildPlayerManager().getGuildPlayer(UUID.randomUUID().toString()), System.currentTimeMillis() + "");
+                JulyGuild.getInstance().getGuildManager().createGuild(JulyGuild.getInstance().getGuildPlayerManager().getGuildPlayer(UUID.randomUUID()), System.currentTimeMillis() + "");
             }
 
             cs.sendMessage("OK");

@@ -1,50 +1,29 @@
 package com.github.julyss2019.mcsp.julyguild.guild;
 
+import com.github.julyss2019.mcsp.julyguild.config.ConfigGuildIcon;
 import org.bukkit.Material;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
 
 public class OwnedIcon {
-    private Material material;
-    private short data;
-    private String firstLore; // 对 SX-ATTRIBUTE 材质包的支持
-    private UUID uuid;
+    private Guild guild;
+    private ConfigGuildIcon configGuildIcon;
 
-    protected OwnedIcon(Material material, short data, UUID uuid) {
-        this.material = material;
-        this.data = data;
-        this.uuid = uuid;
+    public OwnedIcon(Guild guild, ConfigGuildIcon configGuildIcon) {
+        this.guild = guild;
+        this.configGuildIcon = configGuildIcon;
     }
 
-    protected OwnedIcon(Material material, short data, String firstLore, UUID uuid) {
-        this.material = material;
-        this.data = data;
-        this.firstLore = firstLore;
-        this.uuid = uuid;
+    public Guild getGuild() {
+        return guild;
     }
 
-    public UUID getUuid() {
-        return uuid;
+    public ConfigGuildIcon getConfigGuildIcon() {
+        return configGuildIcon;
     }
 
-    public Material getMaterial() {
-        return material;
-    }
-
-    public short getData() {
-        return data;
-    }
-
-    public String getFirstLore() {
-        return firstLore;
-    }
-
-    public static OwnedIcon createNew(Material material, short durability, @Nullable String firstLore) {
-        return firstLore == null || firstLore.equalsIgnoreCase("") ? new OwnedIcon(material, durability, UUID.randomUUID()) : new OwnedIcon(material, durability, firstLore, UUID.randomUUID());
-    }
-
-    public static OwnedIcon createNew(Material material, short durability) {
-        return new OwnedIcon(material, durability, UUID.randomUUID());
+    public String getName() {
+        return getConfigGuildIcon().getName();
     }
 }

@@ -7,11 +7,7 @@ import org.bukkit.Material;
 import java.util.List;
 
 public class ConfigGuildIcon {
-    @Deprecated
-    public enum CostType {
-        POINTS, MONEY
-    }
-
+    private String name;
     private org.bukkit.Material material;
     private short durability;
     private String displayName;
@@ -20,6 +16,10 @@ public class ConfigGuildIcon {
     private boolean moneyPayEnabled;
     private int pointsCost;
     private int moneyCost;
+
+    public String getName() {
+        return name;
+    }
 
     public Material getMaterial() {
         return material;
