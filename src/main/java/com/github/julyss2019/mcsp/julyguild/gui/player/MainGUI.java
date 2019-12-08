@@ -18,6 +18,7 @@ import com.github.julyss2019.mcsp.julylibrary.inventory.InventoryListener;
 import com.github.julyss2019.mcsp.julylibrary.inventory.ItemListener;
 import com.github.julyss2019.mcsp.julylibrary.item.ItemBuilder;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -143,11 +144,8 @@ public class MainGUI extends BasePlayerPageableGUI {
         // 公会图标
         for (int i = 0; i < loopCount; i++) {
             Guild guild = guilds.get(itemCounter++);
-            OwnedIcon ownedIcon = guild.getIcon();
             ItemBuilder itemBuilder = GUIItemManager.getItemBuilder(thisGUISection.getConfigurationSection("items.guild"), bukkitPlayer, guild)
-                    .material(ownedIcon.getMaterial())
-                    .data(ownedIcon.getData())
-                    .insertLore(0, ownedIcon.getFirstLore());
+                    .material(Material.STONE);
 
             guildIndexMap.put(positions.get(i) - 1, guild);
             guiBuilder.item(positions.get(i) - 1, itemBuilder.build());

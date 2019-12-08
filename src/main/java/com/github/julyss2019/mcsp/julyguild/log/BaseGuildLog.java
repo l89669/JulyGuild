@@ -1,18 +1,20 @@
 package com.github.julyss2019.mcsp.julyguild.log;
 
+import java.util.UUID;
+
 public class BaseGuildLog implements GuildLog {
     private GuildLogType type;
     private Long creationTime;
-    private String guildUUID;
+    private UUID uuid;
 
-    public BaseGuildLog(GuildLogType type, String guildUUID) {
+    public BaseGuildLog(GuildLogType type, UUID uuid) {
         this.type = type;
         this.creationTime = System.currentTimeMillis();
-        this.guildUUID = guildUUID;
+        this.uuid = uuid;
     }
 
-    public BaseGuildLog(GuildLogType type, String guildUUID, Long creationTime) {
-        this(type, guildUUID);
+    public BaseGuildLog(GuildLogType type, UUID uuid, Long creationTime) {
+        this(type, uuid);
         this.creationTime = creationTime;
     }
 
@@ -31,7 +33,7 @@ public class BaseGuildLog implements GuildLog {
     }
 
     @Override
-    public String getGuildUUID() {
-        return guildUUID;
+    public String getUuid() {
+        return getUuid();
     }
 }

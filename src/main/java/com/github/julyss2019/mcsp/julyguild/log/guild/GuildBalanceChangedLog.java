@@ -5,14 +5,15 @@ import com.github.julyss2019.mcsp.julyguild.log.BaseGuildLog;
 import com.github.julyss2019.mcsp.julyguild.log.GuildLogType;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 public class GuildBalanceChangedLog extends BaseGuildLog {
     private GuildBank.BalanceType balanceType;
     private BigDecimal oldBalance;
     private BigDecimal newBalance;
 
-    public GuildBalanceChangedLog(String guildUUID, GuildBank.BalanceType balanceType, BigDecimal oldBalance, BigDecimal newBalance) {
-        super(GuildLogType.BALANCE_CHANGED, guildUUID);
+    public GuildBalanceChangedLog(UUID uuid, GuildBank.BalanceType balanceType, BigDecimal oldBalance, BigDecimal newBalance) {
+        super(GuildLogType.BALANCE_CHANGED, uuid);
 
         this.balanceType = balanceType;
         this.oldBalance = oldBalance;

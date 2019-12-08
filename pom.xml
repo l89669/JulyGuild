@@ -12,9 +12,7 @@
         <!-- 防止中文乱码 -->
         <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-
-        <mac_output>/Users/july_ss/Desktop/july_ss/mc_servers/1.12.2/plugins</mac_output>
-        <win_output>G:\july_ss\mc_servers\1.12.2_paper\plugins</win_output>
+        <output>${JulyGuild.outputDirectory}</output>
     </properties>
 
     <repositories>
@@ -28,6 +26,30 @@
         </repository>
     </repositories>
 
+    <profiles>
+        <profile>
+            <id>macbook</id>
+            <activation>
+                <os>
+                    <family>Windows</family>
+                </os>
+            </activation>
+            <properties>
+                <JulyGuild.outputDirectory>/Users/july_ss/Desktop/july_ss/mc_servers/1.12.2/plugins</JulyGuild.outputDirectory>
+            </properties>
+        </profile>
+        <profile>
+            <id>windows</id>
+            <activation>
+                <os>
+                    <family>Windows</family>
+                </os>
+            </activation>
+            <properties>
+                <JulyGuild.outputDirectory>G:\july_ss\mc_servers\1.12.2_paper\plugins</JulyGuild.outputDirectory>
+            </properties>
+        </profile>
+    </profiles>
 
     <build>
         <plugins>
@@ -51,7 +73,7 @@
                 <configuration>
                     <finalName>${artifactId}</finalName>
                     <appendAssemblyId>false</appendAssemblyId>
-                    <outputDirectory>${mac_output}</outputDirectory>
+                    <outputDirectory>${output}</outputDirectory>
                     <!-- get all project dependencies -->
                     <descriptorRefs>
                         <descriptorRef>jar-with-dependencies</descriptorRef>

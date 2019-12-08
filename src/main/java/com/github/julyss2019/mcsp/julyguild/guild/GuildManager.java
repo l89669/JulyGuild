@@ -33,10 +33,10 @@ public class GuildManager {
      */
     public void createGuild(GuildPlayer owner, @NotNull String guildName) {
         if (owner.isInGuild()) {
-            throw new IllegalArgumentException("主人已经有公会了!");
+            throw new IllegalArgumentException("主人已经有公会了");
         }
 
-        String uuid = UUID.randomUUID().toString();
+        UUID uuid = UUID.randomUUID();
         File file = new File(plugin.getDataFolder(), "guilds" + File.separator + uuid + ".yml");
 
         if (!file.exists()) {
@@ -50,16 +50,21 @@ public class GuildManager {
         }
 
         YamlConfiguration yml = YamlConfiguration.loadConfiguration(file);
-        long creationTime = System.currentTimeMillis();
+
+        yml.set("uuid", uuid.toString());
+        YamlUtil.saveYaml(yml, file);
+        load(file);
+
+
 
         yml.set("name", guildName);
-        yml.set("uuid", uuid);
+        yml.set("uuid", uuid.toString());
         yml.set("owner.join_time", System.currentTimeMillis());
         yml.set("owner.name", owner.getName());
         yml.set("creation_time", creationTime);
 
-        YamlUtil.saveYaml(yml, file);
-        load(file);
+
+
         owner.pointGuild(getGuild(uuid));
 
         // 更新所有玩家的GUI

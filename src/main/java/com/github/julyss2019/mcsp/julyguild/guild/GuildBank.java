@@ -119,7 +119,7 @@ public class GuildBank {
         section.set(balanceType.name(), bigDecimal.toString());
         guild.save();
         balanceMap.put(balanceType, bigDecimal);
-        plugin.writeGuildLog(new GuildBalanceChangedLog(guild.getUniqueId().toString(), BalanceType.POINTS, old, bigDecimal));
+        plugin.writeGuildLog(new GuildBalanceChangedLog(guild.getUuid(), BalanceType.POINTS, old, bigDecimal));
     }
 
     /**

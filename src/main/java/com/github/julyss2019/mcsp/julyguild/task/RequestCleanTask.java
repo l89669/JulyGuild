@@ -14,12 +14,12 @@ public class RequestCleanTask extends BukkitRunnable {
     @Override
     public void run() {
         for (Guild guild : guildManager.getGuilds()) {
-            for (GuildRequest guildRequest : guild.getRequests()) {
-                if (guildRequest.isTimeout()) {
-                    guild.removeRequest(guildRequest);
-                    guild.updateMembersGUI(GUIType.PLAYER_JOIN_REQUEST);
-                }
-            }
+//            for (GuildRequest guildRequest : guild.getRequests()) {
+//                if (guildRequest.isTimeout()) {
+//                    guild.removeRequest(guildRequest);
+//                    guild.updateMembersGUI(GUIType.PLAYER_JOIN_REQUEST);
+//                }
+//            }
         }
     }
 }

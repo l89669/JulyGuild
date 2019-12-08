@@ -11,7 +11,6 @@ import com.github.julyss2019.mcsp.julyguild.config.setting.MainSettings;
 import com.github.julyss2019.mcsp.julyguild.guild.CacheGuildManager;
 import com.github.julyss2019.mcsp.julyguild.guild.GuildManager;
 import com.github.julyss2019.mcsp.julyguild.listener.GUIListener;
-import com.github.julyss2019.mcsp.julyguild.listener.GuildShopListener;
 import com.github.julyss2019.mcsp.julyguild.listener.TpAllListener;
 import com.github.julyss2019.mcsp.julyguild.log.GuildLog;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
@@ -61,7 +60,7 @@ public class JulyGuild extends JavaPlugin {
     private final String[] VERSION_YML_FILES = new String[] {"config.yml", "lang.yml", "gui.yml"};
     private final String[] DEPEND_PLUGINS = new String[] {"JulyLibrary", "Vault"};
     private final String[] INIT_FOLDERS = new String[] {"players", "guilds", "logs"};
-    private final String[] INIT_FILES = new String[] {"gui.yml", "config.yml", "icon_shop_1.yml", "guild_shop.yml", "lang.yml"};
+    private final String[] INIT_FILES = new String[] {"gui.yml", "config.yml", "guild_shop.yml", "lang.yml"};
 
     private JulyCommandExecutor julyCommandExecutor;
     private JulyTabCompleter julyTabCompleter;
@@ -136,7 +135,7 @@ public class JulyGuild extends JavaPlugin {
             Economy tmp = setupEconomy();
 
             if (tmp == null) {
-                Util.sendColoredConsoleMessage("&c[!] Vault: Hook是吧, 插件将被卸载.");
+                Util.sendColoredConsoleMessage("&c[!] Vault: Hook失败, 插件将被卸载.");
                 setEnabled(false);
                 return;
             }
@@ -165,7 +164,7 @@ public class JulyGuild extends JavaPlugin {
         registerListeners();
         runTasks();
         Util.sendColoredConsoleMessage("载入了 " + guildManager.getGuilds().size() + "个 公会.");
-        Util.sendColoredConsoleMessage("载入了 " + iconShopConfig.getIconMap().size() + "个 图标商店物品.");
+        //Util.sendColoredConsoleMessage("载入了 " + iconShopConfig.getIconMap().size() + "个 图标商店物品.");
         Util.sendColoredConsoleMessage("载入了 " + guildShopConfig.getShopItems().size() + "个 公会商店物品.");
         Util.sendColoredConsoleMessage("插件初始化完毕.");
     }
@@ -201,7 +200,6 @@ public class JulyGuild extends JavaPlugin {
     private void registerListeners() {
         pluginManager.registerEvents(new GUIListener(), this);
         pluginManager.registerEvents(new TpAllListener(), this);
-        pluginManager.registerEvents(new GuildShopListener(), this);
     }
 
     public void writeGuildLog(GuildLog log) {

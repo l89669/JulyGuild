@@ -6,6 +6,7 @@ import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
 import com.github.julyss2019.mcsp.julyguild.guild.Guild;
 import com.github.julyss2019.mcsp.julyguild.request.player.PlayerRequest;
 import com.github.julyss2019.mcsp.julyguild.request.player.PlayerRequestType;
+import com.github.julyss2019.mcsp.julylibrary.utils.FileUtil;
 import com.github.julyss2019.mcsp.julylibrary.utils.YamlUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -15,36 +16,42 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 public class GuildPlayer {
-    private final UUID uuid;
-    private File file;
+    private final File file;
+    private UUID uuid;
     private YamlConfiguration yml;
     private UUID guildUuid;
     private String name;
     private GUI usingGUI;
     private Map<String, PlayerRequest> requestMap = new HashMap<>();
 
-    GuildPlayer(UUID uuid) {
-        this.uuid = uuid;
+
+    GuildPlayer(File file) {
+        this.file = file;
+
+        if (!file.exists()) {
+            throw new RuntimeException("玩家不存在");
+        }
 
         load();
     }
+
 
     /**
      * 初始化
      * @return
      */
-    public GuildPlayer load() {
-        this.file = new File(JulyGuild.getInstance().getDataFolder(), "players" + File.separator + getUuid() + ".yml");
+    public void load() {
         this.yml = YamlConfiguration.loadConfiguration(file);
-        this.guildUuid = UUID.fromString(yml.getString("guild"));
+        this.uuid = UUID.fromString(yml.getString("uuid"));
+        this.guildUuid = Optional.ofNullable(yml.getString("guild")).map(UUID::fromString).orElse(null);
         this.name = Optional
                 .ofNullable(Bukkit.getOfflinePlayer(getUuid()))
                 .map(OfflinePlayer::getName)
                 .orElse(uuid.toString());
-        return this;
     }
 
     public String getName() {
@@ -186,9 +193,8 @@ public class GuildPlayer {
     }
 
     public Guild getGuild() {
-        return Optional
-                .ofNullable(guildUuid)
-                .map(uuid1 -> JulyGuild.getInstance().getGuildManager().getGuild(guildUuid))
+        return guildUuid == null ? null : Optional
+                .of(JulyGuild.getInstance().getGuildManager().getGuild(guildUuid))
                 .filter(guild -> guild.isMember(this))
                 .orElseThrow(() -> new RuntimeException("该玩家在指向的公会不是成员"));
     }

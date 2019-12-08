@@ -2,20 +2,18 @@ package com.github.julyss2019.mcsp.julyguild.guild;
 
 import com.github.julyss2019.mcsp.julyguild.JulyGuild;
 import com.github.julyss2019.mcsp.julyguild.config.ConfigGuildIcon;
-import com.github.julyss2019.mcsp.julyguild.config.IconShopConfig;
 import com.github.julyss2019.mcsp.julyguild.config.setting.MainSettings;
 import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
-import com.github.julyss2019.mcsp.julyguild.request.guild.BaseGuildRequest;
-import com.github.julyss2019.mcsp.julyguild.request.guild.GuildRequest;
-import com.github.julyss2019.mcsp.julyguild.request.guild.GuildRequestType;
-import com.github.julyss2019.mcsp.julyguild.request.guild.JoinGuildRequest;
 import com.github.julyss2019.mcsp.julyguild.placeholder.Placeholder;
 import com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderText;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayerManager;
+import com.github.julyss2019.mcsp.julyguild.request.guild.BaseGuildRequest;
+import com.github.julyss2019.mcsp.julyguild.request.guild.GuildRequest;
+import com.github.julyss2019.mcsp.julyguild.request.guild.GuildRequestType;
+import com.github.julyss2019.mcsp.julyguild.request.guild.JoinGuildRequest;
 import com.github.julyss2019.mcsp.julyguild.util.Util;
 import com.github.julyss2019.mcsp.julylibrary.utils.YamlUtil;
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import parsii.eval.Parser;
@@ -47,11 +45,30 @@ public class Guild {
         this.file = file;
 
         if (!file.exists()) {
-            throw new RuntimeException("公会不存在!");
+            throw new RuntimeException("公会不存在");
         }
 
         load();
     }
+
+    /**
+     * 载入
+     * @return
+     */
+    private void load() {
+        this.yml = YamlConfiguration.loadConfiguration(file);
+        this.deleted = yml.getBoolean("deleted");
+        this.uuid = UUID.fromString(yml.getString("uuid"));
+        this.guildBank = new GuildBank(this);
+        this.announcements = yml.getStringList("announcements");
+        this.creationTime = yml.getLong("creation_time");
+        this.maxMemberCount = yml.getInt("max_member_count");
+
+        loadMembers();
+        loadRequests();
+        loadIcons();
+    }
+
 
     private void loadMembers() {
         memberMap.clear();
@@ -136,24 +153,6 @@ public class Guild {
     }
 
     /**
-     * 载入（或初始化）
-     * @return
-     */
-    private void load() {
-        this.yml = YamlConfiguration.loadConfiguration(file);
-        this.deleted = yml.getBoolean("deleted");
-        this.uuid = UUID.fromString(yml.getString("uuid"));
-        this.guildBank = new GuildBank(this);
-        this.announcements = yml.getStringList("announcements");
-        this.creationTime = yml.getLong("creation_time");
-        this.maxMemberCount = yml.getInt("max_member_count");
-
-        loadMembers();
-        loadRequests();
-        loadIcons();
-    }
-
-    /**
      * 得到公会唯一标识符
      * @return
      */
@@ -185,6 +184,10 @@ public class Guild {
     public void setOwner(GuildMember newOwner) {
         GuildMember oldOwner = owner;
         UUID newOwnerUuid = newOwner.getUuid();
+
+        if (oldOwner == null) {
+            yml.set();
+        }
 
         if (newOwner.equals(owner)) {
             throw new IllegalArgumentException("成员已是会长");
