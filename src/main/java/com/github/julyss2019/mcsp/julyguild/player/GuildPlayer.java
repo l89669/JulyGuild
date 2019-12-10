@@ -28,7 +28,6 @@ public class GuildPlayer {
     private GUI usingGUI;
     private Map<String, PlayerRequest> requestMap = new HashMap<>();
 
-
     GuildPlayer(File file) {
         this.file = file;
 
@@ -38,7 +37,6 @@ public class GuildPlayer {
 
         load();
     }
-
 
     /**
      * 初始化
@@ -193,10 +191,17 @@ public class GuildPlayer {
     }
 
     public Guild getGuild() {
-        return guildUuid == null ? null : Optional
-                .of(JulyGuild.getInstance().getGuildManager().getGuild(guildUuid))
-                .filter(guild -> guild.isMember(this))
-                .orElseThrow(() -> new RuntimeException("该玩家在指向的公会不是成员"));
+        return JulyGuild.getInstance().getGuildManager().getGuild(guildUuid);
+    }
+
+    /**
+     * 指向公会
+     * @param uuid
+     */
+    public void pointGuild(UUID uuid) {
+        yml.set("guild", uuid.toString());
+        save();
+        this.guildUuid = uuid;
     }
 
     /**
@@ -204,9 +209,11 @@ public class GuildPlayer {
      * @param newGuild
      */
     public void pointGuild(Guild newGuild) {
-        yml.set("guild", newGuild == null ? null : newGuild.getUuid().toString());
-        this.guildUuid = newGuild == null ? null : newGuild.getUuid();
-        save();
+        pointGuild(Optional.ofNullable(newGuild).map(Guild::getUuid).get());
+    }
+
+    public UUID getGuildUuid() {
+        return guildUuid;
     }
 
     public Player getBukkitPlayer() {

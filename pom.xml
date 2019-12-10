@@ -12,7 +12,7 @@
         <!-- 防止中文乱码 -->
         <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <output>${JulyGuild.outputDirectory}</output>
+        <output>${outputDirectory}</output>
     </properties>
 
     <repositories>
@@ -28,14 +28,14 @@
 
     <profiles>
         <profile>
-            <id>macbook</id>
+            <id>macOS</id>
             <activation>
                 <os>
-                    <family>Windows</family>
+                    <family>mac</family>
                 </os>
             </activation>
             <properties>
-                <JulyGuild.outputDirectory>/Users/july_ss/Desktop/july_ss/mc_servers/1.12.2/plugins</JulyGuild.outputDirectory>
+                <outputDirectory>/Users/july_ss/Desktop/july_ss/mc_servers/1.12.2/plugins</outputDirectory>
             </properties>
         </profile>
         <profile>
@@ -46,7 +46,7 @@
                 </os>
             </activation>
             <properties>
-                <JulyGuild.outputDirectory>G:\july_ss\mc_servers\1.12.2_paper\plugins</JulyGuild.outputDirectory>
+                <outputDirectory>G:\july_ss\mc_servers\1.12.2_paper\plugins</outputDirectory>
             </properties>
         </profile>
     </profiles>

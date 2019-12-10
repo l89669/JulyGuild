@@ -93,7 +93,7 @@ public class GuildCreateGUI extends BasePlayerGUI {
 
                 if (!vaultEconomy.has(bukkitPlayer, MainSettings.getCreateCostMoneyAmount())) {
                     Util.sendColoredMessage(bukkitPlayer, PlaceholderText.replacePlaceholders(thisLangSection.getString("money.not_enough"), new Placeholder.Builder()
-                            .addInner("need", vaultEconomy.getBalance(bukkitPlayer) - MainSettings.getCreateCostMoneyAmount()).build()));
+                            .addInner("need", MainSettings.getCreateCostMoneyAmount() - vaultEconomy.getBalance(bukkitPlayer)).build()));
                     return;
                 }
 
@@ -119,7 +119,7 @@ public class GuildCreateGUI extends BasePlayerGUI {
 
                 if (!playerPointsEconomy.has(bukkitPlayer, MainSettings.getCreateCostPointsAmount())) {
                     Util.sendColoredMessage(bukkitPlayer, PlaceholderText.replacePlaceholders(thisLangSection.getString("points.not_enough"), new Placeholder.Builder()
-                            .addInner("need", String.valueOf(playerPointsEconomy.getBalance(bukkitPlayer) - MainSettings.getCreateCostPointsAmount())).build()));
+                            .addInner("need", String.valueOf(MainSettings.getCreateCostPointsAmount() - playerPointsEconomy.getBalance(bukkitPlayer))).build()));
                     return;
                 }
 
@@ -152,7 +152,7 @@ public class GuildCreateGUI extends BasePlayerGUI {
                     createGuild(guildPlayer, guildName);
                 } else {
                     Util.sendColoredMessage(bukkitPlayer, PlaceholderText.replacePlaceholders(thisLangSection.getString("item.not_enough"), new Placeholder.Builder()
-                            .addInner("need", String.valueOf(hadItemAmount - MainSettings.getCreateCostItemAmount())).build()));
+                            .addInner("need", String.valueOf(MainSettings.getCreateCostItemAmount() - hadItemAmount)).build()));
                 }
             }
         });

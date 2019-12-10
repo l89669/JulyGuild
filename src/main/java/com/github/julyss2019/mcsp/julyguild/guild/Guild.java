@@ -3,7 +3,9 @@ package com.github.julyss2019.mcsp.julyguild.guild;
 import com.github.julyss2019.mcsp.julyguild.JulyGuild;
 import com.github.julyss2019.mcsp.julyguild.config.ConfigGuildIcon;
 import com.github.julyss2019.mcsp.julyguild.config.setting.MainSettings;
+import com.github.julyss2019.mcsp.julyguild.gui.GUI;
 import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
+import com.github.julyss2019.mcsp.julyguild.gui.player.MainGUI;
 import com.github.julyss2019.mcsp.julyguild.placeholder.Placeholder;
 import com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderText;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
@@ -31,6 +33,7 @@ public class Guild {
     private YamlConfiguration yml;
     private boolean deleted;
     private UUID uuid;
+    private String name;
     private GuildOwner owner;
     private Map<UUID, GuildMember> memberMap = new HashMap<>();
     private Map<UUID, List<GuildRequest>> playerRequestMap = new HashMap<>();
@@ -38,8 +41,8 @@ public class Guild {
     private OwnedIcon currentIcon;
     private GuildBank guildBank;
     private List<String> announcements;
-    private long creationTime;
-    private int maxMemberCount;
+    private long createTime;
+    private int additionMemberCount;
 
     Guild(File file) {
         this.file = file;
@@ -58,17 +61,33 @@ public class Guild {
     private void load() {
         this.yml = YamlConfiguration.loadConfiguration(file);
         this.deleted = yml.getBoolean("deleted");
+        this.name = yml.getString("name");
         this.uuid = UUID.fromString(yml.getString("uuid"));
         this.guildBank = new GuildBank(this);
         this.announcements = yml.getStringList("announcements");
-        this.creationTime = yml.getLong("creation_time");
-        this.maxMemberCount = yml.getInt("max_member_count");
+        this.createTime = yml.getLong("create_time");
+        this.additionMemberCount = yml.getInt("addition_member_count");
 
         loadMembers();
         loadRequests();
         loadIcons();
     }
 
+/*    private void verify() {
+        *//*
+        应该使用 UUID 代替实体，否则将会受到类构造时间的影响
+         *//*
+        for (GuildMember guildMember : getMembers()) {
+            UUID memberUuid = guildMember.getUuid();
+            UUID memberGuildUuid = guildPlayerManager.getGuildPlayer(memberUuid).getGuildUuid();
+
+            // 没指向本公会
+            if (!memberGuildUuid.equals(getUuid())) {
+                throw new RuntimeException("公会成员 " + memberUuid + " 指向的公会 " + memberGuildUuid +  " 不是本公会(" + getUuid() + ")");
+            }
+        }
+
+    }*/
 
     private void loadMembers() {
         memberMap.clear();
@@ -80,11 +99,6 @@ public class Guild {
                         .getConfigurationSection(memberUuidStr)
                         .getString("position"));
                 UUID memberUuid = UUID.fromString(memberUuidStr);
-
-                if (!guildPlayerManager.getGuildPlayer(memberUuid).getGuild().equals(this)) {
-                    throw new RuntimeException("公会成员 " + memberUuid + " 指向的公会不是本公会");
-                }
-
                 GuildMember member = position == Position.MEMBER
                         ? new GuildMember(this, memberUuid)
                         : new GuildOwner(this, memberUuid);
@@ -185,10 +199,6 @@ public class Guild {
         GuildMember oldOwner = owner;
         UUID newOwnerUuid = newOwner.getUuid();
 
-        if (oldOwner == null) {
-            yml.set();
-        }
-
         if (newOwner.equals(owner)) {
             throw new IllegalArgumentException("成员已是会长");
         }
@@ -283,7 +293,7 @@ public class Guild {
      * @return
      */
     public String getName() {
-        return yml.getString("name");
+        return name;
     }
 
     /**
@@ -353,7 +363,7 @@ public class Guild {
         yml.set("members." + guildMember.getUuid().toString(), null);
         save();
         loadMembers();
-        guildMember.getGuildPlayer().pointGuild(null);
+        guildMember.getGuildPlayer().pointGuild((UUID) null);
         updateMembersGUI(GUIType.MEMBER);
     }
 
@@ -368,10 +378,16 @@ public class Guild {
         for (GuildMember guildMember : getMembers()) {
             GuildPlayer guildPlayer = guildMember.getGuildPlayer();
 
-            guildPlayer.pointGuild(null);
+            guildPlayer.pointGuild((Guild) null);
 
-            if (guildPlayer.isOnline() && guildPlayer.getUsingGUI() != null) {
-                guildPlayer.closeGUI();
+            if (guildPlayer.isUsingGUI()) {
+                GUI usingGUI = guildPlayer.getUsingGUI();
+
+                if (usingGUI instanceof MainGUI) {
+                    usingGUI.reopen();
+                } else {
+                    guildPlayer.closeGUI();
+                }
             }
         }
 
@@ -383,27 +399,27 @@ public class Guild {
      * 得到最大成员数
      * @return
      */
-    public int getMaxMemberCount() {
-        return this.maxMemberCount;
+    public int getAdditionMemberCount() {
+        return this.additionMemberCount;
     }
 
     /**
      * 设置最大成员数
-     * @param maxMemberCount
+     * @param additionMemberCount
      * @return
      */
-    public void setMaxMemberCount(int maxMemberCount) {
-        yml.set("max_member_count", maxMemberCount);
+    public void setAdditionMemberCount(int additionMemberCount) {
+        yml.set("max_member_count", additionMemberCount);
         YamlUtil.saveYaml(yml, file);
-        this.maxMemberCount = maxMemberCount;
+        this.additionMemberCount = additionMemberCount;
     }
 
     /**
      * 得到创建时间
      * @return
      */
-    public long getCreationTime() {
-        return creationTime;
+    public long getCreateTime() {
+        return createTime;
     }
 
     /**

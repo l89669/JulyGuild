@@ -54,7 +54,7 @@ public class GuildUpgradeGUI extends BaseMemberGUI {
             }
         });
 
-        int oldMaxMemberCount = guild.getMaxMemberCount(); // 当前最大成员数
+        int oldMaxMemberCount = guild.getAdditionMemberCount(); // 当前最大成员数
 
         // 金币升级封顶
         if (oldMaxMemberCount + 1 > MainSettings.getUpgradeMoneyMaxMemberCount()) {
@@ -90,7 +90,7 @@ public class GuildUpgradeGUI extends BaseMemberGUI {
                     }
 
                     guildBank.withdraw(GuildBank.BalanceType.MONEY, needMoney);
-                    guild.setMaxMemberCount(guild.getMaxMemberCount() + 1);
+                    guild.setAdditionMemberCount(guild.getAdditionMemberCount() + 1);
                     Util.sendColoredMessage(bukkitPlayer, thisLangSection.getString("money.success"), new Placeholder.Builder()
                             .addInner("old", String.valueOf(oldMaxMemberCount))
                             .addInner("new", String.valueOf(oldMaxMemberCount + 1)).build());
@@ -139,7 +139,7 @@ public class GuildUpgradeGUI extends BaseMemberGUI {
                     }
 
                     guildBank.withdraw(GuildBank.BalanceType.POINTS, needPoints);
-                    guild.setMaxMemberCount(guild.getMaxMemberCount() + 1);
+                    guild.setAdditionMemberCount(guild.getAdditionMemberCount() + 1);
                     Util.sendColoredMessage(bukkitPlayer, thisLangSection.getString("points.success"), new Placeholder.Builder()
                             .addInner("old", String.valueOf(oldMaxMemberCount))
                             .addInner("new", String.valueOf(oldMaxMemberCount + 1)).build());

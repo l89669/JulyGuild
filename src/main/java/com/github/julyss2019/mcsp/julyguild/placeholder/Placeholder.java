@@ -7,6 +7,7 @@ import com.github.julyss2019.mcsp.julyguild.guild.GuildBank;
 import com.github.julyss2019.mcsp.julyguild.guild.GuildMember;
 import com.github.julyss2019.mcsp.julyguild.util.Util;
 import com.github.julyss2019.mcsp.julylibrary.utils.TimeUtil;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -54,8 +55,8 @@ public class Placeholder {
             addInner("guild_money", Util.SIMPLE_DECIMAL_FORMAT.format(guild.getGuildBank().getBalance(GuildBank.BalanceType.MONEY)));
             addInner("guild_points", Util.SIMPLE_DECIMAL_FORMAT.format(guild.getGuildBank().getBalance(GuildBank.BalanceType.POINTS)));
             addInner("guild_member_count", guild.getMemberCount());
-            addInner("guild_max_member_count", guild.getMaxMemberCount());
-            addInner("guild_creation_time", TimeUtil.YMD_SDF.format(guild.getCreationTime()));
+            addInner("guild_max_member_count", guild.getAdditionMemberCount());
+            addInner("guild_creation_time", TimeUtil.YMD_SDF.format(guild.getCreateTime()));
             return this;
         }
 
@@ -94,7 +95,7 @@ public class Placeholder {
             return add(key, String.valueOf(value));
         }
 
-        public Builder add(String key, String value) {
+        public Builder add(String key, @NotNull String value) {
             map.put(key, value);
             return this;
         }

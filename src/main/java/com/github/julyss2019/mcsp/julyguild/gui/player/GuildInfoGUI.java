@@ -51,8 +51,8 @@ public class GuildInfoGUI extends BasePlayerGUI {
                             return;
                         }
 
-                        if (guild.getMemberCount() >= guild.getMaxMemberCount()) {
-                            Util.sendColoredMessage(bukkitPlayer, thisLangSection.getString("request_join.guild_full"), new Placeholder.Builder().addInner("max", guild.getMaxMemberCount()).build());
+                        if (guild.getMemberCount() >= guild.getAdditionMemberCount()) {
+                            Util.sendColoredMessage(bukkitPlayer, thisLangSection.getString("request_join.guild_full"), new Placeholder.Builder().addInner("max", guild.getAdditionMemberCount()).build());
                             return;
                         }
 

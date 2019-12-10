@@ -10,7 +10,7 @@ import java.util.*;
 public class GuildMember {
     private Guild guild;
     private UUID uuid;
-    private ConfigurationSection memberSection;
+    private ConfigurationSection section;
     private Set<Permission> permissions = new HashSet<>();
     private long joinTime;
     private Map<GuildBank.BalanceType, BigDecimal> donatedMap = new HashMap<>();
@@ -27,23 +27,25 @@ public class GuildMember {
             guild.getYaml().createSection("members");
         }
 
-        this.memberSection = guild.getYaml().getConfigurationSection("members").getConfigurationSection(uuid.toString());
+        this.section = guild.getYaml().getConfigurationSection("members").getConfigurationSection(uuid.toString());
 
-        if (memberSection.contains("permissions")) {
-            Set<String> permissions = memberSection.getConfigurationSection("permissions").getKeys(false);
+        if (section.contains("permissions")) {
+            Set<String> permissions = section.getConfigurationSection("permissions").getKeys(false);
 
             if (permissions != null) {
                 permissions.forEach(s -> this.permissions.add(Permission.valueOf(s)));
             }
         }
 
-        for (String type : memberSection.getConfigurationSection("donated").getKeys(false)) {
-            GuildBank.BalanceType balanceType = GuildBank.BalanceType.valueOf(type);
+        if (section.contains("donated")) {
+            for (String type : section.getConfigurationSection("donated").getKeys(false)) {
+                GuildBank.BalanceType balanceType = GuildBank.BalanceType.valueOf(type);
 
-            donatedMap.put(balanceType, new BigDecimal(memberSection.getString("donated." + balanceType.name(), "0")));
+                donatedMap.put(balanceType, new BigDecimal(section.getString("donated." + balanceType.name(), "0")));
+            }
         }
 
-        this.joinTime = memberSection.getLong("join_time");
+        this.joinTime = section.getLong("join_time");
     }
 
     public String getName() {
@@ -90,7 +92,7 @@ public class GuildMember {
 
         newPermissions.forEach(permission1 -> stringPermissions.add(permission1.name()));
 
-        memberSection.set("permissions", stringPermissions);
+        section.set("permissions", stringPermissions);
     }
 
     public Set<Permission> getPermissions() {
@@ -121,7 +123,7 @@ public class GuildMember {
     }
 
     public void setDonated(GuildBank.BalanceType balanceType, BigDecimal value) {
-        memberSection.set("donated." + balanceType.name(), value.toString());
+        section.set("donated." + balanceType.name(), value.toString());
         save();
         donatedMap.put(balanceType, value);
     }

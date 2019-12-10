@@ -3,7 +3,6 @@ package com.github.julyss2019.mcsp.julyguild;
 import com.github.julyss2019.mcsp.julyguild.guild.CacheGuildManager;
 import com.github.julyss2019.mcsp.julyguild.guild.Guild;
 import com.github.julyss2019.mcsp.julyguild.guild.GuildBank;
-import com.github.julyss2019.mcsp.julyguild.guild.Position;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayerManager;
 import com.github.julyss2019.mcsp.julyguild.util.Util;
@@ -70,9 +69,9 @@ public class PlaceholderAPIExpansion extends PlaceholderExpansion {
             case "member_count":
                 return String.valueOf(guild.getMemberCount());
             case "max_member_count":
-                return String.valueOf(guild.getMaxMemberCount());
+                return String.valueOf(guild.getAdditionMemberCount());
             case "creation_time":
-                return LangHelper.Global.getDateTimeFormat().format(guild.getCreationTime());
+                return LangHelper.Global.getDateTimeFormat().format(guild.getCreateTime());
             case "money":
                 return guildBank.getBalance(GuildBank.BalanceType.MONEY).toString();
             case "points":

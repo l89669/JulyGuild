@@ -19,6 +19,7 @@ public class GuildPlayerManager {
                     : registerGuildPlayer(uuid));
         }
 
+
         return guildPlayerMap.get(uuid);
     }
 
