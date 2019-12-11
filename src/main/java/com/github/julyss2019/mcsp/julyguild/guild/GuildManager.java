@@ -1,11 +1,8 @@
 package com.github.julyss2019.mcsp.julyguild.guild;
 
 import com.github.julyss2019.mcsp.julyguild.JulyGuild;
-import com.github.julyss2019.mcsp.julyguild.event.GuildCreateEvent;
-import com.github.julyss2019.mcsp.julyguild.gui.GUI;
+import com.github.julyss2019.mcsp.julyguild.api.event.GuildCreateEvent;
 import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
-import com.github.julyss2019.mcsp.julyguild.gui.player.GuildInfoGUI;
-import com.github.julyss2019.mcsp.julyguild.gui.player.MainGUI;
 import com.github.julyss2019.mcsp.julyguild.log.guild.GuildCreateLog;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayerManager;
@@ -15,7 +12,6 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 

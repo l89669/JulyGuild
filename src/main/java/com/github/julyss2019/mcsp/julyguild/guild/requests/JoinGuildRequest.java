@@ -1,4 +1,4 @@
-package com.github.julyss2019.mcsp.julyguild.request.guild;
+package com.github.julyss2019.mcsp.julyguild.guild.requests;
 
 import com.github.julyss2019.mcsp.julyguild.JulyGuild;
 import com.github.julyss2019.mcsp.julyguild.config.setting.MainSettings;

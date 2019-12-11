@@ -1,4 +1,4 @@
-package com.github.julyss2019.mcsp.julyguild.request;
+package com.github.julyss2019.mcsp.julyguild;
 
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
 

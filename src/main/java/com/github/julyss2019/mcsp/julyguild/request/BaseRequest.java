@@ -1,6 +1,7 @@
 package com.github.julyss2019.mcsp.julyguild.request;
 
 import com.github.julyss2019.mcsp.julyguild.JulyGuild;
+import com.github.julyss2019.mcsp.julyguild.Request;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
 
 import java.util.UUID;

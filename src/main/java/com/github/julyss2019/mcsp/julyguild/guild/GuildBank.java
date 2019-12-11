@@ -25,16 +25,12 @@ public class GuildBank {
     }
 
     private GuildBank load() {
-        if (!guild.getYaml().contains("bank")) {
-            guild.getYaml().createSection("bank");
-        }
-
         this.section = guild.getYaml().getConfigurationSection("bank");
 
-        Set<String> keys = section.getKeys(false);
-
-        for (String key : keys) {
-            balanceMap.put(BalanceType.valueOf(key), new BigDecimal(section.getString(key)));
+        if (section != null) {
+            for (String key : section.getKeys(false)) {
+                balanceMap.put(BalanceType.valueOf(key), new BigDecimal(section.getString(key)));
+            }
         }
 
         return this;
