@@ -69,7 +69,7 @@ public class PlaceholderAPIExpansion extends PlaceholderExpansion {
             case "member_count":
                 return String.valueOf(guild.getMemberCount());
             case "max_member_count":
-                return String.valueOf(guild.getAdditionMemberCount());
+                return String.valueOf(guild.getMaxMemberCount());
             case "creation_time":
                 return LangHelper.Global.getDateTimeFormat().format(guild.getCreateTime());
             case "money":

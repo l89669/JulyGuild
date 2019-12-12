@@ -1,4 +1,4 @@
-package com.github.julyss2019.mcsp.julyguild.gui.player;
+package com.github.julyss2019.mcsp.julyguild.gui.entities;
 
 import com.github.julyss2019.mcsp.julyguild.JulyGuild;
 import com.github.julyss2019.mcsp.julyguild.config.gui.IndexConfigGUI;
@@ -51,8 +51,8 @@ public class GuildInfoGUI extends BasePlayerGUI {
                             return;
                         }
 
-                        if (guild.getMemberCount() >= guild.getAdditionMemberCount()) {
-                            Util.sendColoredMessage(bukkitPlayer, thisLangSection.getString("request_join.guild_full"), new Placeholder.Builder().addInner("max", guild.getAdditionMemberCount()).build());
+                        if (guild.getMemberCount() >= guild.getMaxMemberCount()) {
+                            Util.sendColoredMessage(bukkitPlayer, thisLangSection.getString("request_join.guild_full"), new Placeholder.Builder().addInner("max", guild.getMaxMemberCount()).build());
                             return;
                         }
 

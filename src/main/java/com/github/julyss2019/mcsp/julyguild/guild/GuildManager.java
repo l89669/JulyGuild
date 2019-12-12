@@ -38,8 +38,9 @@ public class GuildManager {
 
         yml.set("uuid", uuid.toString());
         yml.set("name", guildName);
-        yml.set("create_time", System.currentTimeMillis());
+        yml.set("creation_time", System.currentTimeMillis());
         yml.set("members." + ownerPlayer.getUuid() + ".position", Position.OWNER.name());
+
         YamlUtil.saveYaml(yml, file);
 
         ownerPlayer.pointGuild(uuid); // 指向新公会

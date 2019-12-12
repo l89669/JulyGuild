@@ -24,7 +24,7 @@ GuildCreateGUI:
   on_close: '&c创建公会失败!'
   success:
     self_title: '&d创建公会成功'
-    broadcast: '&d恭喜 &e{player} &d创建了公会 &e{guild}&d.'
+    broadcast: '&d恭喜 &e{entities} &d创建了公会 &e{guild}&d.'
 MainGUI:
   create:
     input:

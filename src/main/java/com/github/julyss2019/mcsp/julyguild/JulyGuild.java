@@ -75,8 +75,6 @@ public class JulyGuild extends JavaPlugin {
     private GuildShopConfig guildShopConfig;
     private PlaceholderAPIExpansion placeholderAPIExpansion;
 
-    public static void test(String sb) {}
-
     @Override
     public void onEnable() {
         instance = this;

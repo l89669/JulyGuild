@@ -1,15 +1,12 @@
 package com.github.julyss2019.mcsp.julyguild.command;
 
 import com.github.julyss2019.mcsp.julyguild.JulyGuild;
-import com.github.julyss2019.mcsp.julyguild.gui.player.MainGUI;
+import com.github.julyss2019.mcsp.julyguild.gui.entities.MainGUI;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayerManager;
 import com.github.julyss2019.mcsp.julylibrary.command.tab.JulyTabCommand;
 import com.github.julyss2019.mcsp.julylibrary.command.tab.TabCompleter;
-import com.github.julyss2019.mcsp.julylibrary.map.MapBuilder;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
-import java.util.Map;
 
 public class MainGUICommand implements JulyTabCommand {
     private final JulyGuild plugin = JulyGuild.getInstance();

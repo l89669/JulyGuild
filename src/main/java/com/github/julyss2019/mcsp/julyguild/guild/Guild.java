@@ -5,7 +5,7 @@ import com.github.julyss2019.mcsp.julyguild.config.ConfigGuildIcon;
 import com.github.julyss2019.mcsp.julyguild.config.setting.MainSettings;
 import com.github.julyss2019.mcsp.julyguild.gui.GUI;
 import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
-import com.github.julyss2019.mcsp.julyguild.gui.player.MainGUI;
+import com.github.julyss2019.mcsp.julyguild.gui.entities.MainGUI;
 import com.github.julyss2019.mcsp.julyguild.placeholder.Placeholder;
 import com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderText;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
@@ -65,7 +65,7 @@ public class Guild {
         this.uuid = UUID.fromString(yml.getString("uuid"));
         this.guildBank = new GuildBank(this);
         this.announcements = yml.getStringList("announcements");
-        this.createTime = yml.getLong("create_time");
+        this.createTime = yml.getLong("creation_time");
         this.additionMemberCount = yml.getInt("addition_member_count");
 
         loadMembers();
@@ -395,6 +395,10 @@ public class Guild {
         this.deleted = true;
     }
 
+    public int getMaxMemberCount() {
+        return MainSettings.getDefaultMaxMemberCount() + getAdditionMemberCount();
+    }
+
     /**
      * 得到最大成员数
      * @return
@@ -409,7 +413,7 @@ public class Guild {
      * @return
      */
     public void setAdditionMemberCount(int additionMemberCount) {
-        yml.set("max_member_count", additionMemberCount);
+        yml.set("addition_member_count", additionMemberCount);
         YamlUtil.saveYaml(yml, file);
         this.additionMemberCount = additionMemberCount;
     }
@@ -489,7 +493,7 @@ public class Guild {
 
         String uuid = guildRequest.getUUID().toString();
 
-        yml.set("requests." + uuid + ".player", guildRequest.getRequester().getName());
+        yml.set("requests." + uuid + ".entities", guildRequest.getRequester().getName());
         yml.set("requests." + uuid + ".type", guildRequest.getType().name());
         yml.set("requests." + uuid + ".time", guildRequest.getCreationTime());
 

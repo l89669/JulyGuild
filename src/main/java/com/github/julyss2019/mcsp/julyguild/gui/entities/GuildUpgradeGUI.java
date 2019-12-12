@@ -1,4 +1,4 @@
-package com.github.julyss2019.mcsp.julyguild.gui.player;
+package com.github.julyss2019.mcsp.julyguild.gui.entities;
 
 import com.github.julyss2019.mcsp.julyguild.JulyGuild;
 import com.github.julyss2019.mcsp.julyguild.config.gui.IndexConfigGUI;
@@ -54,7 +54,7 @@ public class GuildUpgradeGUI extends BaseMemberGUI {
             }
         });
 
-        int oldMaxMemberCount = guild.getAdditionMemberCount(); // 当前最大成员数
+        int oldMaxMemberCount = guild.getMaxMemberCount(); // 当前最大成员数
 
         // 金币升级封顶
         if (oldMaxMemberCount + 1 > MainSettings.getUpgradeMoneyMaxMemberCount()) {

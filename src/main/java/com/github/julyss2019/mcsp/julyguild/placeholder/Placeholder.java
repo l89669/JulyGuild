@@ -55,7 +55,7 @@ public class Placeholder {
             addInner("guild_money", Util.SIMPLE_DECIMAL_FORMAT.format(guild.getGuildBank().getBalance(GuildBank.BalanceType.MONEY)));
             addInner("guild_points", Util.SIMPLE_DECIMAL_FORMAT.format(guild.getGuildBank().getBalance(GuildBank.BalanceType.POINTS)));
             addInner("guild_member_count", guild.getMemberCount());
-            addInner("guild_max_member_count", guild.getAdditionMemberCount());
+            addInner("guild_max_member_count", guild.getMaxMemberCount());
             addInner("guild_creation_time", TimeUtil.YMD_SDF.format(guild.getCreateTime()));
             return this;
         }
