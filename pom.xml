@@ -12,6 +12,8 @@
         <!-- 防止中文乱码 -->
         <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <mcsp.output.win>G:\july_ss\mc_servers\1.12.2_paper\plugins</mcsp.output.win>
+        <mcsp.output.mac>/Users/july_ss/Desktop/july_ss/mc_servers/1.12.2/plugins</mcsp.output.mac>
     </properties>
 
     <repositories>
@@ -27,11 +29,11 @@
 
     <profiles>
         <profile>
-            <id>proguard-dev</id>
+            <id>dev</id>
         </profile>
 
         <profile>
-            <id>proguard-release</id>
+            <id>release</id>
             <build>
                 <plugins>
                     <plugin>
@@ -47,6 +49,7 @@
                         </executions>
                         <configuration>
                             <proguardInclude>${basedir}/proguard.conf</proguardInclude>
+                            <injar>${project.build.finalName}-jar-with-dependencies.jar</injar>
                             <options>
                                 <option>-allowaccessmodification</option>
                             </options>
@@ -56,6 +59,7 @@
                             </libs>
                         </configuration>
                     </plugin>
+
                     <!-- copy文件 -->
                     <plugin>
                         <artifactId>maven-antrun-plugin</artifactId>
@@ -67,6 +71,25 @@
                                 </goals>
                                 <configuration>
                                     <tasks>
+                                        <taskdef resource="net/sf/antcontrib/antcontrib.properties" classpathref="maven.runtime.classpath" />
+                                        <if>
+                                            <contains string="${os.name}" substring="Mac"/>
+                                            <then>
+                                                <copy overwrite="true" tofile="${basedir}/proguard/proguard_map-${version}.txt"
+                                                      file="${project.build.directory}/proguard_map.txt"/>
+                                            </then>
+                                            <else>
+                                                <if>
+                                                    <contains string="${os.name}" substring="Win"/>
+                                                    <then>
+                                                        <copy overwrite="true" tofile="${basedir}/proguard/proguard_map-${version}.txt"
+                                                            file="${project.build.directory}/proguard_map.txt"/>
+                                                    </then>
+                                                </if>
+
+                                                <echo>${os.name} do not run build.sh</echo>
+                                            </else>
+                                        </if>
                                         <copy overwrite="true" tofile="${basedir}/proguard/proguard_map-${version}.txt"
                                               file="${project.build.directory}/proguard_map.txt"/>
                                         <copy overwrite="true" tofile="${basedir}/proguard/proguard_seed-${version}.txt"
@@ -78,29 +101,6 @@
                     </plugin>
                 </plugins>
             </build>
-        </profile>
-
-        <profile>
-            <id>macOS-output-dev</id>
-            <activation>
-                <os>
-                    <family>mac</family>
-                </os>
-            </activation>
-            <properties>
-                <mcsp.output>/Users/july_ss/Desktop/july_ss/mc_servers/1.12.2/plugins</mcsp.output>
-            </properties>
-        </profile>
-        <profile>
-            <id>windows-output-dev</id>
-            <activation>
-                <os>
-                    <family>Windows</family>
-                </os>
-            </activation>
-            <properties>
-                <mcsp.output>G:\july_ss\mc_servers\1.12.2_paper\plugins</mcsp.output>
-            </properties>
         </profile>
     </profiles>
 
@@ -125,9 +125,7 @@
                 <artifactId>maven-assembly-plugin</artifactId>
                 <version>2.4.1</version>
                 <configuration>
-                    <finalName>${artifactId}</finalName>
                     <appendAssemblyId>false</appendAssemblyId>
-                    <outputDirectory>${mcsp.output}</outputDirectory>
                     <!-- get all project dependencies -->
                     <descriptorRefs>
                         <descriptorRef>jar-with-dependencies</descriptorRef>
@@ -164,6 +162,21 @@
     </build>
 
     <dependencies>
+        <!-- https://mvnrepository.com/artifact/ant-contrib/ant-contrib -->
+        <dependency>
+            <groupId>ant-contrib</groupId>
+            <artifactId>ant-contrib</artifactId>
+            <version>1.0b3</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.ant</groupId>
+            <artifactId>ant-nodeps</artifactId>
+            <version>1.8.1</version>
+            <scope>provided</scope>
+        </dependency>
+
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
