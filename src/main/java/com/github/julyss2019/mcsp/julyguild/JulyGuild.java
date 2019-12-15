@@ -31,6 +31,7 @@ import net.milkbowl.vault.economy.Economy;
 import org.black_ixx.playerpoints.PlayerPoints;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -77,6 +78,8 @@ public class JulyGuild extends JavaPlugin {
 
     @Override
     public void onEnable() {
+
+
         instance = this;
         this.pluginManager = Bukkit.getPluginManager();
 
