@@ -36,6 +36,7 @@
             <id>release</id>
             <build>
                 <plugins>
+
                     <plugin>
                         <groupId>com.github.wvengen</groupId>
                         <artifactId>proguard-maven-plugin</artifactId>
@@ -58,51 +59,6 @@
                             </libs>
                         </configuration>
                     </plugin>
-
-                    <!-- copy文件 -->
-                    <plugin>
-                        <artifactId>maven-antrun-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <phase>package</phase>
-                                <goals>
-                                    <goal>run</goal>
-                                </goals>
-                                <configuration>
-                                    <tasks>
-                                        <taskdef resource="net/sf/antcontrib/antlib.xml">
-                                            <classpath>
-                                                <pathelement location="${basedir}/libs/ant-contrib-1.0b3.jar"/>
-                                            </classpath>
-                                        </taskdef>
-                                        <echo>当前操作系统: ${os.name}</echo>
-                                        <echo>${env.ANT_HOME}</echo>
-                                        <if>
-                                            <contains string="${os.name}" substring="Windows"/>
-                                            <then>
-                                                <copy overwrite="true" tofile="${mcsp.output.win}/${pom.artifactId}.jar"
-                                                      file="${project.build.directory}/${pom.artifactId}-${version}.jar"/>
-                                            </then>
-                                            <else>
-                                                <if>
-                                                <contains string="${os.name}" substring="mac"/>
-                                                    <then>
-                                                        <copy overwrite="true" tofile="${mcsp.output.mac}/${pom.artifactId}.jar"
-                                                              file="${project.build.directory}/${pom.artifactId}-${version}.jar"/>
-                                                    </then>
-                                                </if>
-                                            </else>
-                                        </if>
-
-                                        <copy overwrite="true" tofile="${basedir}/proguard/proguard_map-${version}.txt"
-                                              file="${project.build.directory}/proguard_map.txt"/>
-                                        <copy overwrite="true" tofile="${basedir}/proguard/proguard_seed-${version}.txt"
-                                              file="${project.build.directory}/proguard_seed.txt"/>
-                                    </tasks>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
                 </plugins>
             </build>
         </profile>
@@ -110,6 +66,32 @@
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>com.github.julyss2019.maven.plugins</groupId>
+                <artifactId>os-copyer-plugin</artifactId>
+                <version>1.0.0</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <copyers>
+                        <coper>
+                            <from>${build.directory}/${build.finalName}.jar</from>
+                            <operatingSystems>
+                                <operatingSystem>
+                                    <os>Mac OS X</os>
+                                    <to>/Users/july_ss/Desktop/july_ss/mc_servers/1.12.2/plugins/${artifactId}.jar</to>
+                                    <overwrite>true</overwrite>
+                                </operatingSystem>
+                            </operatingSystems>
+                        </coper>
+                    </copyers>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>se.eris</groupId>
                 <artifactId>notnull-instrumenter-maven-plugin</artifactId>
@@ -162,25 +144,36 @@
                     <target>1.8</target>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>com.github.julyss2019.maven.plugins</groupId>
+                <artifactId>os-copyer-plugin</artifactId>
+                <version>1.0.0</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <copyers>
+                        <coper>
+                            <from>${build.directory}/${build.finalName}.jar</from>
+                            <operatingSystems>
+                                <operatingSystem>
+                                    <os>Mac OS X</os>
+                                    <to>/Users/july_ss/Desktop/july_ss/mc_servers/1.12.2/plugins/${artifactId}.jar</to>
+                                    <overwrite>true</overwrite>
+                                </operatingSystem>
+                            </operatingSystems>
+                        </coper>
+                    </copyers>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
     <dependencies>
-        <!-- https://mvnrepository.com/artifact/ant-contrib/ant-contrib -->
-        <dependency>
-            <groupId>ant-contrib</groupId>
-            <artifactId>ant-contrib</artifactId>
-            <version>1.0b3</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.ant</groupId>
-            <artifactId>ant-nodeps</artifactId>
-            <version>1.8.1</version>
-            <scope>provided</scope>
-        </dependency>
-
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
