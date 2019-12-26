@@ -12,8 +12,6 @@
         <!-- 防止中文乱码 -->
         <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <mcsp.output.win>G:\july_ss\mc_servers\1.12.2_paper\plugins</mcsp.output.win>
-        <mcsp.output.mac>/Users/july_ss/Desktop/july_ss/mc_servers/1.12.2/plugins</mcsp.output.mac>
     </properties>
 
     <repositories>
@@ -36,13 +34,12 @@
             <id>release</id>
             <build>
                 <plugins>
-
                     <plugin>
                         <groupId>com.github.wvengen</groupId>
                         <artifactId>proguard-maven-plugin</artifactId>
                         <executions>
                             <execution>
-                                <phase>package</phase>
+                                <phase>none</phase>
                                 <goals>
                                     <goal>proguard</goal>
                                 </goals>
@@ -66,32 +63,6 @@
 
     <build>
         <plugins>
-            <plugin>
-                <groupId>com.github.julyss2019.maven.plugins</groupId>
-                <artifactId>os-copyer-plugin</artifactId>
-                <version>1.0.0</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>copy</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <copyers>
-                        <coper>
-                            <from>${build.directory}/${build.finalName}.jar</from>
-                            <operatingSystems>
-                                <operatingSystem>
-                                    <os>Mac OS X</os>
-                                    <to>/Users/july_ss/Desktop/july_ss/mc_servers/1.12.2/plugins/${artifactId}.jar</to>
-                                    <overwrite>true</overwrite>
-                                </operatingSystem>
-                            </operatingSystems>
-                        </coper>
-                    </copyers>
-                </configuration>
-            </plugin>
             <plugin>
                 <groupId>se.eris</groupId>
                 <artifactId>notnull-instrumenter-maven-plugin</artifactId>
@@ -158,11 +129,16 @@
                 <configuration>
                     <copyers>
                         <coper>
-                            <from>${build.directory}/${build.finalName}.jar</from>
+                            <source>${build.directory}/${build.finalName}.jar</source>
                             <operatingSystems>
                                 <operatingSystem>
-                                    <os>Mac OS X</os>
-                                    <to>/Users/july_ss/Desktop/july_ss/mc_servers/1.12.2/plugins/${artifactId}.jar</to>
+                                    <name>Mac OS X</name>
+                                    <dest>/Users/july_ss/Desktop/july_ss/mc_servers/1.12.2/plugins/${artifactId}.jar</dest>
+                                    <overwrite>true</overwrite>
+                                </operatingSystem>
+                                <operatingSystem>
+                                    <name>Windows 10</name>
+                                    <dest>G:\july_ss\mc_servers\1.12.2_paper\plugins\${artifactId}.jar</dest>
                                     <overwrite>true</overwrite>
                                 </operatingSystem>
                             </operatingSystems>

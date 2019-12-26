@@ -1,0 +1,56 @@
+version: 1.0.0
+ConfirmGUI:
+  money:
+    title: '&e&l金币赞助确认'
+    row: 3
+    items:
+      back:
+        index: 27
+        display_name: '&f返回'
+        material: ARROW
+      confirm:
+        index: 14
+        material: GOLDEN_APPLE
+        lores:
+          - ' &f赞助: 金币x{donate_amount}'
+          - ' &f手续费: {fee}'
+          - ' &f实际赞助额: {exactly_donate_amount}'
+  points:
+    title: '&e&l点券赞助确认'
+    row: 3
+    items:
+      back:
+        index: 27
+        display_name: '&f返回'
+        material: ARROW
+      confirm:
+        index: 14
+        material: GOLDEN_APPLE
+        lores:
+          - ' &f赞助: 点券x{donate_amount}'
+          - ' &f手续费: {fee}'
+          - ' &f实际赞助额: {exactly_donate_amount}'
+use_papi: true
+row: 3
+title: '&e&l捐赠'
+items:
+  money:
+    index: 12
+    material: GOLD_INGOT
+    display_name: '&f捐赠金币'
+    use_papi: true
+    lores:
+      - ' &f手续费: {fee}%'
+      - ' &f拥有: %vault_eco_balance%'
+  points:
+    index: 16
+    material: DIAMOND
+    use_papi: true
+    lores:
+      - ' &f手续费: {fee}%'
+      - ' &f拥有: %playerpoints_points%'
+    display_name: '&f捐赠点券'
+  back:
+    index: 27
+    material: ARROW
+    display_name: '&f返回'

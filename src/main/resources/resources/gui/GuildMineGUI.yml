@@ -1,0 +1,81 @@
+version: 1.0.0
+# 最重要的GUI,集成了所有功能
+# 该GUI除了 back 以外的物品都不允许自定义位置，将根据 positions 属性排序
+# 可供显示的位置，必须大于等于最大项目数，支持使用 - 作为范围界定符，使用,分隔
+positions: '10-45'
+row: 6
+title: '&e&l我的公会'
+items:
+  back:
+    index: 54
+    material: BOOK
+    display_name: '&c返回'
+  guild_info:
+    priority: 0
+    material: PAPER
+    display_name: '&f公会信息'
+    use_papi: true
+    lores:
+      - ' &f公会名: {guild_name}'
+      - ' &f会长: {guild_owner}'
+      - ' &f金币储备: {guild_money}'
+      - ' &f点券储备: {guild_points}'
+      - ' &f人数: {guild_member_count}/{guild_max_member_count}'
+      - ' &f创建时间: {guild_creation_time}'
+  self_info:
+    priority: -1
+    material: SKULL_ITEM
+    data: 3
+    use_papi: true
+    display_name: '&f个人信息'
+    lores:
+      - ' &fID: %player_name%'
+      - ' &f金币: %vault_eco_balance%'
+  guild_members:
+    # 成员看到的图标
+    member:
+      priority: -2
+      material: SKULL_ITEM
+      data: 3
+      display_name: '&f公会成员'
+      skull: 'July_ss' # %player_name%
+    # 管理员看到的图标
+    admin:
+      priority: -2
+      material: SKULL_ITEM
+      data: 3
+      display_name: '&f成员管理'
+      skull: 'July_ss' # %player_name%
+    # 会长看到的图标
+    owner:
+      priority: -2
+      material: SKULL_ITEM
+      data: 3
+      display_name: '&f成员管理'
+      skull: 'July_ss' # %player_name%
+  _guild_announcements:
+    priority: -3
+    material: MAP
+    display_name: '&f公会公告'
+  guild_donate:
+    priority: -4
+    material: DIAMOND
+    display_name: '&f捐献'
+    lores:
+      - ' &f捐献金币或点券'
+  guild_upgrade:
+    priority: -5
+    material: EXP_BOTTLE
+    display_name: '&f公会升级'
+  guild_exit:
+    priority: -6
+    material: BARRIR
+    display_name: '&c退出公会'
+    lores:
+      - ' &c请谨慎操作'
+  guild_dismiss:
+    priority: -6
+    material: BARRIER
+    display_name: '&c解散公会'
+    lores:
+      - ' &c请谨慎操作'

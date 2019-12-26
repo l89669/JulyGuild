@@ -164,7 +164,7 @@ public class GuildCreateGUI extends BasePlayerGUI {
         Player bukkitPlayer = guildPlayer.getBukkitPlayer();
 
         guildManager.createGuild(guildPlayer, guildName);
-        JulyMessage.broadcastColoredMessage(PlaceholderText.replacePlaceholders(thisLangSection.getString("success.broadcast"), new Placeholder.Builder().addInner("PLAYER", playerName).addInner("GUILD", guildName).build()));
+        JulyMessage.broadcastColoredMessage(PlaceholderText.replacePlaceholders(thisLangSection.getString("success.broadcast"), new Placeholder.Builder().addInner("player", playerName).addInner("guild", guildName).build()));
         JulyMessage.sendTitle(bukkitPlayer, new Title.Builder().text(thisLangSection.getString("success.self_title")).colored().build());
 
         new BukkitRunnable() {

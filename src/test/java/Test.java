@@ -6,13 +6,13 @@ import org.apache.commons.lang.StringEscapeUtils;
 import org.bukkit.inventory.ItemFlag;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Random;
 
 public class Test {
     public static void main(String[] args) {
-        for (ItemFlag itemFlag : ItemFlag.values()) {
-            System.out.println(itemFlag.name());
-        }
+
+        System.out.println("apple".substring(2, 5));
     }
 }

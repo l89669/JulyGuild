@@ -31,7 +31,6 @@ import net.milkbowl.vault.economy.Economy;
 import org.black_ixx.playerpoints.PlayerPoints;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -39,11 +38,15 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
+import java.net.*;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
+import java.security.CodeSource;
+import java.security.ProtectionDomain;
+import java.util.Enumeration;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
 /**
  * 强制依赖：JulyLibrary, Vault
@@ -58,10 +61,10 @@ public class JulyGuild extends JavaPlugin {
     private GuildPlayerManager guildPlayerManager;
     private CacheGuildManager cacheGuildManager;
 
-    private final String[] VERSION_YML_FILES = new String[] {"config.yml", "lang.yml", "gui.yml"};
+    private final String[] VERSION_YML_FILES = new String[] {"config.yml", "resources/lang.yml", "gui.yml"};
     private final String[] DEPEND_PLUGINS = new String[] {"JulyLibrary", "Vault"};
     private final String[] INIT_FOLDERS = new String[] {"players", "guilds", "logs"};
-    private final String[] INIT_FILES = new String[] {"gui.yml", "config.yml", "guild_shop.yml", "lang.yml"};
+    private final String[] INIT_FILES = new String[] {"gui.yml", "config.yml", "resources/shops/GuildShop.yml", "resources/lang.yml"};
 
     private JulyCommandExecutor julyCommandExecutor;
     private JulyTabCompleter julyTabCompleter;
@@ -78,8 +81,6 @@ public class JulyGuild extends JavaPlugin {
 
     @Override
     public void onEnable() {
-
-
         instance = this;
         this.pluginManager = Bukkit.getPluginManager();
 
@@ -93,12 +94,12 @@ public class JulyGuild extends JavaPlugin {
 
         init();
 
-        if (CODING) {
-            onCoding();
-            Util.sendColoredConsoleMessage("&c开发模式");
-        } else {
-            updateVersionYmlFiles();
-        }
+//        if (CODING) {
+//            onCoding();
+//            Util.sendColoredConsoleMessage("&c开发模式");
+//        } else {
+//            updateVersionYmlFiles();
+//        }
 
         loadConfig();
 
@@ -170,6 +171,7 @@ public class JulyGuild extends JavaPlugin {
         //Util.sendColoredConsoleMessage("载入了 " + iconShopConfig.getIconMap().size() + "个 图标商店物品.");
         Util.sendColoredConsoleMessage("载入了 " + guildShopConfig.getShopItems().size() + "个 公会商店物品.");
         Util.sendColoredConsoleMessage("插件初始化完毕.");
+        Util.sendColoredConsoleMessage("&c作者QQ: 884633197 交流群: 786184610");
     }
 
     public void onDisable() {
@@ -233,27 +235,88 @@ public class JulyGuild extends JavaPlugin {
         julyTabCompleter.register(command);
     }
 
+    private String getCurrentFilePath() {
+        ProtectionDomain protectionDomain = JulyGuild.class.getProtectionDomain();
+        CodeSource codeSource = protectionDomain.getCodeSource();
+        URI location;
+
+        try {
+            location = (codeSource == null ? null : codeSource.getLocation().toURI());
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
+
+        String path = (location == null ? null : location.getSchemeSpecificPart());
+
+        if (path == null) {
+            throw new IllegalStateException("Unable to determine code source archive");
+        }
+
+        File root = new File(path);
+
+        if (!root.exists()) {
+            throw new IllegalStateException(
+                    "Unable to determine code source archive from " + root);
+        }
+
+        return root.getAbsolutePath();
+    }
+
     /*
     初始化
      */
     private void init() {
-        for (String folderPath : INIT_FOLDERS) {
-            File folder = new File(getDataFolder(), folderPath);
+        try {
+            JarFile jarFile = new JarFile(getCurrentFilePath());
+            Enumeration<JarEntry> entries = jarFile.entries();
 
-            if (!folder.exists()) {
-                if (!folder.mkdirs()) {
-                    setEnabled(false);
-                    throw new RuntimeException("&c[!] 创建文件夹失败: " + folderPath + ", 插件将被卸载.");
+            while (entries.hasMoreElements()) {
+                JarEntry jarEntry = entries.nextElement();
+                String fileName = jarEntry.getName();
+
+                // 过滤类文件
+                if (fileName.startsWith("resources") && !jarEntry.isDirectory()) {
+                    File outFile = new File(getDataFolder(), fileName.substring("resources/".length()).replace("/", File.separator));
+                    File outParentFile = outFile.getParentFile();
+
+                    // 创建父文件夹
+                    if (!outParentFile.exists() && !outParentFile.mkdirs()) {
+                        setEnabled(false);
+                        throw new RuntimeException("创建文件夹失败: " + outParentFile.getAbsolutePath());
+                    }
+
+                    String currentVersion = !outFile.exists() ? null : YamlConfiguration.loadConfiguration(outFile).getString("version"); // 当前版本
+                    @SuppressWarnings("ConstantConditions") String latestVersion = YamlConfiguration.loadConfiguration(new InputStreamReader(getResource(fileName))).getString("version"); // 最新版本
+
+                    if (currentVersion != null && latestVersion != null && !currentVersion.equals(latestVersion)) {
+                        File historyFile = new File(getDataFolder(), fileName.substring("resources/".length()).replace("/", File.separator) + "." + currentVersion);
+
+                        if (!outFile.renameTo(historyFile)) {
+                            setEnabled(false);
+                            throw new RuntimeException("文件更名失败: " + outFile.getAbsolutePath());
+                        }
+
+                        warning("文件被弃用: " + outFile.getAbsolutePath() + "(v" + currentVersion + ").");
+                    }
+
+                    if (!outFile.exists()) {
+                        InputStream in = getResource(fileName);
+                        FileOutputStream out = new FileOutputStream(outFile);
+                        byte[] buf = new byte[1024];
+                        int len;
+
+                        while ((len = in.read(buf)) > 0) {
+                            out.write(buf, 0, len);
+                        }
+
+                        out.close();
+                        in.close();
+                        warning("文件被创建: " + outFile.getAbsolutePath() + "(v" + latestVersion + ").");
+                    }
                 }
             }
-        }
-
-        for (String filePath : INIT_FILES) {
-            File file = new File(getDataFolder(), filePath);
-
-            if (!file.exists()) {
-                saveResource(filePath, false);
-            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -266,7 +329,7 @@ public class JulyGuild extends JavaPlugin {
 
         loadSpecialConfig();
         JulyConfig.loadConfig(this, YamlConfiguration.loadConfiguration(new File(getDataFolder(), "icon_shop_1.yml")), IconShopConfig.class);
-        this.langYamlConfig = YamlConfiguration.loadConfiguration(new File(getDataFolder(), "lang.yml"));
+        this.langYamlConfig = YamlConfiguration.loadConfiguration(new File(getDataFolder(), "resources/lang.yml"));
         this.guiYamlConfig = YamlConfiguration.loadConfiguration(new File(getDataFolder(), "gui.yml"));
     }
 
@@ -332,7 +395,7 @@ public class JulyGuild extends JavaPlugin {
 
         this.guildShopConfig = new GuildShopConfig();
         this.iconShopConfig = new IconShopConfig();
-        this.langYamlConfig = YamlConfiguration.loadConfiguration(new File(getDataFolder(), "lang.yml"));
+        this.langYamlConfig = YamlConfiguration.loadConfiguration(new File(getDataFolder(), "resources/lang.yml"));
         this.guiYamlConfig = YamlConfiguration.loadConfiguration(new File(getDataFolder(), "gui.yml"));
         loadSpecialConfig();
     }
@@ -363,7 +426,7 @@ public class JulyGuild extends JavaPlugin {
             }
         }
 
-        FileConfiguration guildShopYml = YamlConfiguration.loadConfiguration(new File(getDataFolder(), "guild_shop.yml"));
+        FileConfiguration guildShopYml = YamlConfiguration.loadConfiguration(new File(getDataFolder(), "resources/shops/GuildShop.yml"));
 
         if (guildShopYml.contains("items")) {
             ConfigurationSection itemsSection = guildShopYml.getConfigurationSection("items");

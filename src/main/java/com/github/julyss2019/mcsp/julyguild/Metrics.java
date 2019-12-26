@@ -90,7 +90,7 @@ public class Metrics {
         // Check if the config file exists
         if (!config.isSet("serverUuid")) {
 
-            // Add default values
+            // Add resources values
             config.addDefault("enabled", true);
             // Every server gets it's unique random id.
             config.addDefault("serverUuid", UUID.randomUUID().toString());

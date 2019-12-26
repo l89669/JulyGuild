@@ -77,7 +77,7 @@ public class MainSettings {
     @Config(path = "guild.tp_all.cost.money")
     private static int tpAllCostMoney;
 
-    @Config(path = "guild.announcement.default")
+    @Config(path = "guild.announcement.resources")
     private static List<String> announcementDefault;
 
     @Config(path = "guild.ranking_list.formula")
@@ -119,10 +119,10 @@ public class MainSettings {
     @Config(path = "papi.non_str")
     private static String papiNonStr;
 
-    @Config(path = "gui.default.use_gp")
+    @Config(path = "gui.resources.use_gp")
     private static boolean guiDefaultUseGp;
 
-    @Config(path = "gui.default.use_papi")
+    @Config(path = "gui.resources.use_papi")
     private static boolean guiDefaultUsePapi;
 
 
