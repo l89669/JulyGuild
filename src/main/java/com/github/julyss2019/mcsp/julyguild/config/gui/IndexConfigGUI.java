@@ -10,16 +10,12 @@ import com.github.julyss2019.mcsp.julyguild.placeholder.Placeholder;
 import com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderText;
 import com.github.julyss2019.mcsp.julyguild.util.Util;
 import com.github.julyss2019.mcsp.julylibrary.inventory.InventoryBuilder;
-import com.github.julyss2019.mcsp.julylibrary.inventory.InventoryListener;
 import com.github.julyss2019.mcsp.julylibrary.inventory.ItemListener;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**

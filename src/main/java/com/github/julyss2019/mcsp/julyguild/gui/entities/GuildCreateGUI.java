@@ -40,8 +40,8 @@ public class GuildCreateGUI extends BasePlayerGUI {
     private final Player bukkitPlayer;
     private final String playerName;
     private final JulyGuild plugin = JulyGuild.getInstance();
-    private final ConfigurationSection thisLangSection = plugin.getLangYamlConfig().getConfigurationSection("GuildCreateGUI");
-    private final ConfigurationSection thisGUISection = plugin.getGuiYamlConfig().getConfigurationSection("GuildCreateGUI");
+    private final ConfigurationSection thisLangSection = plugin.getLangYaml().getConfigurationSection("GuildCreateGUI");
+    private final ConfigurationSection thisGUISection = plugin.getGUIYaml("GuildCreateGUI");
     private final VaultEconomy vaultEconomy = plugin.getVaultEconomy();
     private final PlayerPointsEconomy playerPointsEconomy = plugin.getPlayerPointsEconomy();
     private final GuildManager guildManager = plugin.getGuildManager();

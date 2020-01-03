@@ -25,7 +25,6 @@ import com.github.julyss2019.mcsp.julylibrary.command.tab.JulyTabCommand;
 import com.github.julyss2019.mcsp.julylibrary.command.tab.JulyTabCompleter;
 import com.github.julyss2019.mcsp.julylibrary.config.JulyConfig;
 import com.github.julyss2019.mcsp.julylibrary.logger.FileLogger;
-import com.github.julyss2019.mcsp.julylibrary.utils.TimeUtil;
 import com.github.julyss2019.mcsp.julylibrary.utils.YamlUtil;
 import com.google.gson.Gson;
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -40,33 +39,33 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.*;
-import java.net.*;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.security.CodeSource;
 import java.security.ProtectionDomain;
-import java.util.Enumeration;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 强制依赖：JulyLibrary, Vault
  * 软依赖：PlaceholderAPI, PlayerPoints
  */
 public class JulyGuild extends JavaPlugin {
-    private final boolean CODING = true;
+    private final String[] GUI_RESOURCES = new String[] {"GuildCreateGUI.yml", "GuildDonateGUI.yml", "GuildInfoGUI.yml", "GuildMemberListGUI.yml", "GuildMineGUI.yml", "GuildUpgradeGUI.yml", "MainGUI.yml"};
+    private final String[] ROOT_RESOURCES = new String[] {"config.yml", "lang.yml"};
+
+    private final String[] DEPEND_PLUGINS = new String[] {"JulyLibrary", "Vault"};
+
     private static JulyGuild instance;
     private static final Gson gson = new Gson();
 
     private GuildManager guildManager;
     private GuildPlayerManager guildPlayerManager;
     private CacheGuildManager cacheGuildManager;
-
-    private final String[] VERSION_YML_FILES = new String[] {"config.yml", "resources/lang.yml", "gui.yml"};
-    private final String[] DEPEND_PLUGINS = new String[] {"JulyLibrary", "Vault"};
-    private final String[] INIT_FOLDERS = new String[] {"players", "guilds", "logs"};
-    private final String[] INIT_FILES = new String[] {"gui.yml", "config.yml", "resources/shops/GuildShop.yml", "resources/lang.yml"};
 
     private JulyCommandExecutor julyCommandExecutor;
     private JulyTabCompleter julyTabCompleter;
@@ -75,11 +74,113 @@ public class JulyGuild extends JavaPlugin {
     private FileLogger fileLogger;
     private PluginManager pluginManager;
 
-    private YamlConfiguration langYamlConfig;
-    private YamlConfiguration guiYamlConfig;
+    private YamlConfiguration langYaml;
     private IconShopConfig iconShopConfig;
     private GuildShopConfig guildShopConfig;
+    private Map<String, YamlConfiguration> guiYamlMap = new HashMap<>();
+
     private PlaceholderAPIExpansion placeholderAPIExpansion;
+
+    private String getCurrentFilePath() {
+        ProtectionDomain protectionDomain = JulyGuild.class.getProtectionDomain();
+        CodeSource codeSource = protectionDomain.getCodeSource();
+        URI location;
+
+        try {
+            location = (codeSource == null ? null : codeSource.getLocation().toURI());
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
+
+        String path = (location == null ? null : location.getSchemeSpecificPart());
+
+        if (path == null) {
+            throw new IllegalStateException("Unable to determine code source archive");
+        }
+
+        File root = new File(path);
+
+        if (!root.exists()) {
+            throw new IllegalStateException(
+                    "Unable to determine code source archive from " + root);
+        }
+
+        return root.getAbsolutePath();
+    }
+
+    private String getFileVersion(File file) {
+        return !file.exists() ? null : YamlConfiguration.loadConfiguration(file).getString("version");
+    }
+
+    private String getLatestFileVersion(String fileName) {
+        return YamlConfiguration.loadConfiguration(new InputStreamReader(getResource(fileName))).getString("version");
+    }
+
+    /**
+     * 创建jar包内的资源文件（如果不存在）
+     * @param fileName
+     * @param outFile
+     */
+    private void saveResourceFile(String fileName, File outFile) {
+        File outParentFile = outFile.getParentFile();
+
+        // 创建父文件夹
+        if (!outParentFile.exists() && !outParentFile.mkdirs()) {
+            setEnabled(false);
+            throw new RuntimeException("创建文件夹失败: " + outParentFile.getAbsolutePath());
+        }
+
+        String currentVersion = getFileVersion(outFile); // 当前版本
+        String latestVersion = getLatestFileVersion(fileName); // 最新版本
+
+        if (currentVersion != null && latestVersion != null && !currentVersion.equals(latestVersion)) {
+            warning("文件 " + outFile.getAbsolutePath() + " 可能需要更新(v" + currentVersion + "," + latestVersion + ")");
+        }
+
+        try {
+            if (!outFile.exists()) {
+                InputStream in = getResource(fileName);
+                FileOutputStream out = new FileOutputStream(outFile);
+                byte[] buf = new byte[1024];
+                int len;
+
+                while ((len = in.read(buf)) > 0) {
+                    out.write(buf, 0, len);
+                }
+
+                out.close();
+                in.close();
+                warning("文件 " + outFile.getAbsolutePath() + " 被创建(v" + latestVersion + ").");
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void init() {
+        for (String fileName : ROOT_RESOURCES) {
+            saveResourceFile(fileName, new File(getDataFolder(), fileName));
+        }
+
+        for (String fileName : GUI_RESOURCES) {
+            saveResourceFile(fileName, new File(getDataFolder(), fileName));
+        }
+
+        // 补全 config.yml 配置项
+        YamlConfiguration latestConfig = YamlConfiguration.loadConfiguration(new InputStreamReader(getResource("config.yml")));
+        File currentConfigFile = new File(getDataFolder(), "config.yml");
+        YamlConfiguration currentConfigYml = YamlConfiguration.loadConfiguration(currentConfigFile);
+
+        for (String key : latestConfig.getKeys(false)) {
+            if (!currentConfigYml.contains(key)) {
+                currentConfigYml.set(key, latestConfig.get(key));
+
+                YamlUtil.saveYaml(currentConfigYml, currentConfigFile);
+                warning("文件 " + currentConfigFile.getAbsolutePath() + " 被补全配置项 " + key + ".");
+            }
+        }
+
+    }
 
     @Override
     public void onEnable() {
@@ -149,7 +250,7 @@ public class JulyGuild extends JavaPlugin {
             Util.sendColoredConsoleMessage("PlayerPoints: 未启用.");
         }
 
-        julyCommandExecutor.setPrefix(langYamlConfig.getString("Global.command_prefix"));
+        julyCommandExecutor.setPrefix(langYaml.getString("Global.command_prefix"));
         guildManager.loadAll();
         cacheGuildManager.startTask();
 
@@ -231,106 +332,6 @@ public class JulyGuild extends JavaPlugin {
         julyTabCompleter.register(command);
     }
 
-    private String getCurrentFilePath() {
-        ProtectionDomain protectionDomain = JulyGuild.class.getProtectionDomain();
-        CodeSource codeSource = protectionDomain.getCodeSource();
-        URI location;
-
-        try {
-            location = (codeSource == null ? null : codeSource.getLocation().toURI());
-        } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
-        }
-
-        String path = (location == null ? null : location.getSchemeSpecificPart());
-
-        if (path == null) {
-            throw new IllegalStateException("Unable to determine code source archive");
-        }
-
-        File root = new File(path);
-
-        if (!root.exists()) {
-            throw new IllegalStateException(
-                    "Unable to determine code source archive from " + root);
-        }
-
-        return root.getAbsolutePath();
-    }
-
-    private String getFileVersion(File file) {
-        return !file.exists() ? null : YamlConfiguration.loadConfiguration(file).getString("version");
-    }
-
-    private String getLatestFileVersion(String fileName) {
-        return YamlConfiguration.loadConfiguration(new InputStreamReader(getResource(fileName))).getString("version");
-    }
-
-    /*
-    初始化
-     */
-    private void init() {
-        try {
-            JarFile jarFile = new JarFile(getCurrentFilePath());
-            Enumeration<JarEntry> entries = jarFile.entries();
-
-            while (entries.hasMoreElements()) {
-                JarEntry jarEntry = entries.nextElement();
-                String fileName = jarEntry.getName();
-
-                // 过滤类文件
-                if (fileName.startsWith("resources") && !jarEntry.isDirectory()) {
-                    File outFile = new File(getDataFolder(), fileName.substring("resources/".length()).replace("/", File.separator));
-                    File outParentFile = outFile.getParentFile();
-
-                    // 创建父文件夹
-                    if (!outParentFile.exists() && !outParentFile.mkdirs()) {
-                        setEnabled(false);
-                        throw new RuntimeException("创建文件夹失败: " + outParentFile.getAbsolutePath());
-                    }
-
-                    String currentVersion = getFileVersion(outFile); // 当前版本
-                    String latestVersion = getLatestFileVersion(fileName); // 最新版本
-
-                    if (currentVersion != null && latestVersion != null && !currentVersion.equals(latestVersion)) {
-                        warning("文件 " + outFile.getAbsolutePath() + " 可能需要更新(v" + currentVersion + "," + latestVersion + ")");
-                    }
-
-                    if (!outFile.exists()) {
-                        InputStream in = getResource(fileName);
-                        FileOutputStream out = new FileOutputStream(outFile);
-                        byte[] buf = new byte[1024];
-                        int len;
-
-                        while ((len = in.read(buf)) > 0) {
-                            out.write(buf, 0, len);
-                        }
-
-                        out.close();
-                        in.close();
-                        warning("文件 " + outFile.getAbsolutePath() + " 被创建(v" + latestVersion + ").");
-                    }
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        YamlConfiguration latestConfig = YamlConfiguration.loadConfiguration(new InputStreamReader(getResource("resources/config.yml")));
-        File currentConfigFile = new File(getDataFolder(), "config.yml");
-        YamlConfiguration currentConfigYml = YamlConfiguration.loadConfiguration(currentConfigFile);
-
-        for (String key : latestConfig.getKeys(false)) {
-            if (!currentConfigYml.contains(key)) {
-                currentConfigYml.set(key, latestConfig.get(key));
-
-                YamlUtil.saveYaml(currentConfigYml, currentConfigFile);
-                warning("文件 " + currentConfigFile.getAbsolutePath() + " 被补全配置项 " + key + ".");
-            }
-        }
-
-    }
-
     /**
      * 重载配置文件
      */
@@ -340,76 +341,27 @@ public class JulyGuild extends JavaPlugin {
 
         loadSpecialConfig();
         JulyConfig.loadConfig(this, YamlConfiguration.loadConfiguration(new File(getDataFolder(), "icon_shop_1.yml")), IconShopConfig.class);
-        this.langYamlConfig = YamlConfiguration.loadConfiguration(new File(getDataFolder(), "resources/lang.yml"));
-        this.guiYamlConfig = YamlConfiguration.loadConfiguration(new File(getDataFolder(), "gui.yml"));
-    }
-
-    private void onCoding() {
-        for (String name : VERSION_YML_FILES) {
-            YamlConfiguration yml = YamlConfiguration.loadConfiguration(new File(getDataFolder(), name));
-            String currentVersion = yml.getString("VERSION", "0.0.0");
-            String latestVersion = YamlConfiguration.loadConfiguration(new InputStreamReader(getResource(name))).getString("VERSION");
-
-            File oldFile = new File(getDataFolder(), name);
-            File newFile = new File(getDataFolder(), name + "." + currentVersion);
-
-            if (!oldFile.renameTo(newFile.exists() ? new File(getDataFolder(), name + "." + currentVersion + "." + System.currentTimeMillis()) : newFile)) {
-                throw new RuntimeException("文件更名失败: " + name);
-            }
-
-            try {
-                Files.copy(getResource(name), oldFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-            } catch (IOException e) {
-                e.printStackTrace();
-                throw new RuntimeException("文件更新失败: " + name);
-            }
-
-            Util.sendColoredConsoleMessage("&e文件版本已更新: " + name + "(" + currentVersion + "->" + latestVersion + ").");
-        }
-    }
-
-    /*
-    更新版本文件
-     */
-    private void updateVersionYmlFiles() {
-        for (String name : VERSION_YML_FILES) {
-            YamlConfiguration yml = YamlConfiguration.loadConfiguration(new File(getDataFolder(), name));
-            String currentVersion = yml.getString("VERSION", "0.0.0");
-            String latestVersion = YamlConfiguration.loadConfiguration(new InputStreamReader(getResource(name))).getString("VERSION");
-
-            if (!currentVersion.equalsIgnoreCase(latestVersion)) {
-                File oldFile = new File(getDataFolder(), name);
-
-                if (!oldFile.renameTo(new File(getDataFolder(), name + "." + currentVersion))) {
-                    throw new RuntimeException("文件更名失败: " + name);
-                }
-
-                try {
-                    Files.copy(getResource(name), oldFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    throw new RuntimeException("文件更新失败: " + name);
-                }
-
-                Util.sendColoredConsoleMessage("&e文件版本已更新: " + name + "(" + currentVersion + "->" + latestVersion + ").");
-            }
-        }
+        this.langYaml = YamlConfiguration.loadConfiguration(new File(getDataFolder(), "lang.yml"));
     }
 
     /**
      * 载入配置
      */
     private void loadConfig() {
-        YamlConfiguration configYml = YamlConfiguration.loadConfiguration(new File(getDataFolder(), "config.yml"));
+        JulyConfig.loadConfig(this, YamlConfiguration.loadConfiguration(new File(getDataFolder(), "config.yml")), MainSettings.class);
 
+        guiYamlMap.clear();
 
+        File guiFolder = new File(getDataFolder(), "gui");
 
-        JulyConfig.loadConfig(this, configYml, MainSettings.class);
+        for (File guiFile : guiFolder.listFiles()) {
+
+        }
 
         this.guildShopConfig = new GuildShopConfig();
         this.iconShopConfig = new IconShopConfig();
-        this.langYamlConfig = YamlConfiguration.loadConfiguration(new File(getDataFolder(), "resources/lang.yml"));
-        this.guiYamlConfig = YamlConfiguration.loadConfiguration(new File(getDataFolder(), "gui.yml"));
+        this.langYaml = YamlConfiguration.loadConfiguration(new File(getDataFolder(), "lang.yml"));
+
         loadSpecialConfig();
     }
 
@@ -439,7 +391,7 @@ public class JulyGuild extends JavaPlugin {
             }
         }
 
-        FileConfiguration guildShopYml = YamlConfiguration.loadConfiguration(new File(getDataFolder(), "resources/shops/GuildShop.yml"));
+        FileConfiguration guildShopYml = YamlConfiguration.loadConfiguration(new File(getDataFolder(), "shops/GuildShop.yml"));
 
         if (guildShopYml.contains("items")) {
             ConfigurationSection itemsSection = guildShopYml.getConfigurationSection("items");
@@ -467,12 +419,12 @@ public class JulyGuild extends JavaPlugin {
         }
     }
 
-    public YamlConfiguration getLangYamlConfig() {
-        return langYamlConfig;
+    public YamlConfiguration getLangYaml() {
+        return langYaml;
     }
 
-    public YamlConfiguration getGuiYamlConfig() {
-        return guiYamlConfig;
+    public YamlConfiguration getGUIYaml(String name) {
+        return guiYamlMap.get(name);
     }
 
     public VaultEconomy getVaultEconomy() {

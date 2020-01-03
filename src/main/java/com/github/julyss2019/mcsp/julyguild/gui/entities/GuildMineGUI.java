@@ -24,8 +24,8 @@ import org.jetbrains.annotations.Nullable;
 
 public class GuildMineGUI extends BaseMemberGUI {
     private final JulyGuild plugin = JulyGuild.getInstance();
-    private final ConfigurationSection thisGUISection = plugin.getGuiYamlConfig().getConfigurationSection("GuildMineGUI");
-    private final ConfigurationSection thisLangSection = plugin.getLangYamlConfig().getConfigurationSection("GuildMineGUI");
+    private final ConfigurationSection thisGUISection = plugin.getGUIYaml("GuildMineGUI");
+    private final ConfigurationSection thisLangSection = plugin.getLangYaml().getConfigurationSection("GuildMineGUI");
     private final Player bukkitPlayer;
     private final Position position;
 

@@ -27,8 +27,8 @@ public class GuildInfoGUI extends BasePlayerGUI {
     private final Player bukkitPlayer;
     private final Guild guild;
     private final JulyGuild plugin = JulyGuild.getInstance();
-    private final ConfigurationSection thisGUISection = plugin.getGuiYamlConfig().getConfigurationSection("GuildInfoGUI");
-    private final ConfigurationSection thisLangSection = plugin.getLangYamlConfig().getConfigurationSection("GuildInfoGUI");
+    private final ConfigurationSection thisGUISection = plugin.getGUIYaml("GuildInfoGUI");
+    private final ConfigurationSection thisLangSection = plugin.getLangYaml().getConfigurationSection("GuildInfoGUI");
 
     public GuildInfoGUI(GuildPlayer guildPlayer, Guild guild, @Nullable GUI lastGUI) {
         super(GUIType.INFO, guildPlayer, lastGUI);

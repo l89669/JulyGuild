@@ -2,7 +2,6 @@ package com.github.julyss2019.mcsp.julyguild.gui;
 
 import com.github.julyss2019.mcsp.julyguild.guild.Guild;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
-import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.Nullable;
 
 /**

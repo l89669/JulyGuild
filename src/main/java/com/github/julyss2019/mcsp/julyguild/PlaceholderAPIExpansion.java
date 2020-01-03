@@ -16,7 +16,7 @@ import org.bukkit.entity.Player;
  */
 public class PlaceholderAPIExpansion extends PlaceholderExpansion {
     private static final JulyGuild plugin = JulyGuild.getInstance();
-    private static final YamlConfiguration langYml = plugin.getLangYamlConfig();
+    private static final YamlConfiguration langYml = plugin.getLangYaml();
     private static final CacheGuildManager cacheGuildManager = plugin.getCacheGuildManager();
     private static final GuildPlayerManager guildPlayerManager = plugin.getGuildPlayerManager();
 

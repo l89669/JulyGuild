@@ -10,15 +10,15 @@ import java.text.SimpleDateFormat;
 public class LangHelper {
     public static class Global {
         public static SimpleDateFormat getDateTimeFormat() {
-            return new SimpleDateFormat(JulyGuild.getInstance().getLangYamlConfig().getString("Global.date_time_format"));
+            return new SimpleDateFormat(JulyGuild.getInstance().getLangYaml().getString("Global.date_time_format"));
         }
 
         public static String getPrefix() {
-            return JulyGuild.getInstance().getLangYamlConfig().getString("Global.prefix");
+            return JulyGuild.getInstance().getLangYaml().getString("Global.prefix");
         }
 
         public static String getNickName(GuildMember guildMember) {
-            ConfigurationSection langSection = JulyGuild.getInstance().getLangYamlConfig();
+            ConfigurationSection langSection = JulyGuild.getInstance().getLangYaml();
             String format = langSection.getString("Global.nick_name");
 
             return PlaceholderText.replacePlaceholders(format, new Placeholder.Builder()

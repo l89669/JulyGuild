@@ -1,10 +1,6 @@
 package com.github.julyss2019.mcsp.julyguild.guild;
 
 import com.github.julyss2019.mcsp.julyguild.config.ConfigGuildIcon;
-import org.bukkit.Material;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.UUID;
 
 public class OwnedIcon {
     private Guild guild;

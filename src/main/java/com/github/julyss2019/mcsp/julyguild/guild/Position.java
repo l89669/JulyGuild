@@ -15,7 +15,7 @@ public enum Position {
     }
 
     public String getChineseName() {
-        return JulyGuild.getInstance().getLangYamlConfig().getString("Position." + name().toLowerCase());
+        return JulyGuild.getInstance().getLangYaml().getString("Position." + name().toLowerCase());
     }
 
     public int getLevel() {

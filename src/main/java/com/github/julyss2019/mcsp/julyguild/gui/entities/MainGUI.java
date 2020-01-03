@@ -34,8 +34,8 @@ public class MainGUI extends BasePlayerPageableGUI {
     private final JulyGuild plugin = JulyGuild.getInstance();
     private final Player bukkitPlayer = guildPlayer.getBukkitPlayer();
     private final String playerName = bukkitPlayer.getName();
-    private final ConfigurationSection thisGUISection = plugin.getGuiYamlConfig().getConfigurationSection("MainGUI");
-    private final ConfigurationSection thisLangSection = plugin.getLangYamlConfig().getConfigurationSection("MainGUI");
+    private final ConfigurationSection thisGUISection = plugin.getGUIYaml("MainGUI");
+    private final ConfigurationSection thisLangSection = plugin.getLangYaml().getConfigurationSection("MainGUI");
     private final List<Integer> positions = Util.getRangeIntegerList(thisGUISection.getString("positions")); // 得到所有可供公会设置的位置
     private final int positionCount = positions.size();
 

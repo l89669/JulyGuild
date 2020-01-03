@@ -6,17 +6,13 @@ import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
 import com.github.julyss2019.mcsp.julyguild.guild.Guild;
 import com.github.julyss2019.mcsp.julyguild.request.player.PlayerRequest;
 import com.github.julyss2019.mcsp.julyguild.request.player.PlayerRequestType;
-import com.github.julyss2019.mcsp.julylibrary.utils.FileUtil;
 import com.github.julyss2019.mcsp.julylibrary.utils.YamlUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.*;
 
 public class GuildPlayer {

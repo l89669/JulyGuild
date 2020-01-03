@@ -14,8 +14,8 @@ import org.jetbrains.annotations.Nullable;
 public class GuildMemberManageGUI extends BaseMemberGUI {
     private final JulyGuild plugin = JulyGuild.getInstance();
     private final Player bukkitPlayer = getBukkitPlayer();
-    private final ConfigurationSection thisGUISection = plugin.getGuiYamlConfig().getConfigurationSection("GuildMemberManageGUI");
-    private final ConfigurationSection thisLangSection = plugin.getLangYamlConfig().getConfigurationSection("GuildMemberManageGUI");
+    private final ConfigurationSection thisGUISection = plugin.getGUIYaml("GuildMemberManageGUI");
+    private final ConfigurationSection thisLangSection = plugin.getLangYaml().getConfigurationSection("GuildMemberManageGUI");
 
     public GuildMemberManageGUI(GuildMember guildMember, @Nullable GUI lastGUI) {
         super(GUIType.MEMBER_MANAGE, guildMember, lastGUI);

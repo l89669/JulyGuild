@@ -10,6 +10,6 @@ public enum Permission {
     ;
 
     String getChineseName(Permission permission) {
-        return JulyGuild.getInstance().getLangYamlConfig().getConfigurationSection("Permission").getString( permission.name());
+        return JulyGuild.getInstance().getLangYaml().getConfigurationSection("Permission").getString( permission.name());
     }
 }

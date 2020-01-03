@@ -8,7 +8,6 @@ import org.jetbrains.annotations.NotNull;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 public class GuildBank {
     private static JulyGuild plugin = JulyGuild.getInstance();

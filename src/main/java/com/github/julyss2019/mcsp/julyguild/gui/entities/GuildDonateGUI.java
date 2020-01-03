@@ -32,7 +32,7 @@ public class GuildDonateGUI extends BaseMemberGUI {
         private final VaultEconomy vaultEconomy = plugin.getVaultEconomy();
         private final PlayerPointsEconomy playerPointsEconomy = plugin.getPlayerPointsEconomy();
         private final Player bukkitPlayer = getBukkitPlayer();
-        private final ConfigurationSection parentLangSection = plugin.getLangYamlConfig().getConfigurationSection("GuildDonateGUI");
+        private final ConfigurationSection parentLangSection = plugin.getLangYaml().getConfigurationSection("GuildDonateGUI");
         private final ConfigurationSection thisGUISection;
         private final GuildBank.BalanceType donateType;
         private final int donateAmount;
@@ -42,7 +42,7 @@ public class GuildDonateGUI extends BaseMemberGUI {
 
             this.donateType = donateType;
             this.donateAmount = donateAmount;
-            this.thisGUISection = plugin.getGuiYamlConfig().getConfigurationSection("GuildDonateGUI").getConfigurationSection("ConfirmGUI").getConfigurationSection(donateType.name().toLowerCase());
+            this.thisGUISection = plugin.getGUIYaml("GuildDonateGUI").getConfigurationSection("ConfirmGUI").getConfigurationSection(donateType.name().toLowerCase());
         }
 
         @Override
@@ -106,8 +106,8 @@ public class GuildDonateGUI extends BaseMemberGUI {
     private final Player bukkitPlayer = getBukkitPlayer();
     private final VaultEconomy vaultEconomy = plugin.getVaultEconomy();
     private final PlayerPointsEconomy playerPointsEconomy = plugin.getPlayerPointsEconomy();
-    private final ConfigurationSection thisLangSection = plugin.getLangYamlConfig().getConfigurationSection("GuildDonateGUI");
-    private final ConfigurationSection thisGUISection = plugin.getGuiYamlConfig().getConfigurationSection("GuildDonateGUI");
+    private final ConfigurationSection thisLangSection = plugin.getLangYaml().getConfigurationSection("GuildDonateGUI");
+    private final ConfigurationSection thisGUISection = plugin.getGUIYaml("GuildDonateGUI");
 
     public GuildDonateGUI(GuildMember guildMember, @Nullable GUI lastGUI) {
         super(GUIType.DONATE, guildMember, lastGUI);

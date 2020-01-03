@@ -1,7 +1,6 @@
 package com.github.julyss2019.mcsp.julyguild.listener;
 
 import com.github.julyss2019.mcsp.julyguild.JulyGuild;
-import com.github.julyss2019.mcsp.julyguild.guild.GuildManager;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayerManager;
 import org.bukkit.entity.Player;

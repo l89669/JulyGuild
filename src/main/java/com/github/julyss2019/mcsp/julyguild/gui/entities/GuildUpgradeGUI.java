@@ -30,8 +30,8 @@ public class GuildUpgradeGUI extends BaseMemberGUI {
     private final Guild guild;
     private final GuildBank guildBank;
     private final JulyGuild plugin = JulyGuild.getInstance();
-    private final ConfigurationSection thisGUISection = plugin.getGuiYamlConfig().getConfigurationSection("GuildUpgradeGUI");
-    private final ConfigurationSection thisLangSection = plugin.getLangYamlConfig().getConfigurationSection("GuildUpgradeGUI");
+    private final ConfigurationSection thisGUISection = plugin.getGUIYaml("GuildUpgradeGUI");
+    private final ConfigurationSection thisLangSection = plugin.getLangYaml().getConfigurationSection("GuildUpgradeGUI");
 
     public GuildUpgradeGUI(GuildMember guildMember, @Nullable GUI lastGUI) {
         super(GUIType.PROMOTE, guildMember, lastGUI);

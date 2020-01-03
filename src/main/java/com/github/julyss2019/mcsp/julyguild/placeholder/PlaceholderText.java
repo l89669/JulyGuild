@@ -2,9 +2,7 @@ package com.github.julyss2019.mcsp.julyguild.placeholder;
 
 import com.github.julyss2019.mcsp.julyguild.JulyGuild;
 import me.clip.placeholderapi.PlaceholderAPI;
-import org.apache.commons.lang.StringEscapeUtils;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
