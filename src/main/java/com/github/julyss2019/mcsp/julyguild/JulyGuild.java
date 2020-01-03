@@ -25,6 +25,8 @@ import com.github.julyss2019.mcsp.julylibrary.command.tab.JulyTabCommand;
 import com.github.julyss2019.mcsp.julylibrary.command.tab.JulyTabCompleter;
 import com.github.julyss2019.mcsp.julylibrary.config.JulyConfig;
 import com.github.julyss2019.mcsp.julylibrary.logger.FileLogger;
+import com.github.julyss2019.mcsp.julylibrary.utils.TimeUtil;
+import com.github.julyss2019.mcsp.julylibrary.utils.YamlUtil;
 import com.google.gson.Gson;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.milkbowl.vault.economy.Economy;
@@ -86,21 +88,13 @@ public class JulyGuild extends JavaPlugin {
 
         for (String pluginName : DEPEND_PLUGINS) {
             if (!Bukkit.getPluginManager().isPluginEnabled(pluginName)) {
-                Util.sendColoredConsoleMessage("&c[!] 硬前置插件 " + pluginName + " 未成功加载, 插件将被卸载.");
+                Util.sendColoredConsoleMessage("&c硬前置插件 " + pluginName + " 未被加载, 插件将被卸载.");
                 setEnabled(false);
                 return;
             }
         }
 
         init();
-
-//        if (CODING) {
-//            onCoding();
-//            Util.sendColoredConsoleMessage("&c开发模式");
-//        } else {
-//            updateVersionYmlFiles();
-//        }
-
         loadConfig();
 
         if (MainSettings.isMetricsEnabled()) {
@@ -118,28 +112,28 @@ public class JulyGuild extends JavaPlugin {
         this.guildManager = new GuildManager();
         this.cacheGuildManager = new CacheGuildManager();
 
+        /*
+        第三方插件注入
+         */
         if (pluginManager.isPluginEnabled("PlayerPoints")) {
             this.placeholderAPIExpansion = new PlaceholderAPIExpansion();
 
             if (!placeholderAPIExpansion.register()) {
-                getLogger().warning("&c[!] PlaceholderAPI: Hook失败.");
+                getLogger().warning("PlaceholderAPI: Hook失败.");
             } else {
                 Util.sendColoredConsoleMessage("PlaceholderAPI: Hook成功.");
             }
         }
 
-        /*
-        第三方插件注入
-         */
         if (!pluginManager.isPluginEnabled("Vault")) {
-            Util.sendColoredConsoleMessage("&c[!] Vault: 未启用, 插件将被卸载.");
+            Util.sendColoredConsoleMessage("&cVault: 未启用, 插件将被卸载.");
             setEnabled(false);
             return;
         } else {
             Economy tmp = setupEconomy();
 
             if (tmp == null) {
-                Util.sendColoredConsoleMessage("&c[!] Vault: Hook失败, 插件将被卸载.");
+                Util.sendColoredConsoleMessage("&cVault: Hook失败, 插件将被卸载.");
                 setEnabled(false);
                 return;
             }
@@ -171,7 +165,9 @@ public class JulyGuild extends JavaPlugin {
         //Util.sendColoredConsoleMessage("载入了 " + iconShopConfig.getIconMap().size() + "个 图标商店物品.");
         Util.sendColoredConsoleMessage("载入了 " + guildShopConfig.getShopItems().size() + "个 公会商店物品.");
         Util.sendColoredConsoleMessage("插件初始化完毕.");
-        Util.sendColoredConsoleMessage("&c作者QQ: 884633197 交流群: 786184610");
+        Util.sendColoredConsoleMessage("&c作者: 柒 月, QQ: 884633197, 插件交流群: 786184610.");
+
+
     }
 
     public void onDisable() {
@@ -262,6 +258,14 @@ public class JulyGuild extends JavaPlugin {
         return root.getAbsolutePath();
     }
 
+    private String getFileVersion(File file) {
+        return !file.exists() ? null : YamlConfiguration.loadConfiguration(file).getString("version");
+    }
+
+    private String getLatestFileVersion(String fileName) {
+        return YamlConfiguration.loadConfiguration(new InputStreamReader(getResource(fileName))).getString("version");
+    }
+
     /*
     初始化
      */
@@ -285,18 +289,11 @@ public class JulyGuild extends JavaPlugin {
                         throw new RuntimeException("创建文件夹失败: " + outParentFile.getAbsolutePath());
                     }
 
-                    String currentVersion = !outFile.exists() ? null : YamlConfiguration.loadConfiguration(outFile).getString("version"); // 当前版本
-                    @SuppressWarnings("ConstantConditions") String latestVersion = YamlConfiguration.loadConfiguration(new InputStreamReader(getResource(fileName))).getString("version"); // 最新版本
+                    String currentVersion = getFileVersion(outFile); // 当前版本
+                    String latestVersion = getLatestFileVersion(fileName); // 最新版本
 
                     if (currentVersion != null && latestVersion != null && !currentVersion.equals(latestVersion)) {
-                        File historyFile = new File(getDataFolder(), fileName.substring("resources/".length()).replace("/", File.separator) + "." + currentVersion);
-
-                        if (!outFile.renameTo(historyFile)) {
-                            setEnabled(false);
-                            throw new RuntimeException("文件更名失败: " + outFile.getAbsolutePath());
-                        }
-
-                        warning("文件被弃用: " + outFile.getAbsolutePath() + "(v" + currentVersion + ").");
+                        warning("文件 " + outFile.getAbsolutePath() + " 可能需要更新(v" + currentVersion + "," + latestVersion + ")");
                     }
 
                     if (!outFile.exists()) {
@@ -311,13 +308,27 @@ public class JulyGuild extends JavaPlugin {
 
                         out.close();
                         in.close();
-                        warning("文件被创建: " + outFile.getAbsolutePath() + "(v" + latestVersion + ").");
+                        warning("文件 " + outFile.getAbsolutePath() + " 被创建(v" + latestVersion + ").");
                     }
                 }
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        YamlConfiguration latestConfig = YamlConfiguration.loadConfiguration(new InputStreamReader(getResource("resources/config.yml")));
+        File currentConfigFile = new File(getDataFolder(), "config.yml");
+        YamlConfiguration currentConfigYml = YamlConfiguration.loadConfiguration(currentConfigFile);
+
+        for (String key : latestConfig.getKeys(false)) {
+            if (!currentConfigYml.contains(key)) {
+                currentConfigYml.set(key, latestConfig.get(key));
+
+                YamlUtil.saveYaml(currentConfigYml, currentConfigFile);
+                warning("文件 " + currentConfigFile.getAbsolutePath() + " 被补全配置项 " + key + ".");
+            }
+        }
+
     }
 
     /**
@@ -390,6 +401,8 @@ public class JulyGuild extends JavaPlugin {
      */
     private void loadConfig() {
         YamlConfiguration configYml = YamlConfiguration.loadConfiguration(new File(getDataFolder(), "config.yml"));
+
+
 
         JulyConfig.loadConfig(this, configYml, MainSettings.class);
 

@@ -1,10 +1,14 @@
 package com.github.julyss2019.mcsp.julyguild.config.setting;
 
 import com.github.julyss2019.mcsp.julylibrary.config.Config;
+import org.bukkit.Sound;
 
 import java.util.List;
 
 public class MainSettings {
+    @Config(path = "test")
+    private static Sound test;
+
     @Config(path = "metrics_enabled")
     private static boolean metricsEnabled;
 
@@ -125,6 +129,9 @@ public class MainSettings {
     @Config(path = "gui.resources.use_papi")
     private static boolean guiDefaultUsePapi;
 
+    public static Sound getTest() {
+        return test;
+    }
 
     public static String getPapiNonStr() {
         return papiNonStr;

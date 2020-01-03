@@ -28,8 +28,42 @@
     <profiles>
         <profile>
             <id>dev</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.github.julyss2019.maven.plugins</groupId>
+                        <artifactId>os-copyer-plugin</artifactId>
+                        <version>1.0.0</version>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>copy</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <copyers>
+                                <coper>
+                                    <source>${build.directory}/${build.finalName}.jar</source>
+                                    <operatingSystems>
+                                        <operatingSystem>
+                                            <name>Mac OS X</name>
+                                            <dest>/Users/july_ss/Desktop/july_ss/mc_servers/1.12.2/plugins/${artifactId}.jar</dest>
+                                            <overwrite>true</overwrite>
+                                        </operatingSystem>
+                                        <operatingSystem>
+                                            <name>Windows 10</name>
+                                            <dest>G:\july_ss\mc_servers\1.12.2_paper\plugins\${artifactId}.jar</dest>
+                                            <overwrite>true</overwrite>
+                                        </operatingSystem>
+                                    </operatingSystems>
+                                </coper>
+                            </copyers>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
         </profile>
-
         <profile>
             <id>release</id>
             <build>
@@ -39,7 +73,7 @@
                         <artifactId>proguard-maven-plugin</artifactId>
                         <executions>
                             <execution>
-                                <phase>none</phase>
+                                <phase>package</phase>
                                 <goals>
                                     <goal>proguard</goal>
                                 </goals>
@@ -54,6 +88,37 @@
                                 <lib>${java.home}/lib/rt.jar</lib>
                                 <lib>${java.home}/lib/jce.jar</lib>
                             </libs>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>com.github.julyss2019.maven.plugins</groupId>
+                        <artifactId>os-copyer-plugin</artifactId>
+                        <version>1.0.0</version>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>copy</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <copyers>
+                                <coper>
+                                    <source>${build.directory}/${build.finalName}.jar</source>
+                                    <operatingSystems>
+                                        <operatingSystem>
+                                            <name>Mac OS X</name>
+                                            <dest>/Users/july_ss/Desktop/july_ss/mc_servers/1.12.2/plugins/${artifactId}.jar</dest>
+                                            <overwrite>true</overwrite>
+                                        </operatingSystem>
+                                        <operatingSystem>
+                                            <name>Windows 10</name>
+                                            <dest>G:\july_ss\mc_servers\1.12.2_paper\plugins\${artifactId}.jar</dest>
+                                            <overwrite>true</overwrite>
+                                        </operatingSystem>
+                                    </operatingSystems>
+                                </coper>
+                            </copyers>
                         </configuration>
                     </plugin>
                 </plugins>
@@ -113,37 +178,6 @@
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>com.github.julyss2019.maven.plugins</groupId>
-                <artifactId>os-copyer-plugin</artifactId>
-                <version>1.0.0</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>copy</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <copyers>
-                        <coper>
-                            <source>${build.directory}/${build.finalName}.jar</source>
-                            <operatingSystems>
-                                <operatingSystem>
-                                    <name>Mac OS X</name>
-                                    <dest>/Users/july_ss/Desktop/july_ss/mc_servers/1.12.2/plugins/${artifactId}.jar</dest>
-                                    <overwrite>true</overwrite>
-                                </operatingSystem>
-                                <operatingSystem>
-                                    <name>Windows 10</name>
-                                    <dest>G:\july_ss\mc_servers\1.12.2_paper\plugins\${artifactId}.jar</dest>
-                                    <overwrite>true</overwrite>
-                                </operatingSystem>
-                            </operatingSystems>
-                        </coper>
-                    </copyers>
                 </configuration>
             </plugin>
         </plugins>
