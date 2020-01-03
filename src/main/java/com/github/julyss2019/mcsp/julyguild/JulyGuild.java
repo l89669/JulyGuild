@@ -113,7 +113,13 @@ public class JulyGuild extends JavaPlugin {
     }
 
     private String getLatestFileVersion(String fileName) {
-        return YamlConfiguration.loadConfiguration(new InputStreamReader(getResource(fileName))).getString("version");
+        InputStream inputStream = getResource(fileName);
+
+        if (inputStream == null) {
+            throw new RuntimeException(fileName + " 不存在");
+        }
+
+        return YamlConfiguration.loadConfiguration(new InputStreamReader(inputStream)).getString("version");
     }
 
     /**
@@ -163,7 +169,7 @@ public class JulyGuild extends JavaPlugin {
         }
 
         for (String fileName : GUI_RESOURCES) {
-            saveResourceFile(fileName, new File(getDataFolder(), fileName));
+            saveResourceFile("gui/" + fileName, new File(getDataFolder(), "gui" + File.separator + fileName));
         }
 
         // 补全 config.yml 配置项
