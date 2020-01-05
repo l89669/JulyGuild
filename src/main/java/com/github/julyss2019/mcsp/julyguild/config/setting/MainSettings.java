@@ -6,9 +6,6 @@ import org.bukkit.Sound;
 import java.util.List;
 
 public class MainSettings {
-    @Config(path = "test")
-    private static Sound test;
-
     @Config(path = "metrics_enabled")
     private static boolean metricsEnabled;
 
@@ -81,7 +78,7 @@ public class MainSettings {
     @Config(path = "guild.tp_all.cost.money")
     private static int tpAllCostMoney;
 
-    @Config(path = "guild.announcement.resources")
+    @Config(path = "guild.announcement.default")
     private static List<String> announcementDefault;
 
     @Config(path = "guild.ranking_list.formula")
@@ -123,14 +120,17 @@ public class MainSettings {
     @Config(path = "papi.non_str")
     private static String papiNonStr;
 
-    @Config(path = "gui.resources.use_gp")
+    @Config(path = "gui.default.use_gp")
     private static boolean guiDefaultUseGp;
 
-    @Config(path = "gui.resources.use_papi")
+    @Config(path = "gui.default.use_papi")
     private static boolean guiDefaultUsePapi;
 
-    public static Sound getTest() {
-        return test;
+    @Config(path = "guild.create.no_duplication_name")
+    private static boolean createNoDuplicationName;
+
+    public static boolean isCreateNoDuplicationName() {
+        return createNoDuplicationName;
     }
 
     public static String getPapiNonStr() {

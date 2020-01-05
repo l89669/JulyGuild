@@ -3,19 +3,21 @@ row: 3
 title: '&e&l请选择支付方式'
 items:
   money:
+    use_papi: true
     index: 12
     material: GOLD_INGOT
     display_name: '&a使用 &e{amount}个 &a金币'
     lores:
-      - ' &f拥有: {vault_eco_balance}个'
+      - ' &f拥有: %vault_eco_balance%个'
       - ' &f公会名: {name}'
       - ' &c点击支付'
   points:
+    use_papi: true
     index: 14
     material: DIAMOND
     display_name: '&a使用 &e{amount}个 &a点券'
     lores:
-      - ' &f拥有: {playerpoints_points}个'
+      - ' &f拥有: %playerpoints_points%个'
       - ' &f公会名: {name}'
       - ' &c点击支付'
   item:

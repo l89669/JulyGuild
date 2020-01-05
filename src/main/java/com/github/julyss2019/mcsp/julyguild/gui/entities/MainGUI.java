@@ -108,6 +108,15 @@ public class MainGUI extends BasePlayerPageableGUI {
 
                                     String guildName = ChatColor.translateAlternateColorCodes('&', msg);
 
+                                    if (MainSettings.isCreateNoDuplicationName()) {
+                                        for (Guild guild : plugin.getGuildManager().getGuilds()) {
+                                            if (guild.getName().equalsIgnoreCase(guildName)) {
+                                                Util.sendColoredMessage(bukkitPlayer, thisLangSection.getString("create.input.no_duplication_name"));
+                                                return;
+                                            }
+                                        }
+                                    }
+
                                     if (!guildName.matches(MainSettings.getCreateNameRegex())) {
                                         Util.sendColoredMessage(bukkitPlayer, thisLangSection.getString("create.input.regex_not_match"));
                                         return;

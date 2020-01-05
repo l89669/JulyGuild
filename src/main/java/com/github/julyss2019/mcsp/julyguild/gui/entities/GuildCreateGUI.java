@@ -19,6 +19,7 @@ import com.github.julyss2019.mcsp.julylibrary.inventory.ItemListener;
 import com.github.julyss2019.mcsp.julylibrary.message.JulyMessage;
 import com.github.julyss2019.mcsp.julylibrary.message.Title;
 import com.github.julyss2019.mcsp.julylibrary.utils.ItemUtil;
+import com.github.julyss2019.mcsp.julylibrary.utils.NMSUtil;
 import com.github.julyss2019.mcsp.julylibrary.utils.PlayerUtil;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -165,7 +166,13 @@ public class GuildCreateGUI extends BasePlayerGUI {
 
         guildManager.createGuild(guildPlayer, guildName);
         JulyMessage.broadcastColoredMessage(PlaceholderText.replacePlaceholders(thisLangSection.getString("success.broadcast"), new Placeholder.Builder().addInner("player", playerName).addInner("guild", guildName).build()));
-        JulyMessage.sendTitle(bukkitPlayer, new Title.Builder().text(thisLangSection.getString("success.self_title")).colored().build());
+
+        if (JulyMessage.canUseTitle()) {
+            JulyMessage.sendTitle(bukkitPlayer, new Title.Builder().text(thisLangSection.getString("success.self_title")).colored().build());
+        } else {
+            JulyMessage.sendColoredMessage(bukkitPlayer, thisLangSection.getString("success.self_title"));
+        }
+
 
         new BukkitRunnable() {
             @Override

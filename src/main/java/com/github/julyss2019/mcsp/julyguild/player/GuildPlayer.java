@@ -4,25 +4,27 @@ import com.github.julyss2019.mcsp.julyguild.JulyGuild;
 import com.github.julyss2019.mcsp.julyguild.gui.GUI;
 import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
 import com.github.julyss2019.mcsp.julyguild.guild.Guild;
-import com.github.julyss2019.mcsp.julyguild.request.player.PlayerRequest;
-import com.github.julyss2019.mcsp.julyguild.request.player.PlayerRequestType;
+import com.github.julyss2019.mcsp.julyguild.request.Receiver;
+import com.github.julyss2019.mcsp.julyguild.request.Request;
+import com.github.julyss2019.mcsp.julyguild.request.Sender;
 import com.github.julyss2019.mcsp.julylibrary.utils.YamlUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.util.*;
 
-public class GuildPlayer {
+public class GuildPlayer implements Sender, Receiver {
     private final File file;
     private UUID uuid;
     private YamlConfiguration yml;
     private UUID guildUuid;
     private String name;
     private GUI usingGUI;
-    private Map<String, PlayerRequest> requestMap = new HashMap<>();
 
     GuildPlayer(File file) {
         this.file = file;
@@ -101,63 +103,6 @@ public class GuildPlayer {
     }
 
     /**
-     * 添加请求，不存储到文件系统
-     */
-    public void addRequest(PlayerRequest request) {
-        requestMap.put(request.getUUID().toString(), request);
-    }
-
-    /**
-     * 得到请求
-     * @return
-     */
-    public Collection<PlayerRequest> getRequests() {
-        return requestMap.values();
-    }
-
-    /**
-     * 删除请求
-     * @param uuid
-     */
-    public void removeRequest(String uuid) {
-        requestMap.remove(uuid);
-    }
-
-    /**
-     * 是否有请求
-     * @param uuid
-     * @return
-     */
-    public boolean hasRequest(String uuid) {
-        return requestMap.containsKey(uuid);
-    }
-
-    /**
-     * 是否有请求
-     * @param type
-     * @return
-     */
-    public boolean hasRequest(PlayerRequestType type) {
-        for (PlayerRequest request : getRequests()) {
-            if (request.getType() == type) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    public PlayerRequest getOnlyOneRequest(PlayerRequestType type) {
-        for (PlayerRequest request : getRequests()) {
-            if (request.getType() == type) {
-                return request;
-            }
-        }
-
-        return null;
-    }
-
-    /**
      * 更新GUI
      * @param guiTypes
      */
@@ -192,20 +137,19 @@ public class GuildPlayer {
 
     /**
      * 指向公会
-     * @param uuid
+     * @param guild
      */
-    public void pointGuild(UUID uuid) {
-        yml.set("guild", uuid.toString());
-        save();
-        this.guildUuid = uuid;
-    }
+    public void pointGuild(@Nullable Guild guild) {
+        if (guild == null) {
+            this.guildUuid = null;
+            return;
+        }
 
-    /**
-     * 指向公会
-     * @param newGuild
-     */
-    public void pointGuild(Guild newGuild) {
-        pointGuild(Optional.ofNullable(newGuild).map(Guild::getUuid).get());
+        if (!guild.isMember(this)) {
+            throw new RuntimeException("不是该公会的成员");
+        }
+
+        this.guildUuid = guild.getUuid();
     }
 
     public UUID getGuildUuid() {
@@ -249,5 +193,35 @@ public class GuildPlayer {
     @Override
     public int hashCode() {
         return Objects.hash(getUuid());
+    }
+
+    @Override
+    public List<Request> getReceivedRequests() {
+        return null;
+    }
+
+    @Override
+    public void removeReceivedRequest(@NotNull Request request) {
+
+    }
+
+    @Override
+    public void receiveRequest(@NotNull Request request) {
+
+    }
+
+    @Override
+    public void removeSentRequest(@NotNull Request request) {
+
+    }
+
+    @Override
+    public Collection<Request> getSentRequests() {
+        return null;
+    }
+
+    @Override
+    public void sendRequest(@NotNull Request request) {
+
     }
 }

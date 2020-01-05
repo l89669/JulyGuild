@@ -33,6 +33,7 @@ MainGUI:
       timeout: '&c创建公会超时.'
       regex_not_match: '&c公会名不合法(只允许中文或英文或数字组合, 且长度限定在10以内).'
       no_colored_name_permission: '&c你没有彩色公会名的使用权限.'
+      no_duplication_name: '&c这个公会名字已经有人使用了.'
 GuildMineGUI:
   dismiss:
     success: '&e解散公会成功.'

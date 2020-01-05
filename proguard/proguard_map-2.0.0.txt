@@ -932,9 +932,9 @@ com.github.julyss2019.mcsp.julyguild.guild.Guild -> com.github.julyss2019.mcsp.j
     426:426:long getCreateTime() -> getCreateTime
     434:437:void setAnnouncements(java.util.List) -> setAnnouncements
     443:450:void updateMembersGUI(com.github.julyss2019.mcsp.julyguild.gui.GUIType[]) -> updateMembersGUI
-    459:465:boolean hasRequest(com.github.julyss2019.mcsp.julyguild.player.GuildPlayer,com.github.julyss2019.mcsp.julyguild.guild.requests.GuildRequestType) -> hasRequest
-    473:482:void removeRequest(com.github.julyss2019.mcsp.julyguild.guild.requests.GuildRequest) -> removeRequest
-    490:507:java.util.UUID addRequest(com.github.julyss2019.mcsp.julyguild.guild.requests.GuildRequest) -> addRequest
+    459:465:boolean hasRequest(com.github.julyss2019.mcsp.julyguild.player.GuildPlayer,com.github.julyss2019.mcsp.julyguild.request.GuildRequestType) -> hasRequest
+    473:482:void removeRequest(com.github.julyss2019.mcsp.julyguild.request.GuildRequest) -> removeRequest
+    490:507:java.util.UUID addRequest(com.github.julyss2019.mcsp.julyguild.request.GuildRequest) -> addRequest
     516:516:java.util.Collection getPlayerRequests(com.github.julyss2019.mcsp.julyguild.player.GuildPlayer) -> getPlayerRequests
     525:525:java.util.Collection getPlayerRequests(java.util.UUID) -> getPlayerRequests
     534:534:java.util.List getAnnouncements() -> getAnnouncements
@@ -1044,25 +1044,25 @@ com.github.julyss2019.mcsp.julyguild.guild.Position -> com.github.julyss2019.mcs
     18:18:java.lang.String getChineseName() -> getChineseName
     22:22:int getLevel() -> getLevel
     8:9:void <clinit>() -> <clinit>
-com.github.julyss2019.mcsp.julyguild.guild.requests.BaseGuildRequest -> com.github.julyss2019.mcsp.julyguild.guild.requests.BaseGuildRequest:
-    com.github.julyss2019.mcsp.julyguild.guild.requests.GuildRequestType guildRequestType -> ilovexwx
-    8:10:void <init>(com.github.julyss2019.mcsp.julyguild.guild.requests.GuildRequestType) -> <init>
-    15:15:com.github.julyss2019.mcsp.julyguild.guild.requests.GuildRequestType getType() -> getType
+com.github.julyss2019.mcsp.julyguild.request.BaseGuildRequest -> com.github.julyss2019.mcsp.julyguild.request.BaseGuildRequest:
+    com.github.julyss2019.mcsp.julyguild.request.GuildRequestType guildRequestType -> ilovexwx
+    8:10:void <init>(com.github.julyss2019.mcsp.julyguild.request.GuildRequestType) -> <init>
+    15:15:com.github.julyss2019.mcsp.julyguild.request.GuildRequestType getType() -> getType
     20:20:boolean isOnlyOne() -> isOnlyOne
-com.github.julyss2019.mcsp.julyguild.guild.requests.GuildRequest -> com.github.julyss2019.mcsp.julyguild.guild.requests.GuildRequest:
-    com.github.julyss2019.mcsp.julyguild.guild.requests.GuildRequestType getType() -> getType
+com.github.julyss2019.mcsp.julyguild.request.GuildRequest -> com.github.julyss2019.mcsp.julyguild.request.GuildRequest:
+    com.github.julyss2019.mcsp.julyguild.request.GuildRequestType getType() -> getType
     boolean isOnlyOne() -> isOnlyOne
-com.github.julyss2019.mcsp.julyguild.guild.requests.GuildRequestType -> com.github.julyss2019.mcsp.julyguild.guild.requests.GuildRequestType:
-    com.github.julyss2019.mcsp.julyguild.guild.requests.GuildRequestType JOIN -> JOIN
-    com.github.julyss2019.mcsp.julyguild.guild.requests.GuildRequestType[] $VALUES -> $VALUES
-    3:3:com.github.julyss2019.mcsp.julyguild.guild.requests.GuildRequestType[] values() -> values
-    3:3:com.github.julyss2019.mcsp.julyguild.guild.requests.GuildRequestType valueOf(java.lang.String) -> valueOf
+com.github.julyss2019.mcsp.julyguild.request.GuildRequestType -> com.github.julyss2019.mcsp.julyguild.request.GuildRequestType:
+    com.github.julyss2019.mcsp.julyguild.request.GuildRequestType JOIN -> JOIN
+    com.github.julyss2019.mcsp.julyguild.request.GuildRequestType[] $VALUES -> $VALUES
+    3:3:com.github.julyss2019.mcsp.julyguild.request.GuildRequestType[] values() -> values
+    3:3:com.github.julyss2019.mcsp.julyguild.request.GuildRequestType valueOf(java.lang.String) -> valueOf
     3:3:void <init>(java.lang.String,int) -> <init>
     3:4:void <clinit>() -> <clinit>
-com.github.julyss2019.mcsp.julyguild.guild.requests.JoinGuildRequest -> com.github.julyss2019.mcsp.julyguild.guild.requests.JoinGuildRequest:
+com.github.julyss2019.mcsp.julyguild.request.JoinGuildRequest -> com.github.julyss2019.mcsp.julyguild.request.JoinGuildRequest:
     com.github.julyss2019.mcsp.julyguild.JulyGuild plugin -> ilovexwx
     13:14:void <init>() -> <init>
-    17:22:com.github.julyss2019.mcsp.julyguild.guild.requests.JoinGuildRequest createNew(com.github.julyss2019.mcsp.julyguild.player.GuildPlayer) -> createNew
+    17:22:com.github.julyss2019.mcsp.julyguild.request.JoinGuildRequest createNew(com.github.julyss2019.mcsp.julyguild.player.GuildPlayer) -> createNew
     27:27:boolean isTimeout() -> isTimeout
     32:32:boolean isOnlyOne() -> isOnlyOne
     10:10:void <clinit>() -> <clinit>

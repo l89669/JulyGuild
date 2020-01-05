@@ -93,6 +93,8 @@ guild:
       wait_sec: 60 # 等待秒数
     # 公会名正则表达式
     name_regex: '[\u4e00-\u9fa5_a-zA-Z0-9_§]{1,10}'
+    # 禁止公会重名
+    no_duplication_name: true
     # 消费
     cost:
       # 金币

@@ -15,8 +15,7 @@ public class GuildPlayerManager {
 
     public GuildPlayer getGuildPlayer(UUID uuid) {
         if (!guildPlayerMap.containsKey(uuid)) {
-            guildPlayerMap.put(uuid, isRegistered(uuid) ? new GuildPlayer(new File(plugin.getDataFolder(), "data" + File.separator + "players" + File.separator + uuid + ".yml"))
-                    : registerGuildPlayer(uuid));
+            guildPlayerMap.put(uuid, isRegistered(uuid) ? new GuildPlayer(getGuildPlayerFile(uuid)) : registerGuildPlayer(uuid));
         }
 
 
@@ -46,7 +45,7 @@ public class GuildPlayerManager {
     }
 
     private File getGuildPlayerFile(UUID uuid) {
-        return new File(plugin.getDataFolder(), "players" + File.separator + uuid + ".yml");
+        return new File(plugin.getDataFolder(), "data" + File.separator + "players" + File.separator + uuid + ".yml");
     }
 
     public GuildPlayer getGuildPlayer(Player player) {
@@ -57,7 +56,7 @@ public class GuildPlayerManager {
         return guildPlayerMap.size() == 0 ? new ArrayList<>() : guildPlayerMap.values().stream().filter(GuildPlayer::isOnline).collect(Collectors.toList());
     }
 
-    public Collection<GuildPlayer> getGuildsPlayers() {
+    public Collection<GuildPlayer> getLoadedGuildPlayers() {
         return guildPlayerMap.values();
     }
 }

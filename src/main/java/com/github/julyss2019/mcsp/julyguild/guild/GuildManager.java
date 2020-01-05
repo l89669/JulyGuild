@@ -43,7 +43,6 @@ public class GuildManager {
 
         YamlUtil.saveYaml(yml, file);
 
-        ownerPlayer.pointGuild(uuid); // 指向新公会
         load(file); // 载入公会
 
         // 更新所有玩家的GUI
@@ -107,7 +106,7 @@ public class GuildManager {
     public void loadAll() {
         guildMap.clear();
 
-        File guildFolder = new File(plugin.getDataFolder(), "guilds");
+        File guildFolder = new File(plugin.getDataFolder(), "data" + File.separator + "guilds");
 
         if (!guildFolder.exists()) {
             return;

@@ -53,7 +53,7 @@ public class Metrics {
     // Is bStats enabled on this server?
     private boolean enabled;
 
-    // Should failed requests be logged?
+    // Should failed request be logged?
     private static boolean logFailedRequests;
 
     // Should the sent data be logged?

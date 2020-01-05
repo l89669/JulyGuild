@@ -1,67 +1,42 @@
 package com.github.julyss2019.mcsp.julyguild.request;
 
-import com.github.julyss2019.mcsp.julyguild.JulyGuild;
-import com.github.julyss2019.mcsp.julyguild.Request;
-import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
-
 import java.util.UUID;
 
-public class BaseRequest implements Request {
-    private static JulyGuild plugin = JulyGuild.getInstance();
+public abstract class BaseRequest implements Request {
+    private long creationTime = System.currentTimeMillis();
+    private UUID uuid = UUID.randomUUID();
+    private RequestType requestType;
+    private Sender sender;
+    private Receiver receiver;
 
-    private GuildPlayer requester;
-    private long time;
-    private UUID uuid;
-
-    public BaseRequest() {}
-
-    public BaseRequest(GuildPlayer requester, long time, UUID uuid) {
-        this.requester = requester;
-        this.time = time;
-        this.uuid = uuid;
+    public BaseRequest(RequestType requestType, Sender sender, Receiver receiver) {
+        this.requestType = requestType;
+        this.sender = sender;
+        this.receiver = receiver;
     }
 
-    /**
-     * 设置请求者
-     * @param requester
-     */
-    public void setRequester(GuildPlayer requester) {
-        this.requester = requester;
+    @Override
+    public long getCreationTime() {
+        return creationTime;
     }
 
-    public void setTime(long time) {
-        this.time = time;
-    }
-
-    public void setUuid(UUID uuid) {
-        this.uuid = uuid;
-    }
-
-    public long getTime() {
-        return time;
-    }
-
+    @Override
     public UUID getUuid() {
         return uuid;
     }
 
     @Override
-    public GuildPlayer getRequester() {
-        return requester;
+    public RequestType getType() {
+        return requestType;
     }
 
     @Override
-    public long getCreationTime() {
-        return time;
+    public Sender getSender() {
+        return sender;
     }
 
     @Override
-    public boolean isTimeout() {
-        return true;
-    }
-
-    @Override
-    public UUID getUUID() {
-        return uuid;
+    public Receiver getReceiver() {
+        return receiver;
     }
 }

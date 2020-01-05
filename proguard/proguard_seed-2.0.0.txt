@@ -77,9 +77,9 @@ com.github.julyss2019.mcsp.julyguild.guild.Guild: void setAdditionMemberCount(in
 com.github.julyss2019.mcsp.julyguild.guild.Guild: long getCreateTime()
 com.github.julyss2019.mcsp.julyguild.guild.Guild: void setAnnouncements(java.util.List)
 com.github.julyss2019.mcsp.julyguild.guild.Guild: void updateMembersGUI(com.github.julyss2019.mcsp.julyguild.gui.GUIType[])
-com.github.julyss2019.mcsp.julyguild.guild.Guild: boolean hasRequest(com.github.julyss2019.mcsp.julyguild.player.GuildPlayer,com.github.julyss2019.mcsp.julyguild.guild.requests.GuildRequestType)
-com.github.julyss2019.mcsp.julyguild.guild.Guild: void removeRequest(com.github.julyss2019.mcsp.julyguild.guild.requests.GuildRequest)
-com.github.julyss2019.mcsp.julyguild.guild.Guild: java.util.UUID addRequest(com.github.julyss2019.mcsp.julyguild.guild.requests.GuildRequest)
+com.github.julyss2019.mcsp.julyguild.guild.Guild: boolean hasRequest(com.github.julyss2019.mcsp.julyguild.player.GuildPlayer,com.github.julyss2019.mcsp.julyguild.request.GuildRequestType)
+com.github.julyss2019.mcsp.julyguild.guild.Guild: void removeRequest(com.github.julyss2019.mcsp.julyguild.request.GuildRequest)
+com.github.julyss2019.mcsp.julyguild.guild.Guild: java.util.UUID addRequest(com.github.julyss2019.mcsp.julyguild.request.GuildRequest)
 com.github.julyss2019.mcsp.julyguild.guild.Guild: java.util.Collection getPlayerRequests(com.github.julyss2019.mcsp.julyguild.player.GuildPlayer)
 com.github.julyss2019.mcsp.julyguild.guild.Guild: java.util.Collection getPlayerRequests(java.util.UUID)
 com.github.julyss2019.mcsp.julyguild.guild.Guild: java.util.List getAnnouncements()
@@ -163,25 +163,25 @@ com.github.julyss2019.mcsp.julyguild.guild.Position: Position(java.lang.String,i
 com.github.julyss2019.mcsp.julyguild.guild.Position: java.lang.String getChineseName()
 com.github.julyss2019.mcsp.julyguild.guild.Position: int getLevel()
 com.github.julyss2019.mcsp.julyguild.guild.Position: void <clinit>()
-com.github.julyss2019.mcsp.julyguild.guild.requests.BaseGuildRequest
-com.github.julyss2019.mcsp.julyguild.guild.requests.BaseGuildRequest: BaseGuildRequest(com.github.julyss2019.mcsp.julyguild.guild.requests.GuildRequestType)
-com.github.julyss2019.mcsp.julyguild.guild.requests.BaseGuildRequest: com.github.julyss2019.mcsp.julyguild.guild.requests.GuildRequestType getType()
-com.github.julyss2019.mcsp.julyguild.guild.requests.BaseGuildRequest: boolean isOnlyOne()
-com.github.julyss2019.mcsp.julyguild.guild.requests.GuildRequest
-com.github.julyss2019.mcsp.julyguild.guild.requests.GuildRequest: com.github.julyss2019.mcsp.julyguild.guild.requests.GuildRequestType getType()
-com.github.julyss2019.mcsp.julyguild.guild.requests.GuildRequest: boolean isOnlyOne()
-com.github.julyss2019.mcsp.julyguild.guild.requests.GuildRequestType
-com.github.julyss2019.mcsp.julyguild.guild.requests.GuildRequestType: com.github.julyss2019.mcsp.julyguild.guild.requests.GuildRequestType JOIN
-com.github.julyss2019.mcsp.julyguild.guild.requests.GuildRequestType: com.github.julyss2019.mcsp.julyguild.guild.requests.GuildRequestType[] $VALUES
-com.github.julyss2019.mcsp.julyguild.guild.requests.GuildRequestType: com.github.julyss2019.mcsp.julyguild.guild.requests.GuildRequestType[] values()
-com.github.julyss2019.mcsp.julyguild.guild.requests.GuildRequestType: com.github.julyss2019.mcsp.julyguild.guild.requests.GuildRequestType valueOf(java.lang.String)
-com.github.julyss2019.mcsp.julyguild.guild.requests.GuildRequestType: GuildRequestType(java.lang.String,int)
-com.github.julyss2019.mcsp.julyguild.guild.requests.GuildRequestType: void <clinit>()
-com.github.julyss2019.mcsp.julyguild.guild.requests.JoinGuildRequest
-com.github.julyss2019.mcsp.julyguild.guild.requests.JoinGuildRequest: JoinGuildRequest()
-com.github.julyss2019.mcsp.julyguild.guild.requests.JoinGuildRequest: com.github.julyss2019.mcsp.julyguild.guild.requests.JoinGuildRequest createNew(com.github.julyss2019.mcsp.julyguild.player.GuildPlayer)
-com.github.julyss2019.mcsp.julyguild.guild.requests.JoinGuildRequest: boolean isTimeout()
-com.github.julyss2019.mcsp.julyguild.guild.requests.JoinGuildRequest: boolean isOnlyOne()
+com.github.julyss2019.mcsp.julyguild.request.BaseGuildRequest
+com.github.julyss2019.mcsp.julyguild.request.BaseGuildRequest: BaseGuildRequest(com.github.julyss2019.mcsp.julyguild.request.GuildRequestType)
+com.github.julyss2019.mcsp.julyguild.request.BaseGuildRequest: com.github.julyss2019.mcsp.julyguild.request.GuildRequestType getType()
+com.github.julyss2019.mcsp.julyguild.request.BaseGuildRequest: boolean isOnlyOne()
+com.github.julyss2019.mcsp.julyguild.request.GuildRequest
+com.github.julyss2019.mcsp.julyguild.request.GuildRequest: com.github.julyss2019.mcsp.julyguild.request.GuildRequestType getType()
+com.github.julyss2019.mcsp.julyguild.request.GuildRequest: boolean isOnlyOne()
+com.github.julyss2019.mcsp.julyguild.request.GuildRequestType
+com.github.julyss2019.mcsp.julyguild.request.GuildRequestType: com.github.julyss2019.mcsp.julyguild.request.GuildRequestType JOIN
+com.github.julyss2019.mcsp.julyguild.request.GuildRequestType: com.github.julyss2019.mcsp.julyguild.request.GuildRequestType[] $VALUES
+com.github.julyss2019.mcsp.julyguild.request.GuildRequestType: com.github.julyss2019.mcsp.julyguild.request.GuildRequestType[] values()
+com.github.julyss2019.mcsp.julyguild.request.GuildRequestType: com.github.julyss2019.mcsp.julyguild.request.GuildRequestType valueOf(java.lang.String)
+com.github.julyss2019.mcsp.julyguild.request.GuildRequestType: GuildRequestType(java.lang.String,int)
+com.github.julyss2019.mcsp.julyguild.request.GuildRequestType: void <clinit>()
+com.github.julyss2019.mcsp.julyguild.request.JoinGuildRequest
+com.github.julyss2019.mcsp.julyguild.request.JoinGuildRequest: JoinGuildRequest()
+com.github.julyss2019.mcsp.julyguild.request.JoinGuildRequest: com.github.julyss2019.mcsp.julyguild.request.JoinGuildRequest createNew(com.github.julyss2019.mcsp.julyguild.player.GuildPlayer)
+com.github.julyss2019.mcsp.julyguild.request.JoinGuildRequest: boolean isTimeout()
+com.github.julyss2019.mcsp.julyguild.request.JoinGuildRequest: boolean isOnlyOne()
 com.github.julyss2019.mcsp.julyguild.log.GuildLogType
 com.github.julyss2019.mcsp.julyguild.log.GuildLogType: com.github.julyss2019.mcsp.julyguild.log.GuildLogType CREATE
 com.github.julyss2019.mcsp.julyguild.log.GuildLogType: com.github.julyss2019.mcsp.julyguild.log.GuildLogType BALANCE_CHANGED

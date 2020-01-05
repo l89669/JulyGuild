@@ -39,21 +39,14 @@ items:
       data: 3
       display_name: '&f公会成员'
       skull: 'July_ss' # %player_name%
-    # 管理员看到的图标
-    admin:
-      priority: -2
-      material: SKULL_ITEM
-      data: 3
-      display_name: '&f成员管理'
-      skull: 'July_ss' # %player_name%
     # 会长看到的图标
-    owner:
+    manager:
       priority: -2
       material: SKULL_ITEM
       data: 3
       display_name: '&f成员管理'
       skull: 'July_ss' # %player_name%
-  _guild_announcements:
+  guild_announcements:
     priority: -3
     material: MAP
     display_name: '&f公会公告'
@@ -69,7 +62,7 @@ items:
     display_name: '&f公会升级'
   guild_exit:
     priority: -6
-    material: BARRIR
+    material: BARRIER
     display_name: '&c退出公会'
     lores:
       - ' &c请谨慎操作'

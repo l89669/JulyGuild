@@ -7,7 +7,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import java.math.BigDecimal;
 import java.util.*;
 
-public class GuildMember {
+public class GuildMember extends GuildHuman {
     private Guild guild;
     private UUID uuid;
     private ConfigurationSection section;
@@ -96,14 +96,7 @@ public class GuildMember {
     }
 
     public Set<Permission> getPermissions() {
-        if (getPosition() == Position.OWNER) {
-            Set<Permission> result = new HashSet<>();
-
-            Collections.addAll(result, Permission.values());
-            return result;
-        }
-
-        return new HashSet<>(permissions);
+        return permissions;
     }
 
     public boolean hasPermission(Permission permission) {

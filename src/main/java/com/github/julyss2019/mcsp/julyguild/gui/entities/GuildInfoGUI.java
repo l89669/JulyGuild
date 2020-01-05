@@ -9,8 +9,6 @@ import com.github.julyss2019.mcsp.julyguild.guild.GuildMember;
 import com.github.julyss2019.mcsp.julyguild.guild.Permission;
 import com.github.julyss2019.mcsp.julyguild.placeholder.Placeholder;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
-import com.github.julyss2019.mcsp.julyguild.guild.requests.GuildRequestType;
-import com.github.julyss2019.mcsp.julyguild.guild.requests.JoinGuildRequest;
 import com.github.julyss2019.mcsp.julyguild.util.Util;
 import com.github.julyss2019.mcsp.julylibrary.inventory.ItemListener;
 import org.bukkit.configuration.ConfigurationSection;
@@ -46,24 +44,6 @@ public class GuildInfoGUI extends BasePlayerGUI {
                     public void onClick(InventoryClickEvent event) {
                         close();
 
-                        if (guild.hasRequest(guildPlayer, GuildRequestType.JOIN)) {
-                            Util.sendColoredMessage(bukkitPlayer, thisLangSection.getString("request_join.already_have"));
-                            return;
-                        }
-
-                        if (guild.getMemberCount() >= guild.getMaxMemberCount()) {
-                            Util.sendColoredMessage(bukkitPlayer, thisLangSection.getString("request_join.guild_full"), new Placeholder.Builder().addInner("max", guild.getMaxMemberCount()).build());
-                            return;
-                        }
-
-                        guild.addRequest(JoinGuildRequest.createNew(guildPlayer));
-                        Util.sendColoredMessage(bukkitPlayer, thisLangSection.getString("request_join.success"), new Placeholder.Builder().addGuildPlaceholders(guild).build());
-
-                        for (GuildMember member : guild.getMembers()) {
-                            if (member.isOnline() && member.hasPermission(Permission.PLAYER_CHECK)) {
-
-                            }
-                        }
                     }
                 }).item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.members"), bukkitPlayer, guild), new ItemListener() {
                     @Override

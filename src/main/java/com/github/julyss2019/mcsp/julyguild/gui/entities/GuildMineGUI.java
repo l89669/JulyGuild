@@ -9,6 +9,7 @@ import com.github.julyss2019.mcsp.julyguild.gui.BaseMemberGUI;
 import com.github.julyss2019.mcsp.julyguild.gui.GUI;
 import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
 import com.github.julyss2019.mcsp.julyguild.guild.GuildMember;
+import com.github.julyss2019.mcsp.julyguild.guild.Permission;
 import com.github.julyss2019.mcsp.julyguild.guild.Position;
 import com.github.julyss2019.mcsp.julyguild.placeholder.Placeholder;
 import com.github.julyss2019.mcsp.julyguild.util.Util;
@@ -52,7 +53,7 @@ public class GuildMineGUI extends BaseMemberGUI {
         guiBuilder
                 .item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.guild_info"), bukkitPlayer, new Placeholder.Builder().addGuildPlaceholders(guild).build()))
                 .item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.self_info"), bukkitPlayer))
-                .item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.guild_members." + guildMember.getPosition().name().toLowerCase()), bukkitPlayer), new ItemListener() {
+                .item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.guild_members." + ((guildMember.hasPermission(Permission.MEMBER_KICK) || guildMember.hasPermission(Permission.MEMBER_SET_ADMIN) || guildMember.hasPermission(Permission.MEMBER_SET_PERMISSION)) ? "manager" : "member")), bukkitPlayer), new ItemListener() {
                     @Override
                     public void onClick(InventoryClickEvent event) {
                         close();
@@ -70,14 +71,14 @@ public class GuildMineGUI extends BaseMemberGUI {
                     @Override
                     public void onClick(InventoryClickEvent event) {
                         close();
-                        new GuildUpgradeGUI(guildMember, null).open();
+                        new GuildUpgradeGUI(guildMember, GuildMineGUI.this).open();
                     }
                 });
 
 
 
         // 公会公告
-        PriorityItem guildAnnouncementItem = GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items._guild_announcements"), bukkitPlayer);
+        PriorityItem guildAnnouncementItem = GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.guild_announcements"), bukkitPlayer);
 
         guildAnnouncementItem.getItemBuilder().lores(guild.getAnnouncements());
         guiBuilder.item(guildAnnouncementItem);

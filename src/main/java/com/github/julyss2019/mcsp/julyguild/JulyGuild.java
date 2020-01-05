@@ -9,7 +9,9 @@ import com.github.julyss2019.mcsp.julyguild.config.GuildShopConfig;
 import com.github.julyss2019.mcsp.julyguild.config.IconShopConfig;
 import com.github.julyss2019.mcsp.julyguild.config.setting.MainSettings;
 import com.github.julyss2019.mcsp.julyguild.guild.CacheGuildManager;
+import com.github.julyss2019.mcsp.julyguild.guild.Guild;
 import com.github.julyss2019.mcsp.julyguild.guild.GuildManager;
+import com.github.julyss2019.mcsp.julyguild.guild.GuildMember;
 import com.github.julyss2019.mcsp.julyguild.listener.GUIListener;
 import com.github.julyss2019.mcsp.julyguild.listener.TpAllListener;
 import com.github.julyss2019.mcsp.julyguild.log.GuildLog;
@@ -49,6 +51,7 @@ import java.util.Map;
  * 软依赖：PlaceholderAPI, PlayerPoints
  */
 public class JulyGuild extends JavaPlugin {
+    private final boolean DEV_MODE = true;
     private final String[] GUI_RESOURCES = new String[] {
             "GuildCreateGUI.yml",
             "GuildDonateGUI.yml",
@@ -208,6 +211,14 @@ public class JulyGuild extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        if (DEV_MODE) {
+            warning("&c警告: 当前处于开发模式.");
+
+            for (File file : new File(getDataFolder(), "config" + File.separator + "gui").listFiles()) {
+                file.delete();
+            }
+        }
+
         instance = this;
         this.pluginManager = Bukkit.getPluginManager();
 
@@ -244,38 +255,39 @@ public class JulyGuild extends JavaPlugin {
             this.placeholderAPIExpansion = new PlaceholderAPIExpansion();
 
             if (!placeholderAPIExpansion.register()) {
-                getLogger().warning("PlaceholderAPI: Hook失败.");
+                error("PlaceholderAPI: Hook失败.");
             } else {
-                Util.sendColoredConsoleMessage("PlaceholderAPI: Hook成功.");
+                info("PlaceholderAPI: Hook成功.");
             }
         }
 
         if (!pluginManager.isPluginEnabled("Vault")) {
-            Util.sendColoredConsoleMessage("&cVault: 未启用, 插件将被卸载.");
+            error("Vault: 未启用, 插件将被卸载.");
             setEnabled(false);
             return;
         } else {
             Economy tmp = setupEconomy();
 
             if (tmp == null) {
-                Util.sendColoredConsoleMessage("&cVault: Hook失败, 插件将被卸载.");
+                error("Vault: Hook失败, 插件将被卸载.");
                 setEnabled(false);
                 return;
             }
 
             this.vaultEconomy = new VaultEconomy(tmp);
-            Util.sendColoredConsoleMessage("Vault: Hook成功.");
+            info("Vault: Hook成功.");
         }
 
         if (pluginManager.isPluginEnabled("PlayerPoints")) {
             this.playerPointsEconomy = new PlayerPointsEconomy(((PlayerPoints) Bukkit.getPluginManager().getPlugin("PlayerPoints")).getAPI());
-            Util.sendColoredConsoleMessage("PlayerPoints: Hook成功.");
+            info("PlayerPoints: Hook成功.");
         } else {
-            Util.sendColoredConsoleMessage("PlayerPoints: 未启用.");
+            info("PlayerPoints: 未启用.");
         }
 
         julyCommandExecutor.setPrefix(langYaml.getString("Global.command_prefix"));
         guildManager.loadAll();
+        checkGuilds();
         cacheGuildManager.startTask();
 
         getCommand("jguild").setExecutor(julyCommandExecutor);
@@ -286,15 +298,16 @@ public class JulyGuild extends JavaPlugin {
         registerCommands();
         registerListeners();
         runTasks();
-        Util.sendColoredConsoleMessage("载入了 " + guildManager.getGuilds().size() + "个 公会.");
+        info("载入了 " + guildManager.getGuilds().size() + "个 公会.");
         //Util.sendColoredConsoleMessage("载入了 " + iconShopConfig.getIconMap().size() + "个 图标商店物品.");
-        Util.sendColoredConsoleMessage("载入了 " + guildShopConfig.getShopItems().size() + "个 公会商店物品.");
-        Util.sendColoredConsoleMessage("插件初始化完毕.");
-        Util.sendColoredConsoleMessage("&d作者: 柒 月, QQ: 884633197, 插件交流群: 786184610.");
+        info("载入了 " + guildShopConfig.getShopItems().size() + "个 公会商店物品.");
+        info("插件初始化完毕.");
+        Util.sendColoredConsoleMessage("&b作者: 柒 月, QQ: 884633197, Bug反馈/插件交流群: 786184610.");
 
 
     }
 
+    @Override
     public void onDisable() {
         if (isPlaceHolderAPIEnabled()) {
             PlaceholderAPI.unregisterExpansion(placeholderAPIExpansion);
@@ -308,7 +321,29 @@ public class JulyGuild extends JavaPlugin {
 
         JulyChatInterceptor.unregisterAll(this);
         Bukkit.getScheduler().cancelTasks(this);
-        Util.sendColoredConsoleMessage("插件被卸载.");
+        Util.sendColoredConsoleMessage("&b作者: 柒 月, QQ: 884633197, Bug反馈/插件交流群: 786184610.");
+    }
+
+    private void checkGuilds() {
+        info("开始验证公会: ");
+
+        for (Guild guild : getGuildManager().getGuilds()) {
+            for (Guild guild1 : getGuildManager().getGuilds()) {
+                if (guild != guild1 && guild.getOwner().getUuid().equals(guild1.getOwner().getUuid())) {
+                    error("公会 " + guild.getUuid() + " <-> " + guild1.getUuid() + " 存在两个一个的主人.", new RuntimeException("存在未处理的公会异常"));
+                }
+
+                for (GuildMember guildMember : guild.getMembers()) {
+                    for (GuildMember guildMember1 : guild1.getMembers()) {
+                        if (guild != guild1 && guildMember.getUuid().equals(guildMember1.getUuid())) {
+                            error("公会 " + guild.getUuid() + " <-> " + guild1.getUuid() + " 存在两个一个的成员 " + guildMember.getUuid() + ".", new RuntimeException("存在未处理的公会异常"));
+                        }
+                    }
+                }
+            }
+        }
+
+        info("公会验证完毕.");
     }
 
     public boolean isPlaceHolderAPIEnabled() {
@@ -360,12 +395,8 @@ public class JulyGuild extends JavaPlugin {
      * 重载配置文件
      */
     public void reloadPluginConfig() {
-        iconShopConfig.reset();
-        guildShopConfig.reset();
-
-        loadSpecialConfig();
-        JulyConfig.loadConfig(this, YamlConfiguration.loadConfiguration(new File(getDataFolder(), "icon_shop_1.yml")), IconShopConfig.class);
-        this.langYaml = YamlConfiguration.loadConfiguration(new File(getDataFolder(), "lang.yml"));
+        guiYamlMap.clear();
+        loadConfig();
     }
 
     /**
@@ -374,15 +405,13 @@ public class JulyGuild extends JavaPlugin {
     private void loadConfig() {
         JulyConfig.loadConfig(this, YamlConfiguration.loadConfiguration(getConfigFile("config.yml")), MainSettings.class);
 
-        guiYamlMap.clear();
-
         for (String fileName : GUI_RESOURCES) {
             guiYamlMap.put(fileName.substring(0, fileName.indexOf(".yml")), YamlConfiguration.loadConfiguration(getGUIFile(fileName)));
         }
 
         this.guildShopConfig = new GuildShopConfig();
         this.iconShopConfig = new IconShopConfig();
-        this.langYaml = YamlConfiguration.loadConfiguration(new File(getDataFolder(), "lang.yml"));
+        this.langYaml = YamlConfiguration.loadConfiguration(getConfigFile("lang.yml"));
 
         loadSpecialConfig();
     }
@@ -483,5 +512,13 @@ public class JulyGuild extends JavaPlugin {
 
     public void info(String msg) {
         Util.sendColoredConsoleMessage("&f" + msg);
+    }
+
+    public void error(String msg) {
+        Util.sendColoredConsoleMessage("&c" + msg);
+    }
+    public void error(String msg, RuntimeException exception) {
+        error(msg);
+        throw exception;
     }
 }

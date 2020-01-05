@@ -10,14 +10,14 @@ import com.github.julyss2019.mcsp.julyguild.placeholder.Placeholder;
 import com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderText;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayerManager;
-import com.github.julyss2019.mcsp.julyguild.guild.requests.BaseGuildRequest;
-import com.github.julyss2019.mcsp.julyguild.guild.requests.GuildRequest;
-import com.github.julyss2019.mcsp.julyguild.guild.requests.GuildRequestType;
-import com.github.julyss2019.mcsp.julyguild.guild.requests.JoinGuildRequest;
+import com.github.julyss2019.mcsp.julyguild.request.Receiver;
+import com.github.julyss2019.mcsp.julyguild.request.Request;
+import com.github.julyss2019.mcsp.julyguild.request.Sender;
 import com.github.julyss2019.mcsp.julyguild.util.Util;
 import com.github.julyss2019.mcsp.julylibrary.utils.YamlUtil;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.jetbrains.annotations.NotNull;
 import parsii.eval.Parser;
 import parsii.tokenizer.ParseException;
 
@@ -25,7 +25,7 @@ import java.io.File;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class Guild {
+public class Guild implements Sender, Receiver {
     private final JulyGuild plugin = JulyGuild.getInstance();
     private final GuildPlayerManager guildPlayerManager = plugin.getGuildPlayerManager();
 
@@ -36,7 +36,7 @@ public class Guild {
     private String name;
     private GuildOwner owner;
     private Map<UUID, GuildMember> memberMap = new HashMap<>();
-    private Map<UUID, List<GuildRequest>> playerRequestMap = new HashMap<>();
+
     private Map<String, OwnedIcon> iconMap = new HashMap<>();
     private OwnedIcon currentIcon;
     private GuildBank guildBank;
@@ -68,8 +68,12 @@ public class Guild {
         this.createTime = yml.getLong("creation_time");
         this.additionMemberCount = yml.getInt("addition_member_count");
 
+        if (announcements.size() == 0) {
+            announcements.addAll(MainSettings.getAnnouncementDefault());
+        }
+
         loadMembers();
-        loadRequests();
+
         loadIcons();
     }
 
@@ -104,6 +108,7 @@ public class Guild {
                         : new GuildOwner(this, memberUuid);
 
                 memberMap.put(memberUuid, member);
+                member.getGuildPlayer().pointGuild(this);
 
                 if (member instanceof GuildOwner) {
                     this.owner = (GuildOwner) member;
@@ -112,39 +117,7 @@ public class Guild {
         }
     }
 
-    private void loadRequests() {
-        playerRequestMap.clear();
 
-        if (yml.contains("requests")) {
-            // 载入玩家请求
-            for (String uuid : yml.getConfigurationSection("requests").getKeys(false)) {
-                ConfigurationSection requestSection = yml.getConfigurationSection("requests").getConfigurationSection(uuid);
-                GuildRequestType guildRequestType = GuildRequestType.valueOf(requestSection.getString("type"));
-                BaseGuildRequest request;
-
-
-                switch (guildRequestType) {
-                    case JOIN:
-                        request = new JoinGuildRequest();
-                        break;
-                    default:
-                        throw new RuntimeException("不支持的请求类型");
-                }
-
-                UUID requesterUUID = UUID.fromString(requestSection.getString("requester"));
-
-                request.setRequester(guildPlayerManager.getGuildPlayer(requesterUUID));
-                request.setTime(requestSection.getLong("time"));
-                request.setUuid(UUID.fromString(uuid));
-
-                if (!playerRequestMap.containsKey(requesterUUID)) {
-                    playerRequestMap.put(requesterUUID, new ArrayList<>());
-                }
-
-                playerRequestMap.get(requesterUUID).add(request);
-            }
-        }
-    }
 
     private void loadIcons() {
         iconMap.clear();
@@ -363,7 +336,7 @@ public class Guild {
         yml.set("members." + guildMember.getUuid().toString(), null);
         save();
         loadMembers();
-        guildMember.getGuildPlayer().pointGuild((UUID) null);
+        guildMember.getGuildPlayer().pointGuild(null);
         updateMembersGUI(GUIType.MEMBER);
     }
 
@@ -449,81 +422,12 @@ public class Guild {
         }
     }
 
-    /**
-     * 是否有请求
-     * @param guildPlayer
-     * @param guildRequestType
-     * @return
-     */
-    public boolean hasRequest(GuildPlayer guildPlayer, GuildRequestType guildRequestType) {
-        for (GuildRequest guildRequest : getPlayerRequests(guildPlayer)) {
-            if (guildRequest.getRequester().equals(guildPlayer) && guildRequestType == guildRequest.getType()) {
-                return true;
-            }
-        }
 
-        return false;
-    }
 
-    /**
-     * 删除玩家的请求
-     * @param guildRequest
-     */
-    public void removeRequest(GuildRequest guildRequest) {
-        String uuid = guildRequest.getUUID().toString();
 
-        yml.set("requests." + uuid, null);
-        save();
-        loadRequests();
 
-        if (guildRequest instanceof JoinGuildRequest) {
-            updateMembersGUI(GUIType.PLAYER_JOIN_REQUEST);
-        }
-    }
 
-    /**
-     * 添加玩家的请求
-     * @param guildRequest
-     * @return
-     */
-    public UUID addRequest(GuildRequest guildRequest) {
-        if (guildRequest.isOnlyOne() && hasRequest(guildRequest.getRequester(), guildRequest.getType())) {
-            throw new IllegalArgumentException("请求类型只允许存在一个!");
-        }
 
-        String uuid = guildRequest.getUUID().toString();
-
-        yml.set("requests." + uuid + ".entities", guildRequest.getRequester().getName());
-        yml.set("requests." + uuid + ".type", guildRequest.getType().name());
-        yml.set("requests." + uuid + ".time", guildRequest.getCreationTime());
-
-        save();
-        loadRequests();
-
-        if (guildRequest instanceof JoinGuildRequest) {
-            updateMembersGUI(GUIType.PLAYER_JOIN_REQUEST);
-        }
-
-        return guildRequest.getUUID();
-    }
-
-    /**
-     * 得到玩家请求
-     * @param guildPlayer
-     * @return
-     */
-    public Collection<GuildRequest> getPlayerRequests(GuildPlayer guildPlayer) {
-        return getPlayerRequests(guildPlayer.getUuid());
-    }
-
-    /**
-     * 得到玩家请求
-     * @param uuid
-     * @return
-     */
-    public Collection<GuildRequest> getPlayerRequests(UUID uuid) {
-        return playerRequestMap.get(uuid);
-    }
 
 
     /**
@@ -590,5 +494,35 @@ public class Guild {
      */
     public int getOnlineMemberCount() {
         return getOnlineMembers().size();
+    }
+
+    @Override
+    public List<Request> getReceivedRequests() {
+        return null;
+    }
+
+    @Override
+    public void removeReceivedRequest(@NotNull Request request) {
+
+    }
+
+    @Override
+    public void receiveRequest(@NotNull Request request) {
+
+    }
+
+    @Override
+    public void removeSentRequest(@NotNull Request request) {
+
+    }
+
+    @Override
+    public Collection<Request> getSentRequests() {
+        return null;
+    }
+
+    @Override
+    public void sendRequest(@NotNull Request request) {
+
     }
 }
