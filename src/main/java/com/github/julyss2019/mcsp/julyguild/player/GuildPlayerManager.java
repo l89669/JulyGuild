@@ -15,7 +15,7 @@ public class GuildPlayerManager {
 
     public GuildPlayer getGuildPlayer(UUID uuid) {
         if (!guildPlayerMap.containsKey(uuid)) {
-            guildPlayerMap.put(uuid, isRegistered(uuid) ? new GuildPlayer(new File(plugin.getDataFolder(), "players" + File.separator + uuid + ".yml"))
+            guildPlayerMap.put(uuid, isRegistered(uuid) ? new GuildPlayer(new File(plugin.getDataFolder(), "data" + File.separator + "players" + File.separator + uuid + ".yml"))
                     : registerGuildPlayer(uuid));
         }
 

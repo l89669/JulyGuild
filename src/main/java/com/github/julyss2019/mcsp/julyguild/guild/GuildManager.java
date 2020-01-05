@@ -33,7 +33,7 @@ public class GuildManager {
         }
 
         UUID uuid = UUID.randomUUID();
-        File file = new File(plugin.getDataFolder(), "guilds" + File.separator + uuid + ".yml");
+        File file = new File(plugin.getDataFolder(), "data" + File.separator + "guilds" + File.separator + uuid + ".yml");
         YamlConfiguration yml = YamlConfiguration.loadConfiguration(file);
 
         yml.set("uuid", uuid.toString());
