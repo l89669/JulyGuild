@@ -56,6 +56,21 @@
                                             <dest>G:\july_ss\mc_servers\1.12.2_paper\plugins\${artifactId}.jar</dest>
                                             <overwrite>true</overwrite>
                                         </operatingSystem>
+                                        <operatingSystem>
+                                            <name>Windows 10</name>
+                                            <dest>G:\july_ss\mc_servers\1.7.2_paper\plugins\${artifactId}.jar</dest>
+                                            <overwrite>true</overwrite>
+                                        </operatingSystem>
+                                        <operatingSystem>
+                                            <name>Windows 10</name>
+                                            <dest>G:\july_ss\mc_servers\1.7.10_paper\plugins\${artifactId}.jar</dest>
+                                            <overwrite>true</overwrite>
+                                        </operatingSystem>
+                                        <operatingSystem>
+                                            <name>Windows 10</name>
+                                            <dest>G:\july_ss\mc_servers\1.8.8_paper\plugins\${artifactId}.jar</dest>
+                                            <overwrite>true</overwrite>
+                                        </operatingSystem>
                                     </operatingSystems>
                                 </coper>
                             </copyers>
@@ -114,6 +129,26 @@
                                         <operatingSystem>
                                             <name>Windows 10</name>
                                             <dest>G:\july_ss\mc_servers\1.12.2_paper\plugins\${artifactId}.jar</dest>
+                                            <overwrite>true</overwrite>
+                                        </operatingSystem>
+                                    </operatingSystems>
+                                </coper>
+                                <coper>
+                                    <source>${build.directory}/${build.finalName}.jar</source>
+                                    <operatingSystems>
+                                        <operatingSystem>
+                                            <name>Windows 10</name>
+                                            <dest>G:\july_ss\mc_servers\1.7.2_paper\plugins\${artifactId}.jar</dest>
+                                            <overwrite>true</overwrite>
+                                        </operatingSystem>
+                                    </operatingSystems>
+                                </coper>
+                                <coper>
+                                    <source>${build.directory}/${build.finalName}.jar</source>
+                                    <operatingSystems>
+                                        <operatingSystem>
+                                            <name>Windows 10</name>
+                                            <dest>G:\july_ss\mc_servers\1.8.8_paper\plugins\${artifactId}.jar</dest>
                                             <overwrite>true</overwrite>
                                         </operatingSystem>
                                     </operatingSystems>

@@ -1,13 +1,28 @@
 package com.github.julyss2019.mcsp.julyguild.request;
 
-import java.io.Serializable;
+import org.bukkit.configuration.ConfigurationSection;
+
 import java.util.UUID;
 
-public interface Request extends Serializable {
+public interface Request {
+    enum Type {
+        JOIN("JoinRequest");
+
+        private String className;
+
+        Type(String className) {
+            this.className = className;
+        }
+
+        public String getClassName() {
+            return className;
+        }
+    }
     Sender getSender();
     Receiver getReceiver();
     long getCreationTime();
     UUID getUuid();
-    void destroy(); // 销毁请求，从 Sender 和 Receiver 中删除记录
-    RequestType getType();
+    Type getType();
+    void onSave(ConfigurationSection section);
+    void onRead(ConfigurationSection section);
 }

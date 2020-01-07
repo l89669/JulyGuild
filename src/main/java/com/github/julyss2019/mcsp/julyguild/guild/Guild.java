@@ -15,7 +15,6 @@ import com.github.julyss2019.mcsp.julyguild.request.Request;
 import com.github.julyss2019.mcsp.julyguild.request.Sender;
 import com.github.julyss2019.mcsp.julyguild.util.Util;
 import com.github.julyss2019.mcsp.julylibrary.utils.YamlUtil;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;
 import parsii.eval.Parser;
@@ -116,8 +115,6 @@ public class Guild implements Sender, Receiver {
             }
         }
     }
-
-
 
     private void loadIcons() {
         iconMap.clear();
@@ -364,7 +361,7 @@ public class Guild implements Sender, Receiver {
             }
         }
 
-        JulyGuild.getInstance().getGuildManager().unload(this);
+        JulyGuild.getInstance().getGuildManager().unloadGuild(this);
         this.deleted = true;
     }
 
@@ -421,14 +418,6 @@ public class Guild implements Sender, Receiver {
             }
         }
     }
-
-
-
-
-
-
-
-
 
     /**
      * 得到公告
@@ -497,32 +486,22 @@ public class Guild implements Sender, Receiver {
     }
 
     @Override
-    public List<Request> getReceivedRequests() {
-        return null;
+    public Receiver.Type getReceiverType() {
+        return Receiver.Type.GUILD;
     }
 
     @Override
-    public void removeReceivedRequest(@NotNull Request request) {
-
+    public Collection<Request> getReceivedRequests() {
+        return JulyGuild.getInstance().getRequestManager().getReceivedRequests(this);
     }
 
     @Override
-    public void receiveRequest(@NotNull Request request) {
-
-    }
-
-    @Override
-    public void removeSentRequest(@NotNull Request request) {
-
+    public Sender.Type getSenderType() {
+        return Sender.Type.GUILD;
     }
 
     @Override
     public Collection<Request> getSentRequests() {
-        return null;
-    }
-
-    @Override
-    public void sendRequest(@NotNull Request request) {
-
+        return JulyGuild.getInstance().getRequestManager().getSentRequests(this);
     }
 }

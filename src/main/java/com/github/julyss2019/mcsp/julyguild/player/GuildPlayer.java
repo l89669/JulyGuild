@@ -196,32 +196,22 @@ public class GuildPlayer implements Sender, Receiver {
     }
 
     @Override
-    public List<Request> getReceivedRequests() {
-        return null;
+    public Receiver.Type getReceiverType() {
+        return Receiver.Type.GUILD_PLAYER;
     }
 
     @Override
-    public void removeReceivedRequest(@NotNull Request request) {
-
+    public Sender.Type getSenderType() {
+        return Sender.Type.GUILD_PLAYER;
     }
 
     @Override
-    public void receiveRequest(@NotNull Request request) {
-
-    }
-
-    @Override
-    public void removeSentRequest(@NotNull Request request) {
-
+    public Collection<Request> getReceivedRequests() {
+        return JulyGuild.getInstance().getRequestManager().getReceivedRequests(this);
     }
 
     @Override
     public Collection<Request> getSentRequests() {
-        return null;
-    }
-
-    @Override
-    public void sendRequest(@NotNull Request request) {
-
+        return JulyGuild.getInstance().getRequestManager().getSentRequests(this);
     }
 }

@@ -1,11 +1,13 @@
 package com.github.julyss2019.mcsp.julyguild.request;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.Collection;
+import java.util.UUID;
 
 public interface Sender {
-    void removeSentRequest(@NotNull Request request);
+    enum Type {
+        GUILD, GUILD_PLAYER
+    }
+    Type getSenderType();
     Collection<Request> getSentRequests();
-    void sendRequest(@NotNull Request request);
+    UUID getUuid();
 }

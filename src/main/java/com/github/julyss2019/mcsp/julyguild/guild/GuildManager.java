@@ -43,7 +43,7 @@ public class GuildManager {
 
         YamlUtil.saveYaml(yml, file);
 
-        load(file); // 载入公会
+        loadGuild(file); // 载入公会
 
         // 更新所有玩家的GUI
         for (GuildPlayer guildPlayer : guildPlayerManager.getOnlineGuildPlayers()) {
@@ -71,11 +71,19 @@ public class GuildManager {
         return new ArrayList<>(guildMap.values()).stream().sorted((o1, o2) -> o1.getRank() > o2.getRank() ? -1 : 0).collect(Collectors.toList());
     }
 
+    public boolean isLoaded(UUID uuid) {
+        return guildMap.containsKey(uuid);
+    }
+
     /**
      * 卸载公会
      * @param guild
      */
-    public void unload(Guild guild) {
+    public void unloadGuild(Guild guild) {
+        if (!isLoaded(guild.getUuid())) {
+            throw new RuntimeException("公会未载入");
+        }
+
         guildMap.remove(guild.getUuid());
         JulyGuild.getInstance().getCacheGuildManager().updateSortedGuilds();
     }
@@ -84,12 +92,16 @@ public class GuildManager {
      * 载入公会
      * @param file
      */
-    private void load(File file) {
+    private void loadGuild(File file) {
         Guild guild = new Guild(file);
 
         // 被删除
         if (guild.isDeleted()) {
             return;
+        }
+
+        if (isLoaded(guild.getUuid())) {
+            throw new RuntimeException("公会已载入");
         }
 
         guildMap.put(guild.getUuid(), guild);
@@ -103,7 +115,7 @@ public class GuildManager {
     /**
      * 载入所有公会
      */
-    public void loadAll() {
+    public void loadGuilds() {
         guildMap.clear();
 
         File guildFolder = new File(plugin.getDataFolder(), "data" + File.separator + "guilds");
@@ -116,7 +128,7 @@ public class GuildManager {
 
         if (guildFiles != null) {
             for (File guildFile : guildFiles) {
-                load(guildFile);
+                loadGuild(guildFile);
             }
         }
     }
@@ -127,7 +139,7 @@ public class GuildManager {
 
     public void unloadAll() {
         for (Guild guild : getGuilds()) {
-            unload(guild);
+            unloadGuild(guild);
         }
     }
 }

@@ -13,10 +13,10 @@ import com.github.julyss2019.mcsp.julyguild.guild.Guild;
 import com.github.julyss2019.mcsp.julyguild.guild.GuildManager;
 import com.github.julyss2019.mcsp.julyguild.guild.GuildMember;
 import com.github.julyss2019.mcsp.julyguild.listener.GUIListener;
-import com.github.julyss2019.mcsp.julyguild.listener.TpAllListener;
 import com.github.julyss2019.mcsp.julyguild.log.GuildLog;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayerManager;
+import com.github.julyss2019.mcsp.julyguild.request.RequestManager;
 import com.github.julyss2019.mcsp.julyguild.task.RequestCleanTask;
 import com.github.julyss2019.mcsp.julyguild.thirdparty.economy.PlayerPointsEconomy;
 import com.github.julyss2019.mcsp.julyguild.thirdparty.economy.VaultEconomy;
@@ -30,6 +30,7 @@ import com.github.julyss2019.mcsp.julylibrary.logger.FileLogger;
 import com.github.julyss2019.mcsp.julylibrary.utils.YamlUtil;
 import com.google.gson.Gson;
 import me.clip.placeholderapi.PlaceholderAPI;
+import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import net.milkbowl.vault.economy.Economy;
 import org.black_ixx.playerpoints.PlayerPoints;
 import org.bukkit.Bukkit;
@@ -70,6 +71,7 @@ public class JulyGuild extends JavaPlugin {
     private GuildManager guildManager;
     private GuildPlayerManager guildPlayerManager;
     private CacheGuildManager cacheGuildManager;
+    private RequestManager requestManager;
 
     private JulyCommandExecutor julyCommandExecutor;
     private JulyTabCompleter julyTabCompleter;
@@ -83,7 +85,7 @@ public class JulyGuild extends JavaPlugin {
     private GuildShopConfig guildShopConfig;
     private Map<String, YamlConfiguration> guiYamlMap = new HashMap<>();
 
-    private PlaceholderAPIExpansion placeholderAPIExpansion;
+    private Object placeholderAPIExpansion; // 这里不能使用 PlaceholderAPIExpansion 作为类型，否则会出现 NoClassDefFoundError。
 
     private String getFileVersion(File file) {
         return !file.exists() ? null : YamlConfiguration.loadConfiguration(file).getString("version");
@@ -213,9 +215,12 @@ public class JulyGuild extends JavaPlugin {
     public void onEnable() {
         if (DEV_MODE) {
             warning("&c警告: 当前处于开发模式.");
+            File[] files = new File(getDataFolder(), "config" + File.separator + "gui").listFiles();
 
-            for (File file : new File(getDataFolder(), "config" + File.separator + "gui").listFiles()) {
-                file.delete();
+            if (files != null) {
+                for (File file : files) {
+                    file.delete();
+                }
             }
         }
 
@@ -247,14 +252,15 @@ public class JulyGuild extends JavaPlugin {
         this.guildPlayerManager = new GuildPlayerManager();
         this.guildManager = new GuildManager();
         this.cacheGuildManager = new CacheGuildManager();
+        this.requestManager = new RequestManager();
 
         /*
         第三方插件注入
          */
-        if (pluginManager.isPluginEnabled("PlayerPoints")) {
+        if (pluginManager.isPluginEnabled("PlaceholderAPI")) {
             this.placeholderAPIExpansion = new PlaceholderAPIExpansion();
 
-            if (!placeholderAPIExpansion.register()) {
+            if (!((PlaceholderAPIExpansion) placeholderAPIExpansion).register()) {
                 error("PlaceholderAPI: Hook失败.");
             } else {
                 info("PlaceholderAPI: Hook成功.");
@@ -286,8 +292,9 @@ public class JulyGuild extends JavaPlugin {
         }
 
         julyCommandExecutor.setPrefix(langYaml.getString("Global.command_prefix"));
-        guildManager.loadAll();
+        guildManager.loadGuilds();
         checkGuilds();
+        requestManager.loadRequests();
         cacheGuildManager.startTask();
 
         getCommand("jguild").setExecutor(julyCommandExecutor);
@@ -295,22 +302,24 @@ public class JulyGuild extends JavaPlugin {
 
         julyCommandExecutor.register(new TestCommand());
 
+
+
         registerCommands();
         registerListeners();
         runTasks();
         info("载入了 " + guildManager.getGuilds().size() + "个 公会.");
-        //Util.sendColoredConsoleMessage("载入了 " + iconShopConfig.getIconMap().size() + "个 图标商店物品.");
+        info("载入了 " + requestManager.getRequests().size() + "个 请求.");
         info("载入了 " + guildShopConfig.getShopItems().size() + "个 公会商店物品.");
         info("插件初始化完毕.");
+
         Util.sendColoredConsoleMessage("&b作者: 柒 月, QQ: 884633197, Bug反馈/插件交流群: 786184610.");
-
-
+        Util.sendColoredConsoleMessage(MainSettings.getAnnouncementDefault().toString());
     }
 
     @Override
     public void onDisable() {
         if (isPlaceHolderAPIEnabled()) {
-            PlaceholderAPI.unregisterExpansion(placeholderAPIExpansion);
+            PlaceholderAPI.unregisterExpansion((PlaceholderExpansion) placeholderAPIExpansion);
         }
 
         for (GuildPlayer guildPlayer : getGuildPlayerManager().getOnlineGuildPlayers()) {
@@ -321,6 +330,7 @@ public class JulyGuild extends JavaPlugin {
 
         JulyChatInterceptor.unregisterAll(this);
         Bukkit.getScheduler().cancelTasks(this);
+        Util.sendColoredConsoleMessage("&c插件被卸载.");
         Util.sendColoredConsoleMessage("&b作者: 柒 月, QQ: 884633197, Bug反馈/插件交流群: 786184610.");
     }
 
@@ -358,9 +368,12 @@ public class JulyGuild extends JavaPlugin {
         return cacheGuildManager;
     }
 
+    public RequestManager getRequestManager() {
+        return requestManager;
+    }
+
     private void registerListeners() {
         pluginManager.registerEvents(new GUIListener(), this);
-        pluginManager.registerEvents(new TpAllListener(), this);
     }
 
     public void writeGuildLog(GuildLog log) {
@@ -403,7 +416,7 @@ public class JulyGuild extends JavaPlugin {
      * 载入配置
      */
     private void loadConfig() {
-        JulyConfig.loadConfig(this, YamlConfiguration.loadConfiguration(getConfigFile("config.yml")), MainSettings.class);
+        JulyConfig.loadConfig(this, YamlUtil.loadYaml(getConfigFile("config.yml"), StandardCharsets.UTF_8), MainSettings.class);
 
         for (String fileName : GUI_RESOURCES) {
             guiYamlMap.put(fileName.substring(0, fileName.indexOf(".yml")), YamlConfiguration.loadConfiguration(getGUIFile(fileName)));
