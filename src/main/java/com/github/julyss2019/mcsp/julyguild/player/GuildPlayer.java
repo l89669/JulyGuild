@@ -204,14 +204,4 @@ public class GuildPlayer implements Sender, Receiver {
     public Sender.Type getSenderType() {
         return Sender.Type.GUILD_PLAYER;
     }
-
-    @Override
-    public Collection<Request> getReceivedRequests() {
-        return JulyGuild.getInstance().getRequestManager().getReceivedRequests(this);
-    }
-
-    @Override
-    public Collection<Request> getSentRequests() {
-        return JulyGuild.getInstance().getRequestManager().getSentRequests(this);
-    }
 }

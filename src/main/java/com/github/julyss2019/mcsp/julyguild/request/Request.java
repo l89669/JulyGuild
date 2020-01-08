@@ -1,21 +1,23 @@
 package com.github.julyss2019.mcsp.julyguild.request;
 
+import com.github.julyss2019.mcsp.julyguild.JulyGuild;
+import com.github.julyss2019.mcsp.julyguild.request.entities.JoinRequest;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.UUID;
 
 public interface Request {
     enum Type {
-        JOIN("JoinRequest");
+        JOIN(JoinRequest.class);
 
-        private String className;
+        private Class<? extends Request> clazz;
 
-        Type(String className) {
-            this.className = className;
+        Type(Class<? extends Request> clazz) {
+            this.clazz = clazz;
         }
 
-        public String getClassName() {
-            return className;
+        public Class<? extends Request> getClazz() {
+            return clazz;
         }
     }
     Sender getSender();
@@ -23,6 +25,12 @@ public interface Request {
     long getCreationTime();
     UUID getUuid();
     Type getType();
-    void onSave(ConfigurationSection section);
-    void onRead(ConfigurationSection section);
+    void onSaveData(ConfigurationSection section);
+    void onLoadData(ConfigurationSection section);
+    default void delete() {
+        JulyGuild.getInstance().getRequestManager().deleteRequest(this);
+    }
+    default void send() {
+        JulyGuild.getInstance().getRequestManager().sendRequest(this);
+    }
 }

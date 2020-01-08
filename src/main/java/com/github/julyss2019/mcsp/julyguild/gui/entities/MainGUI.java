@@ -63,7 +63,14 @@ public class MainGUI extends BasePlayerPageableGUI {
 
                         if (guildIndexMap.containsKey(slot)) {
                             close();
-                            new GuildInfoGUI(guildPlayer, guildIndexMap.get(slot), MainGUI.this).open();
+
+                            Guild guild = guildIndexMap.get(slot);
+
+                            if (guild.isMember(guildPlayer)) {
+                                new GuildMineGUI(guild.getMember(guildPlayer), MainGUI.this).open();
+                            } else {
+                                new GuildInfoGUI(guildPlayer, guild, MainGUI.this).open();
+                            }
                         }
                     }
                 });

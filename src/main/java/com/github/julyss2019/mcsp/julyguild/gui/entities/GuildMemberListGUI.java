@@ -74,7 +74,7 @@ public class GuildMemberListGUI extends BasePlayerPageableGUI {
 
         setTotalPage(memberCount == 0 ? 1 : memberCount % positionCount == 0 ? memberCount / positionCount : memberCount / positionCount + 1);
 
-        Map<Integer, GuildMember> positionMap = new HashMap<>();
+        Map<Integer, GuildMember> indexMap = new HashMap<>();
         IndexConfigGUI.Builder guiBuilder = (IndexConfigGUI.Builder) new IndexConfigGUI.Builder()
                 .fromConfig(thisGUISection, bukkitPlayer)
                 .pageItems(thisGUISection.getConfigurationSection("items.page_items"), this, bukkitPlayer, guild)
@@ -89,7 +89,7 @@ public class GuildMemberListGUI extends BasePlayerPageableGUI {
                     public void onClick(InventoryClickEvent event) {
                         int slot = event.getSlot();
 
-                        if (positionMap.containsKey(slot)) {
+                        if (indexMap.containsKey(slot)) {
 
                         }
                     }
@@ -103,7 +103,7 @@ public class GuildMemberListGUI extends BasePlayerPageableGUI {
             ItemBuilder itemBuilder = GUIItemManager.getItemBuilder(thisGUISection.getConfigurationSection("items").getConfigurationSection("member")
                     , guildMember, new Placeholder.Builder().addGuildMemberPlaceholders(guildMember));
 
-            positionMap.put(positions.get(i) - 1, guildMember);
+            indexMap.put(positions.get(i) - 1, guildMember);
             guiBuilder.item(positions.get(i) - 1, itemBuilder.build());
         }
 

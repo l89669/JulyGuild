@@ -92,7 +92,7 @@ public class GuildManager {
      * 载入公会
      * @param file
      */
-    private void loadGuild(File file) {
+    public void loadGuild(File file) {
         Guild guild = new Guild(file);
 
         // 被删除

@@ -1,7 +1,6 @@
 package com.github.julyss2019.mcsp.julyguild.request;
 
 import com.github.julyss2019.mcsp.julyguild.JulyGuild;
-import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
 import com.github.julyss2019.mcsp.julylibrary.utils.YamlUtil;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -24,19 +23,6 @@ public class RequestManager {
     }
 
     /**
-     * 载入所有请求
-     */
-    public void loadRequests() {
-        File[] files = new File(plugin.getDataFolder(), "data" + File.separator + "requests").listFiles();
-
-        if (files != null) {
-            for (File file : files) {
-                loadRequest(file);
-            }
-        }
-    }
-
-    /**
      * 卸载请求
      * @param request
      */
@@ -46,6 +32,8 @@ public class RequestManager {
         }
 
         requestMap.remove(request.getUuid());
+        sentMap.get(request.getSender().getUuid()).remove(request);
+        receiveMap.get(request.getReceiver().getUuid()).remove(request);
     }
 
     /**
@@ -56,9 +44,40 @@ public class RequestManager {
         File file = new File(plugin.getDataFolder(), "data" + File.separator + "requests" + File.separator + request.getUuid() + ".yml");
         YamlConfiguration yml = YamlUtil.loadYaml(file, StandardCharsets.UTF_8);
 
-        request.onSave(yml);
+        request.onSaveData(yml);
         YamlUtil.saveYaml(yml, file, StandardCharsets.UTF_8);
         handleRequest(request);
+    }
+
+    /**
+     * 摧毁请求
+     * @param request
+     */
+    public void deleteRequest(Request request) {
+        if (!isLoaded(request.getUuid())) {
+            throw new RuntimeException("该请求未被载入");
+        }
+
+        File file = new File(plugin.getDataFolder(), "data" + File.separator + "requests" + File.separator + request.getUuid() + ".yml");
+
+        if (!file.delete()) {
+            throw new RuntimeException("文件删除失败: " + file.getAbsolutePath());
+        }
+
+        unloadRequest(request);
+    }
+
+    /**
+     * 载入所有请求
+     */
+    public void loadRequests() {
+        File[] files = new File(plugin.getDataFolder(), "data" + File.separator + "requests").listFiles();
+
+        if (files != null) {
+            for (File file : files) {
+                loadRequest(file);
+            }
+        }
     }
 
     /**
@@ -80,14 +99,12 @@ public class RequestManager {
         Request request;
 
         try {
-            request = (Request) Class.forName("com.github.julyss2019.mcsp.julyguild.request.entities." + type.getClassName()).newInstance();
-        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
+            request = type.getClazz().newInstance();
+        } catch (IllegalAccessException | InstantiationException e) {
             throw new RuntimeException(e);
         }
 
-        request.onRead(yml);
-
-
+        request.onLoadData(yml);
 
         if (isLoaded(request.getUuid())) {
             throw new RuntimeException("请求已载入");
@@ -96,9 +113,11 @@ public class RequestManager {
         handleRequest(request);
     }
 
+    /**
+     * 潮衣库请求
+     * @param request
+     */
     private void handleRequest(Request request) {
-        requestMap.put(Optional.ofNullable(request.getUuid()).orElseThrow(() -> new RuntimeException("UUID不能为null")), request);
-
         UUID senderUuid = request.getSender().getUuid();
         UUID receiverUuid = request.getReceiver().getUuid();
 
@@ -114,10 +133,20 @@ public class RequestManager {
         receiveMap.get(receiverUuid).add(request);
     }
 
+    /**
+     * 得到发送的请求
+     * @param sender
+     * @return
+     */
     public Collection<Request> getSentRequests(Sender sender) {
         return sentMap.getOrDefault(sender.getUuid(), new ArrayList<>());
     }
 
+    /**
+     * 得到接收的请求
+     * @param receiver
+     * @return
+     */
     public Collection<Request> getReceivedRequests(Receiver receiver) {
         return receiveMap.getOrDefault(receiver.getUuid(), new ArrayList<>());
     }

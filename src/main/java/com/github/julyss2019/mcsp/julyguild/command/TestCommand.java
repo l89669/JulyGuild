@@ -8,9 +8,7 @@ import org.bukkit.entity.Player;
 public class TestCommand implements Command {
     @Override
     public boolean onCommand(CommandSender cs, String[] args) {
-        JoinRequest joinRequest = new JoinRequest(JulyGuild.getInstance().getGuildPlayerManager().getGuildPlayer((Player) cs), JulyGuild.getInstance().getGuildPlayerManager().getGuildPlayer((Player) cs));
 
-        JulyGuild.getInstance().getRequestManager().sendRequest(joinRequest);
 
 //        if (args.length == 1) {
 //            for (int i = 0; i < Integer.parseInt(args[0]); i++) {

@@ -68,4 +68,4 @@ GuildInfoGUI:
   request_join:
     already_have: '&c你已经有一个申请加入请求了, 请等待审批.'
     guild_full: '&c公会人数已满({max}/{max}).'
-    success: '&c已向公会发送加入申请, 请等待审批.'
+    success: '&d已向公会发送加入申请, 请等待审批.'

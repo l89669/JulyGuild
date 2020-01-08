@@ -15,7 +15,7 @@ public class RequestCleanTask extends BukkitRunnable {
 //            for (GuildRequest guildRequest : guild.getRequests()) {
 //                if (guildRequest.isTimeout()) {
 //                    guild.removeRequest(guildRequest);
-//                    guild.updateMembersGUI(GUIType.PLAYER_JOIN_REQUEST);
+//                    guild.updateMembersGUI(GUIType.PLAYER_JOIN_CHECK);
 //                }
 //            }
         }

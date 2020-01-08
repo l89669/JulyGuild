@@ -16,7 +16,6 @@ import com.github.julyss2019.mcsp.julyguild.request.Sender;
 import com.github.julyss2019.mcsp.julyguild.util.Util;
 import com.github.julyss2019.mcsp.julylibrary.utils.YamlUtil;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.jetbrains.annotations.NotNull;
 import parsii.eval.Parser;
 import parsii.tokenizer.ParseException;
 
@@ -361,8 +360,8 @@ public class Guild implements Sender, Receiver {
             }
         }
 
-        JulyGuild.getInstance().getGuildManager().unloadGuild(this);
         this.deleted = true;
+        JulyGuild.getInstance().getGuildManager().unloadGuild(this);
     }
 
     public int getMaxMemberCount() {
@@ -498,10 +497,5 @@ public class Guild implements Sender, Receiver {
     @Override
     public Sender.Type getSenderType() {
         return Sender.Type.GUILD;
-    }
-
-    @Override
-    public Collection<Request> getSentRequests() {
-        return JulyGuild.getInstance().getRequestManager().getSentRequests(this);
     }
 }
