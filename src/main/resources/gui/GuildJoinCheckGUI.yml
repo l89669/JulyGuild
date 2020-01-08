@@ -1,0 +1,42 @@
+title: '&e&l入会审批({page}/{total_page})'
+positions: '11-17,20-26,29-35'
+items:
+  player:
+    index: -1
+  page_items:
+    precious_page:
+      have:
+        index: 46
+        material: BOOK
+        display_name: '&f上一页'
+        enchantments:
+          DAMAGE_ALL: 1
+        flags:
+          - 'HIDE_ATTRIBUTES'
+          - 'HIDE_ENCHANTS'
+        lores:
+          - ' &f点击切换'
+      not_have:
+        index: 46
+        material: BOOK
+        display_name: '&f上一页'
+        lores:
+          - ' &7没有上一页了'
+    next_page:
+      have:
+        index: 54
+        material: BOOK
+        display_name: '&f下一页'
+        enchantments:
+          DAMAGE_ALL: 1
+        flags:
+          - 'HIDE_ATTRIBUTES'
+          - 'HIDE_ENCHANTS'
+        lores:
+          - ' &f点击切换'
+      not_have:
+        index: 54
+        material: BOOK
+        display_name: '&f下一页'
+        lores:
+          - ' &7没有下一页了'

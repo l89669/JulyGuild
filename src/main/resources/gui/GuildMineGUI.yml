@@ -47,8 +47,8 @@ items:
   guild_join_check:
     priority: -2
     material: SKULL_ITEM
-      data: 3
-      display_name: '&f入会审批'
+    data: 3
+    display_name: '&f入会审批'
   guild_announcements:
     priority: -3
     material: MAP

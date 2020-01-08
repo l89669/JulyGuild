@@ -39,6 +39,7 @@ public class GuildMineGUI extends BaseMemberGUI {
 
     @Override
     public Inventory getInventory() {
+        System.out.println(thisGUISection.getKeys(false));
         PriorityConfigGUI.Builder guiBuilder = (PriorityConfigGUI.Builder) new PriorityConfigGUI.Builder()
                 .availablePositions(Util.getRangeIntegerList(thisGUISection.getString("positions")))
                 .fromConfig(thisGUISection, bukkitPlayer)
@@ -72,6 +73,13 @@ public class GuildMineGUI extends BaseMemberGUI {
                     public void onClick(InventoryClickEvent event) {
                         close();
                         new GuildUpgradeGUI(guildMember, GuildMineGUI.this).open();
+                    }
+                })
+                .item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.guild_join_check"), bukkitPlayer), new ItemListener() {
+                    @Override
+                    public void onClick(InventoryClickEvent event) {
+                        close();
+                        new GuildJoinCheckGUI(guildMember, GuildMineGUI.this).open();
                     }
                 });
 

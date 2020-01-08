@@ -60,6 +60,7 @@ public class JulyGuild extends JavaPlugin {
             "GuildMemberListGUI.yml",
             "GuildMineGUI.yml",
             "GuildUpgradeGUI.yml",
+            "GuildJoinCheckGUI.yml",
             "MainGUI.yml"}; // GUI资源文件
     private final String[] CONFIG_RESOURCES = new String[] {"config.yml", "lang.yml"}; // 根资源文件
 
@@ -416,15 +417,40 @@ public class JulyGuild extends JavaPlugin {
      * 载入配置
      */
     private void loadConfig() {
-        JulyConfig.loadConfig(this, YamlUtil.loadYaml(getConfigFile("config.yml"), StandardCharsets.UTF_8), MainSettings.class);
+        File configFile = getConfigFile("config.yml");
+        YamlConfiguration configYaml;
+
+        try {
+            configYaml = YamlUtil.loadYaml(configFile, StandardCharsets.UTF_8);
+        } catch (Exception e) {
+            throw new RuntimeException("读取文件异常: " + configFile.getAbsolutePath(), e);
+        }
+
+        JulyConfig.loadConfig(this, configYaml, MainSettings.class);
 
         for (String fileName : GUI_RESOURCES) {
-            guiYamlMap.put(fileName.substring(0, fileName.indexOf(".yml")), YamlConfiguration.loadConfiguration(getGUIFile(fileName)));
+            File guiFile = getGUIFile(fileName);
+            YamlConfiguration yaml;
+
+            try {
+                yaml = YamlUtil.loadYaml(guiFile, StandardCharsets.UTF_8);
+            } catch (Exception e) {
+                throw new RuntimeException("读取文件异常: " + guiFile.getAbsolutePath(), e);
+            }
+
+            guiYamlMap.put(fileName.substring(0, fileName.indexOf(".yml")), yaml);
         }
 
         this.guildShopConfig = new GuildShopConfig();
         this.iconShopConfig = new IconShopConfig();
-        this.langYaml = YamlConfiguration.loadConfiguration(getConfigFile("lang.yml"));
+
+        File langFile = getConfigFile("lang.yml");
+
+        try {
+            this.langYaml = YamlUtil.loadYaml(langFile, StandardCharsets.UTF_8);
+        } catch (Exception e) {
+            throw new RuntimeException("读取文件异常: " + langFile.getAbsolutePath(), e);
+        }
 
         loadSpecialConfig();
     }
