@@ -18,7 +18,6 @@ public interface GUI {
     default void back() {
         GUI gui = Optional.ofNullable(getLastGUI()).orElseThrow(() -> new RuntimeException("没有上一个GUI了"));
 
-        close();
         gui.reopen();
     }
 
@@ -30,10 +29,17 @@ public interface GUI {
         getGuildPlayer().closeGUI();
     }
 
-    default GUI open() {
+    default void open() {
+        if (!isValid()) {
+            if (getLastGUI() != null) {
+                getLastGUI().reopen();
+            }
+
+            return;
+        }
+
         getGuildPlayer().getBukkitPlayer().openInventory(getInventory());
         getGuildPlayer().setUsingGUI(this);
-        return this;
     }
 
     /**
@@ -44,4 +50,6 @@ public interface GUI {
         close();
         open();
     }
+
+    boolean isValid();
 }

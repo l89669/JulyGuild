@@ -25,8 +25,8 @@ public interface Request {
     long getCreationTime();
     UUID getUuid();
     Type getType();
-    void onSaveData(ConfigurationSection section);
-    void onLoadData(ConfigurationSection section);
+    void save(ConfigurationSection section);
+    void load(ConfigurationSection section);
     default void delete() {
         JulyGuild.getInstance().getRequestManager().deleteRequest(this);
     }

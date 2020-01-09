@@ -70,6 +70,7 @@ public class GuildCreateGUI extends BasePlayerGUI {
             }
         });
 
+
         guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.back"), bukkitPlayer), new ItemListener() {
             @Override
             public void onClick(InventoryClickEvent event) {
@@ -180,5 +181,10 @@ public class GuildCreateGUI extends BasePlayerGUI {
                 new MainGUI(guildPlayer).open();
             }
         }.runTaskLater(plugin, 20L * 3L);
+    }
+
+    @Override
+    public boolean isValid() {
+        return !guildPlayer.isInGuild();
     }
 }

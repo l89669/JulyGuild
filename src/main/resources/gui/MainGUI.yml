@@ -2,11 +2,10 @@ version: 1.0.0
 row: 6
 title: '&e&l公会({page}/{total_page})'
 # 公会可显示的位置，支持使用 '-' 作为范围界定符，使用 ',' 分隔
-positions: '11-17,20-26,29-35'
 # 其他物品
 other_items:
   glass:
-    index: '46-49,51-54'
+    indexes: '46-49,51-54'
     material: STAINED_GLASS_PANE
     display_name: ''
     lores:
@@ -14,7 +13,7 @@ other_items:
 # 插件物品
 items:
   guild:
-    index: -1
+    indexes: '11-17,20-26,29-35'
     material: STONE # 该 material 会被强制设置为公会图标
     use_papi: true
     use_gp: true
@@ -75,8 +74,3 @@ items:
         display_name: '&f下一页'
         lores:
           - ' &7没有下一页了'
-  close:
-    enabled: false
-    index: 45
-    material: BARRIER
-    display_name: '&c关闭'

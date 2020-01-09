@@ -117,17 +117,6 @@ public class GuildPlayer implements Sender, Receiver {
                     usingGUI.reopen();
                 }
             }
-
-            GUI lastGUI = usingGUI;
-
-            // 遍历所有 lastGUI
-            while ((lastGUI = lastGUI.getLastGUI()) != null) {
-                for (GUIType guiType : guiTypes) {
-                    if (usingGUI.getType() == guiType) {
-                        usingGUI.reopen();
-                    }
-                }
-            }
         }
     }
 

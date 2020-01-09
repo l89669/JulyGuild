@@ -28,4 +28,9 @@ public class GuildJoinCheckGUI extends BaseMemberPageableGUI {
 
         return guiBuilder.build();
     }
+
+    @Override
+    public boolean isValid() {
+        return false;
+    }
 }

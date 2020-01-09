@@ -7,6 +7,7 @@ import com.github.julyss2019.mcsp.julyguild.config.setting.MainSettings;
 import com.github.julyss2019.mcsp.julyguild.gui.BaseMemberGUI;
 import com.github.julyss2019.mcsp.julyguild.gui.GUI;
 import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
+import com.github.julyss2019.mcsp.julyguild.guild.Guild;
 import com.github.julyss2019.mcsp.julyguild.guild.GuildBank;
 import com.github.julyss2019.mcsp.julyguild.guild.GuildMember;
 import com.github.julyss2019.mcsp.julyguild.placeholder.Placeholder;
@@ -36,6 +37,7 @@ public class GuildDonateGUI extends BaseMemberGUI {
         private final ConfigurationSection thisGUISection;
         private final GuildBank.BalanceType donateType;
         private final int donateAmount;
+        private final Guild guild = guildMember.getGuild();
 
         public ConfirmGUI(GuildMember guildMember, GuildBank.BalanceType donateType, int donateAmount, @Nullable GUI lastGUI) {
             super(GUIType.DONATE_CONFIRM, guildMember, lastGUI);
@@ -99,6 +101,11 @@ public class GuildDonateGUI extends BaseMemberGUI {
             });
 
             return guiBuilder.build();
+        }
+
+        @Override
+        public boolean isValid() {
+            return plugin.getGuildManager().isValid(guildMember.getGuild()) && guildMember.getGuild().isMember(guildPlayer);
         }
     }
 
@@ -222,5 +229,10 @@ public class GuildDonateGUI extends BaseMemberGUI {
         });
 
         return guiBuilder.build();
+    }
+
+    @Override
+    public boolean isValid() {
+        return plugin.getGuildManager().isValid(guildMember.getGuild()) && guildMember.getGuild().isMember(guildPlayer);
     }
 }

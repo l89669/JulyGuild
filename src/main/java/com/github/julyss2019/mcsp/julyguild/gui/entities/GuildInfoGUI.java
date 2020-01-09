@@ -84,4 +84,9 @@ public class GuildInfoGUI extends BasePlayerGUI {
     public Guild getGuild() {
         return guild;
     }
+
+    @Override
+    public boolean isValid() {
+        return JulyGuild.getInstance().getGuildManager().isValid(guild);
+    }
 }

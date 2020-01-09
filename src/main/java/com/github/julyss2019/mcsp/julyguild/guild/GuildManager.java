@@ -10,6 +10,7 @@ import com.github.julyss2019.mcsp.julylibrary.utils.YamlUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.util.*;
@@ -75,6 +76,10 @@ public class GuildManager {
         return guildMap.containsKey(uuid);
     }
 
+    public boolean isValid(@Nullable Guild guild) {
+        return guild != null && isLoaded(guild.getUuid());
+    }
+
     /**
      * 卸载公会
      * @param guild
@@ -86,6 +91,7 @@ public class GuildManager {
 
         guildMap.remove(guild.getUuid());
         JulyGuild.getInstance().getCacheGuildManager().updateSortedGuilds();
+        guildPlayerManager.getOnlineGuildPlayers().forEach(guildPlayer -> guildPlayer.updateGUI(GUIType.MAIN));
     }
 
     /**
@@ -106,10 +112,7 @@ public class GuildManager {
 
         guildMap.put(guild.getUuid(), guild);
         JulyGuild.getInstance().getCacheGuildManager().updateSortedGuilds();
-
-        for (GuildPlayer guildPlayer : guildPlayerManager.getOnlineGuildPlayers()) {
-            guildPlayer.updateGUI(GUIType.MAIN);
-        }
+        guildPlayerManager.getOnlineGuildPlayers().forEach(guildPlayer -> guildPlayer.updateGUI(GUIType.MAIN));
     }
 
     /**

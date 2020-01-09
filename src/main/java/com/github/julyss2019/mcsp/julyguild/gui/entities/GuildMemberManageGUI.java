@@ -29,4 +29,9 @@ public class GuildMemberManageGUI extends BaseMemberGUI {
 
         return null;
     }
+
+    @Override
+    public boolean isValid() {
+        return true;
+    }
 }

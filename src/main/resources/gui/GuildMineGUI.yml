@@ -2,12 +2,12 @@ version: 1.0.0
 # 最重要的GUI,集成了所有功能
 # 该GUI除了 back 以外的物品都不允许自定义位置，将根据 positions 属性排序
 # 可供显示的位置，必须大于等于最大项目数，支持使用 - 作为范围界定符，使用,分隔
-positions: '10-45'
+available_indexes: '11-17,20-26,29-35'
 row: 6
 title: '&e&l我的公会'
 items:
   back:
-    index: 54
+    index: 50
     material: ARROW
     display_name: '&c返回'
   guild_info:

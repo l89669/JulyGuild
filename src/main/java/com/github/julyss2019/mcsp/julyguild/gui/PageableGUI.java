@@ -73,9 +73,12 @@ public abstract class PageableGUI implements GUI {
         return p >= 0 && p < getTotalPage();
     }
 
+    public abstract void update();
+
     // 覆盖 GUI 的 reopen() 实现，尽量使页数靠近最近页数
     @Override
     public void reopen() {
+        update();
         close();
 
         if (isValidPage(currentPage)) {

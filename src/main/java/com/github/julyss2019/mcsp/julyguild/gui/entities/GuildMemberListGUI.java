@@ -73,6 +73,7 @@ public class GuildMemberListGUI extends BasePlayerPageableGUI {
         int memberCount = members.size();
 
         setTotalPage(memberCount == 0 ? 1 : memberCount % positionCount == 0 ? memberCount / positionCount : memberCount / positionCount + 1);
+        System.out.println(getTotalPage());
 
         Map<Integer, GuildMember> indexMap = new HashMap<>();
         IndexConfigGUI.Builder guiBuilder = (IndexConfigGUI.Builder) new IndexConfigGUI.Builder()
@@ -108,5 +109,10 @@ public class GuildMemberListGUI extends BasePlayerPageableGUI {
         }
 
         return guiBuilder.build();
+    }
+
+    @Override
+    public boolean isValid() {
+        return plugin.getGuildManager().isValid(guild);
     }
 }

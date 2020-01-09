@@ -157,4 +157,9 @@ public class GuildUpgradeGUI extends BaseMemberGUI {
 
         return guiBuilder.build();
     }
+
+    @Override
+    public boolean isValid() {
+        return plugin.getGuildManager().isValid(guild) && guild.isMember(guildPlayer);
+    }
 }

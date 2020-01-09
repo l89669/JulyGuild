@@ -44,7 +44,7 @@ public class RequestManager {
         File file = new File(plugin.getDataFolder(), "data" + File.separator + "requests" + File.separator + request.getUuid() + ".yml");
         YamlConfiguration yml = YamlUtil.loadYaml(file, StandardCharsets.UTF_8);
 
-        request.onSaveData(yml);
+        request.save(yml);
         YamlUtil.saveYaml(yml, file, StandardCharsets.UTF_8);
         handleRequest(request);
     }
@@ -104,7 +104,7 @@ public class RequestManager {
             throw new RuntimeException(e);
         }
 
-        request.onLoadData(yml);
+        request.load(yml);
 
         if (isLoaded(request.getUuid())) {
             throw new RuntimeException("请求已载入");

@@ -20,6 +20,7 @@ import parsii.eval.Parser;
 import parsii.tokenizer.ParseException;
 
 import java.io.File;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -270,7 +271,7 @@ public class Guild implements Sender, Receiver {
      * @return
      */
     public boolean isValid() {
-        return !deleted;
+        return !deleted && JulyGuild.getInstance().getGuildManager().isValid(this);
     }
 
     /**
@@ -310,7 +311,7 @@ public class Guild implements Sender, Receiver {
 
         yml.set("members." + playerName + ".permission", Position.MEMBER.name());
         yml.set("members." + playerName + ".join_time", System.currentTimeMillis());
-        YamlUtil.saveYaml(yml, file);
+        save();
         loadMembers();
         guildPlayer.pointGuild(this);
         updateMembersGUI(GUIType.MEMBER);
@@ -342,12 +343,12 @@ public class Guild implements Sender, Receiver {
      */
     public void delete() {
         yml.set("deleted", true);
-        YamlUtil.saveYaml(yml, file);
+        YamlUtil.saveYaml(yml, file, StandardCharsets.UTF_8);
 
         for (GuildMember guildMember : getMembers()) {
             GuildPlayer guildPlayer = guildMember.getGuildPlayer();
 
-            guildPlayer.pointGuild((Guild) null);
+            guildPlayer.pointGuild(null);
 
             if (guildPlayer.isUsingGUI()) {
                 GUI usingGUI = guildPlayer.getUsingGUI();

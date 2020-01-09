@@ -6,8 +6,10 @@ import com.github.julyss2019.mcsp.julyguild.config.gui.item.GUIItemManager;
 import com.github.julyss2019.mcsp.julyguild.config.gui.item.PriorityItem;
 import com.github.julyss2019.mcsp.julyguild.config.setting.MainSettings;
 import com.github.julyss2019.mcsp.julyguild.gui.BaseMemberGUI;
+import com.github.julyss2019.mcsp.julyguild.gui.BaseMemberPageableGUI;
 import com.github.julyss2019.mcsp.julyguild.gui.GUI;
 import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
+import com.github.julyss2019.mcsp.julyguild.guild.Guild;
 import com.github.julyss2019.mcsp.julyguild.guild.GuildMember;
 import com.github.julyss2019.mcsp.julyguild.guild.Permission;
 import com.github.julyss2019.mcsp.julyguild.guild.Position;
@@ -29,6 +31,7 @@ public class GuildMineGUI extends BaseMemberGUI {
     private final ConfigurationSection thisLangSection = plugin.getLangYaml().getConfigurationSection("GuildMineGUI");
     private final Player bukkitPlayer;
     private final Position position;
+    private final Guild guild = guildMember.getGuild();
 
     public GuildMineGUI(GuildMember guildMember, @Nullable GUI lastGUI) {
         super(GUIType.MINE, guildMember, lastGUI);
@@ -39,9 +42,7 @@ public class GuildMineGUI extends BaseMemberGUI {
 
     @Override
     public Inventory getInventory() {
-        System.out.println(thisGUISection.getKeys(false));
-        PriorityConfigGUI.Builder guiBuilder = (PriorityConfigGUI.Builder) new PriorityConfigGUI.Builder()
-                .availablePositions(Util.getRangeIntegerList(thisGUISection.getString("positions")))
+        PriorityConfigGUI.Builder guiBuilder = new PriorityConfigGUI.Builder()
                 .fromConfig(thisGUISection, bukkitPlayer)
                 .item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.back"), bukkitPlayer), new ItemListener() {
                     @Override
@@ -49,9 +50,7 @@ public class GuildMineGUI extends BaseMemberGUI {
                         close();
                         new MainGUI(guildPlayer).open();
                     }
-                });
-
-        guiBuilder
+                })
                 .item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.guild_info"), bukkitPlayer, new Placeholder.Builder().addGuildPlaceholders(guild).build()))
                 .item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.self_info"), bukkitPlayer))
                 .item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.guild_members." + ((guildMember.hasPermission(Permission.MEMBER_KICK) || guildMember.hasPermission(Permission.MEMBER_SET_ADMIN) || guildMember.hasPermission(Permission.MEMBER_SET_PERMISSION)) ? "manager" : "member")), bukkitPlayer), new ItemListener() {
@@ -82,8 +81,6 @@ public class GuildMineGUI extends BaseMemberGUI {
                         new GuildJoinCheckGUI(guildMember, GuildMineGUI.this).open();
                     }
                 });
-
-
 
         // 公会公告
         PriorityItem guildAnnouncementItem = GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.guild_announcements"), bukkitPlayer);
@@ -133,5 +130,10 @@ public class GuildMineGUI extends BaseMemberGUI {
         }
 
         return guiBuilder.build();
+    }
+
+    @Override
+    public boolean isValid() {
+        return plugin.getGuildManager().isValid(guild) && guild.isMember(guildPlayer);
     }
 }

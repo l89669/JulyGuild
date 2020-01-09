@@ -6,10 +6,10 @@ import org.bukkit.configuration.ConfigurationSection;
 import java.util.UUID;
 
 public abstract class BaseRequest implements Request {
-    protected long creationTime;
-    protected UUID uuid;
-    protected Sender sender;
-    protected Receiver receiver;
+    private long creationTime;
+    private UUID uuid;
+    private Sender sender;
+    private Receiver receiver;
 
     public BaseRequest() {
     }
@@ -19,10 +19,6 @@ public abstract class BaseRequest implements Request {
         this.receiver = receiver;
         this.uuid = UUID.randomUUID();
         this.creationTime = System.currentTimeMillis();
-    }
-
-    protected void setCreationTime(long creationTime) {
-        this.creationTime = creationTime;
     }
 
     @Override
@@ -46,7 +42,7 @@ public abstract class BaseRequest implements Request {
     }
 
     @Override
-    public void onSaveData(ConfigurationSection section) {
+    public void save(ConfigurationSection section) {
         section.set("creation_time", getCreationTime());
         section.set("uuid", getUuid().toString());
         section.set("type", getType().name());
@@ -57,7 +53,7 @@ public abstract class BaseRequest implements Request {
     }
 
     @Override
-    public void onLoadData(ConfigurationSection section) {
+    public void load(ConfigurationSection section) {
         this.creationTime = section.getLong("creation_time");
         this.uuid = UUID.fromString(section.getString("uuid"));
 
