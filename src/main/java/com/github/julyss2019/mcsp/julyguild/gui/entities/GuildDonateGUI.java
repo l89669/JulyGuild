@@ -48,7 +48,7 @@ public class GuildDonateGUI extends BaseMemberGUI {
         }
 
         @Override
-        public Inventory getInventory() {
+        public Inventory createInventory() {
             double fee = donateAmount * (donateType == MONEY ? MainSettings.getDonateMoneyFee() : MainSettings.getDonatePointsFee());
             double exactlyDonateAmount = donateAmount - fee;
 
@@ -104,7 +104,7 @@ public class GuildDonateGUI extends BaseMemberGUI {
         }
 
         @Override
-        public boolean isValid() {
+        public boolean canUse() {
             return plugin.getGuildManager().isValid(guildMember.getGuild()) && guildMember.getGuild().isMember(guildPlayer);
         }
     }
@@ -121,7 +121,7 @@ public class GuildDonateGUI extends BaseMemberGUI {
     }
 
     @Override
-    public Inventory getInventory() {
+    public Inventory createInventory() {
         IndexConfigGUI.Builder guiBuilder = new IndexConfigGUI.Builder()
                 .fromConfig(thisGUISection, bukkitPlayer);
 
@@ -232,7 +232,7 @@ public class GuildDonateGUI extends BaseMemberGUI {
     }
 
     @Override
-    public boolean isValid() {
+    public boolean canUse() {
         return plugin.getGuildManager().isValid(guildMember.getGuild()) && guildMember.getGuild().isMember(guildPlayer);
     }
 }

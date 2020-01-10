@@ -39,28 +39,32 @@ public class MainGUI extends BasePlayerPageableGUI {
     private final String playerName = bukkitPlayer.getName();
     private final ConfigurationSection thisGUISection = plugin.getGUIYaml("MainGUI");
     private final ConfigurationSection thisLangSection = plugin.getLangYaml().getConfigurationSection("MainGUI");
-    private final List<Integer> guildIndexes = Util.getRangeIntegerList(thisGUISection.getString("items.guild.indexes")); // 得到所有可供公会设置的位置
-    private final int positionCount = guildIndexes.size();
+    private final List<Integer> itemIndexes = Util.getRangeIntegerList(thisGUISection.getString("items.guild.indexes")); // 得到所有可供公会设置的位置
+    private final int itemIndexCount = itemIndexes.size();
     private List<Guild> guilds;
-    private int guildSize;
+    private int guildCount;
 
     public MainGUI(GuildPlayer guildPlayer) {
         super(GUIType.MAIN, guildPlayer, null);
 
         update();
+
+        if (getTotalPage() > 0) {
+            setCurrentPage(0);
+        }
     }
 
     @Override
     public void update() {
         this.guilds = plugin.getCacheGuildManager().getSortedGuilds();
-        this.guildSize = guilds.size();
-        setTotalPage(guildSize == 0 ? 1 : guildSize % positionCount == 0 ? guildSize / positionCount : guildSize / positionCount + 1);
+        this.guildCount = guilds.size();
+
+        setTotalPage(guildCount % itemIndexCount == 0 ? guildCount / itemIndexCount : guildCount / itemIndexCount + 1);
     }
 
-
     @Override
-    public Inventory getInventory() {
-        Map<Integer, Guild> guildIndexMap = new HashMap<>(); // slot 对应的公会uuid
+    public Inventory createInventory() {
+        Map<Integer, Guild> indexMap = new HashMap<>(); // slot 对应的公会uuid
 
         IndexConfigGUI.Builder guiBuilder = (IndexConfigGUI.Builder) new IndexConfigGUI.Builder()
                 .fromConfig(thisGUISection, bukkitPlayer, new Placeholder.Builder()
@@ -72,12 +76,12 @@ public class MainGUI extends BasePlayerPageableGUI {
                     public void onClick(InventoryClickEvent event) {
                         int slot = event.getSlot();
 
-                        if (guildIndexMap.containsKey(slot)) {
+                        if (indexMap.containsKey(slot)) {
                             close();
 
-                            Guild guild = guildIndexMap.get(slot);
+                            Guild guild = indexMap.get(slot);
 
-                            if (plugin.getGuildManager().isValid(guild)) {
+                            if (!guild.isValid()) {
                                 reopen();
                                 return;
                             }
@@ -91,7 +95,6 @@ public class MainGUI extends BasePlayerPageableGUI {
                     }
                 });
 
-
         guiBuilder.pageItems(thisGUISection.getConfigurationSection("items.page_items"), this, bukkitPlayer);
 
         if (guildPlayer.isInGuild()) {
@@ -99,7 +102,7 @@ public class MainGUI extends BasePlayerPageableGUI {
                 @Override
                 public void onClick(InventoryClickEvent event) {
                     close();
-                    new GuildMineGUI(guildPlayer.getGuild().getMember(guildPlayer), null).open();
+                    new GuildMineGUI(guildPlayer.getGuild().getMember(guildPlayer), MainGUI.this).open();
                 }
             });
         } else {
@@ -162,17 +165,19 @@ public class MainGUI extends BasePlayerPageableGUI {
             });
         }
 
-        int itemCounter = getCurrentPage() * guildIndexes.size();
-        int loopCount = guildSize - itemCounter < positionCount ? guildSize - itemCounter : positionCount; // 循环次数，根据当前能够显示的数量决定
+        if (getCurrentPage() != -1) {
+            int itemCounter = getCurrentPage() * itemIndexes.size();
+            int loopCount = guildCount - itemCounter < itemIndexCount ? guildCount - itemCounter : itemIndexCount; // 循环次数，根据当前能够显示的数量决定
 
-        // 公会图标
-        for (int i = 0; i < loopCount; i++) {
-            Guild guild = guilds.get(itemCounter++);
-            ItemBuilder itemBuilder = GUIItemManager.getItemBuilder(thisGUISection.getConfigurationSection("items.guild"), bukkitPlayer, guild)
-                    .material(Material.STONE);
+            // 公会图标
+            for (int i = 0; i < loopCount; i++) {
+                Guild guild = guilds.get(itemCounter++);
+                ItemBuilder itemBuilder = GUIItemManager.getItemBuilder(thisGUISection.getConfigurationSection("items.guild"), bukkitPlayer, guild)
+                        .material(Material.STONE);
 
-            guildIndexMap.put(guildIndexes.get(i) - 1, guild);
-            guiBuilder.item(guildIndexes.get(i) - 1, itemBuilder.build());
+                indexMap.put(itemIndexes.get(i) - 1, guild);
+                guiBuilder.item(itemIndexes.get(i) - 1, itemBuilder.build());
+            }
         }
 
         return guiBuilder.build();
@@ -180,7 +185,7 @@ public class MainGUI extends BasePlayerPageableGUI {
 
 
     @Override
-    public boolean isValid() {
+    public boolean canUse() {
         return true;
     }
 }

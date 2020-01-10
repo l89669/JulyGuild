@@ -6,7 +6,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * 一个 Backable GUI的实现类
  */
-public abstract class BasePlayerGUI implements GUI {
+public abstract class BasePlayerGUI extends GUI {
     protected final GUIType type;
     protected final GUI lastGUI;
     protected final GuildPlayer guildPlayer;

@@ -12,7 +12,6 @@ import com.github.julyss2019.mcsp.julyguild.guild.Permission;
 import com.github.julyss2019.mcsp.julyguild.placeholder.Placeholder;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
 import com.github.julyss2019.mcsp.julyguild.util.Util;
-import com.github.julyss2019.mcsp.julylibrary.inventory.InventoryListener;
 import com.github.julyss2019.mcsp.julylibrary.inventory.ItemListener;
 import com.github.julyss2019.mcsp.julylibrary.item.ItemBuilder;
 import org.bukkit.configuration.ConfigurationSection;
@@ -22,9 +21,7 @@ import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class GuildMemberListGUI extends BasePlayerPageableGUI {
     private enum ViewerType {PLAYER, MANAGER}
@@ -36,6 +33,8 @@ public class GuildMemberListGUI extends BasePlayerPageableGUI {
     private ConfigurationSection thisGUISection;
     private List<Integer> positions;
     private int positionCount;
+    private List<GuildMember> members;
+    private int memberCount;
 
     public GuildMemberListGUI(Guild guild, GuildMember guildMember, @Nullable GUI lastGUI) {
         this(guild, guildMember.getGuildPlayer(), lastGUI);
@@ -65,34 +64,31 @@ public class GuildMemberListGUI extends BasePlayerPageableGUI {
         this.thisGUISection = plugin.getGUIYaml("GuildMemberListGUI").getConfigurationSection(viewerType.name().toLowerCase());
         this.positions = Util.getRangeIntegerList(thisGUISection.getString("positions")); // 得到所有可供公会设置的位置
         this.positionCount = positions.size();
+
+        update();
+
+        if (getTotalPage() > 0) {
+            setCurrentPage(0);
+        }
     }
 
     @Override
-    public Inventory getInventory() {
-        List<GuildMember> members = guild.getMembers();
-        int memberCount = members.size();
+    public void update() {
+        this.members = guild.getMembers();
+        this.memberCount = members.size();
 
-        setTotalPage(memberCount == 0 ? 1 : memberCount % positionCount == 0 ? memberCount / positionCount : memberCount / positionCount + 1);
-        System.out.println(getTotalPage());
+        setTotalPage(memberCount % positionCount == 0 ? memberCount / positionCount : memberCount / positionCount + 1);
+    }
 
-        Map<Integer, GuildMember> indexMap = new HashMap<>();
-        IndexConfigGUI.Builder guiBuilder = (IndexConfigGUI.Builder) new IndexConfigGUI.Builder()
+    @Override
+    public Inventory createInventory() {
+        IndexConfigGUI.Builder guiBuilder = new IndexConfigGUI.Builder()
                 .fromConfig(thisGUISection, bukkitPlayer)
                 .pageItems(thisGUISection.getConfigurationSection("items.page_items"), this, bukkitPlayer, guild)
                 .item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.back"), bukkitPlayer, guild), new ItemListener() {
                     @Override
                     public void onClick(InventoryClickEvent event) {
                         back();
-                    }
-                })
-                .listener(new InventoryListener() {
-                    @Override
-                    public void onClick(InventoryClickEvent event) {
-                        int slot = event.getSlot();
-
-                        if (indexMap.containsKey(slot)) {
-
-                        }
                     }
                 });
 
@@ -104,7 +100,7 @@ public class GuildMemberListGUI extends BasePlayerPageableGUI {
             ItemBuilder itemBuilder = GUIItemManager.getItemBuilder(thisGUISection.getConfigurationSection("items").getConfigurationSection("member")
                     , guildMember, new Placeholder.Builder().addGuildMemberPlaceholders(guildMember));
 
-            indexMap.put(positions.get(i) - 1, guildMember);
+
             guiBuilder.item(positions.get(i) - 1, itemBuilder.build());
         }
 
@@ -112,7 +108,7 @@ public class GuildMemberListGUI extends BasePlayerPageableGUI {
     }
 
     @Override
-    public boolean isValid() {
-        return plugin.getGuildManager().isValid(guild);
+    public boolean canUse() {
+        return guild.isValid();
     }
 }

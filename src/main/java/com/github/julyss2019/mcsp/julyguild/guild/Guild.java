@@ -3,9 +3,7 @@ package com.github.julyss2019.mcsp.julyguild.guild;
 import com.github.julyss2019.mcsp.julyguild.JulyGuild;
 import com.github.julyss2019.mcsp.julyguild.config.ConfigGuildIcon;
 import com.github.julyss2019.mcsp.julyguild.config.setting.MainSettings;
-import com.github.julyss2019.mcsp.julyguild.gui.GUI;
 import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
-import com.github.julyss2019.mcsp.julyguild.gui.entities.MainGUI;
 import com.github.julyss2019.mcsp.julyguild.placeholder.Placeholder;
 import com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderText;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
@@ -39,9 +37,11 @@ public class Guild implements Sender, Receiver {
     private Map<String, OwnedIcon> iconMap = new HashMap<>();
     private OwnedIcon currentIcon;
     private GuildBank guildBank;
+    private GuildMessageBox guildMessageBox;
     private List<String> announcements;
     private long createTime;
     private int additionMemberCount;
+
 
     Guild(File file) {
         this.file = file;
@@ -60,9 +60,15 @@ public class Guild implements Sender, Receiver {
     private void load() {
         this.yml = YamlConfiguration.loadConfiguration(file);
         this.deleted = yml.getBoolean("deleted");
+
+        if (isDeleted()) {
+            return;
+        }
+
         this.name = yml.getString("name");
         this.uuid = UUID.fromString(yml.getString("uuid"));
         this.guildBank = new GuildBank(this);
+        this.guildMessageBox = new GuildMessageBox(this);
         this.announcements = yml.getStringList("announcements");
         this.createTime = yml.getLong("creation_time");
         this.additionMemberCount = yml.getInt("addition_member_count");
@@ -92,6 +98,10 @@ public class Guild implements Sender, Receiver {
 
     }*/
 
+    public GuildMessageBox getGuildMessageBox() {
+        return guildMessageBox;
+    }
+
     private void loadMembers() {
         memberMap.clear();
 
@@ -107,6 +117,7 @@ public class Guild implements Sender, Receiver {
                         : new GuildOwner(this, memberUuid);
 
                 memberMap.put(memberUuid, member);
+
                 member.getGuildPlayer().pointGuild(this);
 
                 if (member instanceof GuildOwner) {
@@ -303,18 +314,16 @@ public class Guild implements Sender, Receiver {
      * @param guildPlayer
      */
     public void addMember(GuildPlayer guildPlayer) {
-        String playerName = guildPlayer.getName();
+        UUID uuid = guildPlayer.getUuid();
 
         if (isMember(guildPlayer)) {
             throw new IllegalArgumentException("成员已存在");
         }
 
-        yml.set("members." + playerName + ".permission", Position.MEMBER.name());
-        yml.set("members." + playerName + ".join_time", System.currentTimeMillis());
+        yml.set("members." + uuid + ".position", Position.MEMBER.name());
+        yml.set("members." + uuid + ".join_time", System.currentTimeMillis());
         save();
         loadMembers();
-        guildPlayer.pointGuild(this);
-        updateMembersGUI(GUIType.MEMBER);
     }
 
     /**
@@ -330,11 +339,10 @@ public class Guild implements Sender, Receiver {
             throw new IllegalArgumentException("成员不存在");
         }
 
-        yml.set("members." + guildMember.getUuid().toString(), null);
+        yml.set("members." + guildMember.getUuid(), null);
         save();
         loadMembers();
         guildMember.getGuildPlayer().pointGuild(null);
-        updateMembersGUI(GUIType.MEMBER);
     }
 
     /**
@@ -344,24 +352,8 @@ public class Guild implements Sender, Receiver {
     public void delete() {
         yml.set("deleted", true);
         YamlUtil.saveYaml(yml, file, StandardCharsets.UTF_8);
-
-        for (GuildMember guildMember : getMembers()) {
-            GuildPlayer guildPlayer = guildMember.getGuildPlayer();
-
-            guildPlayer.pointGuild(null);
-
-            if (guildPlayer.isUsingGUI()) {
-                GUI usingGUI = guildPlayer.getUsingGUI();
-
-                if (usingGUI instanceof MainGUI) {
-                    usingGUI.reopen();
-                } else {
-                    guildPlayer.closeGUI();
-                }
-            }
-        }
-
         this.deleted = true;
+        JulyGuild.getInstance().getRequestManager().getSentRequests(this).forEach(Request::delete);
         JulyGuild.getInstance().getGuildManager().unloadGuild(this);
     }
 
@@ -491,7 +483,7 @@ public class Guild implements Sender, Receiver {
     }
 
     @Override
-    public Collection<Request> getReceivedRequests() {
+    public List<Request> getReceivedRequests() {
         return JulyGuild.getInstance().getRequestManager().getReceivedRequests(this);
     }
 

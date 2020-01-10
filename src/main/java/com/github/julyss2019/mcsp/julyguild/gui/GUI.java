@@ -6,31 +6,36 @@ import org.bukkit.inventory.Inventory;
 
 import java.util.Optional;
 
-public interface GUI {
-    GuildPlayer getGuildPlayer();
+/**
+ * 采用被动式更新设计，每次点击如果遇到无效的情况则强制更新，否则继续使用
+ */
+public abstract class GUI {
+    private Inventory currentInventory;
 
-    Inventory getInventory();
+    public abstract GuildPlayer getGuildPlayer();
 
-    GUIType getType();
+    public abstract Inventory createInventory();
 
-    GUI getLastGUI();
+    public abstract GUIType getType();
 
-    default void back() {
-        GUI gui = Optional.ofNullable(getLastGUI()).orElseThrow(() -> new RuntimeException("没有上一个GUI了"));
+    public abstract GUI getLastGUI();
 
-        gui.reopen();
+    public void back() {
+        GUI lastGUI = Optional.ofNullable(getLastGUI()).orElseThrow(() -> new RuntimeException("没有上一个GUI了"));
+
+        lastGUI.reopen();
     }
 
-    default Player getBukkitPlayer() {
+    public Player getBukkitPlayer() {
         return getGuildPlayer().getBukkitPlayer();
     }
 
-    default void close() {
+    public void close() {
         getGuildPlayer().closeGUI();
     }
 
-    default void open() {
-        if (!isValid()) {
+    public void open() {
+        if (!canUse()) {
             if (getLastGUI() != null) {
                 getLastGUI().reopen();
             }
@@ -38,18 +43,29 @@ public interface GUI {
             return;
         }
 
-        getGuildPlayer().getBukkitPlayer().openInventory(getInventory());
+        Inventory inventory = createInventory();
+
+        this.currentInventory = inventory;
+        getGuildPlayer().getBukkitPlayer().openInventory(inventory);
         getGuildPlayer().setUsingGUI(this);
+    }
+
+    public Inventory getCurrentInventory() {
+        return currentInventory;
     }
 
     /**
      * 关闭，更新，打开
      */
 
-    default void reopen() {
+    public void reopen() {
         close();
         open();
     }
 
-    boolean isValid();
+    /**
+     * 决定了该GUI是否能打开
+     * @return
+     */
+    public abstract boolean canUse();
 }

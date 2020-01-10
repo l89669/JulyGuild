@@ -57,7 +57,7 @@ public class GuildCreateGUI extends BasePlayerGUI {
     }
 
     @Override
-    public Inventory getInventory() {
+    public Inventory createInventory() {
         IndexConfigGUI.Builder guiBuilder = (IndexConfigGUI.Builder) new IndexConfigGUI.Builder()
                 .fromConfig(thisGUISection, bukkitPlayer)
                 .colored()
@@ -184,7 +184,7 @@ public class GuildCreateGUI extends BasePlayerGUI {
     }
 
     @Override
-    public boolean isValid() {
+    public boolean canUse() {
         return !guildPlayer.isInGuild();
     }
 }

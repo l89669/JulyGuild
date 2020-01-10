@@ -2,7 +2,7 @@ package com.github.julyss2019.mcsp.julyguild.request;
 
 import com.github.julyss2019.mcsp.julyguild.JulyGuild;
 
-import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
 public interface Sender {
@@ -10,7 +10,7 @@ public interface Sender {
         GUILD, GUILD_PLAYER
     }
     Type getSenderType();
-    default Collection<Request> getSentRequests() {
+    default List<Request> getSentRequests() {
         return JulyGuild.getInstance().getRequestManager().getSentRequests(this);
     }
     UUID getUuid();

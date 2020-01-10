@@ -7,4 +7,9 @@ public class InviteRequest extends BaseRequest {
     public Type getType() {
         return null;
     }
+
+    @Override
+    public boolean isValid() {
+        return false;
+    }
 }

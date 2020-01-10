@@ -1,9 +1,14 @@
 package com.github.julyss2019.mcsp.julyguild.gui;
 
+import com.github.julyss2019.mcsp.julyguild.JulyGuild;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
+import org.bukkit.scheduler.BukkitRunnable;
 
-public abstract class PageableGUI implements GUI {
-    private int currentPage;
+/**
+ *
+ */
+public abstract class PageableGUI extends GUI {
+    private int currentPage = -1;
     private int totalPage;
     protected final GUIType guiType;
     protected final GuildPlayer guildPlayer;
@@ -70,16 +75,26 @@ public abstract class PageableGUI implements GUI {
 
     // 是否是有效的页数
     public boolean isValidPage(int p) {
-        return p >= 0 && p < getTotalPage();
+        if (totalPage == 0) {
+            return p == -1;
+        }
+
+        return p >= 0 && p < totalPage;
     }
 
+    /**
+     * 数据和界面分离，通常是个List，在这 update() 并设置 totalPage，而 createInventory() 仅仅只是根据当前数据返回GUI
+     */
     public abstract void update();
 
     // 覆盖 GUI 的 reopen() 实现，尽量使页数靠近最近页数
     @Override
     public void reopen() {
+        reopen(0);
+    }
+
+    private void updateAndOpen() {
         update();
-        close();
 
         if (isValidPage(currentPage)) {
             setCurrentPage(currentPage);
@@ -88,10 +103,30 @@ public abstract class PageableGUI implements GUI {
         } else if (isValidPage(currentPage + 1)) {
             setCurrentPage(currentPage + 1);
         } else {
-            setCurrentPage(0);
+            setCurrentPage(getTotalPage() == 0 ? -1 : 0);
         }
 
         open();
+    }
+
+    /**
+     * 先关闭，再间隔n秒打开
+     * @param later tick
+     */
+    public void reopen(long later) {
+        close();
+
+        if (later == 0) {
+            updateAndOpen();
+            return;
+        }
+
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                updateAndOpen();
+            }
+        }.runTaskLater(JulyGuild.getInstance(), later);
     }
 
     @Override

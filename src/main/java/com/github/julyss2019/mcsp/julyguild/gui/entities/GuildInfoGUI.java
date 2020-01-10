@@ -42,7 +42,7 @@ public class GuildInfoGUI extends BasePlayerGUI {
     }
 
     @Override
-    public Inventory getInventory() {
+    public Inventory createInventory() {
         IndexConfigGUI.Builder guiBuilder = new IndexConfigGUI.Builder()
                 .fromConfig(thisGUISection, bukkitPlayer, guild)
                 .item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.request_join"), bukkitPlayer, guild), new ItemListener() {
@@ -86,7 +86,7 @@ public class GuildInfoGUI extends BasePlayerGUI {
     }
 
     @Override
-    public boolean isValid() {
-        return JulyGuild.getInstance().getGuildManager().isValid(guild);
+    public boolean canUse() {
+        return guild.isValid();
     }
 }

@@ -105,6 +105,12 @@ public class MainSettings {
     @Config(path = "guild.dismiss.confirm_str")
     private static String dismissConfirmStr;
 
+    @Config(path = "guild.exit.wait")
+    private static int exitWait;
+
+    @Config(path = "guild.exit.confirm_str")
+    private static String exitConfirmStr;
+
     @Config(path = "guild.donate.points.fee")
     private static double donatePointsFee;
 
@@ -291,5 +297,13 @@ public class MainSettings {
 
     public static List<String> getTpAllAllowedReceiveWorlds() {
         return tpAllAllowedReceiveWorlds;
+    }
+
+    public static int getExitWait() {
+        return exitWait;
+    }
+
+    public static String getExitConfirmStr() {
+        return exitConfirmStr;
     }
 }

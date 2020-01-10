@@ -18,6 +18,7 @@ import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayerManager;
 import com.github.julyss2019.mcsp.julyguild.request.RequestManager;
 import com.github.julyss2019.mcsp.julyguild.task.RequestCleanTask;
+import com.github.julyss2019.mcsp.julyguild.thirdparty.PlaceholderAPIExpansion;
 import com.github.julyss2019.mcsp.julyguild.thirdparty.economy.PlayerPointsEconomy;
 import com.github.julyss2019.mcsp.julyguild.thirdparty.economy.VaultEconomy;
 import com.github.julyss2019.mcsp.julyguild.util.Util;

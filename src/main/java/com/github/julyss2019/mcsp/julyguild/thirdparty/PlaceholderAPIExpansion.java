@@ -1,5 +1,7 @@
-package com.github.julyss2019.mcsp.julyguild;
+package com.github.julyss2019.mcsp.julyguild.thirdparty;
 
+import com.github.julyss2019.mcsp.julyguild.JulyGuild;
+import com.github.julyss2019.mcsp.julyguild.LangHelper;
 import com.github.julyss2019.mcsp.julyguild.guild.CacheGuildManager;
 import com.github.julyss2019.mcsp.julyguild.guild.Guild;
 import com.github.julyss2019.mcsp.julyguild.guild.GuildBank;

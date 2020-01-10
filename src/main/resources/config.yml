@@ -12,7 +12,7 @@ gui:
   # 默认
   default:
     # 是否默认使用公会内部变量
-    use_gp: false
+    use_gp: true
     # 是否默认使用PAPI
     use_papi: false
 guild:
@@ -112,6 +112,10 @@ guild:
   # 解散
   dismiss:
     wait: 10 # 等待时间
+    confirm_str: '确认'
+  # 退出
+  exit:
+    wait: 10
     confirm_str: '确认'
   member:
     # 成员列表最多能预览多少

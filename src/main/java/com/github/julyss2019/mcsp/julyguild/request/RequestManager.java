@@ -18,6 +18,10 @@ public class RequestManager {
 
     }
 
+    public boolean isValid(Request request) {
+        return isLoaded(request.getUuid());
+    }
+
     public Collection<Request> getRequests() {
         return new HashSet<>(requestMap.values());
     }
@@ -131,6 +135,7 @@ public class RequestManager {
 
         sentMap.get(senderUuid).add(request);
         receiveMap.get(receiverUuid).add(request);
+        requestMap.put(request.getUuid(), request);
     }
 
     /**
@@ -138,7 +143,7 @@ public class RequestManager {
      * @param sender
      * @return
      */
-    public Collection<Request> getSentRequests(Sender sender) {
+    public List<Request> getSentRequests(Sender sender) {
         return sentMap.getOrDefault(sender.getUuid(), new ArrayList<>());
     }
 
@@ -147,7 +152,7 @@ public class RequestManager {
      * @param receiver
      * @return
      */
-    public Collection<Request> getReceivedRequests(Receiver receiver) {
+    public List<Request> getReceivedRequests(Receiver receiver) {
         return receiveMap.getOrDefault(receiver.getUuid(), new ArrayList<>());
     }
 

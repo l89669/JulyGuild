@@ -41,14 +41,13 @@ public class GuildMineGUI extends BaseMemberGUI {
     }
 
     @Override
-    public Inventory getInventory() {
+    public Inventory createInventory() {
         PriorityConfigGUI.Builder guiBuilder = new PriorityConfigGUI.Builder()
                 .fromConfig(thisGUISection, bukkitPlayer)
                 .item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.back"), bukkitPlayer), new ItemListener() {
                     @Override
                     public void onClicked(InventoryClickEvent event) {
-                        close();
-                        new MainGUI(guildPlayer).open();
+                        back();
                     }
                 })
                 .item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.guild_info"), bukkitPlayer, new Placeholder.Builder().addGuildPlaceholders(guild).build()))
@@ -66,20 +65,6 @@ public class GuildMineGUI extends BaseMemberGUI {
                         close();
                         new GuildDonateGUI(guildMember, GuildMineGUI.this).open();
                     }
-                })
-                .item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.guild_upgrade"), bukkitPlayer), new ItemListener() {
-                    @Override
-                    public void onClick(InventoryClickEvent event) {
-                        close();
-                        new GuildUpgradeGUI(guildMember, GuildMineGUI.this).open();
-                    }
-                })
-                .item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.guild_join_check"), bukkitPlayer), new ItemListener() {
-                    @Override
-                    public void onClick(InventoryClickEvent event) {
-                        close();
-                        new GuildJoinCheckGUI(guildMember, GuildMineGUI.this).open();
-                    }
                 });
 
         // 公会公告
@@ -88,6 +73,29 @@ public class GuildMineGUI extends BaseMemberGUI {
         guildAnnouncementItem.getItemBuilder().lores(guild.getAnnouncements());
         guiBuilder.item(guildAnnouncementItem);
 
+        // 公会升级
+        if (guildMember.hasPermission(Permission.GUILD_UPGRADE)) {
+            guiBuilder
+                .item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.guild_upgrade"), bukkitPlayer), new ItemListener() {
+                    @Override
+                    public void onClick(InventoryClickEvent event) {
+                        close();
+                        new GuildUpgradeGUI(guildMember, GuildMineGUI.this).open();
+                    }
+                });
+        }
+
+        // 入会审批
+        if (guildMember.hasPermission(Permission.PLAYER_JOIN_CHECK)) {
+            guiBuilder
+                    .item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.guild_join_check"), bukkitPlayer), new ItemListener() {
+                        @Override
+                        public void onClick(InventoryClickEvent event) {
+                            close();
+                            new GuildJoinCheckGUI(guildMember, GuildMineGUI.this).open();
+                        }
+                    });
+        }
 
         // 解散或退出
         if (position == Position.OWNER) {
@@ -95,7 +103,7 @@ public class GuildMineGUI extends BaseMemberGUI {
                 @Override
                 public void onClick(InventoryClickEvent event) {
                     close();
-                    Util.sendColoredMessage(bukkitPlayer, thisLangSection.getString("dismiss.confirm"), new Placeholder.Builder()
+                    Util.sendColoredMessage(bukkitPlayer, thisLangSection.getString("guild_dismiss.confirm"), new Placeholder.Builder()
                     .addInner("wait", MainSettings.getDismissWait())
                     .addInner("confirm_str", MainSettings.getDismissConfirmStr()).build());
                     new ChatInterceptor.Builder()
@@ -107,15 +115,15 @@ public class GuildMineGUI extends BaseMemberGUI {
                                 public void onChat(AsyncPlayerChatEvent event) {
                                     if (event.getMessage().equalsIgnoreCase(MainSettings.getDismissConfirmStr())) {
                                         guild.delete();
-                                        Util.sendColoredMessage(bukkitPlayer, thisLangSection.getString("dismiss.success"));
+                                        Util.sendColoredMessage(bukkitPlayer, thisLangSection.getString("guild_dismiss.success"));
                                     } else {
-                                        Util.sendColoredMessage(bukkitPlayer, thisLangSection.getString("dismiss.failed"));
+                                        Util.sendColoredMessage(bukkitPlayer, thisLangSection.getString("guild_dismiss.failed"));
                                     }
                                 }
 
                                 @Override
                                 public void onTimeout(AsyncPlayerChatEvent event) {
-                                    Util.sendColoredMessage(bukkitPlayer, thisLangSection.getString("dismiss.timeout"));
+                                    Util.sendColoredMessage(bukkitPlayer, thisLangSection.getString("guild_dismiss.timeout"));
                                 }
                             }).build().register();
                 }
@@ -124,7 +132,30 @@ public class GuildMineGUI extends BaseMemberGUI {
             guiBuilder.item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.guild_exit"), bukkitPlayer), new ItemListener() {
                 @Override
                 public void onClick(InventoryClickEvent event) {
+                    close();
+                    Util.sendColoredMessage(bukkitPlayer, thisLangSection.getString("guild_exit.confirm"), new Placeholder.Builder()
+                            .addInner("wait", MainSettings.getDismissWait())
+                            .addInner("confirm_str", MainSettings.getDismissConfirmStr()).build());
+                    new ChatInterceptor.Builder()
+                            .player(bukkitPlayer)
+                            .plugin(plugin)
+                            .timeout(MainSettings.getExitWait())
+                            .chatListener(new ChatListener() {
+                                @Override
+                                public void onChat(AsyncPlayerChatEvent event) {
+                                    if (event.getMessage().equalsIgnoreCase(MainSettings.getExitConfirmStr())) {
+                                        guild.removeMember(guildMember);
+                                        Util.sendColoredMessage(bukkitPlayer, thisLangSection.getString("guild_exit.success"));
+                                    } else {
+                                        Util.sendColoredMessage(bukkitPlayer, thisLangSection.getString("guild_exit.failed"));
+                                    }
+                                }
 
+                                @Override
+                                public void onTimeout(AsyncPlayerChatEvent event) {
+                                    Util.sendColoredMessage(bukkitPlayer, thisLangSection.getString("guild_exit.timeout"));
+                                }
+                            }).build().register();
                 }
             });
         }
@@ -133,7 +164,7 @@ public class GuildMineGUI extends BaseMemberGUI {
     }
 
     @Override
-    public boolean isValid() {
-        return plugin.getGuildManager().isValid(guild) && guild.isMember(guildPlayer);
+    public boolean canUse() {
+        return guild.isValid() && guild.isMember(guildPlayer);
     }
 }

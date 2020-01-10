@@ -22,7 +22,7 @@ public class GuildMemberManageGUI extends BaseMemberGUI {
     }
 
     @Override
-    public Inventory getInventory() {
+    public Inventory createInventory() {
         IndexConfigGUI.Builder guiBuilder = new IndexConfigGUI.Builder()
                 .fromConfig(thisGUISection, guildMember);
 
@@ -31,7 +31,7 @@ public class GuildMemberManageGUI extends BaseMemberGUI {
     }
 
     @Override
-    public boolean isValid() {
+    public boolean canUse() {
         return true;
     }
 }

@@ -33,4 +33,7 @@ public interface Request {
     default void send() {
         JulyGuild.getInstance().getRequestManager().sendRequest(this);
     }
+    default boolean isValid() {
+        return JulyGuild.getInstance().getRequestManager().isValid(this);
+    }
 }

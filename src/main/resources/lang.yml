@@ -35,11 +35,16 @@ MainGUI:
       no_colored_name_permission: '&c你没有彩色公会名的使用权限.'
       no_duplication_name: '&c这个公会名字已经有人使用了.'
 GuildMineGUI:
-  dismiss:
+  guild_exit:
+    success: '&d退出公会成功.'
+    failed: '&c退出公会失败.'
+    timeout: '&c确认请求超时.'
+    confirm: '&c如果要退出公会请在 &e{wait}秒内 &c发送: &e{confirm_str}&c, 注意: 这将使你的公会财产全部清空, 请务必谨慎操作, 输入 &e取消 &c以取消操作.'
+  guild_dismiss:
     success: '&e解散公会成功.'
     failed: '&c解散公会失败.'
     timeout: '&c确认请求超时.'
-    confirm: '&c如果要解散公会请在 &e{wait}秒内 &c发送: &e{confirm_str}&c, 注意: 这将使你的公会财产和成员全部清空, 请务必谨慎操作.'
+    confirm: '&c如果要解散公会请在 &e{wait}秒内 &c发送: &e{confirm_str}&c, 注意: 这将使你的公会财产和成员全部清空, 请务必谨慎操作, 输入 &e取消 &c以取消操作.'
 GuildUpgradeGUI:
   money:
     success: '&d升级公会人数成功, &e{old}->{new}&d.'
@@ -69,3 +74,12 @@ GuildInfoGUI:
     already_have: '&c你已经有一个申请加入请求了, 请等待审批.'
     guild_full: '&c公会人数已满({max}/{max}).'
     success: '&d已向公会发送加入申请, 请等待审批.'
+    received: '&e公会收到了一个来自 &c{sender} 的入会请求, 请及时处理.'
+GuildJoinCheckGUI:
+  invalid: '&c请求已失效.'
+  accept:
+    broadcast: '&d玩家 &e{player} &d加入了本公会.'
+    sender: '&a你加入了 &e{guild} 公会, 处理人: &e{approver}&a.'
+  deny:
+    approver: '&c已拒绝 &e{player} &c请求.'
+    sender: '&c你被拒绝加入 &e{guild} &c公会, 处理人: &e{approver}&c.'

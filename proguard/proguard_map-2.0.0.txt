@@ -19,7 +19,7 @@ com.github.julyss2019.mcsp.julyguild.JulyGuild -> com.github.julyss2019.mcsp.jul
     org.bukkit.configuration.file.YamlConfiguration guiYamlConfig -> O0000o
     com.github.julyss2019.mcsp.julyguild.config.IconShopConfig iconShopConfig -> O0000oO0
     com.github.julyss2019.mcsp.julyguild.config.GuildShopConfig guildShopConfig -> O0000oO
-    com.github.julyss2019.mcsp.julyguild.PlaceholderAPIExpansion placeholderAPIExpansion -> O0000oOO
+    com.github.julyss2019.mcsp.julyguild.thirdparty.PlaceholderAPIExpansion placeholderAPIExpansion -> O0000oOO
     52:64:void <init>() -> <init>
     83:173:void onEnable() -> onEnable
     176:189:void onDisable() -> onDisable
@@ -126,7 +126,7 @@ com.github.julyss2019.mcsp.julyguild.Metrics$SingleLineChart -> com.github.julys
     java.util.concurrent.Callable callable -> O000000o
     570:572:void <init>(java.lang.String,java.util.concurrent.Callable) -> <init>
     576:583:com.google.gson.JsonObject getChartData() -> ilovexwx
-com.github.julyss2019.mcsp.julyguild.PlaceholderAPIExpansion -> com.github.julyss2019.mcsp.julyguild.O00000o:
+com.github.julyss2019.mcsp.julyguild.thirdparty.PlaceholderAPIExpansion -> com.github.julyss2019.mcsp.julyguild.O00000o:
     com.github.julyss2019.mcsp.julyguild.JulyGuild plugin -> ilovexwx
     org.bukkit.configuration.file.YamlConfiguration langYml -> O000000o
     com.github.julyss2019.mcsp.julyguild.guild.CacheGuildManager cacheGuildManager -> O00000Oo

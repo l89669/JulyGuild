@@ -10,6 +10,7 @@ import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
 import com.github.julyss2019.mcsp.julyguild.guild.Guild;
 import com.github.julyss2019.mcsp.julyguild.guild.GuildBank;
 import com.github.julyss2019.mcsp.julyguild.guild.GuildMember;
+import com.github.julyss2019.mcsp.julyguild.guild.Permission;
 import com.github.julyss2019.mcsp.julyguild.placeholder.Placeholder;
 import com.github.julyss2019.mcsp.julyguild.util.Util;
 import com.github.julyss2019.mcsp.julylibrary.inventory.ItemListener;
@@ -42,7 +43,7 @@ public class GuildUpgradeGUI extends BaseMemberGUI {
     }
 
     @Override
-    public Inventory getInventory() {
+    public Inventory createInventory() {
         IndexConfigGUI.Builder guiBuilder = (IndexConfigGUI.Builder) new IndexConfigGUI.Builder()
                 .fromConfig(thisGUISection, bukkitPlayer)
                 .colored();
@@ -159,7 +160,7 @@ public class GuildUpgradeGUI extends BaseMemberGUI {
     }
 
     @Override
-    public boolean isValid() {
-        return plugin.getGuildManager().isValid(guild) && guild.isMember(guildPlayer);
+    public boolean canUse() {
+        return guild.isValid() && guild.isMember(guildPlayer) && guild.getMember(guildPlayer).hasPermission(Permission.GUILD_UPGRADE);
     }
 }

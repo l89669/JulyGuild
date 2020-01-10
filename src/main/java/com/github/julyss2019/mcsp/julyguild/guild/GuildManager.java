@@ -91,7 +91,6 @@ public class GuildManager {
 
         guildMap.remove(guild.getUuid());
         JulyGuild.getInstance().getCacheGuildManager().updateSortedGuilds();
-        guildPlayerManager.getOnlineGuildPlayers().forEach(guildPlayer -> guildPlayer.updateGUI(GUIType.MAIN));
     }
 
     /**
@@ -112,7 +111,6 @@ public class GuildManager {
 
         guildMap.put(guild.getUuid(), guild);
         JulyGuild.getInstance().getCacheGuildManager().updateSortedGuilds();
-        guildPlayerManager.getOnlineGuildPlayers().forEach(guildPlayer -> guildPlayer.updateGUI(GUIType.MAIN));
     }
 
     /**

@@ -3,16 +3,15 @@ package com.github.julyss2019.mcsp.julyguild.player;
 import com.github.julyss2019.mcsp.julyguild.JulyGuild;
 import com.github.julyss2019.mcsp.julyguild.gui.GUI;
 import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
+import com.github.julyss2019.mcsp.julyguild.gui.PageableGUI;
 import com.github.julyss2019.mcsp.julyguild.guild.Guild;
 import com.github.julyss2019.mcsp.julyguild.request.Receiver;
-import com.github.julyss2019.mcsp.julyguild.request.Request;
 import com.github.julyss2019.mcsp.julyguild.request.Sender;
 import com.github.julyss2019.mcsp.julylibrary.utils.YamlUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
@@ -21,10 +20,11 @@ import java.util.*;
 public class GuildPlayer implements Sender, Receiver {
     private final File file;
     private UUID uuid;
-    private YamlConfiguration yml;
+    private YamlConfiguration yaml;
     private UUID guildUuid;
     private String name;
     private GUI usingGUI;
+    private GuildPlayerMessageBox messageBox;
 
     GuildPlayer(File file) {
         this.file = file;
@@ -41,13 +41,14 @@ public class GuildPlayer implements Sender, Receiver {
      * @return
      */
     public void load() {
-        this.yml = YamlConfiguration.loadConfiguration(file);
-        this.uuid = UUID.fromString(yml.getString("uuid"));
-        this.guildUuid = Optional.ofNullable(yml.getString("guild")).map(UUID::fromString).orElse(null);
+        this.yaml = YamlConfiguration.loadConfiguration(file);
+        this.uuid = UUID.fromString(yaml.getString("uuid"));
+        this.guildUuid = Optional.ofNullable(yaml.getString("guild")).map(UUID::fromString).orElse(null);
         this.name = Optional
                 .ofNullable(Bukkit.getOfflinePlayer(getUuid()))
                 .map(OfflinePlayer::getName)
                 .orElse(uuid.toString());
+        this.messageBox = new GuildPlayerMessageBox(this);
     }
 
     public String getName() {
@@ -117,6 +118,12 @@ public class GuildPlayer implements Sender, Receiver {
                     usingGUI.reopen();
                 }
             }
+
+            GUI lastGUI;
+
+            while ((lastGUI = usingGUI.getLastGUI()) != null && lastGUI instanceof PageableGUI) {
+                ((PageableGUI) lastGUI).update();
+            }
         }
     }
 
@@ -168,7 +175,15 @@ public class GuildPlayer implements Sender, Receiver {
     }
 
     public void save() {
-        YamlUtil.saveYaml(yml, file);
+        YamlUtil.saveYaml(yaml, file);
+    }
+
+    public YamlConfiguration getYaml() {
+        return yaml;
+    }
+
+    public GuildPlayerMessageBox getMessageBox() {
+        return messageBox;
     }
 
     @Override

@@ -1,8 +1,19 @@
 title: '&e&l入会审批({page}/{total_page})'
-positions: '11-17,20-26,29-35'
+row: 6
 items:
-  player:
-    index: -1
+  request:
+    indexes: '11-17,20-26,29-35'
+    use_papi: true
+    material: PAPER
+    lores:
+      - ' &f玩家名: {sender_name}'
+      - ' &f申请时间: {send_time}'
+      - ' &f拥有金币: %vault_eco_balance%'
+      - ' &a左键接受 &c右键拒绝'
+  back:
+    index: 50
+    material: ARROW
+    display_name: '&f返回'
   page_items:
     precious_page:
       have:
