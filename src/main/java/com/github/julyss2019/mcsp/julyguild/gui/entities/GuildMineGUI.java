@@ -33,8 +33,8 @@ public class GuildMineGUI extends BaseMemberGUI {
     private final Position position;
     private final Guild guild = guildMember.getGuild();
 
-    public GuildMineGUI(GuildMember guildMember, @Nullable GUI lastGUI) {
-        super(GUIType.MINE, guildMember, lastGUI);
+    public GuildMineGUI(@Nullable GUI lastGUI, GuildMember guildMember) {
+        super(lastGUI, GUIType.MINE, guildMember);
 
         this.bukkitPlayer = guildPlayer.getBukkitPlayer();
         this.position = guildMember.getPosition();
@@ -42,28 +42,30 @@ public class GuildMineGUI extends BaseMemberGUI {
 
     @Override
     public Inventory createInventory() {
-        PriorityConfigGUI.Builder guiBuilder = new PriorityConfigGUI.Builder()
+        PriorityConfigGUI.Builder guiBuilder = (PriorityConfigGUI.Builder) new PriorityConfigGUI.Builder()
                 .fromConfig(thisGUISection, bukkitPlayer)
                 .item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.back"), bukkitPlayer), new ItemListener() {
                     @Override
-                    public void onClicked(InventoryClickEvent event) {
+                    public void onClick(InventoryClickEvent event) {
                         back();
                     }
-                })
+                });
+
+        guiBuilder
                 .item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.guild_info"), bukkitPlayer, new Placeholder.Builder().addGuildPlaceholders(guild).build()))
                 .item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.self_info"), bukkitPlayer))
-                .item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.guild_members." + ((guildMember.hasPermission(Permission.MEMBER_KICK) || guildMember.hasPermission(Permission.MEMBER_SET_ADMIN) || guildMember.hasPermission(Permission.MEMBER_SET_PERMISSION)) ? "manager" : "member")), bukkitPlayer), new ItemListener() {
+                .item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.guild_members." + ((guildMember.hasPermission(Permission.MEMBER_KICK) || guildMember.hasPermission(Permission.MANAGE_PERMISSION)) ? "manager" : "member")), bukkitPlayer), new ItemListener() {
                     @Override
                     public void onClick(InventoryClickEvent event) {
                         close();
-                        new GuildMemberListGUI(guild, guildMember, GuildMineGUI.this).open();
+                        new GuildMemberListGUI(GuildMineGUI.this, guild, guildMember).open();
                     }
                 })
                 .item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.guild_donate"), bukkitPlayer), new ItemListener() {
                     @Override
                     public void onClick(InventoryClickEvent event) {
                         close();
-                        new GuildDonateGUI(guildMember, GuildMineGUI.this).open();
+                        new GuildDonateGUI(GuildMineGUI.this, guildMember).open();
                     }
                 });
 
@@ -80,7 +82,7 @@ public class GuildMineGUI extends BaseMemberGUI {
                     @Override
                     public void onClick(InventoryClickEvent event) {
                         close();
-                        new GuildUpgradeGUI(guildMember, GuildMineGUI.this).open();
+                        new GuildUpgradeGUI(GuildMineGUI.this, guildMember).open();
                     }
                 });
         }
@@ -92,7 +94,7 @@ public class GuildMineGUI extends BaseMemberGUI {
                         @Override
                         public void onClick(InventoryClickEvent event) {
                             close();
-                            new GuildJoinCheckGUI(guildMember, GuildMineGUI.this).open();
+                            new GuildJoinCheckGUI(GuildMineGUI.this, guildMember).open();
                         }
                     });
         }
@@ -165,6 +167,6 @@ public class GuildMineGUI extends BaseMemberGUI {
 
     @Override
     public boolean canUse() {
-        return guild.isValid() && guild.isMember(guildPlayer);
+        return guildMember.isValid();
     }
 }

@@ -20,7 +20,7 @@ public class Util {
      * @param str 以 "," 作为分隔符的字符串 以 "-" 作为范围界定符的字符串 单个字符串
      * @return
      */
-    public static List<Integer> getRangeIntegerList(@NotNull String str) {
+    public static List<Integer> getIndexes(String str) {
         List<Integer> result = new ArrayList<>();
 
         try {
@@ -33,10 +33,10 @@ public class Util {
                     int max = Integer.parseInt(split2[1]);
 
                     for (int i = Integer.parseInt(split2[0]); i <= max; i++) {
-                        result.add(i);
+                        result.add(i - 1);
                     }
                 } else {
-                    result.add(Integer.parseInt(splitStr));
+                    result.add(Integer.parseInt(splitStr) - 1);
                 }
             }
         } catch (Exception e) {

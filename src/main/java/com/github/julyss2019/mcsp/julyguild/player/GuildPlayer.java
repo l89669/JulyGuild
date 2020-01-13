@@ -2,8 +2,6 @@ package com.github.julyss2019.mcsp.julyguild.player;
 
 import com.github.julyss2019.mcsp.julyguild.JulyGuild;
 import com.github.julyss2019.mcsp.julyguild.gui.GUI;
-import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
-import com.github.julyss2019.mcsp.julyguild.gui.PageableGUI;
 import com.github.julyss2019.mcsp.julyguild.guild.Guild;
 import com.github.julyss2019.mcsp.julyguild.request.Receiver;
 import com.github.julyss2019.mcsp.julyguild.request.Sender;
@@ -55,76 +53,20 @@ public class GuildPlayer implements Sender, Receiver {
         return name;
     }
 
+    public void closeInventory() {
+        getBukkitPlayer().closeInventory();
+    }
+
     public boolean isUsingGUI() {
         return usingGUI != null;
     }
 
-    public boolean isUsingGUI(GUIType... types) {
-        return Optional.ofNullable(usingGUI).filter(gui -> {
-            for (GUIType type : types) {
-                if (usingGUI.getType() == type) {
-                    return true;
-                }
-            }
-
-            return false;
-        }).isPresent();
-    }
-
-    /**
-     * 得到当前使用的GUI
-     * @return
-     */
     public GUI getUsingGUI() {
         return usingGUI;
     }
 
-    /**
-     * 关闭GUI
-     */
-    public void closeGUI() {
-        if (!isOnline()) {
-            throw new RuntimeException("离线状态下不能更新GUI");
-        }
-
-        setUsingGUI(null);
-        getBukkitPlayer().closeInventory();
-    }
-
-    /**
-     * 设置当前使用的GUI
-     * @param usingGUI
-     */
     public void setUsingGUI(GUI usingGUI) {
-        if (!isOnline() && usingGUI != null) {
-            throw new IllegalStateException("离线状态下不能设置GUI");
-        }
-
         this.usingGUI = usingGUI;
-    }
-
-    /**
-     * 更新GUI
-     * @param guiTypes
-     */
-    public void updateGUI(GUIType... guiTypes) {
-        if (!isOnline()) {
-            throw new IllegalStateException("离线状态下不能更新GUI");
-        }
-
-        if (usingGUI != null) {
-            for (GUIType guiType : guiTypes) {
-                if (usingGUI.getType() == guiType) {
-                    usingGUI.reopen();
-                }
-            }
-
-            GUI lastGUI;
-
-            while ((lastGUI = usingGUI.getLastGUI()) != null && lastGUI instanceof PageableGUI) {
-                ((PageableGUI) lastGUI).update();
-            }
-        }
     }
 
     public Guild getGuild() {
@@ -184,19 +126,6 @@ public class GuildPlayer implements Sender, Receiver {
 
     public GuildPlayerMessageBox getMessageBox() {
         return messageBox;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof GuildPlayer)) return false;
-        GuildPlayer that = (GuildPlayer) o;
-        return getUuid().equals(that.getUuid());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getUuid());
     }
 
     @Override

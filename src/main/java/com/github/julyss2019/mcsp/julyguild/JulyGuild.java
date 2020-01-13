@@ -62,6 +62,7 @@ public class JulyGuild extends JavaPlugin {
             "GuildMineGUI.yml",
             "GuildUpgradeGUI.yml",
             "GuildJoinCheckGUI.yml",
+            "GuildMemberManageGUI.yml",
             "MainGUI.yml"}; // GUI资源文件
     private final String[] CONFIG_RESOURCES = new String[] {"config.yml", "lang.yml"}; // 根资源文件
 
@@ -557,6 +558,7 @@ public class JulyGuild extends JavaPlugin {
     public void error(String msg) {
         Util.sendColoredConsoleMessage("&c" + msg);
     }
+
     public void error(String msg, RuntimeException exception) {
         error(msg);
         throw exception;

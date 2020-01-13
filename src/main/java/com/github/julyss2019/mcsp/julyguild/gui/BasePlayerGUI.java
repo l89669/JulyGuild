@@ -4,17 +4,17 @@ import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * 一个 Backable GUI的实现类
+ * 一个GUI的实现类
  */
-public abstract class BasePlayerGUI extends GUI {
-    protected final GUIType type;
+public abstract class BasePlayerGUI implements GUI {
     protected final GUI lastGUI;
+    protected final GUIType type;
     protected final GuildPlayer guildPlayer;
 
-    protected BasePlayerGUI(GUIType guiType, GuildPlayer guildPlayer, @Nullable GUI lastGUI) {
+    protected BasePlayerGUI(@Nullable GUI lastGUI, GUIType guiType, GuildPlayer guildPlayer) {
+        this.lastGUI = lastGUI;
         this.type = guiType;
         this.guildPlayer = guildPlayer;
-        this.lastGUI = lastGUI;
     }
 
     @Override

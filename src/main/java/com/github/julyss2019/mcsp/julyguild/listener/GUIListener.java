@@ -2,6 +2,7 @@ package com.github.julyss2019.mcsp.julyguild.listener;
 
 import com.github.julyss2019.mcsp.julyguild.JulyGuild;
 import com.github.julyss2019.mcsp.julyguild.gui.GUI;
+import com.github.julyss2019.mcsp.julyguild.gui.entities.MainGUI;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayerManager;
 import com.github.julyss2019.mcsp.julylibrary.event.ItemClickEvent;
@@ -19,7 +20,9 @@ public class GUIListener implements Listener {
     public void onInventoryCloseEvent(InventoryCloseEvent event) {
         GuildPlayer guildPlayer = guildPlayerManager.getGuildPlayer((Player) event.getPlayer());
 
-        guildPlayer.setUsingGUI(null);
+        if (guildPlayer.isUsingGUI()) {
+            guildPlayer.setUsingGUI(null);
+        }
     }
 
     /**
@@ -39,12 +42,11 @@ public class GUIListener implements Listener {
             // 判断能否使用当前GUI
             if (!usingGUI.canUse()) {
                 event.setCancelled(true);
-                guildPlayer.closeGUI();
 
-                GUI lastGUI = usingGUI.getLastGUI();
-
-                if (lastGUI != null) {
-                    lastGUI.reopen();
+                if (usingGUI.canBack()) {
+                    usingGUI.back();
+                } else {
+                    new MainGUI(guildPlayer).open();
                 }
             }
         }

@@ -3,19 +3,22 @@ package com.github.julyss2019.mcsp.julyguild.gui;
 import com.github.julyss2019.mcsp.julyguild.JulyGuild;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.jetbrains.annotations.Nullable;
 
 /**
  *
  */
-public abstract class PageableGUI extends GUI {
+public abstract class PageableGUI extends BasePlayerGUI {
     private int currentPage = -1;
     private int totalPage;
-    protected final GUIType guiType;
-    protected final GuildPlayer guildPlayer;
 
-    public PageableGUI(GUIType guiType, GuildPlayer guildPlayer) {
-        this.guiType = guiType;
-        this.guildPlayer = guildPlayer;
+    public PageableGUI(@Nullable GUI lastGUI, GUIType guiType, GuildPlayer guildPlayer) {
+        super(lastGUI, guiType, guildPlayer);
+    }
+
+    @Override
+    public GUI getLastGUI() {
+        return lastGUI;
     }
 
     // 下一页
@@ -83,19 +86,26 @@ public abstract class PageableGUI extends GUI {
     }
 
     /**
-     * 数据和界面分离，通常是个List，在这 update() 并设置 totalPage，而 createInventory() 仅仅只是根据当前数据返回GUI
+     * 数据和界面分离，通常是个List，在这 update() 并设置 totalPage，而 createInventory() 仅仅只是根据当前数据（页数）返回GUI
      */
     public abstract void update();
 
-    // 覆盖 GUI 的 reopen() 实现，尽量使页数靠近最近页数
+
     @Override
     public void reopen() {
-        reopen(0);
+        reopen(0L);
     }
 
-    private void updateAndOpen() {
+    /**
+     * 关闭，更新，延时，打开
+     * @param later
+     */
+    @Override
+    public void reopen(long later) {
+        close();
         update();
 
+        // 矫正页数
         if (isValidPage(currentPage)) {
             setCurrentPage(currentPage);
         } else if (isValidPage(currentPage - 1) ){
@@ -106,36 +116,15 @@ public abstract class PageableGUI extends GUI {
             setCurrentPage(getTotalPage() == 0 ? -1 : 0);
         }
 
-        open();
-    }
-
-    /**
-     * 先关闭，再间隔n秒打开
-     * @param later tick
-     */
-    public void reopen(long later) {
-        close();
-
         if (later == 0) {
-            updateAndOpen();
-            return;
+            open();
+        } else {
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    open();
+                }
+            }.runTaskLater(JulyGuild.getInstance(), later);
         }
-
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                updateAndOpen();
-            }
-        }.runTaskLater(JulyGuild.getInstance(), later);
-    }
-
-    @Override
-    public GUIType getType() {
-        return guiType;
-    }
-
-    @Override
-    public GuildPlayer getGuildPlayer() {
-        return guildPlayer;
     }
 }

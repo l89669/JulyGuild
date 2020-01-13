@@ -29,80 +29,50 @@ public class PriorityConfigGUI {
 
         @Override
         public PriorityConfigGUI.Builder fromConfig(ConfigurationSection section, GuildMember guildMember) {
-            availableIndexes(Util.getRangeIntegerList(section.getString("available_indexes")));
+            availableIndexes(Util.getIndexes(section.getString("indexes")));
             super.fromConfig(section, guildMember);
             return this;
         }
 
         @Override
         public PriorityConfigGUI.Builder fromConfig(ConfigurationSection section, GuildMember guildMember, Placeholder.@Nullable Builder placeholderBuilder) {
-            availableIndexes(Util.getRangeIntegerList(section.getString("available_indexes")));
+            availableIndexes(Util.getIndexes(section.getString("indexes")));
             super.fromConfig(section, guildMember, placeholderBuilder);
             return this;
         }
 
         @Override
         public PriorityConfigGUI.Builder fromConfig(ConfigurationSection section, Player papiPlayer, Guild guild) {
-            availableIndexes(Util.getRangeIntegerList(section.getString("available_indexes")));
+            availableIndexes(Util.getIndexes(section.getString("indexes")));
             super.fromConfig(section, papiPlayer, guild);
             return this;
         }
 
         @Override
         public PriorityConfigGUI.Builder fromConfig(ConfigurationSection section, Player papiPlayer, Guild guild, Placeholder.@Nullable Builder placeholderBuilder) {
-            availableIndexes(Util.getRangeIntegerList(section.getString("available_indexes")));
+            availableIndexes(Util.getIndexes(section.getString("indexes")));
             super.fromConfig(section, papiPlayer, guild, placeholderBuilder);
             return this;
         }
 
         @Override
         public PriorityConfigGUI.Builder fromConfig(ConfigurationSection section, Player papiPlayer) {
-            availableIndexes(Util.getRangeIntegerList(section.getString("available_indexes")));
+            availableIndexes(Util.getIndexes(section.getString("indexes")));
             super.fromConfig(section, papiPlayer);
             return this;
         }
 
         @Override
         public PriorityConfigGUI.Builder fromConfig(ConfigurationSection section, @Nullable Player papiPlayer, @Nullable Placeholder placeholder) {
-            availableIndexes(Util.getRangeIntegerList(section.getString("available_indexes")));
+            availableIndexes(Util.getIndexes(section.getString("indexes")));
             super.fromConfig(section, papiPlayer, placeholder);
             return this;
         }
 
         @Override
         public PriorityConfigGUI.Builder fromConfig(ConfigurationSection section, @Nullable Player papiPlayer, @Nullable Placeholder placeholder, boolean colored) {
-            availableIndexes(Util.getRangeIntegerList(section.getString("available_indexes")));
+            availableIndexes(Util.getIndexes(section.getString("indexes")));
             super.fromConfig(section, papiPlayer, placeholder, colored);
-            return this;
-        }
-
-        @Override
-        public PriorityConfigGUI.Builder pageItems(ConfigurationSection section, PageableGUI pageableGUI, OfflinePlayer offlinePlayer, Guild guild) {
-            super.pageItems(section, pageableGUI, offlinePlayer, guild);
-            return this;
-        }
-
-        @Override
-        public PriorityConfigGUI.Builder pageItems(ConfigurationSection section, PageableGUI pageableGUI, OfflinePlayer offlinePlayer) {
-            super.pageItems(section, pageableGUI, offlinePlayer);
-            return this;
-        }
-
-        @Override
-        public PriorityConfigGUI.Builder pageItems(ConfigurationSection section, PageableGUI pageableGUI, GuildMember guildMember) {
-            super.pageItems(section, pageableGUI, guildMember);
-            return this;
-        }
-
-        @Override
-        public PriorityConfigGUI.Builder item(@Nullable IndexItem item, ItemListener itemListener) {
-            super.item(item, itemListener);
-            return this;
-        }
-
-        @Override
-        public PriorityConfigGUI.Builder item(@Nullable IndexItem item) {
-            super.item(item);
             return this;
         }
 
@@ -136,7 +106,7 @@ public class PriorityConfigGUI {
             for (int i = 0; i < items.size(); i++) {
                 PriorityItem item = items.get(i);
 
-                item(availableIndexes.get(i) - 1, item.getItemBuilder().build(), priorityMap.get(item));
+                item(availableIndexes.get(i), item.getItemBuilder().build(), priorityMap.get(item));
             }
 
             return super.build();

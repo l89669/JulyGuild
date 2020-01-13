@@ -9,7 +9,6 @@ import com.github.julyss2019.mcsp.julyguild.gui.GUI;
 import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
 import com.github.julyss2019.mcsp.julyguild.guild.Guild;
 import com.github.julyss2019.mcsp.julyguild.guild.GuildMember;
-import com.github.julyss2019.mcsp.julyguild.guild.Permission;
 import com.github.julyss2019.mcsp.julyguild.placeholder.Placeholder;
 import com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderText;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
@@ -18,8 +17,6 @@ import com.github.julyss2019.mcsp.julyguild.util.Util;
 import com.github.julyss2019.mcsp.julylibrary.inventory.InventoryListener;
 import com.github.julyss2019.mcsp.julylibrary.inventory.ItemListener;
 import com.github.julyss2019.mcsp.julylibrary.item.ItemBuilder;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryAction;
@@ -37,14 +34,14 @@ public class GuildJoinCheckGUI extends BaseMemberPageableGUI {
     private final ConfigurationSection thisLangSection = plugin.getLangYaml().getConfigurationSection("GuildJoinCheckGUI");
     private final Player bukkitPlayer = getBukkitPlayer();
     private final Guild guild = guildMember.getGuild();
-    private final List<Integer> itemIndexes = Util.getRangeIntegerList(thisGUISection.getString("items.request.indexes")); // 请求物品位置
+    private final List<Integer> itemIndexes = Util.getIndexes(thisGUISection.getString("items.request.indexes")); // 请求物品位置
     private final int itemIndexCount = itemIndexes.size(); // 请求物品位置数量
 
     private List<Request> requests;
     private int requestCount;
 
-    public GuildJoinCheckGUI(GuildMember guildMember, @Nullable GUI lastGUI) {
-        super(GUIType.PLAYER_JOIN_CHECK, guildMember, lastGUI);
+    public GuildJoinCheckGUI(@Nullable GUI lastGUI, GuildMember guildMember) {
+        super(lastGUI, GUIType.PLAYER_JOIN_CHECK, guildMember);
 
         update();
 
@@ -125,8 +122,8 @@ public class GuildJoinCheckGUI extends BaseMemberPageableGUI {
                         .addInner("send_time", LangHelper.Global.getDateTimeFormat().format(request.getCreationTime()))
                         .build());
 
-                guiBuilder.item(itemIndexes.get(i) - 1, itemBuilder.build());
-                indexMap.put(itemIndexes.get(i) - 1, request);
+                guiBuilder.item(itemIndexes.get(i), itemBuilder.build());
+                indexMap.put(itemIndexes.get(i), request);
             }
         }
 
@@ -135,6 +132,6 @@ public class GuildJoinCheckGUI extends BaseMemberPageableGUI {
 
     @Override
     public boolean canUse() {
-        return guild.isValid() && guildMember.hasPermission(Permission.PLAYER_JOIN_CHECK);
+        return guildMember.isValid();
     }
 }

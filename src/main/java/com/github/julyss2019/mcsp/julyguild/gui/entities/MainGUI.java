@@ -39,13 +39,13 @@ public class MainGUI extends BasePlayerPageableGUI {
     private final String playerName = bukkitPlayer.getName();
     private final ConfigurationSection thisGUISection = plugin.getGUIYaml("MainGUI");
     private final ConfigurationSection thisLangSection = plugin.getLangYaml().getConfigurationSection("MainGUI");
-    private final List<Integer> itemIndexes = Util.getRangeIntegerList(thisGUISection.getString("items.guild.indexes")); // 得到所有可供公会设置的位置
+    private final List<Integer> itemIndexes = Util.getIndexes(thisGUISection.getString("items.guild.indexes")); // 得到所有可供公会设置的位置
     private final int itemIndexCount = itemIndexes.size();
     private List<Guild> guilds;
     private int guildCount;
 
     public MainGUI(GuildPlayer guildPlayer) {
-        super(GUIType.MAIN, guildPlayer, null);
+        super(null, GUIType.MAIN, guildPlayer);
 
         update();
 
@@ -87,9 +87,9 @@ public class MainGUI extends BasePlayerPageableGUI {
                             }
 
                             if (guild.isMember(guildPlayer)) {
-                                new GuildMineGUI(guild.getMember(guildPlayer), MainGUI.this).open();
+                                new GuildMineGUI(MainGUI.this, guild.getMember(guildPlayer)).open();
                             } else {
-                                new GuildInfoGUI(guildPlayer, guild, MainGUI.this).open();
+                                new GuildInfoGUI(MainGUI.this, guildPlayer, guild).open();
                             }
                         }
                     }
@@ -102,7 +102,7 @@ public class MainGUI extends BasePlayerPageableGUI {
                 @Override
                 public void onClick(InventoryClickEvent event) {
                     close();
-                    new GuildMineGUI(guildPlayer.getGuild().getMember(guildPlayer), MainGUI.this).open();
+                    new GuildMineGUI(MainGUI.this, guildPlayer.getGuild().getMember(guildPlayer)).open();
                 }
             });
         } else {
@@ -150,8 +150,7 @@ public class MainGUI extends BasePlayerPageableGUI {
                                     new BukkitRunnable() {
                                         @Override
                                         public void run() {
-                                            close();
-                                            new GuildCreateGUI(guildPlayer, guildName, MainGUI.this).open();
+                                            new GuildCreateGUI(MainGUI.this, guildPlayer, guildName).open();
                                         }
                                     }.runTaskLater(plugin, 1L);
                                 }
@@ -175,14 +174,13 @@ public class MainGUI extends BasePlayerPageableGUI {
                 ItemBuilder itemBuilder = GUIItemManager.getItemBuilder(thisGUISection.getConfigurationSection("items.guild"), bukkitPlayer, guild)
                         .material(Material.STONE);
 
-                indexMap.put(itemIndexes.get(i) - 1, guild);
-                guiBuilder.item(itemIndexes.get(i) - 1, itemBuilder.build());
+                indexMap.put(itemIndexes.get(i), guild);
+                guiBuilder.item(itemIndexes.get(i), itemBuilder.build());
             }
         }
 
         return guiBuilder.build();
     }
-
 
     @Override
     public boolean canUse() {

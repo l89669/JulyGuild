@@ -34,8 +34,8 @@ public class GuildUpgradeGUI extends BaseMemberGUI {
     private final ConfigurationSection thisGUISection = plugin.getGUIYaml("GuildUpgradeGUI");
     private final ConfigurationSection thisLangSection = plugin.getLangYaml().getConfigurationSection("GuildUpgradeGUI");
 
-    public GuildUpgradeGUI(GuildMember guildMember, @Nullable GUI lastGUI) {
-        super(GUIType.PROMOTE, guildMember, lastGUI);
+    public GuildUpgradeGUI(@Nullable GUI lastGUI, GuildMember guildMember) {
+        super(lastGUI, GUIType.PROMOTE, guildMember);
 
         this.bukkitPlayer = getBukkitPlayer();
         this.guild = guildMember.getGuild();
@@ -161,6 +161,6 @@ public class GuildUpgradeGUI extends BaseMemberGUI {
 
     @Override
     public boolean canUse() {
-        return guild.isValid() && guild.isMember(guildPlayer) && guild.getMember(guildPlayer).hasPermission(Permission.GUILD_UPGRADE);
+        return guildMember.isValid() && guildMember.hasPermission(Permission.GUILD_UPGRADE);
     }
 }

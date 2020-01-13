@@ -123,21 +123,21 @@ public class IndexConfigGUI {
 
             // 其他物品
             if (section.contains("other_items")) {
-                setOtherItems(section.getConfigurationSection("other_items"), papiPlayer);
+                setOtherItems(section.getConfigurationSection("other_items"), papiPlayer, placeholder);
             }
 
             return this;
         }
 
-        private Builder setOtherItems(ConfigurationSection section, Player player) {
+        private Builder setOtherItems(ConfigurationSection section, Player player, @Nullable Placeholder placeholder) {
             for (String key : section.getKeys(false)) {
                 ConfigurationSection keySection = section.getConfigurationSection(key);
 
                 if (keySection.contains("index")) {
-                    item(new IndexItem(section.getInt("index") - 1, GUIItemManager.getItemBuilder(keySection, player)));
+                    item(new IndexItem(keySection.getInt("index") - 1, GUIItemManager.getItemBuilder(keySection, player, placeholder)));
                 } else if (keySection.contains("indexes")) {
-                    for (int index : Util.getRangeIntegerList(keySection.getString("indexes"))) {
-                        item(new IndexItem(index - 1, GUIItemManager.getItemBuilder(keySection, player)));
+                    for (int index : Util.getIndexes(keySection.getString("indexes"))) {
+                        item(new IndexItem(index, GUIItemManager.getItemBuilder(keySection, player, placeholder)));
                     }
                 }
             }

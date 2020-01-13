@@ -8,7 +8,7 @@ public enum Permission {
     SET_MEMBER_PVP, // 成员PVP
     PLAYER_JOIN_CHECK, // 玩家审批
     GUILD_UPGRADE,  // 公会升级
-    MANAGE_PERMISSION // 给予权限
+    MANAGE_PERMISSION // 管理权限
     ;
 
     String getChineseName(Permission permission) {

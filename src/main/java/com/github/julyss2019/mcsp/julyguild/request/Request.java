@@ -27,13 +27,7 @@ public interface Request {
     Type getType();
     void save(ConfigurationSection section);
     void load(ConfigurationSection section);
-    default void delete() {
-        JulyGuild.getInstance().getRequestManager().deleteRequest(this);
-    }
-    default void send() {
-        JulyGuild.getInstance().getRequestManager().sendRequest(this);
-    }
-    default boolean isValid() {
-        return JulyGuild.getInstance().getRequestManager().isValid(this);
-    }
+    void delete();
+    void send();
+    boolean isValid();
 }

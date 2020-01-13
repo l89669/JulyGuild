@@ -3,11 +3,9 @@ package com.github.julyss2019.mcsp.julyguild.guild;
 import com.github.julyss2019.mcsp.julyguild.JulyGuild;
 import com.github.julyss2019.mcsp.julyguild.config.ConfigGuildIcon;
 import com.github.julyss2019.mcsp.julyguild.config.setting.MainSettings;
-import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
 import com.github.julyss2019.mcsp.julyguild.placeholder.Placeholder;
 import com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderText;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
-import com.github.julyss2019.mcsp.julyguild.player.GuildPlayerManager;
 import com.github.julyss2019.mcsp.julyguild.request.Receiver;
 import com.github.julyss2019.mcsp.julyguild.request.Request;
 import com.github.julyss2019.mcsp.julyguild.request.Sender;
@@ -23,9 +21,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class Guild implements Sender, Receiver {
-    private final JulyGuild plugin = JulyGuild.getInstance();
-    private final GuildPlayerManager guildPlayerManager = plugin.getGuildPlayerManager();
-
     private final File file;
     private YamlConfiguration yml;
     private boolean deleted;
@@ -192,10 +187,6 @@ public class Guild implements Sender, Receiver {
         yml.set("members." + oldOwner.getUuid() + ".position", Position.MEMBER.name());
         save();
         loadMembers();
-
-        if (newOwner.isOnline()) {
-            newOwner.getGuildPlayer().updateGUI(GUIType.values());
-        }
     }
 
     /**
@@ -205,6 +196,10 @@ public class Guild implements Sender, Receiver {
      */
     public boolean isMember(GuildPlayer guildPlayer) {
         return memberMap.containsKey(guildPlayer.getUuid());
+    }
+
+    public boolean isMember(UUID uuid) {
+        return memberMap.containsKey(uuid);
     }
 
     public boolean isOwnedIcon(ConfigGuildIcon configGuildIcon) {
@@ -243,13 +238,17 @@ public class Guild implements Sender, Receiver {
         return new ArrayList<>(iconMap.values());
     }
 
+    public boolean isOwner(GuildMember guildMember) {
+        return owner.equals(guildMember);
+    }
+
     /**
      * 是否为宗主
      * @param guildPlayer
      * @return
      */
     public boolean isOwner(GuildPlayer guildPlayer) {
-        return getOwner().getGuildPlayer().equals(guildPlayer);
+        return owner.getGuildPlayer().equals(guildPlayer);
     }
 
     /**
@@ -275,14 +274,6 @@ public class Guild implements Sender, Receiver {
      */
     public String getName() {
         return name;
-    }
-
-    /**
-     * 是否有效
-     * @return
-     */
-    public boolean isValid() {
-        return !deleted && JulyGuild.getInstance().getGuildManager().isValid(this);
     }
 
     /**
@@ -345,6 +336,10 @@ public class Guild implements Sender, Receiver {
         guildMember.getGuildPlayer().pointGuild(null);
     }
 
+    public boolean isValid() {
+        return !isDeleted();
+    }
+
     /**
      * 删除公会
      * @return
@@ -396,19 +391,6 @@ public class Guild implements Sender, Receiver {
         yml.set("announcements", announcements);
         YamlUtil.saveYaml(yml, file);
         this.announcements = announcements;
-    }
-
-    /**
-     * 更新所有成员的GUI
-     */
-    public void updateMembersGUI(GUIType... guiTypes) {
-        for (GuildMember guildMember : getMembers()) {
-            GuildPlayer guildPlayer = guildMember.getGuildPlayer();
-
-            if (guildPlayer.isOnline()) {
-                guildPlayer.updateGUI(guiTypes);
-            }
-        }
     }
 
     /**

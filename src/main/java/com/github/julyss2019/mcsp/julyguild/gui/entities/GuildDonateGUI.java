@@ -39,8 +39,8 @@ public class GuildDonateGUI extends BaseMemberGUI {
         private final int donateAmount;
         private final Guild guild = guildMember.getGuild();
 
-        public ConfirmGUI(GuildMember guildMember, GuildBank.BalanceType donateType, int donateAmount, @Nullable GUI lastGUI) {
-            super(GUIType.DONATE_CONFIRM, guildMember, lastGUI);
+        public ConfirmGUI(@Nullable GUI lastGUI, GuildMember guildMember, GuildBank.BalanceType donateType, int donateAmount) {
+            super(lastGUI, GUIType.DONATE_CONFIRM, guildMember);
 
             this.donateType = donateType;
             this.donateAmount = donateAmount;
@@ -57,7 +57,7 @@ public class GuildDonateGUI extends BaseMemberGUI {
 
             guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.confirm"), guildMember, new Placeholder.Builder()
                     .addInner("donate_amount", donateAmount)
-                    .addInner("fee", fee)
+                    .addInner("fee", Util.SIMPLE_DECIMAL_FORMAT.format(fee))
                     .addInner("exactly_donate_amount", Util.SIMPLE_DECIMAL_FORMAT.format(exactlyDonateAmount))), new ItemListener() {
                 @Override
                 public void onClick(InventoryClickEvent event) {
@@ -96,7 +96,7 @@ public class GuildDonateGUI extends BaseMemberGUI {
             guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.back"), bukkitPlayer), new ItemListener() {
                 @Override
                 public void onClick(InventoryClickEvent event) {
-                back();
+
                 }
             });
 
@@ -105,7 +105,7 @@ public class GuildDonateGUI extends BaseMemberGUI {
 
         @Override
         public boolean canUse() {
-            return plugin.getGuildManager().isValid(guildMember.getGuild()) && guildMember.getGuild().isMember(guildPlayer);
+            return guild.isValid() && guildMember.isValid();
         }
     }
 
@@ -116,8 +116,8 @@ public class GuildDonateGUI extends BaseMemberGUI {
     private final ConfigurationSection thisLangSection = plugin.getLangYaml().getConfigurationSection("GuildDonateGUI");
     private final ConfigurationSection thisGUISection = plugin.getGUIYaml("GuildDonateGUI");
 
-    public GuildDonateGUI(GuildMember guildMember, @Nullable GUI lastGUI) {
-        super(GUIType.DONATE, guildMember, lastGUI);
+    public GuildDonateGUI(@Nullable GUI lastGUI, GuildMember guildMember) {
+        super(lastGUI, GUIType.DONATE, guildMember);
     }
 
     @Override
@@ -159,7 +159,7 @@ public class GuildDonateGUI extends BaseMemberGUI {
                             return;
                         }
 
-                        new GuildDonateGUI.ConfirmGUI(guildMember, MONEY, amount, GuildDonateGUI.this).open();
+                        new GuildDonateGUI.ConfirmGUI(GuildDonateGUI.this, guildMember, MONEY, amount).open();
                     }
 
                     @Override
@@ -208,7 +208,7 @@ public class GuildDonateGUI extends BaseMemberGUI {
                             }
 
                             // 打开确认GUI
-                            new GuildDonateGUI.ConfirmGUI(guildMember, POINTS, amount, GuildDonateGUI.this).open();
+                            new GuildDonateGUI.ConfirmGUI(GuildDonateGUI.this, guildMember, POINTS, amount).open();
                         }
 
                         @Override
@@ -223,8 +223,7 @@ public class GuildDonateGUI extends BaseMemberGUI {
         guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.back"), bukkitPlayer), new ItemListener() {
             @Override
             public void onClick(InventoryClickEvent event) {
-                close();
-                new GuildMineGUI(guildMember, null).open();
+                back();
             }
         });
 
@@ -233,6 +232,6 @@ public class GuildDonateGUI extends BaseMemberGUI {
 
     @Override
     public boolean canUse() {
-        return plugin.getGuildManager().isValid(guildMember.getGuild()) && guildMember.getGuild().isMember(guildPlayer);
+        return guildMember.isValid();
     }
 }

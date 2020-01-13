@@ -11,7 +11,6 @@ Global:
   command_prefix: '&a[公会] &f'
 Position:
   member: '&a会员'
-  admin: '&c管理员'
   owner: '&d会长'
 GuildCreateGUI:
   already_in: '&c你已经在一个公会里了.'

@@ -32,18 +32,18 @@
                 <plugins>
                     <plugin>
                         <groupId>com.github.julyss2019.maven.plugins</groupId>
-                        <artifactId>os-copyer-plugin</artifactId>
+                        <artifactId>copyer-plugin</artifactId>
                         <version>1.0.0</version>
                         <executions>
                             <execution>
                                 <goals>
-                                    <goal>copy</goal>
+                                    <goal>os-copy</goal>
                                 </goals>
                             </execution>
                         </executions>
                         <configuration>
-                            <copyers>
-                                <coper>
+                            <osCopyers>
+                                <osCoper>
                                     <source>${build.directory}/${build.finalName}.jar</source>
                                     <operatingSystems>
                                         <operatingSystem>
@@ -56,24 +56,29 @@
                                             <dest>G:\july_ss\mc_servers\1.12.2_paper\plugins\${artifactId}.jar</dest>
                                             <overwrite>true</overwrite>
                                         </operatingSystem>
+                                    </operatingSystems>
+                                </osCoper>
+                                <osCoper>
+                                    <source>${build.directory}/${build.finalName}.jar</source>
+                                    <operatingSystems>
                                         <operatingSystem>
                                             <name>Windows 10</name>
                                             <dest>G:\july_ss\mc_servers\1.7.2_paper\plugins\${artifactId}.jar</dest>
                                             <overwrite>true</overwrite>
                                         </operatingSystem>
-                                        <operatingSystem>
-                                            <name>Windows 10</name>
-                                            <dest>G:\july_ss\mc_servers\1.7.10_paper\plugins\${artifactId}.jar</dest>
-                                            <overwrite>true</overwrite>
-                                        </operatingSystem>
+                                    </operatingSystems>
+                                </osCoper>
+                                <osCoper>
+                                    <source>${build.directory}/${build.finalName}.jar</source>
+                                    <operatingSystems>
                                         <operatingSystem>
                                             <name>Windows 10</name>
                                             <dest>G:\july_ss\mc_servers\1.8.8_paper\plugins\${artifactId}.jar</dest>
                                             <overwrite>true</overwrite>
                                         </operatingSystem>
                                     </operatingSystems>
-                                </coper>
-                            </copyers>
+                                </osCoper>
+                            </osCopyers>
                         </configuration>
                     </plugin>
                 </plugins>
@@ -107,18 +112,29 @@
                     </plugin>
                     <plugin>
                         <groupId>com.github.julyss2019.maven.plugins</groupId>
-                        <artifactId>os-copyer-plugin</artifactId>
+                        <artifactId>copyer-plugin</artifactId>
                         <version>1.0.0</version>
                         <executions>
                             <execution>
                                 <goals>
-                                    <goal>copy</goal>
+                                    <goal>common-copy</goal>
+                                    <goal>os-copy</goal>
                                 </goals>
                             </execution>
                         </executions>
                         <configuration>
-                            <copyers>
-                                <coper>
+                            <commonCopyers>
+                                <commonCoper>
+                                    <source>${build.directory}/proguard_map.txt</source>
+                                    <dest>${basedir}/proguard/proguard_map-${version}.txt</dest>
+                                </commonCoper>
+                                <commonCoper>
+                                    <source>${build.directory}/proguard_seed.txt</source>
+                                    <dest>${basedir}/proguard/proguard_seed-${version}.txt</dest>
+                                </commonCoper>
+                            </commonCopyers>
+                            <osCopyers>
+                                <osCoper>
                                     <source>${build.directory}/${build.finalName}.jar</source>
                                     <operatingSystems>
                                         <operatingSystem>
@@ -132,8 +148,8 @@
                                             <overwrite>true</overwrite>
                                         </operatingSystem>
                                     </operatingSystems>
-                                </coper>
-                                <coper>
+                                </osCoper>
+                                <osCoper>
                                     <source>${build.directory}/${build.finalName}.jar</source>
                                     <operatingSystems>
                                         <operatingSystem>
@@ -142,8 +158,8 @@
                                             <overwrite>true</overwrite>
                                         </operatingSystem>
                                     </operatingSystems>
-                                </coper>
-                                <coper>
+                                </osCoper>
+                                <osCoper>
                                     <source>${build.directory}/${build.finalName}.jar</source>
                                     <operatingSystems>
                                         <operatingSystem>
@@ -152,8 +168,8 @@
                                             <overwrite>true</overwrite>
                                         </operatingSystem>
                                     </operatingSystems>
-                                </coper>
-                            </copyers>
+                                </osCoper>
+                            </osCopyers>
                         </configuration>
                     </plugin>
                 </plugins>
@@ -261,11 +277,6 @@
             <artifactId>placeholderapi</artifactId>
             <version>2.9.2</version>
             <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.google.code.gson</groupId>
-            <artifactId>gson</artifactId>
-            <version>2.8.4</version>
         </dependency>
         <dependency>
             <groupId>com.scireum</groupId>

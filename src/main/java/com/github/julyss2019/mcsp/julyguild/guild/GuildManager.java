@@ -41,16 +41,11 @@ public class GuildManager {
         yml.set("name", guildName);
         yml.set("creation_time", System.currentTimeMillis());
         yml.set("members." + ownerPlayer.getUuid() + ".position", Position.OWNER.name());
+        yml.set("members." + ownerPlayer.getUuid() + ".join_time", System.currentTimeMillis());
 
         YamlUtil.saveYaml(yml, file);
 
         loadGuild(file); // 载入公会
-
-        // 更新所有玩家的GUI
-        for (GuildPlayer guildPlayer : guildPlayerManager.getOnlineGuildPlayers()) {
-            guildPlayer.updateGUI(GUIType.MAIN);
-        }
-
         // 触发 Bukkit 事件
         Bukkit.getPluginManager().callEvent(new GuildCreateEvent(getGuild(uuid), ownerPlayer));
         plugin.writeGuildLog(new GuildCreateLog(uuid, guildName, ownerPlayer.getName()));

@@ -5,6 +5,7 @@ import com.github.julyss2019.mcsp.julyguild.LangHelper;
 import com.github.julyss2019.mcsp.julyguild.guild.CacheGuildManager;
 import com.github.julyss2019.mcsp.julyguild.guild.Guild;
 import com.github.julyss2019.mcsp.julyguild.guild.GuildBank;
+import com.github.julyss2019.mcsp.julyguild.guild.GuildMember;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayerManager;
 import com.github.julyss2019.mcsp.julyguild.util.Util;
@@ -51,19 +52,20 @@ public class PlaceholderAPIExpansion extends PlaceholderExpansion {
             return langYml.getString("papi.non_str");
         }
 
+        GuildMember guildMember = guild.getMember(guildPlayer);
         GuildBank guildBank = guild.getGuildBank();
 
         switch (params.toLowerCase()) {
             case "name":
                 return guild.getName();
             case "member_per":
-                return guild.getMember(guildPlayer).getPosition().getChineseName();
+                return LangHelper.Global.getPositionName(guildMember.getPosition());
             case "member_donate_money":
-                return Util.SIMPLE_DECIMAL_FORMAT.format(guild.getMember(guildPlayer).getDonated(GuildBank.BalanceType.MONEY));
+                return LangHelper.Global.getDateTimeFormat().format(guildMember.getDonated(GuildBank.BalanceType.MONEY));
             case "member_donate_points":
-                return Util.SIMPLE_DECIMAL_FORMAT.format(guild.getMember(guildPlayer).getDonated(GuildBank.BalanceType.POINTS));
+                return LangHelper.Global.getDateTimeFormat().format(guildMember.getDonated(GuildBank.BalanceType.POINTS));
             case "member_join_time":
-                return LangHelper.Global.getDateTimeFormat().format(guild.getMember(guildPlayer).getJoinTime());
+                return LangHelper.Global.getDateTimeFormat().format(guildMember.getJoinTime());
             case "ranking":
                 return String.valueOf(cacheGuildManager.getRanking(guild));
             case "owner":

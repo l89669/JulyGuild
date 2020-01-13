@@ -18,7 +18,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 
 public class GUIItemManager {
     /**
@@ -265,16 +267,33 @@ public class GUIItemManager {
 
         if (section.contains("flags")) {
             for (String flagName : section.getStringList("flags")) {
-                itemBuilder.addItemFlag(ItemFlag.valueOf(flagName));
+                if (flagName.equals("*")) {
+                    itemBuilder.addItemFlags(ItemFlag.values());
+                    break;
+                }
+
+                try {
+                    itemBuilder.addItemFlag(ItemFlag.valueOf(flagName));
+                } catch (IllegalArgumentException e) {
+                    throw new RuntimeException("flags 不合法: " + section, e);
+                }
             }
         }
 
         if (section.contains("enchantments")) {
-            for (String enchantment : section.getConfigurationSection("enchantments").getKeys(false)) {
-                itemBuilder.enchant(Enchantment.getByName(enchantment)
-                        , section.getConfigurationSection("enchantments").getInt(enchantment));
+            if (section.isConfigurationSection("enchantments")) {
+                ConfigurationSection enchantmentSection = section.getConfigurationSection("enchantments");
+
+                for (String enchantmentName : Optional.ofNullable(enchantmentSection.getKeys(false)).orElse(new HashSet<>())) {
+                    itemBuilder.enchant(Enchantment.getByName(enchantmentName)
+                            , section.getConfigurationSection("enchantments").getInt(enchantmentName));
+                }
+            } else {
+                throw new RuntimeException("enchantments 不合法: " + section);
             }
         }
+
+
 
         return itemBuilder;
     }

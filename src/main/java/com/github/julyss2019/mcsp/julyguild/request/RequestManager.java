@@ -45,6 +45,10 @@ public class RequestManager {
      * @param request
      */
     public void sendRequest(Request request) {
+        if (getRequest(request.getUuid()) != null) {
+            throw new RuntimeException("该请求已经发送过了");
+        }
+
         File file = new File(plugin.getDataFolder(), "data" + File.separator + "requests" + File.separator + request.getUuid() + ".yml");
         YamlConfiguration yml = YamlUtil.loadYaml(file, StandardCharsets.UTF_8);
 
@@ -144,7 +148,7 @@ public class RequestManager {
      * @return
      */
     public List<Request> getSentRequests(Sender sender) {
-        return sentMap.getOrDefault(sender.getUuid(), new ArrayList<>());
+        return new ArrayList<>(sentMap.getOrDefault(sender.getUuid(), new ArrayList<>()));
     }
 
     /**
@@ -153,7 +157,7 @@ public class RequestManager {
      * @return
      */
     public List<Request> getReceivedRequests(Receiver receiver) {
-        return receiveMap.getOrDefault(receiver.getUuid(), new ArrayList<>());
+        return new ArrayList<>(receiveMap.getOrDefault(receiver.getUuid(), new ArrayList<>()));
     }
 
     /**

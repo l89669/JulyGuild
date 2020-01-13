@@ -1,7 +1,5 @@
 package com.github.julyss2019.mcsp.julyguild.guild;
 
-import com.github.julyss2019.mcsp.julyguild.JulyGuild;
-
 /**
  * 职位
  */
@@ -12,10 +10,6 @@ public enum Position {
 
     Position(int level) {
         this.level = level;
-    }
-
-    public String getChineseName() {
-        return JulyGuild.getInstance().getLangYaml().getString("Position." + name().toLowerCase());
     }
 
     public int getLevel() {

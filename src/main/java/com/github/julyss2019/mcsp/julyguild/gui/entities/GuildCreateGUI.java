@@ -19,7 +19,6 @@ import com.github.julyss2019.mcsp.julylibrary.inventory.ItemListener;
 import com.github.julyss2019.mcsp.julylibrary.message.JulyMessage;
 import com.github.julyss2019.mcsp.julylibrary.message.Title;
 import com.github.julyss2019.mcsp.julylibrary.utils.ItemUtil;
-import com.github.julyss2019.mcsp.julylibrary.utils.NMSUtil;
 import com.github.julyss2019.mcsp.julylibrary.utils.PlayerUtil;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -48,8 +47,8 @@ public class GuildCreateGUI extends BasePlayerGUI {
     private final GuildManager guildManager = plugin.getGuildManager();
 
 
-    public GuildCreateGUI(GuildPlayer guildPlayer, String guildName, @Nullable GUI lastGUI) {
-        super(GUIType.CREATE, guildPlayer, lastGUI);
+    public GuildCreateGUI(@Nullable GUI lastGUI, GuildPlayer guildPlayer, String guildName) {
+        super(lastGUI, GUIType.CREATE, guildPlayer);
 
         this.bukkitPlayer = getBukkitPlayer();
         this.playerName = bukkitPlayer.getName();
@@ -74,7 +73,7 @@ public class GuildCreateGUI extends BasePlayerGUI {
         guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.back"), bukkitPlayer), new ItemListener() {
             @Override
             public void onClick(InventoryClickEvent event) {
-                back();
+
             }
         });
 

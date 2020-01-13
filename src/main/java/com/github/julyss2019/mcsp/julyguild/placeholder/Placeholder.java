@@ -62,10 +62,10 @@ public class Placeholder {
 
         public Builder addGuildMemberPlaceholders(GuildMember guildMember) {
             addInner("member_name", guildMember.getName());
+            addInner("member_position", LangHelper.Global.getPositionName(guildMember.getPosition()));
             addInner("member_join_time", LangHelper.Global.getDateTimeFormat().format(guildMember.getJoinTime()));
-            addInner("member_donate_money", String.valueOf(guildMember.getDonated(GuildBank.BalanceType.MONEY)));
-            addInner("member_donate_points", String.valueOf(guildMember.getDonated(GuildBank.BalanceType.POINTS)));
-            addInner("member_donate_points", String.valueOf(guildMember.getPosition().getChineseName()));
+            addInner("member_donate_money", Util.SIMPLE_DECIMAL_FORMAT.format(guildMember.getDonated(GuildBank.BalanceType.MONEY)));
+            addInner("member_donate_points", Util.SIMPLE_DECIMAL_FORMAT.format(guildMember.getDonated(GuildBank.BalanceType.POINTS)));
             return this;
         }
 

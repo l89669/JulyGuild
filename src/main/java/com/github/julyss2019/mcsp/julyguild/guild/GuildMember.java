@@ -7,7 +7,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import java.math.BigDecimal;
 import java.util.*;
 
-public class GuildMember extends GuildHuman {
+public class GuildMember implements GuildHuman {
     private Guild guild;
     private UUID uuid;
     private ConfigurationSection section;
@@ -112,7 +112,7 @@ public class GuildMember extends GuildHuman {
     }
 
     public BigDecimal getDonated(GuildBank.BalanceType balanceType) {
-        return donatedMap.get(balanceType);
+        return donatedMap.getOrDefault(balanceType, new BigDecimal(0));
     }
 
     public void setDonated(GuildBank.BalanceType balanceType, BigDecimal value) {
@@ -139,6 +139,12 @@ public class GuildMember extends GuildHuman {
 
     public Position getPosition() {
         return Position.MEMBER;
+    }
+
+    public boolean isValid() {
+        Guild guild = getGuild();
+
+        return guild != null && guild.isValid() && guild.isMember(uuid);
     }
 
     public void save() {

@@ -34,8 +34,8 @@ public class GuildInfoGUI extends BasePlayerGUI {
     private final ConfigurationSection thisGUISection = plugin.getGUIYaml("GuildInfoGUI");
     private final ConfigurationSection thisLangSection = plugin.getLangYaml().getConfigurationSection("GuildInfoGUI");
 
-    public GuildInfoGUI(GuildPlayer guildPlayer, Guild guild, @Nullable GUI lastGUI) {
-        super(GUIType.INFO, guildPlayer, lastGUI);
+    public GuildInfoGUI(@Nullable GUI lastGUI, GuildPlayer guildPlayer, Guild guild) {
+        super(lastGUI, GUIType.INFO, guildPlayer);
 
         this.bukkitPlayer = guildPlayer.getBukkitPlayer();
         this.guild = guild;
@@ -69,12 +69,12 @@ public class GuildInfoGUI extends BasePlayerGUI {
                     @Override
                     public void onClick(InventoryClickEvent event) {
                         close();
-                        new GuildMemberListGUI(guild, guildPlayer, GuildInfoGUI.this).open();
+                        new GuildMemberListGUI(GuildInfoGUI.this, guild, guildPlayer).open();
                     }
                 }).item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.back"), bukkitPlayer, guild), new ItemListener() {
                     @Override
                     public void onClick(InventoryClickEvent event) {
-                        back();
+
                     }
                 });
 

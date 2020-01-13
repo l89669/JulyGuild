@@ -10,6 +10,7 @@ public abstract class BaseRequest implements Request {
     private UUID uuid;
     private Sender sender;
     private Receiver receiver;
+    private boolean valid = true;
 
     public BaseRequest() {
     }
@@ -78,5 +79,21 @@ public abstract class BaseRequest implements Request {
             default:
                 throw new RuntimeException("不支持的接收者类型");
         }
+    }
+
+    @Override
+    public void delete() {
+        JulyGuild.getInstance().getRequestManager().deleteRequest(this);
+        this.valid = false;
+    }
+
+    @Override
+    public void send() {
+        JulyGuild.getInstance().getRequestManager().sendRequest(this);
+    }
+
+    @Override
+    public boolean isValid() {
+        return valid;
     }
 }

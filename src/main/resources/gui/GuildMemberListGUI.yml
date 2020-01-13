@@ -1,14 +1,16 @@
 version: 1.0.0
 # manager 管理者的定义：
-# 拥有：MEMBER_KICK, MEMBER_SET_ADMIN 中一个或多个权限的成员
+# 拥有：MANAGE_PERMISSION, MEMBER_KICK 中一个或多个权限的成员
+
+# 管理员看到的GUI
 manager:
-  positions: '11-17,20-26,29-35'
   use_papi: true
   row: 6
   inner_guild_placeholder: true # 启用内部公会占位符解析
   title: '&e&l成员管理'
   items:
     member:
+      indexes: '11-17,20-26,29-35'
       use_gp: true
       material: SKULL_ITEM
       data: 3
@@ -16,7 +18,11 @@ manager:
       display_name: '{member_name}'
       lores:
         - ' &f公会: {guild_name}'
+        - ' &f职位: {member_position}'
         - ' &f入会时间: {member_join_time}'
+        - ' &f已赞助金币: {member_donate_money}'
+        - ' &f已赞助点券: {member_donate_points}'
+        - ''
         - ' &c点击转到管理界面'
     page_items:
       precious_page:
@@ -59,12 +65,13 @@ manager:
       index: 50
       material: ARROW
       display_name: '&f返回'
+# 玩家或成员看到的GUI
 player:
-  positions: '11-17,20-26,29-35'
   row: 6
   title: '&e&l成员列表'
   items:
     member:
+      indexes: '11-17,20-26,29-35'
       material: SKULL_ITEM
       data: 3
       skull_texture: 'eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjU1ZmU2MDdiMDZiMTQwNTQxM2U2ZTI5OTljMmYzNjA0N2ZmNzhmZTc2Njk3MWMxMWIzOTIzNWY2MGUyMmEzZiJ9fX0='
@@ -72,8 +79,10 @@ player:
       use_papi: true
       lores:
         - ' &f公会: {guild_name}'
-        - ' &f金币: %vault_eco_balance%'
+        - ' &f职位: {member_position}'
         - ' &f入会时间: {member_join_time}'
+        - ' &f已赞助金币: {member_donate_money}'
+        - ' &f已赞助点券: {member_donate_points}'
     page_items:
       precious_page:
         have:

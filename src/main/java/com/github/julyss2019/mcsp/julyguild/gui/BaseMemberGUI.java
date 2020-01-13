@@ -6,8 +6,8 @@ import org.jetbrains.annotations.Nullable;
 public abstract class BaseMemberGUI extends BasePlayerGUI {
     protected final GuildMember guildMember;
 
-    public BaseMemberGUI(GUIType guiType, GuildMember guildMember, @Nullable GUI lastGUI) {
-        super(guiType, guildMember.getGuildPlayer(), lastGUI);
+    public BaseMemberGUI(@Nullable GUI lastGUI, GUIType guiType, GuildMember guildMember) {
+        super(lastGUI, guiType, guildMember.getGuildPlayer());
 
         this.guildMember = guildMember;
     }
