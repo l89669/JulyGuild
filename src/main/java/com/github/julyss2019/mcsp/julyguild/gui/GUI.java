@@ -46,6 +46,8 @@ public interface GUI {
             } else {
                 new MainGUI(getGuildPlayer()).open();
             }
+
+            return;
         }
 
         Inventory inventory = createInventory();

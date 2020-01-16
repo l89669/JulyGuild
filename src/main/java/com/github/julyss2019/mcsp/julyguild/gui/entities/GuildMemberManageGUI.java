@@ -1,17 +1,16 @@
 package com.github.julyss2019.mcsp.julyguild.gui.entities;
 
 import com.github.julyss2019.mcsp.julyguild.JulyGuild;
-import com.github.julyss2019.mcsp.julyguild.config.gui.IndexConfigGUI;
 import com.github.julyss2019.mcsp.julyguild.config.gui.PriorityConfigGUI;
 import com.github.julyss2019.mcsp.julyguild.config.gui.item.GUIItemManager;
 import com.github.julyss2019.mcsp.julyguild.config.gui.item.PriorityItem;
 import com.github.julyss2019.mcsp.julyguild.gui.BaseMemberGUI;
+import com.github.julyss2019.mcsp.julyguild.gui.ConfirmGUI;
 import com.github.julyss2019.mcsp.julyguild.gui.GUI;
 import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
 import com.github.julyss2019.mcsp.julyguild.guild.Guild;
 import com.github.julyss2019.mcsp.julyguild.guild.GuildMember;
 import com.github.julyss2019.mcsp.julyguild.guild.Permission;
-import com.github.julyss2019.mcsp.julyguild.guild.Position;
 import com.github.julyss2019.mcsp.julyguild.placeholder.Placeholder;
 import com.github.julyss2019.mcsp.julylibrary.inventory.ItemListener;
 import org.bukkit.configuration.ConfigurationSection;
@@ -20,7 +19,6 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
 import java.util.Set;
 
 public class GuildMemberManageGUI extends BaseMemberGUI {
@@ -63,8 +61,28 @@ public class GuildMemberManageGUI extends BaseMemberGUI {
                         return;
                     }
 
-                    guild.removeMember(targetGuildMember);
-                    back();
+                    new ConfirmGUI(GuildMemberManageGUI.this
+                            , guildPlayer
+                            , thisGUISection.getConfigurationSection("items.kick.ConfirmGUI")
+                            , new Placeholder.Builder().addInner("target", targetGuildMember.getName()).build()) {
+                        @Override
+                        public boolean canUse() {
+                            return targetGuildMember.isValid() && guildMember.isValid() && guildMember.hasPermission(Permission.MEMBER_KICK);
+                        }
+
+                        @Override
+                        public void onCancel() {
+                            back();
+                        }
+
+                        @Override
+                        public void onConfirm() {
+                            guild.removeMember(targetGuildMember);
+                            guildPlayer.updateGUI(GUIType.MEMBER_LIST);
+                            targetGuildMember.getGuildPlayer().updateGUI(GUIType.MAIN);
+                            back();
+                        }
+                    }.open();
                 }
             });
         }
@@ -92,14 +110,14 @@ public class GuildMemberManageGUI extends BaseMemberGUI {
                     reopen();
                 }
             });
-            guiBuilder.item(getToggleItem(thisGUISection.getConfigurationSection("items.manage_set_member_pvp"), Permission.SET_MEMBER_PVP), new ItemListener() {
+            guiBuilder.item(getToggleItem(thisGUISection.getConfigurationSection("items.manage_set_member_damage"), Permission.SET_MEMBER_DAMAGE), new ItemListener() {
                 @Override
                 public void onClick(InventoryClickEvent event) {
                     if (reopenIfInvalid(Permission.MANAGE_PERMISSION)) {
                         return;
                     }
 
-                    targetGuildMember.setPermission(Permission.SET_MEMBER_PVP, !targetGuildMember.hasPermission(Permission.SET_MEMBER_PVP));
+                    targetGuildMember.setPermission(Permission.SET_MEMBER_DAMAGE, !targetGuildMember.hasPermission(Permission.SET_MEMBER_DAMAGE));
                     reopen();
                 }
             });

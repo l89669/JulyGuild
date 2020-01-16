@@ -5,10 +5,7 @@ import com.github.julyss2019.mcsp.julyguild.config.gui.PriorityConfigGUI;
 import com.github.julyss2019.mcsp.julyguild.config.gui.item.GUIItemManager;
 import com.github.julyss2019.mcsp.julyguild.config.gui.item.PriorityItem;
 import com.github.julyss2019.mcsp.julyguild.config.setting.MainSettings;
-import com.github.julyss2019.mcsp.julyguild.gui.BaseMemberGUI;
-import com.github.julyss2019.mcsp.julyguild.gui.BaseMemberPageableGUI;
-import com.github.julyss2019.mcsp.julyguild.gui.GUI;
-import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
+import com.github.julyss2019.mcsp.julyguild.gui.*;
 import com.github.julyss2019.mcsp.julyguild.guild.Guild;
 import com.github.julyss2019.mcsp.julyguild.guild.GuildMember;
 import com.github.julyss2019.mcsp.julyguild.guild.Permission;
@@ -52,20 +49,26 @@ public class GuildMineGUI extends BaseMemberGUI {
                 });
 
         guiBuilder
-                .item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.guild_info"), bukkitPlayer, new Placeholder.Builder().addGuildPlaceholders(guild).build()))
-                .item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.self_info"), bukkitPlayer))
-                .item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.guild_members." + ((guildMember.hasPermission(Permission.MEMBER_KICK) || guildMember.hasPermission(Permission.MANAGE_PERMISSION)) ? "manager" : "member")), bukkitPlayer), new ItemListener() {
+                .item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.guild_info"), guildMember, new Placeholder.Builder().addGuildPlaceholders(guild)))
+                .item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.self_info"), guildMember))
+                .item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.guild_members." + ((guildMember.hasPermission(Permission.MEMBER_KICK) || guildMember.hasPermission(Permission.MANAGE_PERMISSION)) ? "manager" : "member")), guildMember), new ItemListener() {
                     @Override
                     public void onClick(InventoryClickEvent event) {
                         close();
                         new GuildMemberListGUI(GuildMineGUI.this, guild, guildMember).open();
                     }
                 })
-                .item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.guild_donate"), bukkitPlayer), new ItemListener() {
+                .item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.guild_donate"), guildMember), new ItemListener() {
                     @Override
                     public void onClick(InventoryClickEvent event) {
                         close();
                         new GuildDonateGUI(GuildMineGUI.this, guildMember).open();
+                    }
+                })
+                .item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.guild_spawn"), guildMember), new ItemListener() {
+                    @Override
+                    public void onClick(InventoryClickEvent event) {
+
                     }
                 });
 
@@ -75,10 +78,30 @@ public class GuildMineGUI extends BaseMemberGUI {
         guildAnnouncementItem.getItemBuilder().lores(guild.getAnnouncements());
         guiBuilder.item(guildAnnouncementItem);
 
+        if (guildMember.hasPermission(Permission.SET_SPAWN)) {
+            guiBuilder.item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.guild_setspawn"), guildMember), new ItemListener() {
+                @Override
+                public void onClick(InventoryClickEvent event) {
+
+                }
+            });
+        }
+
+        // 成员免伤
+        if (guildMember.hasPermission(Permission.SET_MEMBER_DAMAGE)) {
+            guiBuilder.item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.guild_set_member_damage." + (guild.isMemberDamageEnabled() ? "toggle_off" : "toggle_on")), guildMember), new ItemListener() {
+                @Override
+                public void onClick(InventoryClickEvent event) {
+                    guild.setMemberDamageEnabled(!guild.isMemberDamageEnabled());
+                    Util.sendColoredMessage(bukkitPlayer, thisLangSection.getString("guild_set_member_damage." + (guild.isMemberDamageEnabled() ? "toggle_on" : "toggle_off")));
+                    reopen();
+                }
+            });
+        }
+
         // 公会升级
         if (guildMember.hasPermission(Permission.GUILD_UPGRADE)) {
-            guiBuilder
-                .item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.guild_upgrade"), bukkitPlayer), new ItemListener() {
+            guiBuilder.item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.guild_upgrade"), bukkitPlayer), new ItemListener() {
                     @Override
                     public void onClick(InventoryClickEvent event) {
                         close();
@@ -89,8 +112,7 @@ public class GuildMineGUI extends BaseMemberGUI {
 
         // 入会审批
         if (guildMember.hasPermission(Permission.PLAYER_JOIN_CHECK)) {
-            guiBuilder
-                    .item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.guild_join_check"), bukkitPlayer), new ItemListener() {
+            guiBuilder.item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.guild_join_check"), bukkitPlayer), new ItemListener() {
                         @Override
                         public void onClick(InventoryClickEvent event) {
                             close();

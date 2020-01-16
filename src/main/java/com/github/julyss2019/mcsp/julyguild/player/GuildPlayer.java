@@ -2,6 +2,8 @@ package com.github.julyss2019.mcsp.julyguild.player;
 
 import com.github.julyss2019.mcsp.julyguild.JulyGuild;
 import com.github.julyss2019.mcsp.julyguild.gui.GUI;
+import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
+import com.github.julyss2019.mcsp.julyguild.gui.PageableGUI;
 import com.github.julyss2019.mcsp.julyguild.guild.Guild;
 import com.github.julyss2019.mcsp.julyguild.request.Receiver;
 import com.github.julyss2019.mcsp.julyguild.request.Sender;
@@ -106,6 +108,27 @@ public class GuildPlayer implements Sender, Receiver {
 
     public boolean isInGuild() {
         return getGuild() != null;
+    }
+
+    /**
+     * 深度更新GUI
+     */
+    public void updateGUI(GUIType... guiTypes) {
+        GUIType usingGUIType = usingGUI.getType();
+
+        for (GUIType guiType : guiTypes) {
+            if (usingGUIType == guiType) {
+                usingGUI.reopen();
+            }
+
+            GUI lastGUI = usingGUI;
+
+            while ((lastGUI = lastGUI.getLastGUI()) != null) {
+                if (lastGUI.canUse() && lastGUI instanceof PageableGUI) {
+                    ((PageableGUI) lastGUI).update();
+                }
+            }
+        }
     }
 
     public UUID getUuid() {

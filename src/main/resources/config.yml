@@ -121,3 +121,9 @@ guild:
   member:
     # 成员列表最多能预览多少
     most_show: 10
+  set_spawn:
+    cost:
+      money:
+        amount: 100
+      points:
+        amount: 100

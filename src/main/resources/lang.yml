@@ -44,6 +44,9 @@ GuildMineGUI:
     failed: '&c解散公会失败.'
     timeout: '&c确认请求超时.'
     confirm: '&c如果要解散公会请在 &e{wait}秒内 &c发送: &e{confirm_str}&c, 注意: 这将使你的公会财产和成员全部清空, 请务必谨慎操作, 输入 &e取消 &c以取消操作.'
+  guild_set_member_damage:
+    toggle_on: '&f成员免伤已开启.'
+    toggle_off: '&f成员免伤已关闭.'
 GuildUpgradeGUI:
   money:
     success: '&d升级公会人数成功, &e{old}->{new}&d.'

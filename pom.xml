@@ -112,12 +112,14 @@
                             <commonCopyers>
                                 <commonCoper>
                                     <source>${build.directory}/proguard_map.txt</source>
+                                    <overwrite>true</overwrite>
                                     <dests>
                                         <dest>${basedir}/proguard/proguard_map-${version}.txt</dest>
                                     </dests>
                                 </commonCoper>
                                 <commonCoper>
                                     <source>${build.directory}/proguard_seed.txt</source>
+                                    <overwrite>true</overwrite>
                                     <dests>
                                         <dest>${basedir}/proguard/proguard_seed-${version}.txt</dest>
                                     </dests>
@@ -129,32 +131,18 @@
                                     <operatingSystems>
                                         <operatingSystem>
                                             <name>Mac OS X</name>
-                                            <dest>/Users/july_ss/Desktop/july_ss/mc_servers/1.12.2/plugins/${artifactId}.jar</dest>
+                                            <dests>
+                                                <dest>/Users/july_ss/Desktop/july_ss/mc_servers/1.12.2/plugins/${artifactId}.jar</dest>
+                                            </dests>
                                             <overwrite>true</overwrite>
                                         </operatingSystem>
                                         <operatingSystem>
                                             <name>Windows 10</name>
-                                            <dest>G:\july_ss\mc_servers\1.12.2_paper\plugins\${artifactId}.jar</dest>
-                                            <overwrite>true</overwrite>
-                                        </operatingSystem>
-                                    </operatingSystems>
-                                </osCoper>
-                                <osCoper>
-                                    <source>${build.directory}/${build.finalName}.jar</source>
-                                    <operatingSystems>
-                                        <operatingSystem>
-                                            <name>Windows 10</name>
-                                            <dest>G:\july_ss\mc_servers\1.7.2_paper\plugins\${artifactId}.jar</dest>
-                                            <overwrite>true</overwrite>
-                                        </operatingSystem>
-                                    </operatingSystems>
-                                </osCoper>
-                                <osCoper>
-                                    <source>${build.directory}/${build.finalName}.jar</source>
-                                    <operatingSystems>
-                                        <operatingSystem>
-                                            <name>Windows 10</name>
-                                            <dest>G:\july_ss\mc_servers\1.8.8_paper\plugins\${artifactId}.jar</dest>
+                                            <dests>
+                                                <dest>G:\july_ss\mc_servers\1.12.2_paper\plugins\${artifactId}.jar</dest>
+                                                <dest>G:\july_ss\mc_servers\1.8.8_paper\plugins\${artifactId}.jar</dest>
+                                                <dest>G:\july_ss\mc_servers\1.7.2_paper\plugins\${artifactId}.jar</dest>
+                                            </dests>
                                             <overwrite>true</overwrite>
                                         </operatingSystem>
                                     </operatingSystems>

@@ -216,16 +216,16 @@ public class JulyGuild extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        if (DEV_MODE) {
-            warning("&c警告: 当前处于开发模式.");
-            File[] files = new File(getDataFolder(), "config" + File.separator + "gui").listFiles();
-
-            if (files != null) {
-                for (File file : files) {
-                    file.delete();
-                }
-            }
-        }
+//        if (DEV_MODE) {
+//            warning("&c警告: 当前处于开发模式.");
+//            File[] files = new File(getDataFolder(), "config" + File.separator + "gui").listFiles();
+//
+//            if (files != null) {
+//                for (File file : files) {
+//                    file.delete();
+//                }
+//            }
+//        }
 
         instance = this;
         this.pluginManager = Bukkit.getPluginManager();
@@ -316,7 +316,7 @@ public class JulyGuild extends JavaPlugin {
         info("插件初始化完毕.");
 
         Util.sendColoredConsoleMessage("&b作者: 柒 月, QQ: 884633197, Bug反馈/插件交流群: 786184610.");
-        Util.sendColoredConsoleMessage(MainSettings.getAnnouncementDefault().toString());
+        Util.sendColoredConsoleMessage("编码测试: " + MainSettings.getAnnouncementDefault().toString());
     }
 
     @Override

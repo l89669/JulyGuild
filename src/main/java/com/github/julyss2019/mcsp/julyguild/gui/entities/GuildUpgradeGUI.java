@@ -84,7 +84,7 @@ public class GuildUpgradeGUI extends BaseMemberGUI {
                         new BukkitRunnable() {
                             @Override
                             public void run() {
-                                reopen();
+                                open();
                             }
                         }.runTaskLater(plugin, 20L);
                         return;
@@ -99,7 +99,7 @@ public class GuildUpgradeGUI extends BaseMemberGUI {
                     new BukkitRunnable() {
                         @Override
                         public void run() {
-                            reopen();
+                            open();
                         }
                     }.runTaskLater(plugin, 20L);
                 }

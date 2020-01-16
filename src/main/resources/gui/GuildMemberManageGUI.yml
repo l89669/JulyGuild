@@ -29,20 +29,20 @@ items:
     lores:
       - '&c将成员移出公会'
     ConfirmGUI:
-      row: 6
-      title: '&c确认踢出'
+      row: 3
+      title: '&c&l确认'
       items:
         confirm:
           index: 12
           material: NETHER_STAR
           data: 0
-          display_name: '&f确认踢出'
+          display_name: '&c确认踢出'
           lores:
-            - ' &c警告: 本操作不可逆, 这将使 &e{target_player} &c的公会财产全部清空!'
+            - ' &c警告: 本操作不可逆, 这将使 &e{target} &c的公会财产全部清空!'
         cancel:
           index: 16
           material: ARROW
-          display_name: '&c取消操作'
+          display_name: '&f取消操作'
           data: 0
   manage_member_kick:
     give:
@@ -73,7 +73,7 @@ items:
       enchantments:
         DAMAGE_ALL: 1
       display_name: '&c取消设置主城的权限'
-  manage_set_member_pvp:
+  manage_set_member_damage:
     give:
       priority: -3
       material: GOLD_SWORD

@@ -17,7 +17,7 @@ items:
         formula: '500*%MEMBER_COUNT%'
     message: '&e购买成功! 花费 %COST_AMOUNT%个 %COST_TYPE%, 给 %MEMBER_COUNT% 个玩家发放了钻石.'
     reward_commands:
-      - 'give %MEMBER% diamond 1'
+      - 'give %MEMBER_LIST% diamond 1'
   '2':
     index: 2
     material: STONE
@@ -35,4 +35,4 @@ items:
         formula: '50*%MEMBER_COUNT%'
     message: '&e购买成功!'
     reward_commands:
-      - 'say %MEMBER% hello'
+      - 'say %MEMBER_LIST% hello'

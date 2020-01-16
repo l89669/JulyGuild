@@ -11,6 +11,9 @@ import com.github.julyss2019.mcsp.julyguild.request.Request;
 import com.github.julyss2019.mcsp.julyguild.request.Sender;
 import com.github.julyss2019.mcsp.julyguild.util.Util;
 import com.github.julyss2019.mcsp.julylibrary.utils.YamlUtil;
+import org.bukkit.Location;
+import org.bukkit.World;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import parsii.eval.Parser;
 import parsii.tokenizer.ParseException;
@@ -36,6 +39,8 @@ public class Guild implements Sender, Receiver {
     private List<String> announcements;
     private long createTime;
     private int additionMemberCount;
+    private GuildSpawn guildSpawn;
+    private boolean memberDamageEnabled;
 
 
     Guild(File file) {
@@ -67,9 +72,17 @@ public class Guild implements Sender, Receiver {
         this.announcements = yml.getStringList("announcements");
         this.createTime = yml.getLong("creation_time");
         this.additionMemberCount = yml.getInt("addition_member_count");
+        this.memberDamageEnabled = yml.getBoolean("member_pvp_enabled", true);
 
-        if (announcements.size() == 0) {
-            announcements.addAll(MainSettings.getAnnouncementDefault());
+        if (yml.contains("spawn_location")) {
+            ConfigurationSection spawnLocationSection = yml.getConfigurationSection("spawn_location");
+
+            this.guildSpawn = new GuildSpawn(spawnLocationSection.getString("world")
+                    , spawnLocationSection.getDouble("x")
+                    , spawnLocationSection.getDouble("y")
+                    , spawnLocationSection.getDouble("z")
+                    , (float) spawnLocationSection.getDouble("yaw")
+                    , (float) spawnLocationSection.getDouble("pitch"));
         }
 
         loadMembers();
@@ -77,21 +90,30 @@ public class Guild implements Sender, Receiver {
         loadIcons();
     }
 
-/*    private void verify() {
-        *//*
-        应该使用 UUID 代替实体，否则将会受到类构造时间的影响
-         *//*
-        for (GuildMember guildMember : getMembers()) {
-            UUID memberUuid = guildMember.getUuid();
-            UUID memberGuildUuid = guildPlayerManager.getGuildPlayer(memberUuid).getGuildUuid();
+    public GuildSpawn getGuildSpawn() {
+        return guildSpawn;
+    }
 
-            // 没指向本公会
-            if (!memberGuildUuid.equals(getUuid())) {
-                throw new RuntimeException("公会成员 " + memberUuid + " 指向的公会 " + memberGuildUuid +  " 不是本公会(" + getUuid() + ")");
-            }
-        }
+    public void setGuildSpawn(GuildSpawn guildSpawn) {
+        yml.set("guild_spawn.world", guildSpawn.getWorldName());
+        yml.set("guild_spawn.x", guildSpawn.getX());
+        yml.set("guild_spawn.y", guildSpawn.getY());
+        yml.set("guild_spawn.z", guildSpawn.getZ());
+        yml.set("guild_spawn.yaw", guildSpawn.getYaw());
+        yml.set("guild_spawn.pitch", guildSpawn.getPitch());
+        save();
+        this.guildSpawn = guildSpawn;
+    }
 
-    }*/
+    public boolean isMemberDamageEnabled() {
+        return memberDamageEnabled;
+    }
+
+    public void setMemberDamageEnabled(boolean b) {
+        yml.set("member_pvp_enabled", b);
+        save();
+        this.memberDamageEnabled = b;
+    }
 
     public GuildMessageBox getGuildMessageBox() {
         return guildMessageBox;
@@ -124,22 +146,6 @@ public class Guild implements Sender, Receiver {
 
     private void loadIcons() {
         iconMap.clear();
-
-/*        if (yml.contains("icons")) {
-            for (String uuid : yml.getConfigurationSection("icons").getKeys(false)) {
-                ConfigurationSection iconSection = yml.getConfigurationSection("icons").getConfigurationSection(uuid);
-                ConfigGuildIcon configGuildIcon = IconShopConfig.getIcon(iconSection.getName());
-
-                if (configGuildIcon == null) {
-                    JulyGuild.getInstance().warning("公会图标 " + iconSection.getName() + " 在");
-                    continue;
-                }
-
-                OwnedIcon icon = new OwnedIcon(this, Optional.ofNullable().orElseThrow());
-
-                iconMap.put(icon.getName(), icon);
-            }
-        }*/
     }
 
     /**

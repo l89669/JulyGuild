@@ -63,14 +63,31 @@ items:
     priority: -5
     material: EXP_BOTTLE
     display_name: '&f公会升级'
-  guild_exit:
+  guild_setspawn:
     priority: -6
+    material: GRASS
+    display_name: '&f设置主城'
+  guild_spawn:
+    priority: -7
+    material: ENDER_PEARL
+    display_name: '&f传送到主城'
+  guild_set_member_damage:
+    toggle_on:
+      priority: -8
+      material: WOOD_SWORD
+      display_name: '&f开启成员免伤'
+    toggle_off:
+      priority: -8
+      material: WOOD_SWORD
+      display_name: '&f关闭成员免伤'
+  guild_exit:
+    priority: -999
     material: BARRIER
     display_name: '&c退出公会'
     lores:
       - ' &c请谨慎操作'
   guild_dismiss:
-    priority: -6
+    priority: -999
     material: BARRIER
     display_name: '&c解散公会'
     lores:

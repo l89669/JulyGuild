@@ -3,7 +3,7 @@ package com.github.julyss2019.mcsp.julyguild.gui;
 public enum GUIType {
     CREATE,
     INFO,
-    MEMBER,
+    MEMBER_LIST,
     MINE,
     MAIN,
     PLAYER_JOIN_CHECK,

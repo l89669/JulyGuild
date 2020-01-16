@@ -8,7 +8,6 @@ import com.github.julyss2019.mcsp.julyguild.gui.GUI;
 import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
 import com.github.julyss2019.mcsp.julyguild.guild.Guild;
 import com.github.julyss2019.mcsp.julyguild.guild.GuildMember;
-import com.github.julyss2019.mcsp.julyguild.guild.GuildOwner;
 import com.github.julyss2019.mcsp.julyguild.guild.Permission;
 import com.github.julyss2019.mcsp.julyguild.placeholder.Placeholder;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
@@ -42,7 +41,7 @@ public class GuildMemberListGUI extends BasePlayerPageableGUI {
     }
 
     public GuildMemberListGUI(@Nullable GUI lastGUI, Guild guild, GuildPlayer guildPlayer) {
-        super(lastGUI, GUIType.MEMBER, guildPlayer);
+        super(lastGUI, GUIType.MEMBER_LIST, guildPlayer);
 
         this.guild = guild;
 

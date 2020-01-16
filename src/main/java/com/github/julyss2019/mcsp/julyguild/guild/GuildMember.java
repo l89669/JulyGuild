@@ -142,9 +142,7 @@ public class GuildMember implements GuildHuman {
     }
 
     public boolean isValid() {
-        Guild guild = getGuild();
-
-        return guild != null && guild.isValid() && guild.isMember(uuid);
+        return guild.isValid() && guild.isMember(uuid);
     }
 
     public void save() {

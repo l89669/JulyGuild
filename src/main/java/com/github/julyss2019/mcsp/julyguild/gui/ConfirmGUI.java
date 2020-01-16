@@ -11,12 +11,12 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.Nullable;
 
-public abstract class PlayerConfirmGUI extends BasePlayerGUI {
+public abstract class ConfirmGUI extends BasePlayerGUI {
     private final ConfigurationSection section;
     private final Player bukkitPlayer = getBukkitPlayer();
     private final Placeholder placeholder;
 
-    protected PlayerConfirmGUI(@Nullable GUI lastGUI, GuildPlayer guildPlayer, ConfigurationSection section, Placeholder placeholder) {
+    protected ConfirmGUI(@Nullable GUI lastGUI, GuildPlayer guildPlayer, ConfigurationSection section, Placeholder placeholder) {
         super(lastGUI, GUIType.PLAYER_CONFIRM, guildPlayer);
 
         this.section = section;
@@ -28,23 +28,19 @@ public abstract class PlayerConfirmGUI extends BasePlayerGUI {
 
     public abstract void onConfirm();
 
-    public void onCancel() {
-        if (canBack()) {
-            back();
-        }
-    }
+    public abstract void onCancel();
 
     @Override
     public Inventory createInventory() {
         IndexConfigGUI.Builder guiBuilder = new IndexConfigGUI.Builder()
                 .fromConfig(section, placeholder)
-                .item(GUIItemManager.getIndexItem(section.getConfigurationSection("items.cancel"), bukkitPlayer), new ItemListener() {
+                .item(GUIItemManager.getIndexItem(section.getConfigurationSection("items.cancel"), bukkitPlayer, placeholder), new ItemListener() {
                     @Override
                     public void onClick(InventoryClickEvent event) {
                         onCancel();
                     }
                 })
-                .item(GUIItemManager.getIndexItem(section.getConfigurationSection("items.confirm"), bukkitPlayer), new ItemListener() {
+                .item(GUIItemManager.getIndexItem(section.getConfigurationSection("items.confirm"), bukkitPlayer, placeholder), new ItemListener() {
                     @Override
                     public void onClick(InventoryClickEvent event) {
                         onConfirm();

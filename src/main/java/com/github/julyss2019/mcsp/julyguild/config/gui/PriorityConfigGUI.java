@@ -67,13 +67,15 @@ public class PriorityConfigGUI {
             return this;
         }
 
-        public Builder item(@NotNull PriorityItem priorityItem) {
-            this.priorityMap.put(priorityItem, null);
-            return this;
+        public Builder item(@Nullable PriorityItem priorityItem) {
+            return item(priorityItem, null);
         }
 
-        public Builder item(@NotNull PriorityItem priorityItem, @Nullable ItemListener itemListener) {
-            this.priorityMap.put(priorityItem, itemListener);
+        public Builder item(@Nullable PriorityItem priorityItem, @Nullable ItemListener itemListener) {
+            if (priorityItem != null) {
+                this.priorityMap.put(priorityItem, itemListener);
+            }
+
             return this;
         }
 
