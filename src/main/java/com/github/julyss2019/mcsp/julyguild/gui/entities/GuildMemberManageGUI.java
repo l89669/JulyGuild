@@ -55,7 +55,7 @@ public class GuildMemberManageGUI extends BaseMemberGUI {
         }
 
         // 自己有权限且对方无权限才能使用
-        if (guildMember.hasPermission(Permission.MEMBER_KICK) && !targetGuildMember.hasPermission(Permission.MEMBER_KICK)) {
+        if (guild.isOwner(guildMember) || guildMember.hasPermission(Permission.MEMBER_KICK) && !targetGuildMember.hasPermission(Permission.MEMBER_KICK)) {
             guiBuilder.item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.kick"), targetGuildMember), new ItemListener() {
                 @Override
                 public void onClick(InventoryClickEvent event) {
@@ -64,7 +64,7 @@ public class GuildMemberManageGUI extends BaseMemberGUI {
                     }
 
                     guild.removeMember(targetGuildMember);
-                    reopen();
+                    back();
                 }
             });
         }
@@ -77,7 +77,7 @@ public class GuildMemberManageGUI extends BaseMemberGUI {
                         return;
                     }
 
-                    targetGuildMember.addPermission(Permission.MEMBER_KICK);
+                    targetGuildMember.setPermission(Permission.MEMBER_KICK, !targetGuildMember.hasPermission(Permission.MEMBER_KICK));
                     reopen();
                 }
             });
@@ -88,7 +88,7 @@ public class GuildMemberManageGUI extends BaseMemberGUI {
                         return;
                     }
 
-                    targetGuildMember.addPermission(Permission.SET_SPAWN);
+                    targetGuildMember.setPermission(Permission.SET_SPAWN, !targetGuildMember.hasPermission(Permission.SET_SPAWN));
                     reopen();
                 }
             });
@@ -99,7 +99,7 @@ public class GuildMemberManageGUI extends BaseMemberGUI {
                         return;
                     }
 
-                    targetGuildMember.addPermission(Permission.SET_MEMBER_PVP);
+                    targetGuildMember.setPermission(Permission.SET_MEMBER_PVP, !targetGuildMember.hasPermission(Permission.SET_MEMBER_PVP));
                     reopen();
                 }
             });
@@ -110,7 +110,7 @@ public class GuildMemberManageGUI extends BaseMemberGUI {
                         return;
                     }
 
-                    targetGuildMember.addPermission(Permission.PLAYER_JOIN_CHECK);
+                    targetGuildMember.setPermission(Permission.PLAYER_JOIN_CHECK, !targetGuildMember.hasPermission(Permission.PLAYER_JOIN_CHECK));
                     reopen();
                 }
             });
@@ -121,7 +121,7 @@ public class GuildMemberManageGUI extends BaseMemberGUI {
                         return;
                     }
 
-                    targetGuildMember.addPermission(Permission.GUILD_UPGRADE);
+                    targetGuildMember.setPermission(Permission.GUILD_UPGRADE, !targetGuildMember.hasPermission(Permission.GUILD_UPGRADE));
                     reopen();
                 }
             });

@@ -65,7 +65,7 @@ public class GuildJoinCheckGUI extends BaseMemberPageableGUI {
                 .fromConfig(thisGUISection, guildMember, new Placeholder.Builder()
                         .addInner("page", getCurrentPage() + 1)
                         .addInner("total_page", getTotalPage()))
-                .pageItems(thisGUISection.getConfigurationSection("items.page_items"), this, bukkitPlayer)
+                .pageItems(thisGUISection.getConfigurationSection("items.page_items"), this)
                 .item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.back"), guildMember), new ItemListener() {
                     @Override
                     public void onClick(InventoryClickEvent event) {

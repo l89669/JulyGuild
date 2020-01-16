@@ -3,6 +3,7 @@ package com.github.julyss2019.mcsp.julyguild.config.gui;
 import com.github.julyss2019.mcsp.julyguild.JulyGuild;
 import com.github.julyss2019.mcsp.julyguild.config.gui.item.GUIItemManager;
 import com.github.julyss2019.mcsp.julyguild.config.gui.item.IndexItem;
+import com.github.julyss2019.mcsp.julyguild.config.setting.MainSettings;
 import com.github.julyss2019.mcsp.julyguild.gui.PageableGUI;
 import com.github.julyss2019.mcsp.julyguild.guild.Guild;
 import com.github.julyss2019.mcsp.julyguild.guild.GuildMember;
@@ -16,6 +17,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -23,89 +25,33 @@ import org.jetbrains.annotations.Nullable;
  */
 public class IndexConfigGUI {
     public static class Builder extends InventoryBuilder {
-        /**
-         * 从配置文件载入相关设置
-         * 支持公会变量
-         * @param section 配置节点
-         * @param guildMember 公会成员
-         * @return
-         */
-        public Builder fromConfig(ConfigurationSection section, GuildMember guildMember) {
+        public Builder fromConfig(@NotNull ConfigurationSection section, @NotNull Placeholder placeholder) {
+            return fromConfig(section, null, placeholder);
+        }
+
+        public Builder fromConfig(@NotNull ConfigurationSection section, @NotNull GuildMember guildMember) {
             return fromConfig(section, guildMember, null);
         }
 
-        /**
-         * 从配置文件载入相关设置
-         * 支持公会变量
-         * @param section 配置节点
-         * @param guildMember 公会成员
-         * @param placeholderBuilder 内部占位符构造器
-         * @return
-         */
-        public Builder fromConfig(ConfigurationSection section, GuildMember guildMember, @Nullable Placeholder.Builder placeholderBuilder) {
-            return fromConfig(section, guildMember.getGuildPlayer().getBukkitPlayer(), guildMember.getGuild(), placeholderBuilder);
-        }
-
-        /**
-         * 从配置文件载入相关设置
-         * @param section 配置节点
-         * @param papiPlayer 玩家
-         * @param guild 公会
-         * @return
-         */
-        public Builder fromConfig(ConfigurationSection section, Player papiPlayer, Guild guild) {
-            return fromConfig(section, papiPlayer, guild, null);
-        }
-
-        /**
-         * 从配置文件载入相关设置
-         * @param section 配置节点
-         * @param papiPlayer 玩家
-         * @param guild 公会
-         * @param placeholderBuilder 内部占位符构造器
-         * @return
-         */
-        public Builder fromConfig(ConfigurationSection section, Player papiPlayer, Guild guild, @Nullable Placeholder.Builder placeholderBuilder) {
+        public Builder fromConfig(@NotNull ConfigurationSection section, @NotNull GuildMember guildMember, @Nullable Placeholder.Builder placeholderBuilder) {
             Placeholder finalPlaceholder;
+            Guild guild = guildMember.getGuild();
 
-            if (section.getBoolean("use_gp", false)) {
+            if (section.getBoolean("use_gp", MainSettings.isGuiDefaultUseGp())) {
                 finalPlaceholder = placeholderBuilder == null ? new Placeholder.Builder().addGuildPlaceholders(guild).build() : placeholderBuilder.addGuildPlaceholders(guild).build();
             } else {
                 finalPlaceholder = placeholderBuilder == null ? null : placeholderBuilder.build();
             }
 
-            return fromConfig(section, papiPlayer, finalPlaceholder);
+            return fromConfig(section, guildMember.getGuildPlayer().getOfflineBukkitPlayer(), finalPlaceholder);
         }
 
-        /**
-         * 从配置文件载入相关设置
-         * @param section 配置节点
-         * @param papiPlayer 玩家
-         * @return
-         */
-        public Builder fromConfig(ConfigurationSection section, Player papiPlayer) {
-            return fromConfig(section, papiPlayer, (Placeholder) null);
+        public Builder fromConfig(@NotNull ConfigurationSection section, @NotNull OfflinePlayer papiPlayer) {
+            return fromConfig(section, papiPlayer, null);
         }
 
-        /**
-         * 从配置文件载入相关设置
-         * @param section 配置节点
-         * @param papiPlayer 玩家
-         * @return
-         */
-        public Builder fromConfig(ConfigurationSection section, @Nullable Player papiPlayer, @Nullable Placeholder placeholder) {
-            return fromConfig(section, papiPlayer, placeholder, section.getBoolean("colored", true));
-        }
-
-        /**
-         * 从配置文件载入相关设置
-         * @param section 配置节点
-         * @param papiPlayer 玩家
-         * @param placeholder 内部占位符
-         * @param colored 着色
-         * @return
-         */
-        public Builder fromConfig(ConfigurationSection section, @Nullable Player papiPlayer, @Nullable Placeholder placeholder, boolean colored) {
+        // 实现方法
+        public Builder fromConfig(@NotNull ConfigurationSection section, @Nullable OfflinePlayer papiPlayer, @Nullable Placeholder placeholder) {
             row(section.getInt( "row"));
 
             String finalTitle = section.getString("title");
@@ -119,7 +65,7 @@ public class IndexConfigGUI {
             }
 
             title(finalTitle);
-            colored(colored);
+            colored(section.getBoolean("colored", MainSettings.isGuiDefaultColored()));
 
             // 其他物品
             if (section.contains("other_items")) {
@@ -129,15 +75,15 @@ public class IndexConfigGUI {
             return this;
         }
 
-        private Builder setOtherItems(ConfigurationSection section, Player player, @Nullable Placeholder placeholder) {
+        private Builder setOtherItems(@NotNull ConfigurationSection section, @Nullable OfflinePlayer papiPlayer, @Nullable Placeholder placeholder) {
             for (String key : section.getKeys(false)) {
                 ConfigurationSection keySection = section.getConfigurationSection(key);
 
                 if (keySection.contains("index")) {
-                    item(new IndexItem(keySection.getInt("index") - 1, GUIItemManager.getItemBuilder(keySection, player, placeholder)));
+                    item(new IndexItem(keySection.getInt("index") - 1, GUIItemManager.getItemBuilder(keySection, papiPlayer, placeholder)));
                 } else if (keySection.contains("indexes")) {
                     for (int index : Util.getIndexes(keySection.getString("indexes"))) {
-                        item(new IndexItem(index, GUIItemManager.getItemBuilder(keySection, player, placeholder)));
+                        item(new IndexItem(index, GUIItemManager.getItemBuilder(keySection, papiPlayer, placeholder)));
                     }
                 }
             }
@@ -145,48 +91,14 @@ public class IndexConfigGUI {
             return this;
         }
 
-        public Builder pageItems(ConfigurationSection section, PageableGUI pageableGUI, OfflinePlayer offlinePlayer, Guild guild) {
-            item(GUIItemManager.getIndexItem(section.getConfigurationSection("precious_page").getConfigurationSection(pageableGUI.hasPreciousPage() ? "have" : "not_have"), offlinePlayer, guild), !pageableGUI.hasPreciousPage() ? null : new ItemListener() {
+        public Builder pageItems(@NotNull ConfigurationSection section, @NotNull PageableGUI pageableGUI) {
+            item(GUIItemManager.getIndexItem(section.getConfigurationSection("precious_page").getConfigurationSection(pageableGUI.hasPreciousPage() ? "have" : "not_have")), !pageableGUI.hasPreciousPage() ? null : new ItemListener() {
                 @Override
                 public void onClick(InventoryClickEvent event) {
                     pageableGUI.previousPage();
                 }
             });
-            item(GUIItemManager.getIndexItem(section.getConfigurationSection("next_page").getConfigurationSection(pageableGUI.hasNextPage() ? "have" : "not_have"), offlinePlayer, guild), !pageableGUI.hasNextPage() ? null : new ItemListener() {
-                @Override
-                public void onClick(InventoryClickEvent event) {
-                    pageableGUI.nextPage();
-                }
-            });
-
-            return this;
-        }
-
-        public Builder pageItems(ConfigurationSection section, PageableGUI pageableGUI, OfflinePlayer offlinePlayer) {
-            item(GUIItemManager.getIndexItem(section.getConfigurationSection("precious_page").getConfigurationSection(pageableGUI.hasPreciousPage() ? "have" : "not_have"), offlinePlayer), !pageableGUI.hasPreciousPage() ? null : new ItemListener() {
-                @Override
-                public void onClick(InventoryClickEvent event) {
-                    pageableGUI.previousPage();
-                }
-            });
-            item(GUIItemManager.getIndexItem(section.getConfigurationSection("next_page").getConfigurationSection(pageableGUI.hasNextPage() ? "have" : "not_have"), offlinePlayer), !pageableGUI.hasNextPage() ? null : new ItemListener() {
-                @Override
-                public void onClick(InventoryClickEvent event) {
-                    pageableGUI.nextPage();
-                }
-            });
-
-            return this;
-        }
-
-        public Builder pageItems(ConfigurationSection section, PageableGUI pageableGUI, GuildMember guildMember) {
-            item(GUIItemManager.getIndexItem(section.getConfigurationSection("precious_page").getConfigurationSection(pageableGUI.hasPreciousPage() ? "have" : "not_have"), guildMember), !pageableGUI.hasPreciousPage() ? null : new ItemListener() {
-                @Override
-                public void onClick(InventoryClickEvent event) {
-                    pageableGUI.previousPage();
-                }
-            });
-            item(GUIItemManager.getIndexItem(section.getConfigurationSection("next_page").getConfigurationSection(pageableGUI.hasNextPage() ? "have" : "not_have"), guildMember), !pageableGUI.hasNextPage() ? null : new ItemListener() {
+            item(GUIItemManager.getIndexItem(section.getConfigurationSection("next_page").getConfigurationSection(pageableGUI.hasNextPage() ? "have" : "not_have")), !pageableGUI.hasNextPage() ? null : new ItemListener() {
                 @Override
                 public void onClick(InventoryClickEvent event) {
                     pageableGUI.nextPage();
@@ -202,7 +114,7 @@ public class IndexConfigGUI {
          * @param itemListener 物品监听器
          * @return
          */
-        public Builder item(@Nullable IndexItem item, ItemListener itemListener) {
+        public Builder item(@Nullable IndexItem item, @Nullable ItemListener itemListener) {
             if (item != null) {
                 item(item.getIndex(), item.getItemBuilder().build(), itemListener);
             }

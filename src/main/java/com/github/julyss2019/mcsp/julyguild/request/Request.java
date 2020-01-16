@@ -1,6 +1,5 @@
 package com.github.julyss2019.mcsp.julyguild.request;
 
-import com.github.julyss2019.mcsp.julyguild.JulyGuild;
 import com.github.julyss2019.mcsp.julyguild.request.entities.JoinRequest;
 import org.bukkit.configuration.ConfigurationSection;
 

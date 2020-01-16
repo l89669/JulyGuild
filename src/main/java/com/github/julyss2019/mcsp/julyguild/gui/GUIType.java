@@ -11,4 +11,5 @@ public enum GUIType {
     PROMOTE,
     DONATE,
     DONATE_CONFIRM,
+    PLAYER_CONFIRM
 }

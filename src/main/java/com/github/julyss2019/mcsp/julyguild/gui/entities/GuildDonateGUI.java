@@ -44,7 +44,7 @@ public class GuildDonateGUI extends BaseMemberGUI {
 
             this.donateType = donateType;
             this.donateAmount = donateAmount;
-            this.thisGUISection = plugin.getGUIYaml("GuildDonateGUI").getConfigurationSection("ConfirmGUI").getConfigurationSection(donateType.name().toLowerCase());
+            this.thisGUISection = plugin.getGUIYaml("GuildDonateGUI").getConfigurationSection("PlayerConfirmGUI").getConfigurationSection(donateType.name().toLowerCase());
         }
 
         @Override

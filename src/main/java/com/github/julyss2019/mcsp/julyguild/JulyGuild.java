@@ -88,7 +88,7 @@ public class JulyGuild extends JavaPlugin {
     private GuildShopConfig guildShopConfig;
     private Map<String, YamlConfiguration> guiYamlMap = new HashMap<>();
 
-    private Object placeholderAPIExpansion; // 这里不能使用 PlaceholderAPIExpansion 作为类型，否则会出现 NoClassDefFoundError。
+    private Object placeholderAPIExpansion; // 这里不能使用 PlaceholderAPIExpansion 作为类型，否则可能会出现 NoClassDefFoundError。
 
     private String getFileVersion(File file) {
         return !file.exists() ? null : YamlConfiguration.loadConfiguration(file).getString("version");

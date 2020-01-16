@@ -87,8 +87,8 @@ public class GuildMemberListGUI extends BasePlayerPageableGUI {
         Map<Integer, GuildMember> indexMap = new HashMap<>();
         IndexConfigGUI.Builder guiBuilder = new IndexConfigGUI.Builder()
                 .fromConfig(thisGUISection, bukkitPlayer)
-                .pageItems(thisGUISection.getConfigurationSection("items.page_items"), this, bukkitPlayer, guild)
-                .item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.back"), bukkitPlayer, guild), new ItemListener() {
+                .pageItems(thisGUISection.getConfigurationSection("items.page_items"), this)
+                .item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.back"), bukkitPlayer, new Placeholder.Builder().addGuildPlaceholders(guild).build()), new ItemListener() {
                     @Override
                     public void onClick(InventoryClickEvent event) {
                         back();

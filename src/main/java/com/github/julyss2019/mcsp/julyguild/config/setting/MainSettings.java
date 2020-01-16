@@ -132,8 +132,15 @@ public class MainSettings {
     @Config(path = "gui.default.use_papi")
     private static boolean guiDefaultUsePapi;
 
+    @Config(path = "gui.default.colored")
+    private static boolean guiDefaultColored;
+
     @Config(path = "guild.create.no_duplication_name")
     private static boolean createNoDuplicationName;
+
+    public static boolean isGuiDefaultColored() {
+        return guiDefaultColored;
+    }
 
     public static boolean isCreateNoDuplicationName() {
         return createNoDuplicationName;

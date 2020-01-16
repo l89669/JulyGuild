@@ -16,7 +16,7 @@ other_items:
       - ' &f已赞助金币: {member_donate_money}'
       - ' &f已赞助点券: {member_donate_points}'
       - ''
-      - ' &c点击图标进行操作'
+      - ' &c点击下方图标进行操作'
 items:
   back:
     index: 50
@@ -28,6 +28,22 @@ items:
     display_name: '&c踢出'
     lores:
       - '&c将成员移出公会'
+    ConfirmGUI:
+      row: 6
+      title: '&c确认踢出'
+      items:
+        confirm:
+          index: 12
+          material: NETHER_STAR
+          data: 0
+          display_name: '&f确认踢出'
+          lores:
+            - ' &c警告: 本操作不可逆, 这将使 &e{target_player} &c的公会财产全部清空!'
+        cancel:
+          index: 16
+          material: ARROW
+          display_name: '&c取消操作'
+          data: 0
   manage_member_kick:
     give:
       priority: -1
@@ -74,13 +90,13 @@ items:
       display_name: '&c取消开关成员PVP的权限'
   manage_player_join_check:
     give:
-      priority: -3
+      priority: -4
       display_name: '&c给予入会审批的权限'
       material: TOTEM
       flags:
         - '*'
     take:
-      priority: -3
+      priority: -4
       material: TOTEM
       flags:
         - '*'
@@ -89,11 +105,11 @@ items:
       display_name: '&c取消入会审批的权限'
   manage_guild_upgrade:
     give:
-      priority: -4
+      priority: -5
       material: TIPPED_ARROW
       display_name: '&c给予公会升级的权限'
     take:
-      priority: -4
+      priority: -5
       material: TIPPED_ARROW
       flags:
         - '*'

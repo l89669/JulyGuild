@@ -95,7 +95,7 @@ public class MainGUI extends BasePlayerPageableGUI {
                     }
                 });
 
-        guiBuilder.pageItems(thisGUISection.getConfigurationSection("items.page_items"), this, bukkitPlayer);
+        guiBuilder.pageItems(thisGUISection.getConfigurationSection("items.page_items"), this);
 
         if (guildPlayer.isInGuild()) {
             guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.my_guild"), bukkitPlayer, new Placeholder.Builder().add("%PLAYER%", playerName).build()), new ItemListener() {
@@ -171,7 +171,7 @@ public class MainGUI extends BasePlayerPageableGUI {
             // 公会图标
             for (int i = 0; i < loopCount; i++) {
                 Guild guild = guilds.get(itemCounter++);
-                ItemBuilder itemBuilder = GUIItemManager.getItemBuilder(thisGUISection.getConfigurationSection("items.guild"), bukkitPlayer, guild)
+                ItemBuilder itemBuilder = GUIItemManager.getItemBuilder(thisGUISection.getConfigurationSection("items.guild"), bukkitPlayer, new Placeholder.Builder().addGuildPlaceholders(guild).build())
                         .material(Material.STONE);
 
                 indexMap.put(itemIndexes.get(i), guild);

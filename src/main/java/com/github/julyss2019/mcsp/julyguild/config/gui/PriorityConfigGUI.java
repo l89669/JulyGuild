@@ -1,6 +1,5 @@
 package com.github.julyss2019.mcsp.julyguild.config.gui;
 
-import com.github.julyss2019.mcsp.julyguild.config.gui.item.IndexItem;
 import com.github.julyss2019.mcsp.julyguild.config.gui.item.PriorityItem;
 import com.github.julyss2019.mcsp.julyguild.gui.PageableGUI;
 import com.github.julyss2019.mcsp.julyguild.guild.Guild;
@@ -13,6 +12,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -28,65 +28,51 @@ public class PriorityConfigGUI {
         public Builder() {}
 
         @Override
-        public PriorityConfigGUI.Builder fromConfig(ConfigurationSection section, GuildMember guildMember) {
+        public PriorityConfigGUI.Builder fromConfig(@NotNull ConfigurationSection section, @NotNull GuildMember guildMember) {
             availableIndexes(Util.getIndexes(section.getString("indexes")));
             super.fromConfig(section, guildMember);
             return this;
         }
 
         @Override
-        public PriorityConfigGUI.Builder fromConfig(ConfigurationSection section, GuildMember guildMember, Placeholder.@Nullable Builder placeholderBuilder) {
+        public PriorityConfigGUI.Builder fromConfig(@NotNull ConfigurationSection section, @NotNull GuildMember guildMember, Placeholder.@Nullable Builder placeholderBuilder) {
             availableIndexes(Util.getIndexes(section.getString("indexes")));
             super.fromConfig(section, guildMember, placeholderBuilder);
             return this;
         }
 
         @Override
-        public PriorityConfigGUI.Builder fromConfig(ConfigurationSection section, Player papiPlayer, Guild guild) {
-            availableIndexes(Util.getIndexes(section.getString("indexes")));
-            super.fromConfig(section, papiPlayer, guild);
-            return this;
-        }
-
-        @Override
-        public PriorityConfigGUI.Builder fromConfig(ConfigurationSection section, Player papiPlayer, Guild guild, Placeholder.@Nullable Builder placeholderBuilder) {
-            availableIndexes(Util.getIndexes(section.getString("indexes")));
-            super.fromConfig(section, papiPlayer, guild, placeholderBuilder);
-            return this;
-        }
-
-        @Override
-        public PriorityConfigGUI.Builder fromConfig(ConfigurationSection section, Player papiPlayer) {
+        public PriorityConfigGUI.Builder fromConfig(@NotNull ConfigurationSection section, @NotNull OfflinePlayer papiPlayer) {
             availableIndexes(Util.getIndexes(section.getString("indexes")));
             super.fromConfig(section, papiPlayer);
             return this;
         }
 
         @Override
-        public PriorityConfigGUI.Builder fromConfig(ConfigurationSection section, @Nullable Player papiPlayer, @Nullable Placeholder placeholder) {
+        public PriorityConfigGUI.Builder fromConfig(@NotNull ConfigurationSection section, @Nullable OfflinePlayer papiPlayer, @Nullable Placeholder placeholder) {
             availableIndexes(Util.getIndexes(section.getString("indexes")));
             super.fromConfig(section, papiPlayer, placeholder);
             return this;
         }
 
         @Override
-        public PriorityConfigGUI.Builder fromConfig(ConfigurationSection section, @Nullable Player papiPlayer, @Nullable Placeholder placeholder, boolean colored) {
+        public PriorityConfigGUI.Builder pageItems(@NotNull ConfigurationSection section, @NotNull PageableGUI pageableGUI) {
             availableIndexes(Util.getIndexes(section.getString("indexes")));
-            super.fromConfig(section, papiPlayer, placeholder, colored);
+            super.pageItems(section, pageableGUI);
             return this;
         }
 
-        private Builder availableIndexes(List<Integer> availablePositions) {
+        private Builder availableIndexes(@NotNull List<Integer> availablePositions) {
             this.availableIndexes = availablePositions;
             return this;
         }
 
-        public Builder item(PriorityItem priorityItem) {
+        public Builder item(@NotNull PriorityItem priorityItem) {
             this.priorityMap.put(priorityItem, null);
             return this;
         }
 
-        public Builder item(PriorityItem priorityItem, @Nullable ItemListener itemListener) {
+        public Builder item(@NotNull PriorityItem priorityItem, @Nullable ItemListener itemListener) {
             this.priorityMap.put(priorityItem, itemListener);
             return this;
         }

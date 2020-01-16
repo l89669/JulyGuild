@@ -10,6 +10,8 @@ papi:
 gui:
   # 默认
   default:
+    # 是否默认使用颜色转换
+    colored: true
     # 是否默认使用公会内部变量
     use_gp: true
     # 是否默认使用PAPI
