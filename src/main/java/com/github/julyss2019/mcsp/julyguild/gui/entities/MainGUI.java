@@ -4,6 +4,8 @@ import com.github.julyss2019.mcsp.julyguild.JulyGuild;
 import com.github.julyss2019.mcsp.julyguild.config.gui.IndexConfigGUI;
 import com.github.julyss2019.mcsp.julyguild.config.gui.item.GUIItemManager;
 import com.github.julyss2019.mcsp.julyguild.config.setting.MainSettings;
+import com.github.julyss2019.mcsp.julyguild.gui.BaseConfirmGUI;
+import com.github.julyss2019.mcsp.julyguild.gui.BasePayGUI;
 import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
 import com.github.julyss2019.mcsp.julyguild.gui.BasePlayerPageableGUI;
 import com.github.julyss2019.mcsp.julyguild.guild.Guild;
@@ -46,12 +48,6 @@ public class MainGUI extends BasePlayerPageableGUI {
 
     public MainGUI(GuildPlayer guildPlayer) {
         super(null, GUIType.MAIN, guildPlayer);
-
-        update();
-
-        if (getTotalPage() > 0) {
-            setCurrentPage(0);
-        }
     }
 
     @Override
@@ -147,12 +143,37 @@ public class MainGUI extends BasePlayerPageableGUI {
                                         return;
                                     }
 
-                                    new BukkitRunnable() {
+                                    new BasePayGUI(MainGUI.this, guildPlayer, thisGUISection.getConfigurationSection("items.create_guild.PayGUI"), new Placeholder.Builder().build()) {
                                         @Override
-                                        public void run() {
-                                            new GuildCreateGUI(MainGUI.this, guildPlayer, guildName).open();
+                                        public boolean canUse() {
+                                            return true;
                                         }
-                                    }.runTaskLater(plugin, 1L);
+
+                                        @Override
+                                        public void onMoneyPay() {
+                                            new BaseConfirmGUI(this, guildPlayer, thisGUISection.getConfigurationSection("items.create_guild.PayGUI.items.money.ConfirmGUI"), new Placeholder.Builder().build()) {
+                                                @Override
+                                                public boolean canUse() {
+                                                    return true;
+                                                }
+
+                                                @Override
+                                                public void onConfirm() {
+
+                                                }
+
+                                                @Override
+                                                public void onCancel() {
+                                                    back();
+                                                }
+                                            }.open();
+                                        }
+
+                                        @Override
+                                        public void onPointsPay() {
+
+                                        }
+                                    }.open();
                                 }
 
                                 @Override

@@ -90,41 +90,25 @@ public abstract class PageableGUI extends BasePlayerGUI {
      */
     public abstract void update();
 
-
     @Override
-    public void reopen() {
-        reopen(0L);
-    }
-
-    /**
-     * 关闭，更新，延时，打开
-     * @param later
-     */
-    @Override
-    public void reopen(long later) {
-        close();
+    public void open() {
         update();
 
-        // 矫正页数
-        if (isValidPage(currentPage)) {
-            setCurrentPage(currentPage);
-        } else if (isValidPage(currentPage - 1) ){
-            setCurrentPage(currentPage - 1);
-        } else if (isValidPage(currentPage + 1)) {
-            setCurrentPage(currentPage + 1);
+        if (totalPage != 0) {
+            if (currentPage == -1) {
+                setCurrentPage(0);
+            } else if (isValidPage(currentPage - 1) ){
+                setCurrentPage(currentPage - 1);
+            } else if (isValidPage(currentPage + 1)) {
+                setCurrentPage(currentPage + 1);
+            } else {
+                setCurrentPage(0);
+            }
+
         } else {
-            setCurrentPage(getTotalPage() == 0 ? -1 : 0);
+            setCurrentPage(-1);
         }
 
-        if (later == 0) {
-            open();
-        } else {
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    open();
-                }
-            }.runTaskLater(JulyGuild.getInstance(), later);
-        }
+        super.open();
     }
 }

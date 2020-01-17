@@ -42,12 +42,6 @@ public class GuildJoinCheckGUI extends BaseMemberPageableGUI {
 
     public GuildJoinCheckGUI(@Nullable GUI lastGUI, GuildMember guildMember) {
         super(lastGUI, GUIType.PLAYER_JOIN_CHECK, guildMember);
-
-        update();
-
-        if (getTotalPage() > 0) {
-            setCurrentPage(0);
-        }
     }
 
     @Override

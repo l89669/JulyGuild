@@ -25,7 +25,7 @@ import org.jetbrains.annotations.Nullable;
  */
 public class IndexConfigGUI {
     public static class Builder extends InventoryBuilder {
-        public Builder fromConfig(@NotNull ConfigurationSection section, @NotNull Placeholder placeholder) {
+        public Builder fromConfig(@NotNull ConfigurationSection section, @Nullable Placeholder placeholder) {
             return fromConfig(section, null, placeholder);
         }
 
@@ -46,7 +46,7 @@ public class IndexConfigGUI {
             return fromConfig(section, guildMember.getGuildPlayer().getOfflineBukkitPlayer(), finalPlaceholder);
         }
 
-        public Builder fromConfig(@NotNull ConfigurationSection section, @NotNull OfflinePlayer papiPlayer) {
+        public Builder fromConfig(@NotNull ConfigurationSection section, @Nullable OfflinePlayer papiPlayer) {
             return fromConfig(section, papiPlayer, null);
         }
 

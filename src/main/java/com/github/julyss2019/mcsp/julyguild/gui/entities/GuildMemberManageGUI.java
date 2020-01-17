@@ -4,8 +4,8 @@ import com.github.julyss2019.mcsp.julyguild.JulyGuild;
 import com.github.julyss2019.mcsp.julyguild.config.gui.PriorityConfigGUI;
 import com.github.julyss2019.mcsp.julyguild.config.gui.item.GUIItemManager;
 import com.github.julyss2019.mcsp.julyguild.config.gui.item.PriorityItem;
+import com.github.julyss2019.mcsp.julyguild.gui.BaseConfirmGUI;
 import com.github.julyss2019.mcsp.julyguild.gui.BaseMemberGUI;
-import com.github.julyss2019.mcsp.julyguild.gui.ConfirmGUI;
 import com.github.julyss2019.mcsp.julyguild.gui.GUI;
 import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
 import com.github.julyss2019.mcsp.julyguild.guild.Guild;
@@ -61,9 +61,9 @@ public class GuildMemberManageGUI extends BaseMemberGUI {
                         return;
                     }
 
-                    new ConfirmGUI(GuildMemberManageGUI.this
+                    new BaseConfirmGUI(GuildMemberManageGUI.this
                             , guildPlayer
-                            , thisGUISection.getConfigurationSection("items.kick.ConfirmGUI")
+                            , thisGUISection.getConfigurationSection("items.kick.BaseConfirmGUI")
                             , new Placeholder.Builder().addInner("target", targetGuildMember.getName()).build()) {
                         @Override
                         public boolean canUse() {

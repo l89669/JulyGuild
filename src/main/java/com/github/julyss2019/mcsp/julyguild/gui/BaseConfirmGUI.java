@@ -11,13 +11,13 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.Nullable;
 
-public abstract class ConfirmGUI extends BasePlayerGUI {
+public abstract class BaseConfirmGUI extends BasePlayerGUI {
     private final ConfigurationSection section;
     private final Player bukkitPlayer = getBukkitPlayer();
     private final Placeholder placeholder;
 
-    protected ConfirmGUI(@Nullable GUI lastGUI, GuildPlayer guildPlayer, ConfigurationSection section, Placeholder placeholder) {
-        super(lastGUI, GUIType.PLAYER_CONFIRM, guildPlayer);
+    protected BaseConfirmGUI(@Nullable GUI lastGUI, GuildPlayer guildPlayer, ConfigurationSection section, Placeholder placeholder) {
+        super(lastGUI, GUIType.BASE_CONFIRM, guildPlayer);
 
         this.section = section;
         this.placeholder = placeholder;

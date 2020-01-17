@@ -216,16 +216,16 @@ public class JulyGuild extends JavaPlugin {
 
     @Override
     public void onEnable() {
-//        if (DEV_MODE) {
-//            warning("&c警告: 当前处于开发模式.");
-//            File[] files = new File(getDataFolder(), "config" + File.separator + "gui").listFiles();
-//
-//            if (files != null) {
-//                for (File file : files) {
-//                    file.delete();
-//                }
-//            }
-//        }
+        if (DEV_MODE) {
+            warning("&c警告: 当前处于开发模式.");
+            File[] files = new File(getDataFolder(), "config" + File.separator + "gui").listFiles();
+
+            if (files != null) {
+                for (File file : files) {
+                    file.delete();
+                }
+            }
+        }
 
         instance = this;
         this.pluginManager = Bukkit.getPluginManager();

@@ -64,12 +64,6 @@ public class GuildMemberListGUI extends BasePlayerPageableGUI {
         this.thisGUISection = plugin.getGUIYaml("GuildMemberListGUI").getConfigurationSection(viewerType.name().toLowerCase());
         this.positions = Util.getIndexes(thisGUISection.getString( "items.member.indexes")); // 得到所有可供公会设置的位置
         this.positionCount = positions.size();
-
-        update();
-
-        if (getTotalPage() > 0) {
-            setCurrentPage(0);
-        }
     }
 
     @Override

@@ -11,6 +11,22 @@ items:
       - ' &f拥有: %vault_eco_balance%个'
       - ' &f公会名: {name}'
       - ' &c点击支付'
+    ConfirmGUI:
+      row: 3
+      title: '&c&l确认'
+      items:
+        confirm:
+          index: 12
+          material: NETHER_STAR
+          data: 0
+          display_name: '&c确认踢出'
+          lores:
+            - ' &c警告: 本操作不可逆, 这将使 &e{target} &c的公会财产全部清空!'
+        cancel:
+          index: 16
+          material: ARROW
+          display_name: '&f取消操作'
+          data: 0
   points:
     use_papi: true
     index: 14

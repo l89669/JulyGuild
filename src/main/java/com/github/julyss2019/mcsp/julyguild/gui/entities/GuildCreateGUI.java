@@ -14,6 +14,7 @@ import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
 import com.github.julyss2019.mcsp.julyguild.thirdparty.economy.PlayerPointsEconomy;
 import com.github.julyss2019.mcsp.julyguild.thirdparty.economy.VaultEconomy;
 import com.github.julyss2019.mcsp.julyguild.util.Util;
+import com.github.julyss2019.mcsp.julylibrary.chat.JulyChatInterceptor;
 import com.github.julyss2019.mcsp.julylibrary.inventory.InventoryListener;
 import com.github.julyss2019.mcsp.julylibrary.inventory.ItemListener;
 import com.github.julyss2019.mcsp.julylibrary.message.JulyMessage;
@@ -47,6 +48,12 @@ public class GuildCreateGUI extends BasePlayerGUI {
     private final GuildManager guildManager = plugin.getGuildManager();
 
 
+    /**
+     *
+     * @param lastGUI
+     * @param guildPlayer
+     * @param guildName 公会名
+     */
     public GuildCreateGUI(@Nullable GUI lastGUI, GuildPlayer guildPlayer, String guildName) {
         super(lastGUI, GUIType.CREATE, guildPlayer);
 
@@ -66,6 +73,8 @@ public class GuildCreateGUI extends BasePlayerGUI {
                 if (noAction) {
                     Util.sendColoredMessage(bukkitPlayer, thisLangSection.getString("on_close"));
                 }
+
+                JulyChatInterceptor.unregisterChatInterceptor(bukkitPlayer);
             }
         });
 
@@ -73,7 +82,7 @@ public class GuildCreateGUI extends BasePlayerGUI {
         guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.back"), bukkitPlayer), new ItemListener() {
             @Override
             public void onClick(InventoryClickEvent event) {
-
+                back();
             }
         });
 
@@ -87,10 +96,7 @@ public class GuildCreateGUI extends BasePlayerGUI {
                 noAction = false;
                 close();
 
-                if (guildPlayer.isInGuild()) {
-                    Util.sendColoredMessage(bukkitPlayer, thisLangSection.getString("already_in"));
-                    return;
-                }
+
 
                 if (!vaultEconomy.has(bukkitPlayer, MainSettings.getCreateCostMoneyAmount())) {
                     Util.sendColoredMessage(bukkitPlayer, PlaceholderText.replacePlaceholders(thisLangSection.getString("money.not_enough"), new Placeholder.Builder()
@@ -112,11 +118,6 @@ public class GuildCreateGUI extends BasePlayerGUI {
             public void onClick(InventoryClickEvent event) {
                 noAction = false;
                 close();
-
-                if (guildPlayer.isInGuild()) {
-                    Util.sendColoredMessage(bukkitPlayer, thisLangSection.getString("already_in"));
-                    return;
-                }
 
                 if (!playerPointsEconomy.has(bukkitPlayer, MainSettings.getCreateCostPointsAmount())) {
                     Util.sendColoredMessage(bukkitPlayer, PlaceholderText.replacePlaceholders(thisLangSection.getString("points.not_enough"), new Placeholder.Builder()
@@ -140,11 +141,6 @@ public class GuildCreateGUI extends BasePlayerGUI {
             public void onClick(InventoryClickEvent event) {
                 noAction = false;
                 close();
-
-                if (guildPlayer.isInGuild()) {
-                    Util.sendColoredMessage(bukkitPlayer, thisLangSection.getString("already_in"));
-                    return;
-                }
 
                 int hadItemAmount = PlayerUtil.getItemAmount(bukkitPlayer, itemStack -> ItemUtil.containsLore(itemStack, MainSettings.getCreateCostItemKeyLore()));
 
