@@ -4,7 +4,7 @@ import com.github.julyss2019.mcsp.julyguild.JulyGuild;
 import com.github.julyss2019.mcsp.julyguild.config.setting.MainSettings;
 import com.github.julyss2019.mcsp.julyguild.guild.Guild;
 import com.github.julyss2019.mcsp.julyguild.guild.GuildMember;
-import com.github.julyss2019.mcsp.julyguild.placeholder.Placeholder;
+import com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer;
 import com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderText;
 import com.github.julyss2019.mcsp.julyguild.util.Util;
 import com.github.julyss2019.mcsp.julylibrary.item.ItemBuilder;
@@ -27,61 +27,26 @@ public class GUIItemManager {
         return getPriorityItem(section, (OfflinePlayer) null, null);
     }
 
-    public static PriorityItem getPriorityItem(@NotNull ConfigurationSection section, @NotNull GuildMember guildMember) {
-        return getPriorityItem(section, guildMember, null);
-    }
-
-    public static PriorityItem getPriorityItem(@NotNull ConfigurationSection section, @NotNull GuildMember guildMember, @Nullable Placeholder.Builder placeholderBuilder) {
-        Placeholder finalPlaceholder;
-        Guild guild = guildMember.getGuild();
-
-        if (section.getBoolean("use_gp", MainSettings.isGuiDefaultUseGp())) {
-            finalPlaceholder = placeholderBuilder == null ? new Placeholder.Builder().addGuildPlaceholders(guild).build() : placeholderBuilder.addGuildPlaceholders(guild).build();
-        } else {
-            finalPlaceholder = placeholderBuilder == null ? null : placeholderBuilder.build();
-        }
-
-
-
-        return getPriorityItem(section, guildMember.getGuildPlayer().getOfflineBukkitPlayer(), finalPlaceholder);
-    }
-
     public static PriorityItem getPriorityItem(@NotNull ConfigurationSection section, @Nullable OfflinePlayer papiPlayer) {
         return getPriorityItem(section, papiPlayer, null);
     }
 
     // 实现方法
-    public static PriorityItem getPriorityItem(@NotNull ConfigurationSection section, @Nullable OfflinePlayer papiPlayer, @Nullable Placeholder placeholder) {
+    public static PriorityItem getPriorityItem(@NotNull ConfigurationSection section, @Nullable OfflinePlayer papiPlayer, @Nullable PlaceholderContainer placeholderContainer) {
         if (!section.getBoolean("enabled", true)) {
             return null;
         }
 
-        return new PriorityItem(section.getInt("priority"), getItemBuilder(section, papiPlayer, placeholder));
+        return new PriorityItem(section.getInt("priority"), getItemBuilder(section, papiPlayer, placeholderContainer));
     }
+
 
     public static IndexItem getIndexItem(@NotNull ConfigurationSection section) {
         return getIndexItem(section, (OfflinePlayer) null, null);
     }
 
-    public static IndexItem getIndexItem(@NotNull ConfigurationSection section, @NotNull GuildMember guildMember) {
-        return getIndexItem(section, guildMember, null);
-    }
-
-    public static IndexItem getIndexItem(@NotNull ConfigurationSection section, @NotNull GuildMember guildMember, @Nullable Placeholder.Builder placeholderBuilder) {
-        Placeholder finalPlaceholder;
-        Guild guild = guildMember.getGuild();
-
-        if (section.getBoolean("use_gp", MainSettings.isGuiDefaultUseGp())) {
-            finalPlaceholder = placeholderBuilder == null ? new Placeholder.Builder().addGuildPlaceholders(guild).build() : placeholderBuilder.addGuildPlaceholders(guild).build();
-        } else {
-            finalPlaceholder = placeholderBuilder == null ? null : placeholderBuilder.build();
-        }
-
-        return getIndexItem(section, guildMember.getGuildPlayer().getOfflineBukkitPlayer(), finalPlaceholder);
-    }
-
-    public static IndexItem getIndexItem(@NotNull ConfigurationSection section, @Nullable Placeholder placeholder) {
-        return getIndexItem(section, null, placeholder);
+    public static IndexItem getIndexItem(@NotNull ConfigurationSection section, @Nullable PlaceholderContainer placeholderContainer) {
+        return getIndexItem(section, (OfflinePlayer) null, placeholderContainer);
     }
 
     public static IndexItem getIndexItem(@NotNull ConfigurationSection section, @Nullable OfflinePlayer papiPlayer) {
@@ -89,7 +54,7 @@ public class GUIItemManager {
     }
 
     // 实现方法
-    public static IndexItem getIndexItem(@NotNull ConfigurationSection section, @Nullable OfflinePlayer papiPlayer, @Nullable Placeholder placeholder) {
+    public static IndexItem getIndexItem(@NotNull ConfigurationSection section, @Nullable OfflinePlayer papiPlayer, @Nullable PlaceholderContainer placeholderContainer) {
         if (!section.getBoolean("enabled", true)) {
             return null;
         }
@@ -98,31 +63,16 @@ public class GUIItemManager {
             throw new RuntimeException(section.getCurrentPath() + ".index 不合法");
         }
 
-        return new IndexItem(section.getInt("index") - 1, getItemBuilder(section, papiPlayer, placeholder));
+        return new IndexItem(section.getInt("index") - 1, getItemBuilder(section, papiPlayer, placeholderContainer));
     }
 
-    public static ItemBuilder getItemBuilder(@NotNull ConfigurationSection section, @NotNull GuildMember guildMember) {
-        return getItemBuilder(section, guildMember, null);
-    }
-
-    public static ItemBuilder getItemBuilder(@NotNull ConfigurationSection section, @NotNull GuildMember guildMember, @Nullable Placeholder.Builder placeholderBuilder) {
-        Placeholder finalPlaceholder;
-        Guild guild = guildMember.getGuild();
-
-        if (section.getBoolean("use_gp", MainSettings.isGuiDefaultUseGp())) {
-            finalPlaceholder = placeholderBuilder == null ? new Placeholder.Builder().addGuildPlaceholders(guild).build() : placeholderBuilder.addGuildPlaceholders(guild).build();
-        } else {
-            finalPlaceholder = placeholderBuilder == null ? null : placeholderBuilder.build();
-        }
-
-        return getItemBuilder(section, guildMember.getGuildPlayer().getBukkitPlayer(), finalPlaceholder);
-    }
 
     public static ItemBuilder getItemBuilder(@NotNull ConfigurationSection section, @Nullable OfflinePlayer papiPlayer) {
         return getItemBuilder(section, papiPlayer, null);
     }
 
-    public static ItemBuilder getItemBuilder(@NotNull ConfigurationSection section, @Nullable OfflinePlayer papiPlayer, @Nullable Placeholder placeholder) {
+    // 实现方法
+    public static ItemBuilder getItemBuilder(@NotNull ConfigurationSection section, @Nullable OfflinePlayer papiPlayer, @Nullable PlaceholderContainer placeholderContainer) {
         ItemBuilder itemBuilder = new ItemBuilder();
 
         try {
@@ -133,25 +83,25 @@ public class GUIItemManager {
         }
 
         itemBuilder
-                .data((short) section.getInt("data", 0))
+                .durability((short) section.getInt("durability", 0))
                 .colored(section.getBoolean("colored", MainSettings.isGuiDefaultColored()));
 
         boolean usePapi = section.getBoolean("use_papi", MainSettings.isGuiDefaultUsePapi());
 
         if (section.contains("display_name")) {
-            itemBuilder.displayName(replacePlaceholders(section.getString("display_name"), placeholder, !usePapi ? null : papiPlayer));
+            itemBuilder.displayName(replacePlaceholders(section.getString("display_name"), placeholderContainer, !usePapi ? null : papiPlayer));
         }
 
         if (section.contains("lores")) {
-            itemBuilder.lores(replacePlaceholders(section.getStringList("lores"), placeholder, !usePapi ? null : papiPlayer));
+            itemBuilder.lores(replacePlaceholders(section.getStringList("lores"), placeholderContainer, !usePapi ? null : papiPlayer));
         }
 
         if (section.contains("skull_owner")) {
-            itemBuilder.skullOwner(placeholder == null ? section.getString("skull_owner") : replacePlaceholders(section.getString("skull_owner"), placeholder, !usePapi ? null : papiPlayer));
+            itemBuilder.skullOwner(placeholderContainer == null ? section.getString("skull_owner") : replacePlaceholders(section.getString("skull_owner"), placeholderContainer, !usePapi ? null : papiPlayer));
         }
 
         if (section.contains("skull_texture")) {
-            itemBuilder.skullTexture(placeholder == null ? section.getString("skull_texture") : replacePlaceholders(section.getString("skull_texture"), placeholder, !usePapi ? null : papiPlayer));
+            itemBuilder.skullTexture(placeholderContainer == null ? section.getString("skull_texture") : replacePlaceholders(section.getString("skull_texture"), placeholderContainer, !usePapi ? null : papiPlayer));
         }
 
         if (section.contains("flags")) {
@@ -187,18 +137,19 @@ public class GUIItemManager {
         return itemBuilder;
     }
 
+
     /**
      * 替换占位符
      * @param text 文本
-     * @param placeholder 占位符
+     * @param placeholderContainer 占位符
      * @param papiPlayer 玩家（PAPI用）
      * @return
      */
-    private static String replacePlaceholders(@NotNull String text, @Nullable Placeholder placeholder, @Nullable OfflinePlayer papiPlayer) {
+    private static String replacePlaceholders(@NotNull String text, @Nullable PlaceholderContainer placeholderContainer, @Nullable OfflinePlayer papiPlayer) {
         String result = text;
 
-        if (placeholder != null) {
-            result = PlaceholderText.replacePlaceholders(result, placeholder);
+        if (placeholderContainer != null) {
+            result = PlaceholderText.replacePlaceholders(result, placeholderContainer);
         }
 
         if (papiPlayer != null && JulyGuild.getInstance().isPlaceHolderAPIEnabled()) {
@@ -211,15 +162,15 @@ public class GUIItemManager {
     /**
      * 替换占位符
      * @param list 文本列表
-     * @param placeholder 占位符
+     * @param placeholderContainer 占位符
      * @param papiPlayer 玩家（PAPI用）
      * @return
      */
-    private static List<String> replacePlaceholders(@NotNull List<String> list, @Nullable Placeholder placeholder, @Nullable OfflinePlayer papiPlayer) {
+    private static List<String> replacePlaceholders(@NotNull List<String> list, @Nullable PlaceholderContainer placeholderContainer, @Nullable OfflinePlayer papiPlayer) {
         List<String> result = new ArrayList<>();
 
         for (String s : list) {
-            result.add(replacePlaceholders(s, placeholder, papiPlayer));
+            result.add(replacePlaceholders(s, placeholderContainer, papiPlayer));
         }
 
         return result;

@@ -1,56 +1,138 @@
 version: 1.0.0
-ConfirmGUI:
-  money:
-    title: '&e&l金币赞助确认'
-    row: 3
-    items:
-      back:
-        index: 27
-        display_name: '&f返回'
-        material: ARROW
-      confirm:
-        index: 14
-        material: GOLDEN_APPLE
-        lores:
-          - ' &f赞助: 金币x{donate_amount}'
-          - ' &f手续费: {fee}'
-          - ' &f实际赞助额: {exactly_donate_amount}'
-  points:
-    title: '&e&l点券赞助确认'
-    row: 3
-    items:
-      back:
-        index: 27
-        display_name: '&f返回'
-        material: ARROW
-      confirm:
-        index: 14
-        material: GOLDEN_APPLE
-        lores:
-          - ' &f赞助: 点券x{donate_amount}'
-          - ' &f手续费: {fee}'
-          - ' &f实际赞助额: {exactly_donate_amount}'
-use_papi: true
 row: 3
 title: '&e&l捐赠'
+simple_money_confirm_gui: &simple_money_confirm_gui
+  row: 3
+  title: '&c&l确认支付'
+  items:
+    confirm:
+      index: 14
+      material: NETHER_STAR
+      display_name: '&a确认'
+      lores:
+        - ' &e支付方式: 金币'
+        - ' &e支付金额: {cost}'
+        - ' &e手续费: {fee}'
+        - ' &e实际赞助公会币: {final_donate}'
+    cancel:
+      index: 27
+      material: ARROW
+      display_name: '&c返回'
+simple_points_confirm_gui: &simple_points_confirm_gui
+  row: 3
+  title: '&c&l确认支付'
+  items:
+    confirm:
+      index: 14
+      material: NETHER_STAR
+      display_name: '&a确认'
+      lores:
+        - ' &e支付方式: 金币'
+        - ' &e支付金额: {cost}'
+        - ' &e手续费: {fee}'
+        - ' &e实际赞助公会币: '
+    cancel:
+      index: 27
+      material: ARROW
+      display_name: '&c返回'
 items:
-  money:
-    index: 12
+  'm1':
+    donate:
+      pay_type: MONEY
+      cost: 50
+      reward: 50
+    index: 11
     material: GOLD_INGOT
-    display_name: '&f捐赠金币'
-    use_papi: true
+    display_name: '&f赞助 &e{reward}个 &f公会币'
     lores:
-      - ' &f手续费: {fee}%'
-      - ' &f拥有: %vault_eco_balance%'
-  points:
-    index: 16
+      - ' &f支付方式: 金币'
+      - ' &f价格: {cost}'
+    ConfirmGUI: *simple_money_confirm_gui
+  'm2':
+    donate:
+      pay_type: MONEY
+      cost: 500
+      reward: 500
+    index: 11
+    material: GOLD_INGOT
+    display_name: '&f赞助 &e{reward}个 &f公会币'
+    lores:
+      - ' &f支付方式: 金币'
+      - ' &f价格: {cost}'
+    ConfirmGUI: *simple_money_confirm_gui
+  'm3':
+    donate:
+      pay_type: MONEY
+      cost: 1000
+      reward: 1100
+    index: 11
+    material: GOLD_INGOT
+    display_name: '&f赞助 &e{reward}个 &f公会币'
+    lores:
+      - ' &f支付方式: 金币'
+      - ' &f价格: {cost}'
+    ConfirmGUI: *simple_money_confirm_gui
+  'm4':
+    donate:
+      pay_type: MONEY
+      cost: 8000
+      reward: 10000
+    index: 11
+    material: GOLD_INGOT
+    display_name: '&f赞助 &e{reward}个 &f公会币'
+    lores:
+      - ' &f支付方式: 金币'
+      - ' &f价格: {cost}'
+    ConfirmGUI: *simple_money_confirm_gui
+  'p1':
+    donate:
+      pay_type: POINTS
+      cost: 10
+      reward: 10000
+    index: 29
     material: DIAMOND
-    use_papi: true
+    display_name: '&f赞助 &e{amount}个 &f公会币'
     lores:
-      - ' &f手续费: {fee}%'
-      - ' &f拥有: %playerpoints_points%'
-    display_name: '&f捐赠点券'
+      - ' &f支付方式: 点券'
+      - ' &f价格: {cost}'
+    ConfirmGUI: *simple_points_confirm_gui
+  'p2':
+    donate:
+      pay_type: POINTS
+      cost: 30
+      reward: 30000
+    index: 31
+    material: DIAMOND
+    display_name: '&f赞助 &e{amount}个 &f公会币'
+    lores:
+      - ' &f支付方式: 点券'
+      - ' &f价格: {cost}'
+    ConfirmGUI: *simple_points_confirm_gui
+  'p3':
+    donate:
+      pay_type: POINTS
+      cost: 50
+      reward: 55000
+    index: 33
+    material: DIAMOND
+    display_name: '&f赞助 &e{amount}个 &f公会币'
+    lores:
+      - ' &f支付方式: 点券'
+      - ' &f价格: {cost}'
+    ConfirmGUI: *simple_points_confirm_gui
+  'p4':
+    donate:
+      pay_type: POINTS
+      cost: 100
+      reward: 110000
+    index: 35
+    material: DIAMOND
+    display_name: '&f赞助 &e{amount}个 &f公会币'
+    lores:
+      - ' &f支付方式: 点券'
+      - ' &f价格: {cost}'
+    ConfirmGUI: *simple_points_confirm_gui
   back:
-    index: 27
+    index: 54
     material: ARROW
-    display_name: '&f返回'
+    display_name: '&c返回'

@@ -7,7 +7,7 @@ import com.github.julyss2019.mcsp.julyguild.config.setting.MainSettings;
 import com.github.julyss2019.mcsp.julyguild.gui.PageableGUI;
 import com.github.julyss2019.mcsp.julyguild.guild.Guild;
 import com.github.julyss2019.mcsp.julyguild.guild.GuildMember;
-import com.github.julyss2019.mcsp.julyguild.placeholder.Placeholder;
+import com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer;
 import com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderText;
 import com.github.julyss2019.mcsp.julyguild.util.Util;
 import com.github.julyss2019.mcsp.julylibrary.inventory.InventoryBuilder;
@@ -15,7 +15,6 @@ import com.github.julyss2019.mcsp.julylibrary.inventory.ItemListener;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -25,25 +24,8 @@ import org.jetbrains.annotations.Nullable;
  */
 public class IndexConfigGUI {
     public static class Builder extends InventoryBuilder {
-        public Builder fromConfig(@NotNull ConfigurationSection section, @Nullable Placeholder placeholder) {
-            return fromConfig(section, null, placeholder);
-        }
-
-        public Builder fromConfig(@NotNull ConfigurationSection section, @NotNull GuildMember guildMember) {
-            return fromConfig(section, guildMember, null);
-        }
-
-        public Builder fromConfig(@NotNull ConfigurationSection section, @NotNull GuildMember guildMember, @Nullable Placeholder.Builder placeholderBuilder) {
-            Placeholder finalPlaceholder;
-            Guild guild = guildMember.getGuild();
-
-            if (section.getBoolean("use_gp", MainSettings.isGuiDefaultUseGp())) {
-                finalPlaceholder = placeholderBuilder == null ? new Placeholder.Builder().addGuildPlaceholders(guild).build() : placeholderBuilder.addGuildPlaceholders(guild).build();
-            } else {
-                finalPlaceholder = placeholderBuilder == null ? null : placeholderBuilder.build();
-            }
-
-            return fromConfig(section, guildMember.getGuildPlayer().getOfflineBukkitPlayer(), finalPlaceholder);
+        public Builder fromConfig(@NotNull ConfigurationSection section, @Nullable PlaceholderContainer placeholderContainer) {
+            return fromConfig(section, null, placeholderContainer);
         }
 
         public Builder fromConfig(@NotNull ConfigurationSection section, @Nullable OfflinePlayer papiPlayer) {
@@ -51,13 +33,13 @@ public class IndexConfigGUI {
         }
 
         // 实现方法
-        public Builder fromConfig(@NotNull ConfigurationSection section, @Nullable OfflinePlayer papiPlayer, @Nullable Placeholder placeholder) {
+        public Builder fromConfig(@NotNull ConfigurationSection section, @Nullable OfflinePlayer papiPlayer, @Nullable PlaceholderContainer placeholderContainer) {
             row(section.getInt( "row"));
 
             String finalTitle = section.getString("title");
 
-            if (placeholder != null) {
-                finalTitle = PlaceholderText.replacePlaceholders(section.getString("title"), placeholder);
+            if (placeholderContainer != null) {
+                finalTitle = PlaceholderText.replacePlaceholders(section.getString("title"), placeholderContainer);
             }
 
             if (JulyGuild.getInstance().isPlaceHolderAPIEnabled() && papiPlayer != null) {
@@ -69,21 +51,21 @@ public class IndexConfigGUI {
 
             // 其他物品
             if (section.contains("other_items")) {
-                setOtherItems(section.getConfigurationSection("other_items"), papiPlayer, placeholder);
+                setOtherItems(section.getConfigurationSection("other_items"), papiPlayer, placeholderContainer);
             }
 
             return this;
         }
 
-        private Builder setOtherItems(@NotNull ConfigurationSection section, @Nullable OfflinePlayer papiPlayer, @Nullable Placeholder placeholder) {
+        private Builder setOtherItems(@NotNull ConfigurationSection section, @Nullable OfflinePlayer papiPlayer, @Nullable PlaceholderContainer placeholderContainer) {
             for (String key : section.getKeys(false)) {
                 ConfigurationSection keySection = section.getConfigurationSection(key);
 
                 if (keySection.contains("index")) {
-                    item(new IndexItem(keySection.getInt("index") - 1, GUIItemManager.getItemBuilder(keySection, papiPlayer, placeholder)));
+                    item(new IndexItem(keySection.getInt("index") - 1, GUIItemManager.getItemBuilder(keySection, papiPlayer, placeholderContainer)));
                 } else if (keySection.contains("indexes")) {
                     for (int index : Util.getIndexes(keySection.getString("indexes"))) {
-                        item(new IndexItem(index, GUIItemManager.getItemBuilder(keySection, papiPlayer, placeholder)));
+                        item(new IndexItem(index, GUIItemManager.getItemBuilder(keySection, papiPlayer, placeholderContainer)));
                     }
                 }
             }

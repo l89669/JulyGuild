@@ -3,6 +3,7 @@ package com.github.julyss2019.mcsp.julyguild.placeholder;
 import com.github.julyss2019.mcsp.julyguild.JulyGuild;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +16,7 @@ public class PlaceholderText {
      * 通过 PlaceholderAPI
      * @return
      */
-    public static List<String> replacePlaceholders(List<String> list, Player player) {
+    public static List<String> replacePlaceholders(@NotNull List<String> list, @NotNull Player player) {
         return JulyGuild.getInstance().isPlaceHolderAPIEnabled() ? PlaceholderAPI.setPlaceholders(player, list) : list;
     }
 
@@ -23,41 +24,42 @@ public class PlaceholderText {
      * 通过 PlaceholderAPI
      * @return
      */
-    public static String replacePlaceholders(String s, Player player) {
+    public static String replacePlaceholders(@NotNull String s, @NotNull Player player) {
         return JulyGuild.getInstance().isPlaceHolderAPIEnabled() ? PlaceholderAPI.setPlaceholders(player, s) : s;
     }
 
-    public static List<String> replacePlaceholders(List<String> list, Placeholder placeholder) {
+    public static List<String> replacePlaceholders(List<String> list, PlaceholderContainer placeholderContainer) {
         List<String> result = new ArrayList<>();
 
         for (String s : list) {
-            result.add(PlaceholderText.replacePlaceholders(s, placeholder));
+            result.add(PlaceholderText.replacePlaceholders(s, placeholderContainer));
         }
 
         return result;
     }
 
-    public static List<String> replacePlaceholders(List<String> list, Placeholder placeholder, Player player) {
+    public static List<String> replacePlaceholders(@NotNull List<String> list, @NotNull PlaceholderContainer placeholderContainer, @NotNull Player player) {
         List<String> result = new ArrayList<>();
 
         for (String s : list) {
-            result.add(replacePlaceholders(replacePlaceholders(s, placeholder), player));
+            result.add(replacePlaceholders(replacePlaceholders(s, placeholderContainer), player));
         }
 
         return result;
     }
 
-    public static String replacePlaceholders(String s, Placeholder placeholder, Player player) {
-        return replacePlaceholders(replacePlaceholders(s, placeholder), player);
+    public static String replacePlaceholders(@NotNull String s, @NotNull PlaceholderContainer placeholderContainer, @NotNull Player player) {
+        return replacePlaceholders(replacePlaceholders(s, placeholderContainer), player);
     }
 
 
-    public static String replacePlaceholders(String s, Placeholder placeholder) {
+    public static String replacePlaceholders(@NotNull String s, @NotNull PlaceholderContainer placeholderContainer) {
         String result = s;
 
-        for (Map.Entry<String, String> entry : placeholder.getPlaceholders().entrySet()) {
+        for (Placeholder placeholder : placeholderContainer.getPlaceholders()) {
             // 对正则符号进行转义
-            result = ignoreCaseReplace(result, entry.getKey()
+            result = ignoreCaseReplace(result,
+                    ("{" + placeholder.getKey() + "}")
                     .replace("\\", "\\\\").replace("*", "\\*")
                     .replace("+", "\\+").replace("|", "\\|")
                     .replace("{", "\\{").replace("}", "\\}")
@@ -65,13 +67,13 @@ public class PlaceholderText {
                     .replace("^", "\\^").replace("$", "\\$")
                     .replace("[", "\\[").replace("]", "\\]")
                     .replace("?", "\\?").replace(",", "\\,")
-                    .replace(".", "\\.").replace("&", "\\&"), entry.getValue());
+                    .replace(".", "\\.").replace("&", "\\&"), placeholder.getValue());
         }
 
         return result;
     }
 
-    private static String ignoreCaseReplace(String source, String target, String replacement) {
+    private static String ignoreCaseReplace(@NotNull String source, @NotNull String target, @NotNull String replacement) {
         Pattern p = Pattern.compile(target, Pattern.CASE_INSENSITIVE);
         Matcher m = p.matcher(source);
 

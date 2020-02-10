@@ -2,15 +2,13 @@ package com.github.julyss2019.mcsp.julyguild.config.gui;
 
 import com.github.julyss2019.mcsp.julyguild.config.gui.item.PriorityItem;
 import com.github.julyss2019.mcsp.julyguild.gui.PageableGUI;
-import com.github.julyss2019.mcsp.julyguild.guild.Guild;
 import com.github.julyss2019.mcsp.julyguild.guild.GuildMember;
-import com.github.julyss2019.mcsp.julyguild.placeholder.Placeholder;
+import com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer;
 import com.github.julyss2019.mcsp.julyguild.util.Util;
 import com.github.julyss2019.mcsp.julylibrary.inventory.ItemListener;
 import org.apache.commons.lang3.Validate;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -28,20 +26,6 @@ public class PriorityConfigGUI {
         public Builder() {}
 
         @Override
-        public PriorityConfigGUI.Builder fromConfig(@NotNull ConfigurationSection section, @NotNull GuildMember guildMember) {
-            availableIndexes(Util.getIndexes(section.getString("indexes")));
-            super.fromConfig(section, guildMember);
-            return this;
-        }
-
-        @Override
-        public PriorityConfigGUI.Builder fromConfig(@NotNull ConfigurationSection section, @NotNull GuildMember guildMember, Placeholder.@Nullable Builder placeholderBuilder) {
-            availableIndexes(Util.getIndexes(section.getString("indexes")));
-            super.fromConfig(section, guildMember, placeholderBuilder);
-            return this;
-        }
-
-        @Override
         public PriorityConfigGUI.Builder fromConfig(@NotNull ConfigurationSection section, @NotNull OfflinePlayer papiPlayer) {
             availableIndexes(Util.getIndexes(section.getString("indexes")));
             super.fromConfig(section, papiPlayer);
@@ -49,9 +33,9 @@ public class PriorityConfigGUI {
         }
 
         @Override
-        public PriorityConfigGUI.Builder fromConfig(@NotNull ConfigurationSection section, @Nullable OfflinePlayer papiPlayer, @Nullable Placeholder placeholder) {
+        public PriorityConfigGUI.Builder fromConfig(@NotNull ConfigurationSection section, @Nullable OfflinePlayer papiPlayer, @Nullable PlaceholderContainer placeholderContainer) {
             availableIndexes(Util.getIndexes(section.getString("indexes")));
-            super.fromConfig(section, papiPlayer, placeholder);
+            super.fromConfig(section, papiPlayer, placeholderContainer);
             return this;
         }
 

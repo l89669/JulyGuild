@@ -1,12 +1,11 @@
 package com.github.julyss2019.mcsp.julyguild.util;
 
 import com.github.julyss2019.mcsp.julyguild.LangHelper;
-import com.github.julyss2019.mcsp.julyguild.placeholder.Placeholder;
+import com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer;
 import com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderText;
 import com.github.julyss2019.mcsp.julylibrary.message.JulyMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
-import org.jetbrains.annotations.NotNull;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -54,8 +53,8 @@ public class Util {
         return (h == 0 ? "" : h + "时") + (m == 0 ? "" : m + "分" + (s == 0 ? "钟" : "")) + (s == 0 && (h != 0 || m != 0) ? "" : s + "秒");
     }
 
-    public static void sendColoredMessage(CommandSender cs, String msg, Placeholder placeholder) {
-        sendColoredMessage(cs, PlaceholderText.replacePlaceholders(msg, placeholder));
+    public static void sendColoredMessage(CommandSender cs, String msg, PlaceholderContainer placeholderContainer) {
+        sendColoredMessage(cs, PlaceholderText.replacePlaceholders(msg, placeholderContainer));
     }
 
     public static void sendColoredMessage(CommandSender cs, String msg) {

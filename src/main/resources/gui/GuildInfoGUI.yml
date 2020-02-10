@@ -10,7 +10,7 @@ items:
   members:
    index: 12
    material: SKULL_ITEM
-   data: 3
+   durability: 3
    skull_texture: 'eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZWNmMjU4NDRmZjlhZTJiMjNhYjZiODZhNGJhNmRkZDcxNGEwYjBjMTMzODY4N2QyYmI4NTFiYTljNDMyMGFhOSJ9fX0='
    display_name: '&f成员列表'
   request_join:

@@ -9,7 +9,7 @@ import com.github.julyss2019.mcsp.julyguild.gui.BasePayGUI;
 import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
 import com.github.julyss2019.mcsp.julyguild.gui.BasePlayerPageableGUI;
 import com.github.julyss2019.mcsp.julyguild.guild.Guild;
-import com.github.julyss2019.mcsp.julyguild.placeholder.Placeholder;
+import com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
 import com.github.julyss2019.mcsp.julyguild.util.Util;
 import com.github.julyss2019.mcsp.julylibrary.chat.ChatInterceptor;
@@ -24,7 +24,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
 /*
@@ -63,9 +62,9 @@ public class MainGUI extends BasePlayerPageableGUI {
         Map<Integer, Guild> indexMap = new HashMap<>(); // slot 对应的公会uuid
 
         IndexConfigGUI.Builder guiBuilder = (IndexConfigGUI.Builder) new IndexConfigGUI.Builder()
-                .fromConfig(thisGUISection, bukkitPlayer, new Placeholder.Builder()
-                        .addInner("page", String.valueOf(getCurrentPage() + 1))
-                        .addInner("total_page", String.valueOf(getTotalPage())).build())
+                .fromConfig(thisGUISection, bukkitPlayer, new PlaceholderContainer()
+                        .add("page", String.valueOf(getCurrentPage() + 1))
+                        .add("total_page", String.valueOf(getTotalPage())))
                 .colored()
                 .listener(new InventoryListener() {
                     @Override
@@ -94,7 +93,8 @@ public class MainGUI extends BasePlayerPageableGUI {
         guiBuilder.pageItems(thisGUISection.getConfigurationSection("items.page_items"), this);
 
         if (guildPlayer.isInGuild()) {
-            guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.my_guild"), bukkitPlayer, new Placeholder.Builder().add("%PLAYER%", playerName).build()), new ItemListener() {
+            guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.my_guild"), bukkitPlayer, new PlaceholderContainer()
+                    .add("%PLAYER%", playerName)), new ItemListener() {
                 @Override
                 public void onClick(InventoryClickEvent event) {
                     close();
@@ -106,7 +106,8 @@ public class MainGUI extends BasePlayerPageableGUI {
                 @Override
                 public void onClick(InventoryClickEvent event) {
                     close();
-                    Util.sendColoredMessage(bukkitPlayer, thisLangSection.getString("create.input.tip"), new Placeholder.Builder().addInner("cancel_str", MainSettings.getCreateInputCancelStr()).build());
+                    Util.sendColoredMessage(bukkitPlayer, thisLangSection.getString("create.input.tip"), new PlaceholderContainer()
+                            .add("cancel_str", MainSettings.getCreateInputCancelStr()));
                     new ChatInterceptor.Builder()
                             .plugin(plugin)
                             .player(bukkitPlayer)
@@ -143,37 +144,7 @@ public class MainGUI extends BasePlayerPageableGUI {
                                         return;
                                     }
 
-                                    new BasePayGUI(MainGUI.this, guildPlayer, thisGUISection.getConfigurationSection("items.create_guild.PayGUI"), new Placeholder.Builder().build()) {
-                                        @Override
-                                        public boolean canUse() {
-                                            return true;
-                                        }
-
-                                        @Override
-                                        public void onMoneyPay() {
-                                            new BaseConfirmGUI(this, guildPlayer, thisGUISection.getConfigurationSection("items.create_guild.PayGUI.items.money.ConfirmGUI"), new Placeholder.Builder().build()) {
-                                                @Override
-                                                public boolean canUse() {
-                                                    return true;
-                                                }
-
-                                                @Override
-                                                public void onConfirm() {
-
-                                                }
-
-                                                @Override
-                                                public void onCancel() {
-                                                    back();
-                                                }
-                                            }.open();
-                                        }
-
-                                        @Override
-                                        public void onPointsPay() {
-
-                                        }
-                                    }.open();
+                                    new GuildCreateGUI(MainGUI.this, guildPlayer, guildName).open();
                                 }
 
                                 @Override
@@ -192,7 +163,7 @@ public class MainGUI extends BasePlayerPageableGUI {
             // 公会图标
             for (int i = 0; i < loopCount; i++) {
                 Guild guild = guilds.get(itemCounter++);
-                ItemBuilder itemBuilder = GUIItemManager.getItemBuilder(thisGUISection.getConfigurationSection("items.guild"), bukkitPlayer, new Placeholder.Builder().addGuildPlaceholders(guild).build())
+                ItemBuilder itemBuilder = GUIItemManager.getItemBuilder(thisGUISection.getConfigurationSection("items.guild"), bukkitPlayer, new PlaceholderContainer().addGuildPlaceholders(guild))
                         .material(Material.STONE);
 
                 indexMap.put(itemIndexes.get(i), guild);

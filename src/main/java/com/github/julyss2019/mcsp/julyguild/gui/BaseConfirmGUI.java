@@ -2,25 +2,34 @@ package com.github.julyss2019.mcsp.julyguild.gui;
 
 import com.github.julyss2019.mcsp.julyguild.config.gui.IndexConfigGUI;
 import com.github.julyss2019.mcsp.julyguild.config.gui.item.GUIItemManager;
-import com.github.julyss2019.mcsp.julyguild.placeholder.Placeholder;
+import com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
 import com.github.julyss2019.mcsp.julylibrary.inventory.ItemListener;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public abstract class BaseConfirmGUI extends BasePlayerGUI {
     private final ConfigurationSection section;
     private final Player bukkitPlayer = getBukkitPlayer();
-    private final Placeholder placeholder;
+    private final PlaceholderContainer placeholderContainer;
 
-    protected BaseConfirmGUI(@Nullable GUI lastGUI, GuildPlayer guildPlayer, ConfigurationSection section, Placeholder placeholder) {
+    protected BaseConfirmGUI(@Nullable GUI lastGUI, @NotNull GuildPlayer guildPlayer, @NotNull ConfigurationSection section) {
+        this(lastGUI, guildPlayer, section, null);
+    }
+
+    protected BaseConfirmGUI(@Nullable GUI lastGUI, @NotNull GuildPlayer guildPlayer, @NotNull ConfigurationSection section, @Nullable PlaceholderContainer placeholderContainer) {
         super(lastGUI, GUIType.BASE_CONFIRM, guildPlayer);
 
         this.section = section;
-        this.placeholder = placeholder;
+        this.placeholderContainer = placeholderContainer;
+    }
+
+    public PlaceholderContainer getPlaceholderContainer() {
+        return placeholderContainer;
     }
 
     @Override
@@ -33,14 +42,14 @@ public abstract class BaseConfirmGUI extends BasePlayerGUI {
     @Override
     public Inventory createInventory() {
         IndexConfigGUI.Builder guiBuilder = new IndexConfigGUI.Builder()
-                .fromConfig(section, placeholder)
-                .item(GUIItemManager.getIndexItem(section.getConfigurationSection("items.cancel"), bukkitPlayer, placeholder), new ItemListener() {
+                .fromConfig(section, placeholderContainer)
+                .item(GUIItemManager.getIndexItem(section.getConfigurationSection("items.cancel"), bukkitPlayer, placeholderContainer), new ItemListener() {
                     @Override
                     public void onClick(InventoryClickEvent event) {
                         onCancel();
                     }
                 })
-                .item(GUIItemManager.getIndexItem(section.getConfigurationSection("items.confirm"), bukkitPlayer, placeholder), new ItemListener() {
+                .item(GUIItemManager.getIndexItem(section.getConfigurationSection("items.confirm"), bukkitPlayer, placeholderContainer), new ItemListener() {
                     @Override
                     public void onClick(InventoryClickEvent event) {
                         onConfirm();

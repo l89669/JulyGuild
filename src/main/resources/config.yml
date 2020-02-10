@@ -1,6 +1,5 @@
 # 本插件所有游戏版本（1.7.10-1.15）使用UTF-8编码
 version: 2.0.0
-test: AMBIENT_CAVE
 # 是否开启数据统计
 metrics_enabled: true
 papi:
@@ -19,7 +18,6 @@ gui:
 guild:
   default_icon:
     material: APPLE
-    data: 0
     first_lore: '' # 用于支持 SX-Attribute 的物品
   # 排行榜
   ranking_list:
@@ -50,29 +48,11 @@ guild:
       money: 500
       enabled: true
   upgrade:
-    money:
-      enabled: true
-      # 金币升级公式
-      formula: '1000*(1+0.05)^%GUILD_MAX_MEMBER_COUNT%'
-      # 金币最大能升级到的人数
-      max_member_count: 10
-    points:
-      enabled: true
-      # 点券升级公式
-      formula: '5*(1+0.05)^%GUILD_MAX_MEMBER_COUNT%'
-      # 金币最大能升级到的人数
-      max_member_count: 50
-  # 赞助
-  donate:
-    input:
-      cancel_string: 'c'
-      wait_second: 30
-    points:
-      fee: 0.05
-      min: 1
-    money:
-      fee: 0.1
-      min: 10000
+    enabled: true
+    # 升级公式
+    formula: '1000*(1+0.05)^%GUILD_MAX_MEMBER_COUNT%'
+    # 最大能升级到的人数
+    max_member_count: 10
   # 默认最大管理员数量
   default_max_admin_count: 3
   # 默认最大成员数

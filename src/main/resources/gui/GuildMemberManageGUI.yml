@@ -6,7 +6,7 @@ other_items:
   member:
     index: 14
     material: SKULL_ITEM
-    data: 3
+    durability: 3
     skull_texture: 'eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjU1ZmU2MDdiMDZiMTQwNTQxM2U2ZTI5OTljMmYzNjA0N2ZmNzhmZTc2Njk3MWMxMWIzOTIzNWY2MGUyMmEzZiJ9fX0='
     display_name: '{member_name}'
     lores:
@@ -35,7 +35,6 @@ items:
         confirm:
           index: 12
           material: NETHER_STAR
-          data: 0
           display_name: '&c确认踢出'
           lores:
             - ' &c警告: 本操作不可逆, 这将使 &e{target} &c的公会财产全部清空!'
@@ -43,7 +42,6 @@ items:
           index: 16
           material: ARROW
           display_name: '&f取消操作'
-          data: 0
   manage_member_kick:
     give:
       priority: -1
@@ -63,7 +61,6 @@ items:
     give:
       priority: -2
       material: GRASS
-      data: 0
       display_name: '&c给予设置主城的权限'
     take:
       priority: -2

@@ -11,13 +11,15 @@ import java.util.Map;
 
 public class GuildBank {
     private static JulyGuild plugin = JulyGuild.getInstance();
-    public enum BalanceType {POINTS, MONEY}
+    public enum BalanceType {
+        GMONEY // 公会币
+    }
 
     private Guild guild;
     private Map<BalanceType, BigDecimal> balanceMap = new HashMap<>();
     private ConfigurationSection section;
 
-    public GuildBank(Guild guild) {
+    GuildBank(Guild guild) {
         this.guild = guild;
 
         load();
@@ -114,7 +116,7 @@ public class GuildBank {
         section.set(balanceType.name(), bigDecimal.toString());
         guild.save();
         balanceMap.put(balanceType, bigDecimal);
-        plugin.writeGuildLog(new GuildBalanceChangedLog(guild.getUuid(), BalanceType.POINTS, old, bigDecimal));
+        plugin.writeGuildLog(new GuildBalanceChangedLog(guild.getUuid(), balanceType, old, bigDecimal));
     }
 
     /**

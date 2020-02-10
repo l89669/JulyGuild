@@ -39,18 +39,6 @@ public class MainSettings {
     @Config(path = "guild.default_max_admin_count")
     private static int defaultMaxAdminCount;
 
-    @Config(path = "guild.donate.money.min")
-    private static int donateMoneyMin;
-
-    @Config(path = "guild.donate.points.min")
-    private static int donatePointsMin;
-
-    @Config(path = "guild.donate.input.cancel_string")
-    private static String donateInputCancelString;
-
-    @Config(path = "guild.donate.input.wait_second")
-    private static int donateInputWaitSecond;
-
     @Config(path = "guild.upgrade.money.formula")
     private static String upgradeMoneyFormula;
 
@@ -126,9 +114,6 @@ public class MainSettings {
     @Config(path = "papi.non_str")
     private static String papiNonStr;
 
-    @Config(path = "gui.default.use_gp")
-    private static boolean guiDefaultUseGp;
-
     @Config(path = "gui.default.use_papi")
     private static boolean guiDefaultUsePapi;
 
@@ -148,10 +133,6 @@ public class MainSettings {
 
     public static String getPapiNonStr() {
         return papiNonStr;
-    }
-
-    public static boolean isGuiDefaultUseGp() {
-        return guiDefaultUseGp;
     }
 
     public static boolean isGuiDefaultUsePapi() {
@@ -236,22 +217,6 @@ public class MainSettings {
 
     public static int getDefaultMaxAdminCount() {
         return defaultMaxAdminCount;
-    }
-
-    public static String getDonateInputCancelString() {
-        return donateInputCancelString;
-    }
-
-    public static int getDonateInputWaitSecond() {
-        return donateInputWaitSecond;
-    }
-
-    public static int getDonateMoneyMin() {
-        return donateMoneyMin;
-    }
-
-    public static int getDonatePointsMin() {
-        return donatePointsMin;
     }
 
     public static String getUpgradeMoneyFormula() {

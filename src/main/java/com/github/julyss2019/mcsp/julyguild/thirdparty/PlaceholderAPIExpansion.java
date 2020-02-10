@@ -60,10 +60,8 @@ public class PlaceholderAPIExpansion extends PlaceholderExpansion {
                 return guild.getName();
             case "member_per":
                 return LangHelper.Global.getPositionName(guildMember.getPosition());
-            case "member_donate_money":
-                return LangHelper.Global.getDateTimeFormat().format(guildMember.getDonated(GuildBank.BalanceType.MONEY));
-            case "member_donate_points":
-                return LangHelper.Global.getDateTimeFormat().format(guildMember.getDonated(GuildBank.BalanceType.POINTS));
+            case "member_donate_gmoney":
+                return LangHelper.Global.getDateTimeFormat().format(guildMember.getDonated(GuildBank.BalanceType.GMONEY));
             case "member_join_time":
                 return LangHelper.Global.getDateTimeFormat().format(guildMember.getJoinTime());
             case "ranking":
@@ -76,10 +74,8 @@ public class PlaceholderAPIExpansion extends PlaceholderExpansion {
                 return String.valueOf(guild.getMaxMemberCount());
             case "creation_time":
                 return LangHelper.Global.getDateTimeFormat().format(guild.getCreateTime());
-            case "money":
-                return guildBank.getBalance(GuildBank.BalanceType.MONEY).toString();
-            case "points":
-                return guildBank.getBalance(GuildBank.BalanceType.POINTS).toString();
+            case "gmoney":
+                return guildBank.getBalance(GuildBank.BalanceType.GMONEY).toString();
             case "online_member_count":
                 return String.valueOf(guild.getOnlineMembers().size());
         }
@@ -89,7 +85,7 @@ public class PlaceholderAPIExpansion extends PlaceholderExpansion {
 
     @Override
     public String onPlaceholderRequest(Player p, String params) {
-        return onPlaceholderRequest(p, params);
+        return onRequest(p, params);
     }
 
     @Override

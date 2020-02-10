@@ -1,4 +1,11 @@
 VERSION: 2.0.0
+Command:
+  command_format: '&f/${label} ${arg} - ${desc}'
+  sub_command_format: '&f/${label} ${args} - ${desc}'
+  only_player_can_use: '&c该命令只能由玩家执行.'
+  only_console_can_use: '&c该命令只能由控制台执行.'
+  no_per: '&c无权限.'
+  none: '&c没有可供显示的内容.'
 Global:
   date_format: 'yyyy-MM-dd'
   date_time_format: 'yyyy-MM-dd HH:mm'

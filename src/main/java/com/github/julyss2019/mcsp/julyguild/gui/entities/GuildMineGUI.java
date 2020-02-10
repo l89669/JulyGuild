@@ -10,7 +10,7 @@ import com.github.julyss2019.mcsp.julyguild.guild.Guild;
 import com.github.julyss2019.mcsp.julyguild.guild.GuildMember;
 import com.github.julyss2019.mcsp.julyguild.guild.Permission;
 import com.github.julyss2019.mcsp.julyguild.guild.Position;
-import com.github.julyss2019.mcsp.julyguild.placeholder.Placeholder;
+import com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer;
 import com.github.julyss2019.mcsp.julyguild.util.Util;
 import com.github.julyss2019.mcsp.julylibrary.chat.ChatInterceptor;
 import com.github.julyss2019.mcsp.julylibrary.chat.ChatListener;
@@ -22,19 +22,22 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.Nullable;
 
-public class GuildMineGUI extends BaseMemberGUI {
+public class GuildMineGUI extends BasePlayerGUI {
     private final JulyGuild plugin = JulyGuild.getInstance();
     private final ConfigurationSection thisGUISection = plugin.getGUIYaml("GuildMineGUI");
     private final ConfigurationSection thisLangSection = plugin.getLangYaml().getConfigurationSection("GuildMineGUI");
     private final Player bukkitPlayer;
     private final Position position;
-    private final Guild guild = guildMember.getGuild();
+    private final GuildMember guildMember;
+    private final Guild guild;
 
     public GuildMineGUI(@Nullable GUI lastGUI, GuildMember guildMember) {
-        super(lastGUI, GUIType.MINE, guildMember);
+        super(lastGUI, GUIType.MINE, guildMember.getGuildPlayer());
 
+        this.guildMember = guildMember;
         this.bukkitPlayer = guildPlayer.getBukkitPlayer();
         this.position = guildMember.getPosition();
+        this.guild = guildMember.getGuild();
     }
 
     @Override
@@ -49,23 +52,23 @@ public class GuildMineGUI extends BaseMemberGUI {
                 });
 
         guiBuilder
-                .item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.guild_info"), guildMember, new Placeholder.Builder().addGuildPlaceholders(guild)))
-                .item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.self_info"), guildMember))
-                .item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.guild_members." + ((guildMember.hasPermission(Permission.MEMBER_KICK) || guildMember.hasPermission(Permission.MANAGE_PERMISSION)) ? "manager" : "member")), guildMember), new ItemListener() {
+                .item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.guild_info"), bukkitPlayer, new PlaceholderContainer().addGuildPlaceholders(guild)))
+                .item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.self_info"), bukkitPlayer))
+                .item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.guild_members." + ((guildMember.hasPermission(Permission.MEMBER_KICK) || guildMember.hasPermission(Permission.MANAGE_PERMISSION)) ? "manager" : "member")), bukkitPlayer), new ItemListener() {
                     @Override
                     public void onClick(InventoryClickEvent event) {
                         close();
                         new GuildMemberListGUI(GuildMineGUI.this, guild, guildMember).open();
                     }
                 })
-                .item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.guild_donate"), guildMember), new ItemListener() {
+                .item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.guild_donate"), bukkitPlayer), new ItemListener() {
                     @Override
                     public void onClick(InventoryClickEvent event) {
                         close();
                         new GuildDonateGUI(GuildMineGUI.this, guildMember).open();
                     }
                 })
-                .item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.guild_spawn"), guildMember), new ItemListener() {
+                .item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.guild_spawn"), bukkitPlayer), new ItemListener() {
                     @Override
                     public void onClick(InventoryClickEvent event) {
 
@@ -79,7 +82,7 @@ public class GuildMineGUI extends BaseMemberGUI {
         guiBuilder.item(guildAnnouncementItem);
 
         if (guildMember.hasPermission(Permission.SET_SPAWN)) {
-            guiBuilder.item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.guild_setspawn"), guildMember), new ItemListener() {
+            guiBuilder.item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.guild_setspawn"), bukkitPlayer), new ItemListener() {
                 @Override
                 public void onClick(InventoryClickEvent event) {
 
@@ -89,7 +92,7 @@ public class GuildMineGUI extends BaseMemberGUI {
 
         // 成员免伤
         if (guildMember.hasPermission(Permission.SET_MEMBER_DAMAGE)) {
-            guiBuilder.item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.guild_set_member_damage." + (guild.isMemberDamageEnabled() ? "toggle_off" : "toggle_on")), guildMember), new ItemListener() {
+            guiBuilder.item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.guild_set_member_damage." + (guild.isMemberDamageEnabled() ? "toggle_off" : "toggle_on")), bukkitPlayer), new ItemListener() {
                 @Override
                 public void onClick(InventoryClickEvent event) {
                     guild.setMemberDamageEnabled(!guild.isMemberDamageEnabled());
@@ -97,17 +100,6 @@ public class GuildMineGUI extends BaseMemberGUI {
                     reopen();
                 }
             });
-        }
-
-        // 公会升级
-        if (guildMember.hasPermission(Permission.GUILD_UPGRADE)) {
-            guiBuilder.item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.guild_upgrade"), bukkitPlayer), new ItemListener() {
-                    @Override
-                    public void onClick(InventoryClickEvent event) {
-                        close();
-                        new GuildUpgradeGUI(GuildMineGUI.this, guildMember).open();
-                    }
-                });
         }
 
         // 入会审批
@@ -127,9 +119,9 @@ public class GuildMineGUI extends BaseMemberGUI {
                 @Override
                 public void onClick(InventoryClickEvent event) {
                     close();
-                    Util.sendColoredMessage(bukkitPlayer, thisLangSection.getString("guild_dismiss.confirm"), new Placeholder.Builder()
-                    .addInner("wait", MainSettings.getDismissWait())
-                    .addInner("confirm_str", MainSettings.getDismissConfirmStr()).build());
+                    Util.sendColoredMessage(bukkitPlayer, thisLangSection.getString("guild_dismiss.confirm"), new PlaceholderContainer()
+                    .add("wait", MainSettings.getDismissWait())
+                    .add("confirm_str", MainSettings.getDismissConfirmStr()));
                     new ChatInterceptor.Builder()
                             .player(bukkitPlayer)
                             .plugin(plugin)
@@ -157,9 +149,9 @@ public class GuildMineGUI extends BaseMemberGUI {
                 @Override
                 public void onClick(InventoryClickEvent event) {
                     close();
-                    Util.sendColoredMessage(bukkitPlayer, thisLangSection.getString("guild_exit.confirm"), new Placeholder.Builder()
-                            .addInner("wait", MainSettings.getDismissWait())
-                            .addInner("confirm_str", MainSettings.getDismissConfirmStr()).build());
+                    Util.sendColoredMessage(bukkitPlayer, thisLangSection.getString("guild_exit.confirm"), new PlaceholderContainer()
+                            .add("wait", MainSettings.getDismissWait())
+                            .add("confirm_str", MainSettings.getDismissConfirmStr()));
                     new ChatInterceptor.Builder()
                             .player(bukkitPlayer)
                             .plugin(plugin)

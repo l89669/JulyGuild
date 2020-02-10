@@ -9,7 +9,7 @@ import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
 import com.github.julyss2019.mcsp.julyguild.guild.Guild;
 import com.github.julyss2019.mcsp.julyguild.guild.GuildMember;
 import com.github.julyss2019.mcsp.julyguild.guild.Permission;
-import com.github.julyss2019.mcsp.julyguild.placeholder.Placeholder;
+import com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
 import com.github.julyss2019.mcsp.julyguild.util.Util;
 import com.github.julyss2019.mcsp.julylibrary.inventory.InventoryListener;
@@ -81,7 +81,7 @@ public class GuildMemberListGUI extends BasePlayerPageableGUI {
         IndexConfigGUI.Builder guiBuilder = new IndexConfigGUI.Builder()
                 .fromConfig(thisGUISection, bukkitPlayer)
                 .pageItems(thisGUISection.getConfigurationSection("items.page_items"), this)
-                .item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.back"), bukkitPlayer, new Placeholder.Builder().addGuildPlaceholders(guild).build()), new ItemListener() {
+                .item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.back"), bukkitPlayer, new PlaceholderContainer().addGuildPlaceholders(guild)), new ItemListener() {
                     @Override
                     public void onClick(InventoryClickEvent event) {
                         back();
@@ -116,7 +116,7 @@ public class GuildMemberListGUI extends BasePlayerPageableGUI {
         for (int i = 0; i < loopCount; i++) {
             GuildMember guildMember = members.get(itemCounter++);
             ItemBuilder itemBuilder = GUIItemManager.getItemBuilder(thisGUISection.getConfigurationSection("items").getConfigurationSection("member")
-                    , guildMember, new Placeholder.Builder().addGuildMemberPlaceholders(guildMember));
+                    , bukkitPlayer, new PlaceholderContainer().addGuildMemberPlaceholders(guildMember));
 
             // 管理模式
             if (viewerType == ViewerType.MANAGER) {

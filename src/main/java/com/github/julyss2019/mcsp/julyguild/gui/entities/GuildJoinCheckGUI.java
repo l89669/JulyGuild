@@ -4,12 +4,12 @@ import com.github.julyss2019.mcsp.julyguild.JulyGuild;
 import com.github.julyss2019.mcsp.julyguild.LangHelper;
 import com.github.julyss2019.mcsp.julyguild.config.gui.IndexConfigGUI;
 import com.github.julyss2019.mcsp.julyguild.config.gui.item.GUIItemManager;
-import com.github.julyss2019.mcsp.julyguild.gui.BaseMemberPageableGUI;
+import com.github.julyss2019.mcsp.julyguild.gui.BasePlayerPageableGUI;
 import com.github.julyss2019.mcsp.julyguild.gui.GUI;
 import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
 import com.github.julyss2019.mcsp.julyguild.guild.Guild;
 import com.github.julyss2019.mcsp.julyguild.guild.GuildMember;
-import com.github.julyss2019.mcsp.julyguild.placeholder.Placeholder;
+import com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer;
 import com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderText;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
 import com.github.julyss2019.mcsp.julyguild.request.Request;
@@ -28,20 +28,24 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class GuildJoinCheckGUI extends BaseMemberPageableGUI {
+public class GuildJoinCheckGUI extends BasePlayerPageableGUI {
     private final JulyGuild plugin = JulyGuild.getInstance();
     private final ConfigurationSection thisGUISection = plugin.getGUIYaml("GuildJoinCheckGUI");
     private final ConfigurationSection thisLangSection = plugin.getLangYaml().getConfigurationSection("GuildJoinCheckGUI");
     private final Player bukkitPlayer = getBukkitPlayer();
-    private final Guild guild = guildMember.getGuild();
     private final List<Integer> itemIndexes = Util.getIndexes(thisGUISection.getString("items.request.indexes")); // 请求物品位置
     private final int itemIndexCount = itemIndexes.size(); // 请求物品位置数量
+    private final GuildMember guildMember;
+    private final Guild guild;
 
     private List<Request> requests;
     private int requestCount;
 
     public GuildJoinCheckGUI(@Nullable GUI lastGUI, GuildMember guildMember) {
-        super(lastGUI, GUIType.PLAYER_JOIN_CHECK, guildMember);
+        super(lastGUI, GUIType.PLAYER_JOIN_CHECK, guildMember.getGuildPlayer());
+
+        this.guildMember = guildMember;
+        this.guild = guildMember.getGuild();
     }
 
     @Override
@@ -56,11 +60,11 @@ public class GuildJoinCheckGUI extends BaseMemberPageableGUI {
     public Inventory createInventory() {
         Map<Integer, Request> indexMap = new HashMap<>();
         IndexConfigGUI.Builder guiBuilder = (IndexConfigGUI.Builder) new IndexConfigGUI.Builder()
-                .fromConfig(thisGUISection, guildMember, new Placeholder.Builder()
-                        .addInner("page", getCurrentPage() + 1)
-                        .addInner("total_page", getTotalPage()))
+                .fromConfig(thisGUISection, bukkitPlayer, new PlaceholderContainer()
+                        .add("page", getCurrentPage() + 1)
+                        .add("total_page", getTotalPage()))
                 .pageItems(thisGUISection.getConfigurationSection("items.page_items"), this)
-                .item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.back"), guildMember), new ItemListener() {
+                .item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.back"), bukkitPlayer), new ItemListener() {
                     @Override
                     public void onClick(InventoryClickEvent event) {
                         back();
@@ -86,18 +90,16 @@ public class GuildJoinCheckGUI extends BaseMemberPageableGUI {
                                 request.delete();
                                 guild.addMember(sender);
 
-                                guild.broadcastMessage(PlaceholderText.replacePlaceholders(thisLangSection.getString("accept.broadcast"), new Placeholder.Builder()
-                                        .addInner("player", sender.getName())
-                                        .build()));
+                                guild.broadcastMessage(PlaceholderText.replacePlaceholders(thisLangSection.getString("accept.broadcast"), new PlaceholderContainer()
+                                        .add("player", sender.getName())));
                                 reopen(20L);
                                 return;
                             }
 
                             if (action == InventoryAction.PICKUP_HALF) {
                                 request.delete();
-                                Util.sendColoredMessage(bukkitPlayer, PlaceholderText.replacePlaceholders(thisLangSection.getString("deny.approver"), new Placeholder.Builder()
-                                        .addInner("player", sender.getName())
-                                        .build()));
+                                Util.sendColoredMessage(bukkitPlayer, PlaceholderText.replacePlaceholders(thisLangSection.getString("deny.approver"), new PlaceholderContainer()
+                                        .add("player", sender.getName())));
                                 reopen(20L);
                             }
                         }
@@ -111,10 +113,9 @@ public class GuildJoinCheckGUI extends BaseMemberPageableGUI {
             for (int i = 0; i < loopCount; i++) {
                 Request request = requests.get(itemCounter++);
                 GuildPlayer sender = (GuildPlayer) request.getSender();
-                ItemBuilder itemBuilder = GUIItemManager.getItemBuilder(thisGUISection.getConfigurationSection("items.request"), sender.getOfflineBukkitPlayer(), new Placeholder.Builder()
-                        .addInner("sender_name", sender.getName())
-                        .addInner("send_time", LangHelper.Global.getDateTimeFormat().format(request.getCreationTime()))
-                        .build());
+                ItemBuilder itemBuilder = GUIItemManager.getItemBuilder(thisGUISection.getConfigurationSection("items.request"), sender.getOfflineBukkitPlayer(), new PlaceholderContainer()
+                        .add("sender_name", sender.getName())
+                        .add("send_time", LangHelper.Global.getDateTimeFormat().format(request.getCreationTime())));
 
                 guiBuilder.item(itemIndexes.get(i), itemBuilder.build());
                 indexMap.put(itemIndexes.get(i), request);

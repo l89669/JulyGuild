@@ -18,14 +18,13 @@ items:
     lores:
       - ' &f公会名: {guild_name}'
       - ' &f会长: {guild_owner}'
-      - ' &f金币储备: {guild_money}'
-      - ' &f点券储备: {guild_points}'
+      - ' &f公会币储备: {guild_gmoney}'
       - ' &f人数: {guild_member_count}/{guild_max_member_count}'
       - ' &f创建时间: {guild_creation_time}'
   self_info:
     priority: -1
     material: SKULL_ITEM
-    data: 3
+    durability: 3
     use_papi: true
     display_name: '&f个人信息'
     lores:
@@ -36,18 +35,18 @@ items:
     member:
       priority: -2
       material: SKULL_ITEM
-      data: 3
+      durability: 3
       display_name: '&f公会成员'
     # 有“管理”权限的成员看到的图标
     manager:
       priority: -2
       material: SKULL_ITEM
-      data: 3
+      durability: 3
       display_name: '&f成员管理'
   guild_join_check:
     priority: -2
     material: SKULL_ITEM
-    data: 3
+    durability: 3
     display_name: '&f入会审批'
   guild_announcements:
     priority: -3

@@ -6,7 +6,7 @@ items:
     use_papi: true
     index: 12
     material: GOLD_INGOT
-    display_name: '&a使用 &e{amount}个 &a金币'
+    display_name: '&a使用 &e{money_cost}个 &a金币'
     lores:
       - ' &f拥有: %vault_eco_balance%个'
       - ' &f公会名: {name}'
@@ -16,34 +16,40 @@ items:
       title: '&c&l确认'
       items:
         confirm:
-          index: 12
+          index: 14
           material: NETHER_STAR
-          data: 0
-          display_name: '&c确认踢出'
+          display_name: '&a确认支付'
           lores:
-            - ' &c警告: 本操作不可逆, 这将使 &e{target} &c的公会财产全部清空!'
+            - ' &e支付方式: 金币'
+            - ' &e金额: {money_cost}'
         cancel:
-          index: 16
+          index: 27
           material: ARROW
-          display_name: '&f取消操作'
-          data: 0
+          display_name: '&c返回'
   points:
     use_papi: true
-    index: 14
+    index: 16
     material: DIAMOND
-    display_name: '&a使用 &e{amount}个 &a点券'
+    display_name: '&a使用 &e{points_cost}个 &a点券'
     lores:
       - ' &f拥有: %playerpoints_points%个'
       - ' &f公会名: {name}'
       - ' &c点击支付'
-  item:
-    index: 16
-    material: PAPER
-    display_name: '&a使用 &e{amount}个 &a建帮令'
-    lores:
-      - ' &f拥有: {owned}个'
-      - ' &f公会名: {name}'
-      - ' &c点击支付'
+    ConfirmGUI:
+      row: 3
+      title: '&c&l确认'
+      items:
+        confirm:
+          index: 14
+          material: NETHER_STAR
+          display_name: '&a确认支付'
+          lores:
+            - ' &e支付方式: 点券'
+            - ' &e金额: {points_cost}'
+        cancel:
+          index: 27
+          material: ARROW
+          display_name: '&c返回'
   back:
     index: 27
     material: ARROW

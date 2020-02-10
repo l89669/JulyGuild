@@ -1,8 +1,7 @@
 package com.github.julyss2019.mcsp.julyguild;
 
-import com.github.julyss2019.mcsp.julyguild.command.MainGUICommand;
-import com.github.julyss2019.mcsp.julyguild.command.ReloadCommand;
-import com.github.julyss2019.mcsp.julyguild.command.TestCommand;
+import com.github.julyss2019.mcsp.julyguild.command.GUICommand;
+import com.github.julyss2019.mcsp.julyguild.command.PluginCommand;
 import com.github.julyss2019.mcsp.julyguild.config.ConfigGuildIcon;
 import com.github.julyss2019.mcsp.julyguild.config.ConfigGuildShopItem;
 import com.github.julyss2019.mcsp.julyguild.config.GuildShopConfig;
@@ -23,11 +22,12 @@ import com.github.julyss2019.mcsp.julyguild.thirdparty.economy.PlayerPointsEcono
 import com.github.julyss2019.mcsp.julyguild.thirdparty.economy.VaultEconomy;
 import com.github.julyss2019.mcsp.julyguild.util.Util;
 import com.github.julyss2019.mcsp.julylibrary.chat.JulyChatInterceptor;
-import com.github.julyss2019.mcsp.julylibrary.command.JulyCommandExecutor;
 import com.github.julyss2019.mcsp.julylibrary.command.tab.JulyTabCommand;
-import com.github.julyss2019.mcsp.julylibrary.command.tab.JulyTabCompleter;
+import com.github.julyss2019.mcsp.julylibrary.commandv2.JulyCommandHandler;
+import com.github.julyss2019.mcsp.julylibrary.commandv2.tab.JulyTabHandler;
 import com.github.julyss2019.mcsp.julylibrary.config.JulyConfig;
 import com.github.julyss2019.mcsp.julylibrary.logger.FileLogger;
+import com.github.julyss2019.mcsp.julylibrary.message.JulyMessage;
 import com.github.julyss2019.mcsp.julylibrary.utils.YamlUtil;
 import com.google.gson.Gson;
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -53,14 +53,14 @@ import java.util.Map;
  * 软依赖：PlaceholderAPI, PlayerPoints
  */
 public class JulyGuild extends JavaPlugin {
+    public static final String VERSION = "2.0.0-beta1";
     private final boolean DEV_MODE = true;
     private final String[] GUI_RESOURCES = new String[] {
             "GuildCreateGUI.yml",
-            "GuildDonateGUI.yml",
             "GuildInfoGUI.yml",
             "GuildMemberListGUI.yml",
             "GuildMineGUI.yml",
-            "GuildUpgradeGUI.yml",
+            "GuildDonateGUI.yml",
             "GuildJoinCheckGUI.yml",
             "GuildMemberManageGUI.yml",
             "MainGUI.yml"}; // GUI资源文件
@@ -76,8 +76,7 @@ public class JulyGuild extends JavaPlugin {
     private CacheGuildManager cacheGuildManager;
     private RequestManager requestManager;
 
-    private JulyCommandExecutor julyCommandExecutor;
-    private JulyTabCompleter julyTabCompleter;
+    private JulyCommandHandler julyCommandHandler;
     private VaultEconomy vaultEconomy;
     private PlayerPointsEconomy playerPointsEconomy;
     private FileLogger fileLogger;
@@ -232,7 +231,7 @@ public class JulyGuild extends JavaPlugin {
 
         for (String pluginName : DEPEND_PLUGINS) {
             if (!Bukkit.getPluginManager().isPluginEnabled(pluginName)) {
-                Util.sendColoredConsoleMessage("&c硬前置插件 " + pluginName + " 未被加载, 插件将被卸载.");
+                error("硬前置插件 " + pluginName + " 未被加载, 插件将被卸载.");
                 setEnabled(false);
                 return;
             }
@@ -250,12 +249,7 @@ public class JulyGuild extends JavaPlugin {
                 .autoFlush(true)
                 .loggerFolder(new File(getDataFolder(), "logs"))
                 .fileName("%d{yyyy-MM-dd}.log").build();
-        this.julyCommandExecutor = new JulyCommandExecutor();
-        this.julyTabCompleter = new JulyTabCompleter();
-        this.guildPlayerManager = new GuildPlayerManager();
-        this.guildManager = new GuildManager();
-        this.cacheGuildManager = new CacheGuildManager();
-        this.requestManager = new RequestManager();
+
 
         /*
         第三方插件注入
@@ -294,18 +288,25 @@ public class JulyGuild extends JavaPlugin {
             info("PlayerPoints: 未启用.");
         }
 
-        julyCommandExecutor.setPrefix(langYaml.getString("Global.command_prefix"));
+        this.guildPlayerManager = new GuildPlayerManager();
+        this.guildManager = new GuildManager();
+        this.cacheGuildManager = new CacheGuildManager();
+        this.requestManager = new RequestManager();
+        this.julyCommandHandler = new JulyCommandHandler();
+
         guildManager.loadGuilds();
         checkGuilds();
         requestManager.loadRequests();
         cacheGuildManager.startTask();
 
-        getCommand("jguild").setExecutor(julyCommandExecutor);
-        getCommand("jguild").setTabCompleter(julyTabCompleter);
+        julyCommandHandler.setCommandFormat(LangHelper.Global.getPrefix() + langYaml.getString("Command.command_format"));
+        julyCommandHandler.setSubCommandFormat(LangHelper.Global.getPrefix() + langYaml.getString("Command.sub_command_format"));
+        julyCommandHandler.setNoneMessage(LangHelper.Global.getPrefix() + langYaml.getString("Command.none"));
+        julyCommandHandler.setNoPermissionMessage(LangHelper.Global.getPrefix() + langYaml.getString("Command.no_per"));
+        julyCommandHandler.setOnlyConsoleCanUseMessage(LangHelper.Global.getPrefix() + langYaml.getString("Command.only_console_can_use"));
+        julyCommandHandler.setOnlyPlayerCanUseMessage(LangHelper.Global.getPrefix() + langYaml.getString("Command.only_player_can_use"));
 
-        julyCommandExecutor.register(new TestCommand());
-
-
+        getCommand("jguild").setExecutor(julyCommandHandler);
 
         registerCommands();
         registerListeners();
@@ -316,18 +317,19 @@ public class JulyGuild extends JavaPlugin {
         info("插件初始化完毕.");
 
         Util.sendColoredConsoleMessage("&b作者: 柒 月, QQ: 884633197, Bug反馈/插件交流群: 786184610.");
-        Util.sendColoredConsoleMessage("编码测试: " + MainSettings.getAnnouncementDefault().toString());
     }
 
     @Override
     public void onDisable() {
-        if (isPlaceHolderAPIEnabled()) {
+        if (isPlaceHolderAPIEnabled() && placeholderAPIExpansion != null) {
             PlaceholderAPI.unregisterExpansion((PlaceholderExpansion) placeholderAPIExpansion);
         }
 
-        for (GuildPlayer guildPlayer : getGuildPlayerManager().getOnlineGuildPlayers()) {
-            if (guildPlayer.getUsingGUI() != null) {
-                guildPlayer.getUsingGUI().close();
+        if (guildPlayerManager != null) {
+            for (GuildPlayer guildPlayer : guildPlayerManager.getOnlineGuildPlayers()) {
+                if (guildPlayer.getUsingGUI() != null) {
+                    guildPlayer.getUsingGUI().close();
+                }
             }
         }
 
@@ -398,13 +400,8 @@ public class JulyGuild extends JavaPlugin {
     }
 
     private void registerCommands() {
-        registerCommand(new MainGUICommand());
-        registerCommand(new ReloadCommand());
-    }
-
-    private void registerCommand(JulyTabCommand command) {
-        julyCommandExecutor.register(command);
-        julyTabCompleter.register(command);
+        julyCommandHandler.registerCommand(new GUICommand());
+        julyCommandHandler.registerCommand(new PluginCommand());
     }
 
     /**
@@ -413,6 +410,12 @@ public class JulyGuild extends JavaPlugin {
     public void reloadPluginConfig() {
         guiYamlMap.clear();
         loadConfig();
+        getGuildPlayerManager().getOnlineGuildPlayers().forEach(guildPlayer -> {
+            if (guildPlayer.isUsingGUI()) {
+                guildPlayer.closeInventory();
+                JulyMessage.sendColoredMessage(guildPlayer.getBukkitPlayer(), "&c插件配置重载被迫关闭GUI.");
+            }
+        });
     }
 
     /**

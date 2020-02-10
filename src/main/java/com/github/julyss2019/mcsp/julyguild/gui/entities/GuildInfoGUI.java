@@ -5,11 +5,8 @@ import com.github.julyss2019.mcsp.julyguild.config.gui.IndexConfigGUI;
 import com.github.julyss2019.mcsp.julyguild.config.gui.item.GUIItemManager;
 import com.github.julyss2019.mcsp.julyguild.gui.*;
 import com.github.julyss2019.mcsp.julyguild.guild.Guild;
-import com.github.julyss2019.mcsp.julyguild.guild.GuildMember;
-import com.github.julyss2019.mcsp.julyguild.guild.Permission;
-import com.github.julyss2019.mcsp.julyguild.placeholder.Placeholder;
+import com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
-import com.github.julyss2019.mcsp.julyguild.request.RequestManager;
 import com.github.julyss2019.mcsp.julyguild.request.entities.JoinRequest;
 import com.github.julyss2019.mcsp.julyguild.util.Util;
 import com.github.julyss2019.mcsp.julylibrary.inventory.ItemListener;
@@ -19,8 +16,6 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 
@@ -44,8 +39,8 @@ public class GuildInfoGUI extends BasePlayerGUI {
     @Override
     public Inventory createInventory() {
         IndexConfigGUI.Builder guiBuilder = new IndexConfigGUI.Builder()
-                .fromConfig(thisGUISection, bukkitPlayer, new Placeholder.Builder().addGuildPlaceholders(guild).build())
-                .item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.request_join"), bukkitPlayer, new Placeholder.Builder().addGuildPlaceholders(guild).build()), new ItemListener() {
+                .fromConfig(thisGUISection, bukkitPlayer, new PlaceholderContainer().addGuildPlaceholders(guild))
+                .item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.request_join"), bukkitPlayer, new PlaceholderContainer().addGuildPlaceholders(guild)), new ItemListener() {
                     @Override
                     public void onClick(InventoryClickEvent event) {
                         close();
@@ -65,13 +60,13 @@ public class GuildInfoGUI extends BasePlayerGUI {
                         new JoinRequest(guildPlayer, guild).send();
                         Util.sendColoredMessage(bukkitPlayer, thisLangSection.getString("request_join.success"));
                     }
-                }).item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.members"), bukkitPlayer, new Placeholder.Builder().addGuildPlaceholders(guild).build()), new ItemListener() {
+                }).item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.members"), bukkitPlayer, new PlaceholderContainer().addGuildPlaceholders(guild)), new ItemListener() {
                     @Override
                     public void onClick(InventoryClickEvent event) {
                         close();
                         new GuildMemberListGUI(GuildInfoGUI.this, guild, guildPlayer).open();
                     }
-                }).item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.back"), bukkitPlayer, new Placeholder.Builder().addGuildPlaceholders(guild).build()), new ItemListener() {
+                }).item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.back"), bukkitPlayer, new PlaceholderContainer().addGuildPlaceholders(guild)), new ItemListener() {
                     @Override
                     public void onClick(InventoryClickEvent event) {
 
