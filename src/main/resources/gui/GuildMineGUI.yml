@@ -8,86 +8,96 @@ title: '&e&l我的公会'
 items:
   back:
     index: 50
-    material: ARROW
-    display_name: '&c返回'
+    icon:
+      material: ARROW
+      display_name: '&c返回'
   guild_info:
     priority: 0
-    material: PAPER
-    display_name: '&f公会信息'
-    use_papi: true
-    lores:
-      - ' &f公会名: {guild_name}'
-      - ' &f会长: {guild_owner}'
-      - ' &f公会币储备: {guild_gmoney}'
-      - ' &f人数: {guild_member_count}/{guild_max_member_count}'
-      - ' &f创建时间: {guild_creation_time}'
+    icon:
+      material: PAPER
+      display_name: '&f公会信息'
+      use_papi: true
+      lores:
+        - ' &f公会名: {guild_name}'
+        - ' &f会长: {guild_owner}'
+        - ' &f公会币储备: {guild_gmoney}'
+        - ' &f人数: {guild_member_count}/{guild_max_member_count}'
+        - ' &f创建时间: {guild_creation_time}'
   self_info:
     priority: -1
-    material: SKULL_ITEM
-    durability: 3
-    use_papi: true
-    display_name: '&f个人信息'
-    lores:
-      - ' &fID: %player_name%'
-      - ' &f金币: %vault_eco_balance%'
+    icon:
+      material: SKULL_ITEM
+      durability: 3
+      use_papi: true
+      display_name: '&f个人信息'
+      lores:
+        - ' &fID: %player_name%'
+        - ' &f金币: %vault_eco_balance%'
   guild_members:
     # 成员看到的图标
     member:
       priority: -2
-      material: SKULL_ITEM
-      durability: 3
-      display_name: '&f公会成员'
+      icon:
+        material: SKULL_ITEM
+        durability: 3
+        display_name: '&f公会成员'
     # 有“管理”权限的成员看到的图标
     manager:
       priority: -2
-      material: SKULL_ITEM
-      durability: 3
-      display_name: '&f成员管理'
+      icon:
+        material: SKULL_ITEM
+        durability: 3
+        display_name: '&f成员管理'
   guild_join_check:
     priority: -2
-    material: SKULL_ITEM
-    durability: 3
-    display_name: '&f入会审批'
+    icon:
+      material: SKULL_ITEM
+      durability: 3
+      display_name: '&f入会审批'
   guild_announcements:
     priority: -3
-    material: MAP
-    display_name: '&f公会公告'
+    icon:
+      material: MAP
+      display_name: '&f公会公告'
   guild_donate:
     priority: -4
-    material: DIAMOND
-    display_name: '&f捐献'
-    lores:
-      - ' &f捐献金币或点券'
+    icon:
+      material: DIAMOND
+      display_name: '&f捐赠'
+      lores:
+        - ' &f捐赠公会币'
   guild_upgrade:
     priority: -5
-    material: EXP_BOTTLE
-    display_name: '&f公会升级'
-  guild_setspawn:
-    priority: -6
-    material: GRASS
-    display_name: '&f设置主城'
+    icon:
+      material: EXP_BOTTLE
+      display_name: '&f公会升级'
   guild_spawn:
-    priority: -7
-    material: ENDER_PEARL
-    display_name: '&f传送到主城'
+    priority: -6
+    icon:
+      material: ENDER_PEARL
+      display_name: '&f传送到主城'
   guild_set_member_damage:
-    toggle_on:
-      priority: -8
-      material: WOOD_SWORD
-      display_name: '&f开启成员免伤'
-    toggle_off:
-      priority: -8
-      material: WOOD_SWORD
-      display_name: '&f关闭成员免伤'
+    state_on:
+      priority: -7
+      icon:
+        material: WOOD_SWORD
+        display_name: '&f关闭成员PVP'
+    state_off:
+      priority: -7
+      icon:
+        material: WOOD_SWORD
+        display_name: '&f打开成员PVP'
   guild_exit:
     priority: -999
-    material: BARRIER
-    display_name: '&c退出公会'
-    lores:
-      - ' &c请谨慎操作'
+    icon:
+      material: BARRIER
+      display_name: '&c退出公会'
+      lores:
+        - ' &c请谨慎操作'
   guild_dismiss:
     priority: -999
-    material: BARRIER
-    display_name: '&c解散公会'
-    lores:
-      - ' &c请谨慎操作'
+    icon:
+      material: BARRIER
+      display_name: '&c解散公会'
+      lores:
+        - ' &c请谨慎操作'

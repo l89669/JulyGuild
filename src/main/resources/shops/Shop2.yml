@@ -1,0 +1,33 @@
+shop_name: Shop2
+title: '&e&l公会商店(2/2)'
+row: 6
+simple_confirm_gui: &simple_confirm_gui
+  row: 3
+  title: '&c&l确认支付'
+  items:
+    confirm:
+      index: 14
+      icon:
+        material: NETHER_STAR
+        display_name: '&a确认'
+        lores:
+          - ' &e支付公会币: {cost}'
+    cancel:
+      index: 27
+      icon:
+        material: ARROW
+        display_name: '&c返回'
+items:
+  back:
+    index: 54
+    icon:
+      material: ARROW
+      display_name: '&c返回'
+shop_items:
+  '1':
+    type: CUSTOM
+    cost: '1000*(1+0.05)^{guild_online_member_count}' # 消费公会币 支持公会变量
+    index: 12
+    icon:
+      material:
+    ConfirmGUI: *simple_confirm_gui

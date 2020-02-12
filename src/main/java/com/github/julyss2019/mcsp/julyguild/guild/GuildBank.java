@@ -10,13 +10,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class GuildBank {
-    private static JulyGuild plugin = JulyGuild.getInstance();
     public enum BalanceType {
         GMONEY // 公会币
     }
 
-    private Guild guild;
-    private Map<BalanceType, BigDecimal> balanceMap = new HashMap<>();
+    private final JulyGuild plugin = JulyGuild.getInstance();
+    private final Guild guild;
+    private final Map<BalanceType, BigDecimal> balanceMap = new HashMap<>();
     private ConfigurationSection section;
 
     GuildBank(Guild guild) {
@@ -25,16 +25,16 @@ public class GuildBank {
         load();
     }
 
-    private GuildBank load() {
+    private void load() {
         this.section = guild.getYaml().getConfigurationSection("bank");
 
-        if (section != null) {
-            for (String key : section.getKeys(false)) {
-                balanceMap.put(BalanceType.valueOf(key), new BigDecimal(section.getString(key)));
-            }
+        if (section == null) {
+            section = guild.getYaml().createSection("bank");
         }
 
-        return this;
+        for (String key : section.getKeys(false)) {
+            balanceMap.put(BalanceType.valueOf(key), new BigDecimal(section.getString(key)));
+        }
     }
 
     /**

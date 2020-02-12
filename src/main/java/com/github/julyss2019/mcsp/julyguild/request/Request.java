@@ -24,8 +24,8 @@ public interface Request {
     long getCreationTime();
     UUID getUuid();
     Type getType();
-    void save(ConfigurationSection section);
-    void load(ConfigurationSection section);
+    void onSave(ConfigurationSection section);
+    void onLoad(ConfigurationSection section);
     void delete();
     void send();
     boolean isValid();

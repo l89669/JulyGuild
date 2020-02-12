@@ -12,13 +12,13 @@ public class PluginCommand implements JulyCommand {
     @SubCommandHandler(firstArg = "reload", description = "重载插件配置", length = 0)
     public void onReload(CommandSender cs, String[] args) {
         plugin.reloadPluginConfig();
-        Util.sendColoredMessage(cs, "&f配置重载完毕.");
+        Util.sendMsg(cs, "&f配置重载完毕.");
     }
 
     @SubCommandHandler(firstArg = "version", description = "插件版本", length = 0)
     public void onVersion(CommandSender cs, String[] args) {
-        Util.sendColoredMessage(cs, "&f插件版本: " + cs.getName() + ".");
-        Util.sendColoredMessage(cs, "&f作者: July_ss, 插件交流群: 786184610.");
+        Util.sendMsg(cs, "&f插件版本: " + JulyGuild.VERSION + ".");
+        Util.sendMsg(cs, "&f作者: 柒 月, 插件交流群: 786184610.");
     }
 
     @Override

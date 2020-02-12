@@ -3,54 +3,61 @@ row: 3
 title: '&e&l请选择支付方式'
 items:
   money:
-    use_papi: true
     index: 12
-    material: GOLD_INGOT
-    display_name: '&a使用 &e{money_cost}个 &a金币'
-    lores:
-      - ' &f拥有: %vault_eco_balance%个'
-      - ' &f公会名: {name}'
-      - ' &c点击支付'
+    icon:
+      use_papi: true
+      material: GOLD_INGOT
+      display_name: '&a使用 &e{money_cost}个 &a金币'
+      lores:
+        - ' &f拥有: %vault_eco_balance%个'
+        - ' &f公会名: {name}'
+        - ' &c点击支付'
     ConfirmGUI:
       row: 3
       title: '&c&l确认'
       items:
         confirm:
           index: 14
-          material: NETHER_STAR
-          display_name: '&a确认支付'
-          lores:
-            - ' &e支付方式: 金币'
-            - ' &e金额: {money_cost}'
+          icon:
+            material: NETHER_STAR
+            display_name: '&a确认支付'
+            lores:
+              - ' &e支付方式: 金币'
+              - ' &e金额: {money_cost}'
         cancel:
           index: 27
-          material: ARROW
-          display_name: '&c返回'
+          icon:
+            material: ARROW
+            display_name: '&c返回'
   points:
-    use_papi: true
     index: 16
-    material: DIAMOND
-    display_name: '&a使用 &e{points_cost}个 &a点券'
-    lores:
-      - ' &f拥有: %playerpoints_points%个'
-      - ' &f公会名: {name}'
-      - ' &c点击支付'
+    icon:
+      use_papi: true
+      material: DIAMOND
+      display_name: '&a使用 &e{points_cost}个 &a点券'
+      lores:
+        - ' &f拥有: %playerpoints_points%个'
+        - ' &f公会名: {name}'
+        - ' &c点击支付'
     ConfirmGUI:
       row: 3
       title: '&c&l确认'
       items:
         confirm:
           index: 14
-          material: NETHER_STAR
-          display_name: '&a确认支付'
-          lores:
-            - ' &e支付方式: 点券'
-            - ' &e金额: {points_cost}'
+          icon:
+            material: NETHER_STAR
+            display_name: '&a确认支付'
+            lores:
+              - ' &e支付方式: 点券'
+              - ' &e金额: {points_cost}'
         cancel:
           index: 27
-          material: ARROW
-          display_name: '&c返回'
+          icon:
+            material: ARROW
+            display_name: '&c返回'
   back:
     index: 27
-    material: ARROW
-    display_name: '&c返回'
+    icon:
+      material: ARROW
+      display_name: '&c返回'

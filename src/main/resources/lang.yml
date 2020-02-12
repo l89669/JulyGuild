@@ -1,4 +1,6 @@
 VERSION: 2.0.0
+Guild:
+  member_damage_disabled: '&c成员PVP已关闭!'
 Command:
   command_format: '&f/${label} ${arg} - ${desc}'
   sub_command_format: '&f/${label} ${args} - ${desc}'
@@ -52,32 +54,15 @@ GuildMineGUI:
     timeout: '&c确认请求超时.'
     confirm: '&c如果要解散公会请在 &e{wait}秒内 &c发送: &e{confirm_str}&c, 注意: 这将使你的公会财产和成员全部清空, 请务必谨慎操作, 输入 &e取消 &c以取消操作.'
   guild_set_member_damage:
-    toggle_on: '&f成员免伤已开启.'
-    toggle_off: '&f成员免伤已关闭.'
-GuildUpgradeGUI:
-  money:
-    success: '&d升级公会人数成功, &e{old}->{new}&d.'
-    not_enough: '&c要升级公会人数, 公会银行至少还需要 &e{NEED}个 &c金币.'
-  points:
-    success: '&d升级公会人数成功, &e{old}->{new}&d.'
-    not_enough: '&c要升级公会人数, 公会银行至少还需要 &e{NEED}个 &c点券.'
+    state_on: '&f成员PVP已开启.'
+    state_off: '&f成员PVP已关闭.'
 GuildDonateGUI:
   money:
-    input:
-      message: '&e请在聊天栏输入并发送你要捐赠的金币数量(发送 &c{cancel_string} &e以取消): '
-      cancelled: '&e捐赠已取消.'
-      timeout: '&e捐赠已超时.'
-      amount_invalid: '&c捐赠数量不合法, 请输入一个整数.'
-    success: '&d你捐赠了 &e{exactly_donate_amount}个 &d金币, 手续费 &e{fee}&d.'
-    not_enough: '&c金币不足, 你只有 {owned}个 金币.'
+    not_enough: '&c金币不足, 至少还需要 &e{need}个 &c金币.'
+    success: '&d成功赞助 &e{reward}个 &d公会币, 花费 &e{cost}个 &d金币.'
   points:
-    input:
-      message: '&e请在聊天栏输入并发送你要捐赠的点券数量(发送 &c{cancel_string} &e以取消): '
-      cancelled: '&e捐赠已取消.'
-      timeout: '&e捐赠已超时.'
-      amount_invalid: '&c捐赠数量不合法.'
-    success: '&d你捐赠了 &e{exactly_donate_amount}个 &d点券, 手续费 &e{fee}&d.'
-    not_enough: '&c点券不足, 你只有 {owned}个 点券.'
+    not_enough: '&c点券不足, 至少还需要 &e{need}个 &c点券.'
+    success: '&d成功赞助 &e{reward}个 &d公会币, 花费 &e{cost}个 &d点券.'
 GuildInfoGUI:
   request_join:
     already_have: '&c你已经有一个申请加入请求了, 请等待审批.'

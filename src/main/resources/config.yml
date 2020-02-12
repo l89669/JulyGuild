@@ -11,11 +11,11 @@ gui:
   default:
     # 是否默认使用颜色转换
     colored: true
-    # 是否默认使用公会内部变量
-    use_gp: true
     # 是否默认使用PAPI
     use_papi: false
 guild:
+  member_damage:
+    disabled_notice_interval: 10 # 10秒提醒一次，成员伤害关闭
   default_icon:
     material: APPLE
     first_lore: '' # 用于支持 SX-Attribute 的物品
@@ -48,13 +48,8 @@ guild:
       money: 500
       enabled: true
   upgrade:
-    enabled: true
-    # 升级公式
-    formula: '1000*(1+0.05)^%GUILD_MAX_MEMBER_COUNT%'
     # 最大能升级到的人数
     max_member_count: 10
-  # 默认最大管理员数量
-  default_max_admin_count: 3
   # 默认最大成员数
   default_max_member_count: 5
   # 请求

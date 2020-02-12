@@ -2,6 +2,7 @@ package com.github.julyss2019.mcsp.julyguild.config.setting;
 
 import com.github.julyss2019.mcsp.julylibrary.config.Config;
 import org.bukkit.Sound;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -30,11 +31,11 @@ public class MainSettings {
     @Config(path = "guild.announcement.max_count")
     private static int announcementMaxCount;
 
-    @Config(path = "guild.default_max_member_count")
-    private static int defaultMaxMemberCount;
-
     @Config(path = "guild.request.join.timeout")
     private static int requestJoinTimeout;
+
+    @Config(path = "guild.default_max_member_count")
+    private static int defaultMaxMemberCount;
 
     @Config(path = "guild.default_max_admin_count")
     private static int defaultMaxAdminCount;
@@ -99,12 +100,6 @@ public class MainSettings {
     @Config(path = "guild.exit.confirm_str")
     private static String exitConfirmStr;
 
-    @Config(path = "guild.donate.points.fee")
-    private static double donatePointsFee;
-
-    @Config(path = "guild.donate.money.fee")
-    private static double donateMoneyFee;
-
     @Config(path = "guild.create.input.cancel_str")
     private static String createInputCancelStr;
 
@@ -114,17 +109,28 @@ public class MainSettings {
     @Config(path = "papi.non_str")
     private static String papiNonStr;
 
-    @Config(path = "gui.default.use_papi")
-    private static boolean guiDefaultUsePapi;
+    @Config(path = "guild.create.no_duplication_name")
+    private static boolean createNoDuplicationName;
+
+    @Config(path = "guild.member_damage.disabled_notice_interval")
+    private static int memberDamageDisableNoticeInterval;
 
     @Config(path = "gui.default.colored")
     private static boolean guiDefaultColored;
 
-    @Config(path = "guild.create.no_duplication_name")
-    private static boolean createNoDuplicationName;
+    @Config(path = "gui.default.use_papi")
+    private static boolean guiDefaultUsePapi;
+
+    public static boolean isGuiDefaultUsePapi() {
+        return guiDefaultUsePapi;
+    }
 
     public static boolean isGuiDefaultColored() {
         return guiDefaultColored;
+    }
+
+    public static int getMemberDamageDisableNoticeInterval() {
+        return memberDamageDisableNoticeInterval;
     }
 
     public static boolean isCreateNoDuplicationName() {
@@ -135,24 +141,12 @@ public class MainSettings {
         return papiNonStr;
     }
 
-    public static boolean isGuiDefaultUsePapi() {
-        return guiDefaultUsePapi;
-    }
-
     public static String getCreateInputCancelStr() {
         return createInputCancelStr;
     }
 
     public static int getCreateInputWaitSec() {
         return createInputWaitSec;
-    }
-
-    public static double getDonatePointsFee() {
-        return donatePointsFee;
-    }
-
-    public static double getDonateMoneyFee() {
-        return donateMoneyFee;
     }
 
     public static int getDismissWait() {

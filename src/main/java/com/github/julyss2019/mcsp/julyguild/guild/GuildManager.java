@@ -18,7 +18,6 @@ import java.util.stream.Collectors;
 
 public class GuildManager {
     private final JulyGuild plugin = JulyGuild.getInstance();
-    private final GuildPlayerManager guildPlayerManager = plugin.getGuildPlayerManager();
     private final Map<UUID, Guild> guildMap = new HashMap<>();
 
     public GuildManager() {}
@@ -67,7 +66,7 @@ public class GuildManager {
         return new ArrayList<>(guildMap.values()).stream().sorted((o1, o2) -> o1.getRank() > o2.getRank() ? -1 : 0).collect(Collectors.toList());
     }
 
-    public boolean isLoaded(UUID uuid) {
+    public boolean isLoaded(@NotNull UUID uuid) {
         return guildMap.containsKey(uuid);
     }
 
@@ -79,12 +78,13 @@ public class GuildManager {
      * 卸载公会
      * @param guild
      */
-    public void unloadGuild(Guild guild) {
+    public void unloadGuild(@NotNull Guild guild) {
         if (!isLoaded(guild.getUuid())) {
             throw new RuntimeException("公会未载入");
         }
 
         guildMap.remove(guild.getUuid());
+        guild.setValid(false);
         JulyGuild.getInstance().getCacheGuildManager().updateSortedGuilds();
     }
 
@@ -92,7 +92,7 @@ public class GuildManager {
      * 载入公会
      * @param file
      */
-    public void loadGuild(File file) {
+    public void loadGuild(@NotNull File file) {
         Guild guild = new Guild(file);
 
         // 被删除
@@ -129,7 +129,7 @@ public class GuildManager {
         }
     }
 
-    public Guild getGuild(UUID uuid) {
+    public Guild getGuild(@NotNull UUID uuid) {
         return guildMap.get(uuid);
     }
 

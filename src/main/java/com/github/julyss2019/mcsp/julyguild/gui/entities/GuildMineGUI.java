@@ -20,6 +20,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.inventory.Inventory;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class GuildMineGUI extends BasePlayerGUI {
@@ -31,7 +32,7 @@ public class GuildMineGUI extends BasePlayerGUI {
     private final GuildMember guildMember;
     private final Guild guild;
 
-    public GuildMineGUI(@Nullable GUI lastGUI, GuildMember guildMember) {
+    public GuildMineGUI(@Nullable GUI lastGUI, @NotNull GuildMember guildMember) {
         super(lastGUI, GUIType.MINE, guildMember.getGuildPlayer());
 
         this.guildMember = guildMember;
@@ -47,7 +48,9 @@ public class GuildMineGUI extends BasePlayerGUI {
                 .item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.back"), bukkitPlayer), new ItemListener() {
                     @Override
                     public void onClick(InventoryClickEvent event) {
-                        back();
+                        if (canBack()) {
+                            back();
+                        }
                     }
                 });
 
@@ -81,22 +84,13 @@ public class GuildMineGUI extends BasePlayerGUI {
         guildAnnouncementItem.getItemBuilder().lores(guild.getAnnouncements());
         guiBuilder.item(guildAnnouncementItem);
 
-        if (guildMember.hasPermission(Permission.SET_SPAWN)) {
-            guiBuilder.item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.guild_setspawn"), bukkitPlayer), new ItemListener() {
-                @Override
-                public void onClick(InventoryClickEvent event) {
-
-                }
-            });
-        }
-
         // 成员免伤
         if (guildMember.hasPermission(Permission.SET_MEMBER_DAMAGE)) {
-            guiBuilder.item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.guild_set_member_damage." + (guild.isMemberDamageEnabled() ? "toggle_off" : "toggle_on")), bukkitPlayer), new ItemListener() {
+            guiBuilder.item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.guild_set_member_damage." + (guild.isMemberDamageEnabled() ? "state_on" : "state_off")), bukkitPlayer), new ItemListener() {
                 @Override
                 public void onClick(InventoryClickEvent event) {
                     guild.setMemberDamageEnabled(!guild.isMemberDamageEnabled());
-                    Util.sendColoredMessage(bukkitPlayer, thisLangSection.getString("guild_set_member_damage." + (guild.isMemberDamageEnabled() ? "toggle_on" : "toggle_off")));
+                    Util.sendMsg(bukkitPlayer, thisLangSection.getString("guild_set_member_damage." + (guild.isMemberDamageEnabled() ? "state_on" : "state_off")));
                     reopen();
                 }
             });
@@ -119,7 +113,7 @@ public class GuildMineGUI extends BasePlayerGUI {
                 @Override
                 public void onClick(InventoryClickEvent event) {
                     close();
-                    Util.sendColoredMessage(bukkitPlayer, thisLangSection.getString("guild_dismiss.confirm"), new PlaceholderContainer()
+                    Util.sendMsg(bukkitPlayer, thisLangSection.getString("guild_dismiss.confirm"), new PlaceholderContainer()
                     .add("wait", MainSettings.getDismissWait())
                     .add("confirm_str", MainSettings.getDismissConfirmStr()));
                     new ChatInterceptor.Builder()
@@ -131,15 +125,15 @@ public class GuildMineGUI extends BasePlayerGUI {
                                 public void onChat(AsyncPlayerChatEvent event) {
                                     if (event.getMessage().equalsIgnoreCase(MainSettings.getDismissConfirmStr())) {
                                         guild.delete();
-                                        Util.sendColoredMessage(bukkitPlayer, thisLangSection.getString("guild_dismiss.success"));
+                                        Util.sendMsg(bukkitPlayer, thisLangSection.getString("guild_dismiss.success"));
                                     } else {
-                                        Util.sendColoredMessage(bukkitPlayer, thisLangSection.getString("guild_dismiss.failed"));
+                                        Util.sendMsg(bukkitPlayer, thisLangSection.getString("guild_dismiss.failed"));
                                     }
                                 }
 
                                 @Override
                                 public void onTimeout(AsyncPlayerChatEvent event) {
-                                    Util.sendColoredMessage(bukkitPlayer, thisLangSection.getString("guild_dismiss.timeout"));
+                                    Util.sendMsg(bukkitPlayer, thisLangSection.getString("guild_dismiss.timeout"));
                                 }
                             }).build().register();
                 }
@@ -149,7 +143,7 @@ public class GuildMineGUI extends BasePlayerGUI {
                 @Override
                 public void onClick(InventoryClickEvent event) {
                     close();
-                    Util.sendColoredMessage(bukkitPlayer, thisLangSection.getString("guild_exit.confirm"), new PlaceholderContainer()
+                    Util.sendMsg(bukkitPlayer, thisLangSection.getString("guild_exit.confirm"), new PlaceholderContainer()
                             .add("wait", MainSettings.getDismissWait())
                             .add("confirm_str", MainSettings.getDismissConfirmStr()));
                     new ChatInterceptor.Builder()
@@ -161,15 +155,15 @@ public class GuildMineGUI extends BasePlayerGUI {
                                 public void onChat(AsyncPlayerChatEvent event) {
                                     if (event.getMessage().equalsIgnoreCase(MainSettings.getExitConfirmStr())) {
                                         guild.removeMember(guildMember);
-                                        Util.sendColoredMessage(bukkitPlayer, thisLangSection.getString("guild_exit.success"));
+                                        Util.sendMsg(bukkitPlayer, thisLangSection.getString("guild_exit.success"));
                                     } else {
-                                        Util.sendColoredMessage(bukkitPlayer, thisLangSection.getString("guild_exit.failed"));
+                                        Util.sendMsg(bukkitPlayer, thisLangSection.getString("guild_exit.failed"));
                                     }
                                 }
 
                                 @Override
                                 public void onTimeout(AsyncPlayerChatEvent event) {
-                                    Util.sendColoredMessage(bukkitPlayer, thisLangSection.getString("guild_exit.timeout"));
+                                    Util.sendMsg(bukkitPlayer, thisLangSection.getString("guild_exit.timeout"));
                                 }
                             }).build().register();
                 }

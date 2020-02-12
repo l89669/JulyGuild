@@ -45,23 +45,15 @@ public class Util {
         return result;
     }
 
-    public static String getTimeLeftStr(long timeLeft) {
-        long h = timeLeft / 60 / 60;
-        long m = timeLeft / 60;
-        long s = timeLeft % 60;
-
-        return (h == 0 ? "" : h + "时") + (m == 0 ? "" : m + "分" + (s == 0 ? "钟" : "")) + (s == 0 && (h != 0 || m != 0) ? "" : s + "秒");
+    public static void sendMsg(CommandSender cs, String msg, PlaceholderContainer placeholderContainer) {
+        sendMsg(cs, PlaceholderText.replacePlaceholders(msg, placeholderContainer));
     }
 
-    public static void sendColoredMessage(CommandSender cs, String msg, PlaceholderContainer placeholderContainer) {
-        sendColoredMessage(cs, PlaceholderText.replacePlaceholders(msg, placeholderContainer));
-    }
-
-    public static void sendColoredMessage(CommandSender cs, String msg) {
+    public static void sendMsg(CommandSender cs, String msg) {
         JulyMessage.sendColoredMessage(cs, LangHelper.Global.getPrefix() + msg);
     }
 
-    public static void sendColoredConsoleMessage(String msg) {
+    public static void sendConsoleMsg(String msg) {
         JulyMessage.sendColoredMessage(Bukkit.getConsoleSender(), "&a[JulyGuild] &f" + msg);
     }
 

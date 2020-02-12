@@ -39,7 +39,7 @@ public class Guild implements Sender, Receiver {
     private int additionMemberCount;
     private GuildSpawn guildSpawn;
     private boolean memberDamageEnabled;
-
+    private boolean valid = true;
 
     Guild(File file) {
         this.file = file;
@@ -340,8 +340,12 @@ public class Guild implements Sender, Receiver {
         guildMember.getGuildPlayer().pointGuild(null);
     }
 
+    public void setValid(boolean valid) {
+        this.valid = valid;
+    }
+
     public boolean isValid() {
-        return !isDeleted();
+        return valid && !deleted;
     }
 
     /**
@@ -442,7 +446,7 @@ public class Guild implements Sender, Receiver {
     public void broadcastMessage(String message) {
         for (GuildMember member : getMembers()) {
             if (member.isOnline()) {
-                Util.sendColoredMessage(member.getGuildPlayer().getBukkitPlayer(), message);
+                Util.sendMsg(member.getGuildPlayer().getBukkitPlayer(), message);
             }
         }
     }

@@ -19,6 +19,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
@@ -36,11 +37,11 @@ public class GuildMemberListGUI extends BasePlayerPageableGUI {
     private List<GuildMember> members;
     private int memberCount;
 
-    public GuildMemberListGUI(@Nullable GUI lastGUI, Guild guild, GuildMember guildMember) {
+    public GuildMemberListGUI(@Nullable GUI lastGUI, @NotNull Guild guild, @NotNull GuildMember guildMember) {
         this(lastGUI, guild, guildMember.getGuildPlayer());
     }
 
-    public GuildMemberListGUI(@Nullable GUI lastGUI, Guild guild, GuildPlayer guildPlayer) {
+    public GuildMemberListGUI(@Nullable GUI lastGUI, @NotNull Guild guild, @NotNull GuildPlayer guildPlayer) {
         super(lastGUI, GUIType.MEMBER_LIST, guildPlayer);
 
         this.guild = guild;
@@ -72,19 +73,23 @@ public class GuildMemberListGUI extends BasePlayerPageableGUI {
         this.members.sort(Comparator.comparingLong(GuildMember::getJoinTime));
         this.memberCount = members.size();
 
-        setTotalPage(memberCount % positionCount == 0 ? memberCount / positionCount : memberCount / positionCount + 1);
+        setPageCount(memberCount % positionCount == 0 ? memberCount / positionCount : memberCount / positionCount + 1);
     }
 
     @Override
     public Inventory createInventory() {
         Map<Integer, GuildMember> indexMap = new HashMap<>();
         IndexConfigGUI.Builder guiBuilder = new IndexConfigGUI.Builder()
-                .fromConfig(thisGUISection, bukkitPlayer)
+                .fromConfig(thisGUISection, bukkitPlayer, new PlaceholderContainer()
+                        .add("page", getCurrentPage() + 1)
+                        .add("total_page", getPageCount()))
                 .pageItems(thisGUISection.getConfigurationSection("items.page_items"), this)
                 .item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.back"), bukkitPlayer, new PlaceholderContainer().addGuildPlaceholders(guild)), new ItemListener() {
                     @Override
                     public void onClick(InventoryClickEvent event) {
-                        back();
+                        if (canBack()) {
+                            back();
+                        }
                     }
                 });
 
@@ -115,8 +120,9 @@ public class GuildMemberListGUI extends BasePlayerPageableGUI {
 
         for (int i = 0; i < loopCount; i++) {
             GuildMember guildMember = members.get(itemCounter++);
-            ItemBuilder itemBuilder = GUIItemManager.getItemBuilder(thisGUISection.getConfigurationSection("items").getConfigurationSection("member")
-                    , bukkitPlayer, new PlaceholderContainer().addGuildMemberPlaceholders(guildMember));
+            ItemBuilder itemBuilder = GUIItemManager.getItemBuilder(thisGUISection.getConfigurationSection("items.member.icon"), bukkitPlayer, new PlaceholderContainer()
+                    .addGuildPlaceholders(guild)
+                    .addGuildMemberPlaceholders(guildMember));
 
             // 管理模式
             if (viewerType == ViewerType.MANAGER) {

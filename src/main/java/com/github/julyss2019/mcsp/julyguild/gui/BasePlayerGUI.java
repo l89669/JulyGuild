@@ -1,6 +1,7 @@
 package com.github.julyss2019.mcsp.julyguild.gui;
 
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -11,7 +12,7 @@ public abstract class BasePlayerGUI implements GUI {
     protected final GUIType type;
     protected final GuildPlayer guildPlayer;
 
-    protected BasePlayerGUI(@Nullable GUI lastGUI, GUIType guiType, GuildPlayer guildPlayer) {
+    protected BasePlayerGUI(@Nullable GUI lastGUI, @NotNull GUIType guiType, @NotNull GuildPlayer guildPlayer) {
         this.lastGUI = lastGUI;
         this.type = guiType;
         this.guildPlayer = guildPlayer;

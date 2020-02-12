@@ -10,6 +10,6 @@ public enum GUIType {
     MEMBER_MANAGE,
     PROMOTE,
     DONATE,
-    DONATE_CONFIRM,
+    SHOP,
     BASE_CONFIRM
 }

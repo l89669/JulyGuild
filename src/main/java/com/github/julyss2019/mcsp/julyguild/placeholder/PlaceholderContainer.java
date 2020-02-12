@@ -33,7 +33,7 @@ public class PlaceholderContainer {
         add("guild_name", guild.getName());
         add("guild_ranking", JulyGuild.getInstance().getCacheGuildManager().getRanking(guild));
         add("guild_owner", guild.getOwner().getName());
-        add("guild_money", Util.SIMPLE_DECIMAL_FORMAT.format(guild.getGuildBank().getBalance(GuildBank.BalanceType.GMONEY)));
+        add("guild_gmoney", Util.SIMPLE_DECIMAL_FORMAT.format(guild.getGuildBank().getBalance(GuildBank.BalanceType.GMONEY)));
         add("guild_member_count", guild.getMemberCount());
         add("guild_max_member_count", guild.getMaxMemberCount());
         add("guild_creation_time", TimeUtil.YMD_SDF.format(guild.getCreateTime()));
@@ -44,20 +44,12 @@ public class PlaceholderContainer {
         add("member_name", guildMember.getName());
         add("member_position", LangHelper.Global.getPositionName(guildMember.getPosition()));
         add("member_join_time", LangHelper.Global.getDateTimeFormat().format(guildMember.getJoinTime()));
-        add("member_donate_money", Util.SIMPLE_DECIMAL_FORMAT.format(guildMember.getDonated(GuildBank.BalanceType.GMONEY)));
+        add("member_donated_gmoney", Util.SIMPLE_DECIMAL_FORMAT.format(guildMember.getDonated(GuildBank.BalanceType.GMONEY)));
         return this;
     }
 
-    public PlaceholderContainer add(@NotNull String key, double value) {
-        return add(key, String.valueOf(value));
-    }
-
-    public PlaceholderContainer add(@NotNull String key, int value) {
-        return add(key, String.valueOf(value));
-    }
-
-    public PlaceholderContainer add(@NotNull String key, @NotNull String value) {
-        placeholders.add(new Placeholder(key, value));
+    public PlaceholderContainer add(@NotNull String key, @NotNull Object value) {
+        placeholders.add(new Placeholder(key, value.toString()));
         return this;
     }
 }

@@ -43,7 +43,7 @@ public abstract class BaseRequest implements Request {
     }
 
     @Override
-    public void save(ConfigurationSection section) {
+    public void onSave(ConfigurationSection section) {
         section.set("creation_time", getCreationTime());
         section.set("uuid", getUuid().toString());
         section.set("type", getType().name());
@@ -54,7 +54,7 @@ public abstract class BaseRequest implements Request {
     }
 
     @Override
-    public void load(ConfigurationSection section) {
+    public void onLoad(ConfigurationSection section) {
         this.creationTime = section.getLong("creation_time");
         this.uuid = UUID.fromString(section.getString("uuid"));
 

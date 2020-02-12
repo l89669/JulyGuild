@@ -72,7 +72,7 @@ public class GuildPlayer implements Sender, Receiver {
     }
 
     public Guild getGuild() {
-        return JulyGuild.getInstance().getGuildManager().getGuild(guildUuid);
+        return guildUuid == null ? null : JulyGuild.getInstance().getGuildManager().getGuild(guildUuid);
     }
 
     /**

@@ -4,8 +4,6 @@ import com.github.julyss2019.mcsp.julyguild.JulyGuild;
 import com.github.julyss2019.mcsp.julyguild.config.gui.IndexConfigGUI;
 import com.github.julyss2019.mcsp.julyguild.config.gui.item.GUIItemManager;
 import com.github.julyss2019.mcsp.julyguild.config.setting.MainSettings;
-import com.github.julyss2019.mcsp.julyguild.gui.BaseConfirmGUI;
-import com.github.julyss2019.mcsp.julyguild.gui.BasePayGUI;
 import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
 import com.github.julyss2019.mcsp.julyguild.gui.BasePlayerPageableGUI;
 import com.github.julyss2019.mcsp.julyguild.guild.Guild;
@@ -24,6 +22,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.inventory.Inventory;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 /*
@@ -45,7 +44,7 @@ public class MainGUI extends BasePlayerPageableGUI {
     private List<Guild> guilds;
     private int guildCount;
 
-    public MainGUI(GuildPlayer guildPlayer) {
+    public MainGUI(@NotNull GuildPlayer guildPlayer) {
         super(null, GUIType.MAIN, guildPlayer);
     }
 
@@ -54,7 +53,7 @@ public class MainGUI extends BasePlayerPageableGUI {
         this.guilds = plugin.getCacheGuildManager().getSortedGuilds();
         this.guildCount = guilds.size();
 
-        setTotalPage(guildCount % itemIndexCount == 0 ? guildCount / itemIndexCount : guildCount / itemIndexCount + 1);
+        setPageCount(guildCount % itemIndexCount == 0 ? guildCount / itemIndexCount : guildCount / itemIndexCount + 1);
     }
 
     @Override
@@ -64,7 +63,7 @@ public class MainGUI extends BasePlayerPageableGUI {
         IndexConfigGUI.Builder guiBuilder = (IndexConfigGUI.Builder) new IndexConfigGUI.Builder()
                 .fromConfig(thisGUISection, bukkitPlayer, new PlaceholderContainer()
                         .add("page", String.valueOf(getCurrentPage() + 1))
-                        .add("total_page", String.valueOf(getTotalPage())))
+                        .add("total_page", String.valueOf(getPageCount())))
                 .colored()
                 .listener(new InventoryListener() {
                     @Override
@@ -106,7 +105,7 @@ public class MainGUI extends BasePlayerPageableGUI {
                 @Override
                 public void onClick(InventoryClickEvent event) {
                     close();
-                    Util.sendColoredMessage(bukkitPlayer, thisLangSection.getString("create.input.tip"), new PlaceholderContainer()
+                    Util.sendMsg(bukkitPlayer, thisLangSection.getString("create.input.tip"), new PlaceholderContainer()
                             .add("cancel_str", MainSettings.getCreateInputCancelStr()));
                     new ChatInterceptor.Builder()
                             .plugin(plugin)
@@ -119,7 +118,7 @@ public class MainGUI extends BasePlayerPageableGUI {
                                     String msg = event.getMessage();
 
                                     if (msg.equalsIgnoreCase(MainSettings.getCreateInputCancelStr())) {
-                                        Util.sendColoredMessage(bukkitPlayer, thisLangSection.getString("create.input.cancelled"));
+                                        Util.sendMsg(bukkitPlayer, thisLangSection.getString("create.input.cancelled"));
                                         return;
                                     }
 
@@ -128,19 +127,19 @@ public class MainGUI extends BasePlayerPageableGUI {
                                     if (MainSettings.isCreateNoDuplicationName()) {
                                         for (Guild guild : plugin.getGuildManager().getGuilds()) {
                                             if (guild.getName().equalsIgnoreCase(guildName)) {
-                                                Util.sendColoredMessage(bukkitPlayer, thisLangSection.getString("create.input.no_duplication_name"));
+                                                Util.sendMsg(bukkitPlayer, thisLangSection.getString("create.input.no_duplication_name"));
                                                 return;
                                             }
                                         }
                                     }
 
                                     if (!guildName.matches(MainSettings.getCreateNameRegex())) {
-                                        Util.sendColoredMessage(bukkitPlayer, thisLangSection.getString("create.input.regex_not_match"));
+                                        Util.sendMsg(bukkitPlayer, thisLangSection.getString("create.input.regex_not_match"));
                                         return;
                                     }
 
                                     if (guildName.contains("§") && !bukkitPlayer.hasPermission("JulyGuild.create.colored")) {
-                                        Util.sendColoredMessage(bukkitPlayer, thisLangSection.getString("create.no_colored_name_permission"));
+                                        Util.sendMsg(bukkitPlayer, thisLangSection.getString("create.no_colored_name_permission"));
                                         return;
                                     }
 
@@ -149,7 +148,7 @@ public class MainGUI extends BasePlayerPageableGUI {
 
                                 @Override
                                 public void onTimeout(AsyncPlayerChatEvent event) {
-                                    Util.sendColoredMessage(bukkitPlayer, thisLangSection.getString("create.input.timeout"));
+                                    Util.sendMsg(bukkitPlayer, thisLangSection.getString("create.input.timeout"));
                                 }
                             }).build().register();
                 }
@@ -163,7 +162,7 @@ public class MainGUI extends BasePlayerPageableGUI {
             // 公会图标
             for (int i = 0; i < loopCount; i++) {
                 Guild guild = guilds.get(itemCounter++);
-                ItemBuilder itemBuilder = GUIItemManager.getItemBuilder(thisGUISection.getConfigurationSection("items.guild"), bukkitPlayer, new PlaceholderContainer().addGuildPlaceholders(guild))
+                ItemBuilder itemBuilder = GUIItemManager.getItemBuilder(thisGUISection.getConfigurationSection("items.guild.icon"), bukkitPlayer, new PlaceholderContainer().addGuildPlaceholders(guild))
                         .material(Material.STONE);
 
                 indexMap.put(itemIndexes.get(i), guild);

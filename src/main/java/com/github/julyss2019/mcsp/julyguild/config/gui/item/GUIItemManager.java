@@ -37,7 +37,7 @@ public class GUIItemManager {
             return null;
         }
 
-        return new PriorityItem(section.getInt("priority"), getItemBuilder(section, papiPlayer, placeholderContainer));
+        return new PriorityItem(section.getInt("priority"), getItemBuilder(section.getConfigurationSection("icon"), papiPlayer, placeholderContainer));
     }
 
 
@@ -46,7 +46,7 @@ public class GUIItemManager {
     }
 
     public static IndexItem getIndexItem(@NotNull ConfigurationSection section, @Nullable PlaceholderContainer placeholderContainer) {
-        return getIndexItem(section, (OfflinePlayer) null, placeholderContainer);
+        return getIndexItem(section, null, placeholderContainer);
     }
 
     public static IndexItem getIndexItem(@NotNull ConfigurationSection section, @Nullable OfflinePlayer papiPlayer) {
@@ -60,10 +60,10 @@ public class GUIItemManager {
         }
 
         if (section.getInt("index", 0) <= 0) {
-            throw new RuntimeException(section.getCurrentPath() + ".index 不合法");
+            throw new RuntimeException("index 不合法: " + section.getCurrentPath());
         }
 
-        return new IndexItem(section.getInt("index") - 1, getItemBuilder(section, papiPlayer, placeholderContainer));
+        return new IndexItem(section.getInt("index") - 1, getItemBuilder(section.getConfigurationSection("icon"), papiPlayer, placeholderContainer));
     }
 
 
@@ -75,14 +75,8 @@ public class GUIItemManager {
     public static ItemBuilder getItemBuilder(@NotNull ConfigurationSection section, @Nullable OfflinePlayer papiPlayer, @Nullable PlaceholderContainer placeholderContainer) {
         ItemBuilder itemBuilder = new ItemBuilder();
 
-        try {
-            itemBuilder.material(Material.valueOf(section.getString("material")));
-        } catch (Exception e) {
-            itemBuilder.material(Material.STONE);
-            Util.sendColoredConsoleMessage("&c" + section.getCurrentPath() + ".material 不合法.");
-        }
-
         itemBuilder
+                .material(Material.valueOf(section.getString("material")))
                 .durability((short) section.getInt("durability", 0))
                 .colored(section.getBoolean("colored", MainSettings.isGuiDefaultColored()));
 
@@ -131,8 +125,6 @@ public class GUIItemManager {
                 throw new RuntimeException("enchantments 不合法: " + section);
             }
         }
-
-
 
         return itemBuilder;
     }

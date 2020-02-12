@@ -1,8 +1,6 @@
 package com.github.julyss2019.mcsp.julyguild.gui;
 
-import com.github.julyss2019.mcsp.julyguild.JulyGuild;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -10,7 +8,7 @@ import org.jetbrains.annotations.Nullable;
  */
 public abstract class PageableGUI extends BasePlayerGUI {
     private int currentPage = -1;
-    private int totalPage;
+    private int pageCount;
 
     public PageableGUI(@Nullable GUI lastGUI, GUIType guiType, GuildPlayer guildPlayer) {
         super(lastGUI, guiType, guildPlayer);
@@ -45,7 +43,7 @@ public abstract class PageableGUI extends BasePlayerGUI {
 
     // 是否有下一页
     public boolean hasNextPage() {
-        return getCurrentPage() < getTotalPage() - 1;
+        return getCurrentPage() < getPageCount() - 1;
     }
 
     // 是否有上一页
@@ -63,12 +61,12 @@ public abstract class PageableGUI extends BasePlayerGUI {
     }
 
     // 得到总页数
-    public int getTotalPage() {
-        return totalPage;
+    public int getPageCount() {
+        return pageCount;
     }
 
-    public void setTotalPage(int totalPage) {
-        this.totalPage = totalPage;
+    public void setPageCount(int pageCount) {
+        this.pageCount = pageCount;
     }
 
     // 得到当前页数
@@ -78,15 +76,15 @@ public abstract class PageableGUI extends BasePlayerGUI {
 
     // 是否是有效的页数
     public boolean isValidPage(int p) {
-        if (totalPage == 0) {
+        if (pageCount == 0) {
             return p == -1;
         }
 
-        return p >= 0 && p < totalPage;
+        return p >= 0 && p < pageCount;
     }
 
     /**
-     * 数据和界面分离，通常是个List，在这 update() 并设置 totalPage，而 createInventory() 仅仅只是根据当前数据（页数）返回GUI
+     * 数据和界面分离，通常是个List，在这 update() 并设置 pageCount，而 createInventory() 仅仅只是根据当前数据（页数）返回GUI
      */
     public abstract void update();
 
@@ -94,7 +92,7 @@ public abstract class PageableGUI extends BasePlayerGUI {
     public void open() {
         update();
 
-        if (totalPage != 0) {
+        if (pageCount != 0) {
             if (currentPage == -1) {
                 setCurrentPage(0);
             } else if (isValidPage(currentPage - 1) ){

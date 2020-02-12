@@ -5,111 +5,125 @@ title: '&e&l管理成员'
 other_items:
   member:
     index: 14
-    material: SKULL_ITEM
-    durability: 3
-    skull_texture: 'eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjU1ZmU2MDdiMDZiMTQwNTQxM2U2ZTI5OTljMmYzNjA0N2ZmNzhmZTc2Njk3MWMxMWIzOTIzNWY2MGUyMmEzZiJ9fX0='
-    display_name: '{member_name}'
-    lores:
-      - ' &f公会: {guild_name}'
-      - ' &f职位: {member_position}'
-      - ' &f入会时间: {member_join_time}'
-      - ' &f已赞助金币: {member_donate_money}'
-      - ' &f已赞助点券: {member_donate_points}'
-      - ''
-      - ' &c点击下方图标进行操作'
+    icon:
+      material: SKULL_ITEM
+      durability: 3
+      skull_texture: 'eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjU1ZmU2MDdiMDZiMTQwNTQxM2U2ZTI5OTljMmYzNjA0N2ZmNzhmZTc2Njk3MWMxMWIzOTIzNWY2MGUyMmEzZiJ9fX0='
+      display_name: '{member_name}'
+      lores:
+        - ' &f公会: {guild_name}'
+        - ' &f职位: {member_position}'
+        - ' &f入会时间: {member_join_time}'
+        - ' &f已赞助公会币: {member_donate_gmoney}'
+        - ''
+        - ' &c点击下方图标进行操作'
 items:
   back:
     index: 50
-    material: ARROW
-    display_name: '&c返回'
+    icon:
+      material: ARROW
+      display_name: '&c返回'
   kick:
     priority: 0
-    material: SHEARS
-    display_name: '&c踢出'
-    lores:
-      - '&c将成员移出公会'
+    icon:
+      material: SHEARS
+      display_name: '&c踢出'
+      lores:
+        - '&c将成员移出公会'
     ConfirmGUI:
       row: 3
       title: '&c&l确认'
       items:
         confirm:
           index: 12
-          material: NETHER_STAR
-          display_name: '&c确认踢出'
-          lores:
-            - ' &c警告: 本操作不可逆, 这将使 &e{target} &c的公会财产全部清空!'
+          icon:
+            material: NETHER_STAR
+            display_name: '&c确认踢出'
+            lores:
+              - ' &c警告: 本操作不可逆, 这将使 &e{target} &c的公会财产全部清空!'
         cancel:
           index: 16
-          material: ARROW
-          display_name: '&f取消操作'
+          icon:
+            material: ARROW
+            display_name: '&f取消操作'
   manage_member_kick:
     give:
       priority: -1
-      material: NAME_TAG
-      flags:
-        - '*'
-      display_name: '&c给予踢人的权限'
+      icon:
+        material: NAME_TAG
+        flags:
+          - '*'
+        display_name: '&c给予踢人的权限'
     take:
       priority: -1
-      material: NAME_TAG
-      flags:
-        - '*'
-      enchantments:
-        DAMAGE_ALL: 1
-      display_name: '&c取消踢人的权限'
+      icon:
+        material: NAME_TAG
+        flags:
+          - '*'
+        enchantments:
+          DAMAGE_ALL: 1
+        display_name: '&c取消踢人的权限'
   manage_set_spawn:
     give:
       priority: -2
-      material: GRASS
-      display_name: '&c给予设置主城的权限'
+      icon:
+        material: GRASS
+        display_name: '&c给予设置主城的权限'
     take:
       priority: -2
-      material: GRASS
-      flags:
-        - '*'
-      enchantments:
-        DAMAGE_ALL: 1
-      display_name: '&c取消设置主城的权限'
+      icon:
+        material: GRASS
+        flags:
+          - '*'
+        enchantments:
+          DAMAGE_ALL: 1
+        display_name: '&c取消设置主城的权限'
   manage_set_member_damage:
     give:
       priority: -3
-      material: GOLD_SWORD
-      flags:
-        - '*'
-      display_name: '&c给予开关成员PVP的权限'
+      icon:
+        material: GOLD_SWORD
+        flags:
+          - '*'
+        display_name: '&c给予开关成员PVP的权限'
     take:
       priority: -3
-      material: GOLD_SWORD
-      flags:
-        - '*'
-      enchantments:
-        DAMAGE_ALL: 1
-      display_name: '&c取消开关成员PVP的权限'
+      icon:
+        material: GOLD_SWORD
+        flags:
+          - '*'
+        enchantments:
+          DAMAGE_ALL: 1
+        display_name: '&c取消开关成员PVP的权限'
   manage_player_join_check:
     give:
       priority: -4
-      display_name: '&c给予入会审批的权限'
-      material: TOTEM
-      flags:
-        - '*'
+      icon:
+        display_name: '&c给予入会审批的权限'
+        material: TOTEM
+        flags:
+          - '*'
     take:
       priority: -4
-      material: TOTEM
-      flags:
-        - '*'
-      enchantments:
-        DAMAGE_ALL: 1
-      display_name: '&c取消入会审批的权限'
+      icon:
+        material: TOTEM
+        flags:
+          - '*'
+        enchantments:
+          DAMAGE_ALL: 1
+        display_name: '&c取消入会审批的权限'
   manage_guild_upgrade:
     give:
       priority: -5
-      material: TIPPED_ARROW
-      display_name: '&c给予公会升级的权限'
+      icon:
+        material: TIPPED_ARROW
+        display_name: '&c给予公会升级的权限'
     take:
       priority: -5
-      material: TIPPED_ARROW
-      flags:
-        - '*'
-      enchantments:
-        DAMAGE_ALL: 1
-      display_name: '&c取消公会升级的权限'
+      icon:
+        material: TIPPED_ARROW
+        flags:
+          - '*'
+        enchantments:
+          DAMAGE_ALL: 1
+        display_name: '&c取消公会升级的权限'

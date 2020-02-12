@@ -45,22 +45,21 @@ public class GuildCreateGUI extends BasePayGUI {
 
     @Override
     public void onMoneyPay() {
+        if (!vaultEconomy.has(bukkitPlayer, MainSettings.getCreateCostMoneyAmount())) {
+            Util.sendMsg(bukkitPlayer, PlaceholderText.replacePlaceholders(thisLangSection.getString("money.not_enough"), new PlaceholderContainer()
+                    .add("need", MainSettings.getCreateCostMoneyAmount() - vaultEconomy.getBalance(bukkitPlayer))));
+            return;
+        }
+
         new BaseConfirmGUI(this, guildPlayer, plugin.getGUIYaml("GuildCreateGUI").getConfigurationSection("items.money.ConfirmGUI"), super.getPlaceholderContainer()) {
             @Override
             public boolean canUse() {
-                return GuildCreateGUI.this.canUse();
+                return !guildPlayer.isInGuild() && !vaultEconomy.has(bukkitPlayer, MainSettings.getCreateCostMoneyAmount());
             }
 
             @Override
             public void onConfirm() {
                 close();
-
-                if (!vaultEconomy.has(bukkitPlayer, MainSettings.getCreateCostMoneyAmount())) {
-                    Util.sendColoredMessage(bukkitPlayer, PlaceholderText.replacePlaceholders(thisLangSection.getString("money.not_enough"), new PlaceholderContainer()
-                            .add("need", MainSettings.getCreateCostMoneyAmount() - vaultEconomy.getBalance(bukkitPlayer))));
-                    return;
-                }
-
                 vaultEconomy.withdraw(bukkitPlayer, MainSettings.getCreateCostMoneyAmount());
                 createGuild(guildPlayer, guildName);
             }
@@ -74,22 +73,21 @@ public class GuildCreateGUI extends BasePayGUI {
 
     @Override
     public void onPointsPay() {
+        if (!playerPointsEconomy.has(bukkitPlayer, MainSettings.getCreateCostPointsAmount())) {
+            Util.sendMsg(bukkitPlayer, PlaceholderText.replacePlaceholders(thisLangSection.getString("points.not_enough"), new PlaceholderContainer()
+                    .add("need", String.valueOf(MainSettings.getCreateCostPointsAmount() - playerPointsEconomy.getBalance(bukkitPlayer)))));
+            return;
+        }
+
         new BaseConfirmGUI(this, guildPlayer, plugin.getGUIYaml("GuildCreateGUI").getConfigurationSection("items.points.ConfirmGUI"), super.getPlaceholderContainer()) {
             @Override
             public boolean canUse() {
-                return GuildCreateGUI.this.canUse();
+                return !guildPlayer.isInGuild() && playerPointsEconomy.has(bukkitPlayer, MainSettings.getCreateCostPointsAmount());
             }
 
             @Override
             public void onConfirm() {
                 close();
-
-                if (!playerPointsEconomy.has(bukkitPlayer, MainSettings.getCreateCostPointsAmount())) {
-                    Util.sendColoredMessage(bukkitPlayer, PlaceholderText.replacePlaceholders(thisLangSection.getString("points.not_enough"), new PlaceholderContainer()
-                            .add("need", String.valueOf(MainSettings.getCreateCostPointsAmount() - playerPointsEconomy.getBalance(bukkitPlayer)))));
-                    return;
-                }
-
                 playerPointsEconomy.withdraw(bukkitPlayer, MainSettings.getCreateCostPointsAmount());
                 createGuild(guildPlayer, guildName);
             }

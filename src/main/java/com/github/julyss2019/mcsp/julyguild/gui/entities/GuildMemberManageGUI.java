@@ -17,6 +17,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Set;
@@ -30,7 +31,7 @@ public class GuildMemberManageGUI extends BasePlayerGUI {
     private final Player targetBukkitPlayer;
 
 
-    public GuildMemberManageGUI(@Nullable GUI lastGUI, GuildMember mangerGuildMember, GuildMember targetGuildMember) {
+    public GuildMemberManageGUI(@Nullable GUI lastGUI, @NotNull GuildMember mangerGuildMember, @NotNull GuildMember targetGuildMember) {
         super(lastGUI, GUIType.MEMBER_MANAGE, mangerGuildMember.getGuildPlayer());
 
         this.managerGuildMember = mangerGuildMember;
@@ -46,7 +47,9 @@ public class GuildMemberManageGUI extends BasePlayerGUI {
                 .item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.back"), targetBukkitPlayer), new ItemListener() {
                     @Override
                     public void onClick(InventoryClickEvent event) {
-                        back();
+                        if (canBack()) {
+                            back();
+                        }
                     }
                 });
 

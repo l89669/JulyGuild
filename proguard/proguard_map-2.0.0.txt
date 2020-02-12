@@ -1,16 +1,16 @@
 com.github.julyss2019.mcsp.julyguild.JulyGuild -> com.github.julyss2019.mcsp.julyguild.JulyGuild:
-    boolean DEV_MODE -> do
-    java.lang.String[] GUI_RESOURCES -> if
-    java.lang.String[] CONFIG_RESOURCES -> for
-    java.lang.String[] DEPEND_PLUGINS -> int
-    com.github.julyss2019.mcsp.julyguild.JulyGuild instance -> new
-    com.google.gson.Gson gson -> try
-    com.github.julyss2019.mcsp.julyguild.guild.GuildManager guildManager -> byte
-    com.github.julyss2019.mcsp.julyguild.player.GuildPlayerManager guildPlayerManager -> case
-    com.github.julyss2019.mcsp.julyguild.guild.CacheGuildManager cacheGuildManager -> char
-    com.github.julyss2019.mcsp.julyguild.request.RequestManager requestManager -> else
-    com.github.julyss2019.mcsp.julylibrary.command.JulyCommandExecutor julyCommandExecutor -> goto
-    com.github.julyss2019.mcsp.julylibrary.command.tab.JulyTabCompleter julyTabCompleter -> long
+    java.lang.String VERSION -> do
+    boolean DEV_MODE -> if
+    java.lang.String[] GUI_RESOURCES -> for
+    java.lang.String[] CONFIG_RESOURCES -> int
+    java.lang.String[] SHOP_RESOURCES -> new
+    java.lang.String[] DEPEND_PLUGINS -> try
+    com.github.julyss2019.mcsp.julyguild.JulyGuild instance -> byte
+    com.github.julyss2019.mcsp.julyguild.guild.GuildManager guildManager -> case
+    com.github.julyss2019.mcsp.julyguild.player.GuildPlayerManager guildPlayerManager -> char
+    com.github.julyss2019.mcsp.julyguild.guild.CacheGuildManager cacheGuildManager -> else
+    com.github.julyss2019.mcsp.julyguild.request.RequestManager requestManager -> goto
+    com.github.julyss2019.mcsp.julylibrary.commandv2.JulyCommandHandler julyCommandHandler -> long
     com.github.julyss2019.mcsp.julyguild.thirdparty.economy.VaultEconomy vaultEconomy -> this
     com.github.julyss2019.mcsp.julyguild.thirdparty.economy.PlayerPointsEconomy playerPointsEconomy -> void
     com.github.julyss2019.mcsp.julylibrary.logger.FileLogger fileLogger -> break
@@ -20,54 +20,51 @@ com.github.julyss2019.mcsp.julyguild.JulyGuild -> com.github.julyss2019.mcsp.jul
     com.github.julyss2019.mcsp.julyguild.config.GuildShopConfig guildShopConfig -> final
     java.util.Map guiYamlMap -> float
     java.lang.Object placeholderAPIExpansion -> short
-    56:90:void <init>() -> <init>
-    95:95:java.lang.String getFileVersion(java.io.File) -> do
-    99:105:java.lang.String getLatestFileVersion(java.lang.String) -> new
-    114:167:void saveResourceFile(java.lang.String,java.io.File) -> do
-    170:170:java.io.File getConfigFile(java.lang.String) -> try
-    174:174:java.io.File getGUIFile(java.lang.String) -> byte
-    183:203:void completeConfig(java.io.File,org.bukkit.configuration.file.YamlConfiguration,org.bukkit.configuration.ConfigurationSection) -> do
-    206:216:void init() -> void
-    221:321:void onEnable() -> onEnable
-    325:341:void onDisable() -> onDisable
-    344:363:void checkGuilds() -> break
-    366:366:boolean isPlaceHolderAPIEnabled() -> do
-    370:371:void runTasks() -> catch
-    374:374:com.github.julyss2019.mcsp.julyguild.guild.CacheGuildManager getCacheGuildManager() -> if
-    378:378:com.github.julyss2019.mcsp.julyguild.request.RequestManager getRequestManager() -> for
-    382:383:void registerListeners() -> class
-    386:387:void writeGuildLog(com.github.julyss2019.mcsp.julyguild.log.GuildLog) -> do
-    390:390:com.github.julyss2019.mcsp.julylibrary.logger.FileLogger getFileLogger() -> int
-    394:400:net.milkbowl.vault.economy.Economy setupEconomy() -> const
-    404:406:void registerCommands() -> final
-    409:411:void registerCommand(com.github.julyss2019.mcsp.julylibrary.command.tab.JulyTabCommand) -> do
-    417:425:void reloadPluginConfig() -> new
-    431:467:void loadConfig() -> float
-    473:521:void loadSpecialConfig() -> short
-    524:524:org.bukkit.configuration.file.YamlConfiguration getLangYaml() -> try
-    528:528:org.bukkit.configuration.file.YamlConfiguration getGUIYaml(java.lang.String) -> do
-    532:532:com.github.julyss2019.mcsp.julyguild.thirdparty.economy.VaultEconomy getVaultEconomy() -> byte
-    536:536:com.github.julyss2019.mcsp.julyguild.thirdparty.economy.PlayerPointsEconomy getPlayerPointsEconomy() -> case
-    540:540:boolean isPlayerPointsHooked() -> char
-    544:544:com.github.julyss2019.mcsp.julyguild.guild.GuildManager getGuildManager() -> else
-    548:548:com.github.julyss2019.mcsp.julyguild.player.GuildPlayerManager getGuildPlayerManager() -> goto
-    552:552:com.github.julyss2019.mcsp.julyguild.JulyGuild getInstance() -> long
-    556:556:com.github.julyss2019.mcsp.julyguild.config.IconShopConfig getIconShopConfig() -> this
-    560:561:void warning(java.lang.String) -> if
-    564:565:void info(java.lang.String) -> for
-    568:569:void error(java.lang.String) -> int
-    572:573:void error(java.lang.String,java.lang.RuntimeException) -> do
-    420:424:void lambda$reloadPluginConfig$0(com.github.julyss2019.mcsp.julyguild.player.GuildPlayer) -> do
-    73:73:void <clinit>() -> <clinit>
-com.github.julyss2019.mcsp.julyguild.LangHelper -> b.do:
+    50:83:void <init>() -> <init>
+    88:88:java.lang.String getFileVersion(java.io.File) -> do
+    92:98:java.lang.String getLatestFileVersion(java.lang.String) -> new
+    107:160:void saveResourceFile(java.lang.String,java.io.File) -> do
+    163:163:java.io.File getConfigFile(java.lang.String) -> try
+    167:167:java.io.File getGUIFile(java.lang.String) -> byte
+    176:196:void completeConfig(java.io.File,org.bukkit.configuration.file.YamlConfiguration,org.bukkit.configuration.ConfigurationSection) -> do
+    199:209:void init() -> void
+    213:316:void onEnable() -> onEnable
+    320:337:void onDisable() -> onDisable
+    340:359:void checkGuilds() -> break
+    362:362:boolean isPlaceHolderAPIEnabled() -> do
+    366:367:void runTasks() -> catch
+    370:370:com.github.julyss2019.mcsp.julyguild.guild.CacheGuildManager getCacheGuildManager() -> if
+    374:374:com.github.julyss2019.mcsp.julyguild.request.RequestManager getRequestManager() -> for
+    378:380:void registerListeners() -> class
+    384:384:void writeGuildLog(com.github.julyss2019.mcsp.julyguild.log.GuildLog) -> do
+    387:387:com.github.julyss2019.mcsp.julylibrary.logger.FileLogger getFileLogger() -> int
+    391:397:net.milkbowl.vault.economy.Economy setupEconomy() -> const
+    401:403:void registerCommands() -> final
+    409:417:void reloadPluginConfig() -> new
+    423:457:void loadConfig() -> float
+    460:460:org.bukkit.configuration.file.YamlConfiguration getLangYaml() -> try
+    464:464:org.bukkit.configuration.file.YamlConfiguration getGUIYaml(java.lang.String) -> do
+    468:468:com.github.julyss2019.mcsp.julyguild.thirdparty.economy.VaultEconomy getVaultEconomy() -> byte
+    472:472:com.github.julyss2019.mcsp.julyguild.thirdparty.economy.PlayerPointsEconomy getPlayerPointsEconomy() -> case
+    476:476:boolean isPlayerPointsHooked() -> char
+    480:480:com.github.julyss2019.mcsp.julyguild.guild.GuildManager getGuildManager() -> else
+    484:484:com.github.julyss2019.mcsp.julyguild.player.GuildPlayerManager getGuildPlayerManager() -> goto
+    488:488:com.github.julyss2019.mcsp.julyguild.JulyGuild getInstance() -> long
+    492:492:com.github.julyss2019.mcsp.julyguild.config.IconShopConfig getIconShopConfig() -> this
+    496:497:void warning(java.lang.String) -> if
+    500:501:void info(java.lang.String) -> for
+    504:505:void error(java.lang.String) -> int
+    508:509:void error(java.lang.String,java.lang.RuntimeException) -> do
+    412:416:void lambda$reloadPluginConfig$0(com.github.julyss2019.mcsp.julyguild.player.GuildPlayer) -> do
+com.github.julyss2019.mcsp.julyguild.LangHelper -> class.do:
     11:11:void <init>() -> <init>
-com.github.julyss2019.mcsp.julyguild.LangHelper$Global -> b.do$do:
+com.github.julyss2019.mcsp.julyguild.LangHelper$Global -> class.do$do:
     12:12:void <init>() -> <init>
     14:14:java.text.SimpleDateFormat getDateTimeFormat() -> do
     18:18:java.lang.String getPrefix() -> if
     22:27:java.lang.String getNickName(com.github.julyss2019.mcsp.julyguild.guild.GuildMember) -> do
     31:31:java.lang.String getPositionName(com.github.julyss2019.mcsp.julyguild.guild.Position) -> do
-com.github.julyss2019.mcsp.julyguild.Metrics -> b.if:
+com.github.julyss2019.mcsp.julyguild.Metrics -> class.if:
     int B_STATS_VERSION -> do
     java.lang.String URL -> if
     boolean enabled -> for
@@ -91,48 +88,48 @@ com.github.julyss2019.mcsp.julyguild.Metrics -> b.if:
     30:30:void access$300(org.bukkit.plugin.Plugin,com.google.gson.JsonObject) -> do
     30:30:boolean access$400() -> for
     34:44:void <clinit>() -> <clinit>
-com.github.julyss2019.mcsp.julyguild.Metrics$1 -> b.for:
+com.github.julyss2019.mcsp.julyguild.Metrics$1 -> class.for:
     java.util.Timer val$timer -> do
     com.github.julyss2019.mcsp.julyguild.Metrics this$0 -> if
     168:168:void <init>(com.github.julyss2019.mcsp.julyguild.Metrics,java.util.Timer) -> <init>
     171:178:void run() -> run
     177:177:void lambda$run$0() -> do
-com.github.julyss2019.mcsp.julyguild.Metrics$2 -> b.int:
+com.github.julyss2019.mcsp.julyguild.Metrics$2 -> class.int:
     com.google.gson.JsonObject val$data -> do
     com.github.julyss2019.mcsp.julyguild.Metrics this$0 -> if
     303:303:void <init>(com.github.julyss2019.mcsp.julyguild.Metrics,com.google.gson.JsonObject) -> <init>
     308:315:void run() -> run
-com.github.julyss2019.mcsp.julyguild.Metrics$AdvancedBarChart -> b.if$do:
+com.github.julyss2019.mcsp.julyguild.Metrics$AdvancedBarChart -> class.if$do:
     java.util.concurrent.Callable callable -> if
     685:687:void <init>(java.lang.String,java.util.concurrent.Callable) -> <init>
     691:715:com.google.gson.JsonObject getChartData() -> do
-com.github.julyss2019.mcsp.julyguild.Metrics$AdvancedPie -> b.if$if:
+com.github.julyss2019.mcsp.julyguild.Metrics$AdvancedPie -> class.if$if:
     java.util.concurrent.Callable callable -> if
     477:479:void <init>(java.lang.String,java.util.concurrent.Callable) -> <init>
     483:503:com.google.gson.JsonObject getChartData() -> do
-com.github.julyss2019.mcsp.julyguild.Metrics$CustomChart -> b.if$for:
+com.github.julyss2019.mcsp.julyguild.Metrics$CustomChart -> class.if$for:
     java.lang.String chartId -> do
     402:407:void <init>(java.lang.String) -> <init>
     410:425:com.google.gson.JsonObject getRequestJsonObject() -> if
     com.google.gson.JsonObject getChartData() -> do
     392:392:com.google.gson.JsonObject access$200(com.github.julyss2019.mcsp.julyguild.Metrics$CustomChart) -> do
-com.github.julyss2019.mcsp.julyguild.Metrics$DrilldownPie -> b.if$int:
+com.github.julyss2019.mcsp.julyguild.Metrics$DrilldownPie -> class.if$int:
     java.util.concurrent.Callable callable -> if
     521:523:void <init>(java.lang.String,java.util.concurrent.Callable) -> <init>
     527:552:com.google.gson.JsonObject getChartData() -> do
-com.github.julyss2019.mcsp.julyguild.Metrics$MultiLineChart -> b.if$new:
+com.github.julyss2019.mcsp.julyguild.Metrics$MultiLineChart -> class.if$new:
     java.util.concurrent.Callable callable -> if
     602:604:void <init>(java.lang.String,java.util.concurrent.Callable) -> <init>
     608:628:com.google.gson.JsonObject getChartData() -> do
-com.github.julyss2019.mcsp.julyguild.Metrics$SimpleBarChart -> b.if$try:
+com.github.julyss2019.mcsp.julyguild.Metrics$SimpleBarChart -> class.if$try:
     java.util.concurrent.Callable callable -> if
     647:649:void <init>(java.lang.String,java.util.concurrent.Callable) -> <init>
     653:666:com.google.gson.JsonObject getChartData() -> do
-com.github.julyss2019.mcsp.julyguild.Metrics$SimplePie -> b.if$byte:
+com.github.julyss2019.mcsp.julyguild.Metrics$SimplePie -> class.if$byte:
     java.util.concurrent.Callable callable -> if
     446:448:void <init>(java.lang.String,java.util.concurrent.Callable) -> <init>
     452:459:com.google.gson.JsonObject getChartData() -> do
-com.github.julyss2019.mcsp.julyguild.Metrics$SingleLineChart -> b.if$case:
+com.github.julyss2019.mcsp.julyguild.Metrics$SingleLineChart -> class.if$case:
     java.util.concurrent.Callable callable -> if
     570:572:void <init>(java.lang.String,java.util.concurrent.Callable) -> <init>
     576:583:com.google.gson.JsonObject getChartData() -> do
@@ -152,36 +149,21 @@ com.github.julyss2019.mcsp.julyguild.api.event.GuildCreateEvent -> com.github.ju
 com.github.julyss2019.mcsp.julyguild.api.event.GuildDeleteEvent -> com.github.julyss2019.mcsp.julyguild.api.event.GuildDeleteEvent:
     6:6:void <init>() -> <init>
     9:9:org.bukkit.event.HandlerList getHandlers() -> getHandlers
-com.github.julyss2019.mcsp.julyguild.command.Command -> b.new:
-    8:8:boolean isOnlyPlayerCanUse() -> isOnlyPlayerCanUse
-    13:13:java.lang.String getPermission() -> getPermission
-com.github.julyss2019.mcsp.julyguild.command.GUICommand -> b.try:
+com.github.julyss2019.mcsp.julyguild.command.GUICommand -> class.new:
     com.github.julyss2019.mcsp.julyguild.JulyGuild plugin -> do
     com.github.julyss2019.mcsp.julyguild.player.GuildPlayerManager guildPlayerManager -> if
-    com.github.julyss2019.mcsp.julylibrary.command.tab.TabCompleter tabCompleter -> for
-    11:14:void <init>() -> <init>
-    18:18:java.lang.String getPermission() -> getPermission
-    23:24:boolean onCommand(org.bukkit.command.CommandSender,java.lang.String[]) -> onCommand
-    29:29:java.lang.String getFirstArg() -> getFirstArg
-    34:34:boolean isOnlyPlayerCanUse() -> isOnlyPlayerCanUse
-    39:39:java.lang.String getDescription() -> getDescription
-    44:44:com.github.julyss2019.mcsp.julylibrary.command.tab.TabCompleter getTabCompleter() -> getTabCompleter
-com.github.julyss2019.mcsp.julyguild.command.PluginCommand -> b.byte:
+    12:14:void <init>() -> <init>
+    18:19:void onReload(org.bukkit.command.CommandSender,java.lang.String[]) -> do
+    23:23:java.lang.String getFirstArg() -> getFirstArg
+    28:28:java.lang.String getDescription() -> getDescription
+com.github.julyss2019.mcsp.julyguild.command.PluginCommand -> class.try:
     com.github.julyss2019.mcsp.julyguild.JulyGuild plugin -> do
-    com.github.julyss2019.mcsp.julylibrary.command.tab.TabCompleter tabCompleter -> if
-    10:12:void <init>() -> <init>
-    16:25:boolean onCommand(org.bukkit.command.CommandSender,java.lang.String[]) -> onCommand
-    30:30:java.lang.String getFirstArg() -> getFirstArg
-    35:35:java.lang.String getPermission() -> getPermission
-    40:40:boolean isOnlyPlayerCanUse() -> isOnlyPlayerCanUse
-    45:45:com.github.julyss2019.mcsp.julylibrary.command.tab.TabCompleter getTabCompleter() -> getTabCompleter
-com.github.julyss2019.mcsp.julyguild.command.TestCommand -> b.case:
-    9:9:void <init>() -> <init>
-    12:14:boolean onCommand(org.bukkit.command.CommandSender,java.lang.String[]) -> onCommand
-    19:19:boolean isOnlyPlayerCanUse() -> isOnlyPlayerCanUse
-    24:24:java.lang.String getFirstArg() -> getFirstArg
-    29:29:java.lang.String getPermission() -> getPermission
-com.github.julyss2019.mcsp.julyguild.config.ConfigGuildIcon -> b.char:
+    9:10:void <init>() -> <init>
+    14:16:void onReload(org.bukkit.command.CommandSender,java.lang.String[]) -> do
+    20:22:void onVersion(org.bukkit.command.CommandSender,java.lang.String[]) -> if
+    26:26:java.lang.String getFirstArg() -> getFirstArg
+    31:31:java.lang.String getDescription() -> getDescription
+com.github.julyss2019.mcsp.julyguild.config.ConfigGuildIcon -> class.byte:
     java.lang.String name -> do
     org.bukkit.Material material -> if
     short durability -> for
@@ -261,14 +243,14 @@ com.github.julyss2019.mcsp.julyguild.config.ConfigGuildShopItem$Target -> com.gi
     11:11:com.github.julyss2019.mcsp.julyguild.config.ConfigGuildShopItem$Target valueOf(java.lang.String) -> valueOf
     11:11:void <init>(java.lang.String,int) -> <init>
     11:11:void <clinit>() -> <clinit>
-com.github.julyss2019.mcsp.julyguild.config.GuildShopConfig -> b.else:
+com.github.julyss2019.mcsp.julyguild.config.GuildShopConfig -> class.case:
     java.util.List shopItems -> do
     9:10:void <init>() -> <init>
     16:17:void reset() -> do
     24:25:void addItem(com.github.julyss2019.mcsp.julyguild.config.ConfigGuildShopItem) -> do
     32:33:void sortItems() -> if
     40:40:java.util.List getShopItems() -> for
-com.github.julyss2019.mcsp.julyguild.config.IconShopConfig -> b.goto:
+com.github.julyss2019.mcsp.julyguild.config.IconShopConfig -> class.char:
     com.github.julyss2019.mcsp.julyguild.config.ConfigGuildIcon defaultIcon -> do
     java.util.Map iconMap -> if
     7:7:void <init>() -> <init>
@@ -279,70 +261,58 @@ com.github.julyss2019.mcsp.julyguild.config.IconShopConfig -> b.goto:
     40:40:com.github.julyss2019.mcsp.julyguild.config.ConfigGuildIcon getDefaultIcon() -> for
     48:49:void setDefaultIcon(com.github.julyss2019.mcsp.julyguild.config.ConfigGuildIcon) -> if
     9:9:void <clinit>() -> <clinit>
-com.github.julyss2019.mcsp.julyguild.config.gui.IndexConfigGUI -> b.long:
+com.github.julyss2019.mcsp.julyguild.config.gui.IndexConfigGUI -> class.else:
     25:25:void <init>() -> <init>
-com.github.julyss2019.mcsp.julyguild.config.gui.IndexConfigGUI$Builder -> b.long$do:
+com.github.julyss2019.mcsp.julyguild.config.gui.IndexConfigGUI$Builder -> class.else$do:
     26:26:void <init>() -> <init>
     28:28:com.github.julyss2019.mcsp.julyguild.config.gui.IndexConfigGUI$Builder fromConfig(org.bukkit.configuration.ConfigurationSection,com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer) -> do
-    32:32:com.github.julyss2019.mcsp.julyguild.config.gui.IndexConfigGUI$Builder fromConfig(org.bukkit.configuration.ConfigurationSection,com.github.julyss2019.mcsp.julyguild.guild.GuildMember) -> do
-    37:45:com.github.julyss2019.mcsp.julyguild.config.gui.IndexConfigGUI$Builder fromConfig(org.bukkit.configuration.ConfigurationSection,com.github.julyss2019.mcsp.julyguild.guild.GuildMember,com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer) -> do
-    49:49:com.github.julyss2019.mcsp.julyguild.config.gui.IndexConfigGUI$Builder fromConfig(org.bukkit.configuration.ConfigurationSection,org.bukkit.OfflinePlayer) -> do
-    54:74:com.github.julyss2019.mcsp.julyguild.config.gui.IndexConfigGUI$Builder fromConfig(org.bukkit.configuration.ConfigurationSection,org.bukkit.OfflinePlayer,com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer) -> do
-    78:90:com.github.julyss2019.mcsp.julyguild.config.gui.IndexConfigGUI$Builder setOtherItems(org.bukkit.configuration.ConfigurationSection,org.bukkit.OfflinePlayer,com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer) -> if
-    94:107:com.github.julyss2019.mcsp.julyguild.config.gui.IndexConfigGUI$Builder pageItems(org.bukkit.configuration.ConfigurationSection,com.github.julyss2019.mcsp.julyguild.gui.PageableGUI) -> do
-    117:121:com.github.julyss2019.mcsp.julyguild.config.gui.IndexConfigGUI$Builder item(com.github.julyss2019.mcsp.julyguild.config.gui.item.IndexItem,com.github.julyss2019.mcsp.julylibrary.inventory.ItemListener) -> do
-    130:131:com.github.julyss2019.mcsp.julyguild.config.gui.IndexConfigGUI$Builder item(com.github.julyss2019.mcsp.julyguild.config.gui.item.IndexItem) -> do
-com.github.julyss2019.mcsp.julyguild.config.gui.IndexConfigGUI$Builder$1 -> b.this:
+    32:32:com.github.julyss2019.mcsp.julyguild.config.gui.IndexConfigGUI$Builder fromConfig(org.bukkit.configuration.ConfigurationSection,org.bukkit.OfflinePlayer) -> do
+    37:57:com.github.julyss2019.mcsp.julyguild.config.gui.IndexConfigGUI$Builder fromConfig(org.bukkit.configuration.ConfigurationSection,org.bukkit.OfflinePlayer,com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer) -> do
+    61:73:com.github.julyss2019.mcsp.julyguild.config.gui.IndexConfigGUI$Builder setOtherItems(org.bukkit.configuration.ConfigurationSection,org.bukkit.OfflinePlayer,com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer) -> if
+    77:90:com.github.julyss2019.mcsp.julyguild.config.gui.IndexConfigGUI$Builder pageItems(org.bukkit.configuration.ConfigurationSection,com.github.julyss2019.mcsp.julyguild.gui.PageableGUI) -> do
+    100:104:com.github.julyss2019.mcsp.julyguild.config.gui.IndexConfigGUI$Builder item(com.github.julyss2019.mcsp.julyguild.config.gui.item.IndexItem,com.github.julyss2019.mcsp.julylibrary.inventory.ItemListener) -> do
+    113:114:com.github.julyss2019.mcsp.julyguild.config.gui.IndexConfigGUI$Builder item(com.github.julyss2019.mcsp.julyguild.config.gui.item.IndexItem) -> do
+com.github.julyss2019.mcsp.julyguild.config.gui.IndexConfigGUI$Builder$1 -> class.goto:
     com.github.julyss2019.mcsp.julyguild.gui.PageableGUI val$pageableGUI -> do
     com.github.julyss2019.mcsp.julyguild.config.gui.IndexConfigGUI$Builder this$0 -> if
-    94:94:void <init>(com.github.julyss2019.mcsp.julyguild.config.gui.IndexConfigGUI$Builder,com.github.julyss2019.mcsp.julyguild.gui.PageableGUI) -> <init>
-    97:98:void onClick(org.bukkit.event.inventory.InventoryClickEvent) -> onClick
-com.github.julyss2019.mcsp.julyguild.config.gui.IndexConfigGUI$Builder$2 -> b.void:
+    77:77:void <init>(com.github.julyss2019.mcsp.julyguild.config.gui.IndexConfigGUI$Builder,com.github.julyss2019.mcsp.julyguild.gui.PageableGUI) -> <init>
+    80:81:void onClick(org.bukkit.event.inventory.InventoryClickEvent) -> onClick
+com.github.julyss2019.mcsp.julyguild.config.gui.IndexConfigGUI$Builder$2 -> class.long:
     com.github.julyss2019.mcsp.julyguild.gui.PageableGUI val$pageableGUI -> do
     com.github.julyss2019.mcsp.julyguild.config.gui.IndexConfigGUI$Builder this$0 -> if
-    100:100:void <init>(com.github.julyss2019.mcsp.julyguild.config.gui.IndexConfigGUI$Builder,com.github.julyss2019.mcsp.julyguild.gui.PageableGUI) -> <init>
-    103:104:void onClick(org.bukkit.event.inventory.InventoryClickEvent) -> onClick
-com.github.julyss2019.mcsp.julyguild.config.gui.PriorityConfigGUI -> b.break:
+    83:83:void <init>(com.github.julyss2019.mcsp.julyguild.config.gui.IndexConfigGUI$Builder,com.github.julyss2019.mcsp.julyguild.gui.PageableGUI) -> <init>
+    86:87:void onClick(org.bukkit.event.inventory.InventoryClickEvent) -> onClick
+com.github.julyss2019.mcsp.julyguild.config.gui.PriorityConfigGUI -> class.this:
     21:21:void <init>() -> <init>
-com.github.julyss2019.mcsp.julyguild.config.gui.PriorityConfigGUI$Builder -> b.break$do:
+com.github.julyss2019.mcsp.julyguild.config.gui.PriorityConfigGUI$Builder -> class.this$do:
     java.util.List availableIndexes -> do
     java.util.Map priorityMap -> if
     24:26:void <init>() -> <init>
-    30:32:com.github.julyss2019.mcsp.julyguild.config.gui.PriorityConfigGUI$Builder fromConfig(org.bukkit.configuration.ConfigurationSection,com.github.julyss2019.mcsp.julyguild.guild.GuildMember) -> if
-    37:39:com.github.julyss2019.mcsp.julyguild.config.gui.PriorityConfigGUI$Builder fromConfig(org.bukkit.configuration.ConfigurationSection,com.github.julyss2019.mcsp.julyguild.guild.GuildMember,com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer) -> if
-    44:46:com.github.julyss2019.mcsp.julyguild.config.gui.PriorityConfigGUI$Builder fromConfig(org.bukkit.configuration.ConfigurationSection,org.bukkit.OfflinePlayer) -> if
-    51:53:com.github.julyss2019.mcsp.julyguild.config.gui.PriorityConfigGUI$Builder fromConfig(org.bukkit.configuration.ConfigurationSection,org.bukkit.OfflinePlayer,com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer) -> if
-    58:60:com.github.julyss2019.mcsp.julyguild.config.gui.PriorityConfigGUI$Builder pageItems(org.bukkit.configuration.ConfigurationSection,com.github.julyss2019.mcsp.julyguild.gui.PageableGUI) -> if
-    64:65:com.github.julyss2019.mcsp.julyguild.config.gui.PriorityConfigGUI$Builder availableIndexes(java.util.List) -> do
-    69:69:com.github.julyss2019.mcsp.julyguild.config.gui.PriorityConfigGUI$Builder item(com.github.julyss2019.mcsp.julyguild.config.gui.item.PriorityItem) -> do
-    73:77:com.github.julyss2019.mcsp.julyguild.config.gui.PriorityConfigGUI$Builder item(com.github.julyss2019.mcsp.julyguild.config.gui.item.PriorityItem,com.github.julyss2019.mcsp.julylibrary.inventory.ItemListener) -> do
-    82:98:org.bukkit.inventory.Inventory build() -> build
+    30:32:com.github.julyss2019.mcsp.julyguild.config.gui.PriorityConfigGUI$Builder fromConfig(org.bukkit.configuration.ConfigurationSection,org.bukkit.OfflinePlayer) -> if
+    37:39:com.github.julyss2019.mcsp.julyguild.config.gui.PriorityConfigGUI$Builder fromConfig(org.bukkit.configuration.ConfigurationSection,org.bukkit.OfflinePlayer,com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer) -> if
+    44:46:com.github.julyss2019.mcsp.julyguild.config.gui.PriorityConfigGUI$Builder pageItems(org.bukkit.configuration.ConfigurationSection,com.github.julyss2019.mcsp.julyguild.gui.PageableGUI) -> if
+    50:51:com.github.julyss2019.mcsp.julyguild.config.gui.PriorityConfigGUI$Builder availableIndexes(java.util.List) -> do
+    55:55:com.github.julyss2019.mcsp.julyguild.config.gui.PriorityConfigGUI$Builder item(com.github.julyss2019.mcsp.julyguild.config.gui.item.PriorityItem) -> do
+    59:63:com.github.julyss2019.mcsp.julyguild.config.gui.PriorityConfigGUI$Builder item(com.github.julyss2019.mcsp.julyguild.config.gui.item.PriorityItem,com.github.julyss2019.mcsp.julylibrary.inventory.ItemListener) -> do
+    68:84:org.bukkit.inventory.Inventory build() -> build
     22:22:com.github.julyss2019.mcsp.julyguild.config.gui.IndexConfigGUI$Builder pageItems(org.bukkit.configuration.ConfigurationSection,com.github.julyss2019.mcsp.julyguild.gui.PageableGUI) -> do
     22:22:com.github.julyss2019.mcsp.julyguild.config.gui.IndexConfigGUI$Builder fromConfig(org.bukkit.configuration.ConfigurationSection,org.bukkit.OfflinePlayer,com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer) -> do
     22:22:com.github.julyss2019.mcsp.julyguild.config.gui.IndexConfigGUI$Builder fromConfig(org.bukkit.configuration.ConfigurationSection,org.bukkit.OfflinePlayer) -> do
-    22:22:com.github.julyss2019.mcsp.julyguild.config.gui.IndexConfigGUI$Builder fromConfig(org.bukkit.configuration.ConfigurationSection,com.github.julyss2019.mcsp.julyguild.guild.GuildMember,com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer) -> do
-    22:22:com.github.julyss2019.mcsp.julyguild.config.gui.IndexConfigGUI$Builder fromConfig(org.bukkit.configuration.ConfigurationSection,com.github.julyss2019.mcsp.julyguild.guild.GuildMember) -> do
-    90:90:int lambda$build$0(com.github.julyss2019.mcsp.julyguild.config.gui.item.PriorityItem,com.github.julyss2019.mcsp.julyguild.config.gui.item.PriorityItem) -> do
-com.github.julyss2019.mcsp.julyguild.config.gui.item.GUIItemManager -> b.catch:
+    76:76:int lambda$build$0(com.github.julyss2019.mcsp.julyguild.config.gui.item.PriorityItem,com.github.julyss2019.mcsp.julyguild.config.gui.item.PriorityItem) -> do
+com.github.julyss2019.mcsp.julyguild.config.gui.item.GUIItemManager -> class.void:
     25:25:void <init>() -> <init>
     27:27:com.github.julyss2019.mcsp.julyguild.config.gui.item.PriorityItem getPriorityItem(org.bukkit.configuration.ConfigurationSection) -> do
-    31:31:com.github.julyss2019.mcsp.julyguild.config.gui.item.PriorityItem getPriorityItem(org.bukkit.configuration.ConfigurationSection,com.github.julyss2019.mcsp.julyguild.guild.GuildMember) -> do
-    36:46:com.github.julyss2019.mcsp.julyguild.config.gui.item.PriorityItem getPriorityItem(org.bukkit.configuration.ConfigurationSection,com.github.julyss2019.mcsp.julyguild.guild.GuildMember,com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer) -> do
-    50:50:com.github.julyss2019.mcsp.julyguild.config.gui.item.PriorityItem getPriorityItem(org.bukkit.configuration.ConfigurationSection,org.bukkit.OfflinePlayer) -> do
-    55:59:com.github.julyss2019.mcsp.julyguild.config.gui.item.PriorityItem getPriorityItem(org.bukkit.configuration.ConfigurationSection,org.bukkit.OfflinePlayer,com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer) -> do
-    64:64:com.github.julyss2019.mcsp.julyguild.config.gui.item.IndexItem getIndexItem(org.bukkit.configuration.ConfigurationSection) -> if
-    68:68:com.github.julyss2019.mcsp.julyguild.config.gui.item.IndexItem getIndexItem(org.bukkit.configuration.ConfigurationSection,com.github.julyss2019.mcsp.julyguild.guild.GuildMember) -> if
-    73:81:com.github.julyss2019.mcsp.julyguild.config.gui.item.IndexItem getIndexItem(org.bukkit.configuration.ConfigurationSection,com.github.julyss2019.mcsp.julyguild.guild.GuildMember,com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer) -> if
-    85:85:com.github.julyss2019.mcsp.julyguild.config.gui.item.IndexItem getIndexItem(org.bukkit.configuration.ConfigurationSection,com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer) -> do
-    89:89:com.github.julyss2019.mcsp.julyguild.config.gui.item.IndexItem getIndexItem(org.bukkit.configuration.ConfigurationSection,org.bukkit.OfflinePlayer) -> if
-    94:102:com.github.julyss2019.mcsp.julyguild.config.gui.item.IndexItem getIndexItem(org.bukkit.configuration.ConfigurationSection,org.bukkit.OfflinePlayer,com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer) -> if
-    107:107:com.github.julyss2019.mcsp.julylibrary.item.ItemBuilder getItemBuilder(org.bukkit.configuration.ConfigurationSection,com.github.julyss2019.mcsp.julyguild.guild.GuildMember) -> for
-    112:120:com.github.julyss2019.mcsp.julylibrary.item.ItemBuilder getItemBuilder(org.bukkit.configuration.ConfigurationSection,com.github.julyss2019.mcsp.julyguild.guild.GuildMember,com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer) -> for
-    124:124:com.github.julyss2019.mcsp.julylibrary.item.ItemBuilder getItemBuilder(org.bukkit.configuration.ConfigurationSection,org.bukkit.OfflinePlayer) -> for
-    129:190:com.github.julyss2019.mcsp.julylibrary.item.ItemBuilder getItemBuilder(org.bukkit.configuration.ConfigurationSection,org.bukkit.OfflinePlayer,com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer) -> for
-    202:212:java.lang.String replacePlaceholders(java.lang.String,com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer,org.bukkit.OfflinePlayer) -> do
-    223:229:java.util.List replacePlaceholders(java.util.List,com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer,org.bukkit.OfflinePlayer) -> do
-com.github.julyss2019.mcsp.julyguild.config.gui.item.IndexItem -> b.class:
+    31:31:com.github.julyss2019.mcsp.julyguild.config.gui.item.PriorityItem getPriorityItem(org.bukkit.configuration.ConfigurationSection,org.bukkit.OfflinePlayer) -> do
+    36:40:com.github.julyss2019.mcsp.julyguild.config.gui.item.PriorityItem getPriorityItem(org.bukkit.configuration.ConfigurationSection,org.bukkit.OfflinePlayer,com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer) -> do
+    45:45:com.github.julyss2019.mcsp.julyguild.config.gui.item.IndexItem getIndexItem(org.bukkit.configuration.ConfigurationSection) -> if
+    49:49:com.github.julyss2019.mcsp.julyguild.config.gui.item.IndexItem getIndexItem(org.bukkit.configuration.ConfigurationSection,com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer) -> do
+    53:53:com.github.julyss2019.mcsp.julyguild.config.gui.item.IndexItem getIndexItem(org.bukkit.configuration.ConfigurationSection,org.bukkit.OfflinePlayer) -> if
+    58:66:com.github.julyss2019.mcsp.julyguild.config.gui.item.IndexItem getIndexItem(org.bukkit.configuration.ConfigurationSection,org.bukkit.OfflinePlayer,com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer) -> if
+    71:71:com.github.julyss2019.mcsp.julylibrary.item.ItemBuilder getItemBuilder(org.bukkit.configuration.ConfigurationSection,org.bukkit.OfflinePlayer) -> for
+    76:129:com.github.julyss2019.mcsp.julylibrary.item.ItemBuilder getItemBuilder(org.bukkit.configuration.ConfigurationSection,org.bukkit.OfflinePlayer,com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer) -> for
+    141:151:java.lang.String replacePlaceholders(java.lang.String,com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer,org.bukkit.OfflinePlayer) -> do
+    162:168:java.util.List replacePlaceholders(java.util.List,com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer,org.bukkit.OfflinePlayer) -> do
+com.github.julyss2019.mcsp.julyguild.config.gui.item.IndexItem -> class.break:
     int index -> do
     com.github.julyss2019.mcsp.julylibrary.item.ItemBuilder itemBuilder -> if
     9:12:void <init>(int,com.github.julyss2019.mcsp.julylibrary.item.ItemBuilder) -> <init>
@@ -350,13 +320,13 @@ com.github.julyss2019.mcsp.julyguild.config.gui.item.IndexItem -> b.class:
     19:20:void setItemBuilder(com.github.julyss2019.mcsp.julylibrary.item.ItemBuilder) -> do
     23:23:com.github.julyss2019.mcsp.julylibrary.item.ItemBuilder getItemBuilder() -> do
     27:27:int getIndex() -> if
-com.github.julyss2019.mcsp.julyguild.config.gui.item.PriorityItem -> b.const:
+com.github.julyss2019.mcsp.julyguild.config.gui.item.PriorityItem -> class.catch:
     int priority -> do
     com.github.julyss2019.mcsp.julylibrary.item.ItemBuilder itemBuilder -> if
     9:12:void <init>(int,com.github.julyss2019.mcsp.julylibrary.item.ItemBuilder) -> <init>
     15:15:int getPriority() -> do
     19:19:com.github.julyss2019.mcsp.julylibrary.item.ItemBuilder getItemBuilder() -> if
-com.github.julyss2019.mcsp.julyguild.config.setting.MainSettings -> b.final:
+com.github.julyss2019.mcsp.julyguild.config.setting.MainSettings -> class.class:
     boolean metricsEnabled -> do
     java.lang.String createNameRegex -> if
     int createCostMoneyAmount -> for
@@ -365,90 +335,78 @@ com.github.julyss2019.mcsp.julyguild.config.setting.MainSettings -> b.final:
     int createCostItemAmount -> try
     java.lang.String announcementSplitChar -> byte
     int announcementMaxCount -> case
-    int defaultMaxMemberCount -> char
-    int requestJoinTimeout -> else
+    int requestJoinTimeout -> char
+    int defaultMaxMemberCount -> else
     int defaultMaxAdminCount -> goto
-    int donateMoneyMin -> long
-    int donatePointsMin -> this
-    java.lang.String donateInputCancelString -> void
-    int donateInputWaitSecond -> break
-    java.lang.String upgradeMoneyFormula -> catch
-    int upgradeMoneyMaxMemberCount -> class
-    java.lang.String upgradePointFormula -> const
-    int upgradePointsMaxMemberCount -> final
-    int tpAllInterval -> float
-    int tpAllShiftCountInterval -> short
-    int tpAllShiftCount -> super
-    int tpAllShiftTimeout -> throw
-    int tpAllCostMoney -> while
-    java.util.List announcementDefault -> double
-    java.lang.String rankingListFormula -> import
-    java.util.List tpAllAllowedSendWorlds -> native
-    java.util.List tpAllAllowedReceiveWorlds -> public
-    java.lang.String defaultIconMaterial -> return
-    short defaultIconData -> static
-    java.lang.String defaultIconFirstLore -> switch
-    int dismissWait -> throws
-    java.lang.String dismissConfirmStr -> boolean
-    int exitWait -> default
-    java.lang.String exitConfirmStr -> extends
-    double donatePointsFee -> finally
-    double donateMoneyFee -> package
-    java.lang.String createInputCancelStr -> private
-    int createInputWaitSec -> abstract
-    java.lang.String papiNonStr -> continue
-    boolean guiDefaultUseGp -> strictfp
-    boolean guiDefaultUsePapi -> volatile
-    boolean guiDefaultColored -> interface
-    boolean createNoDuplicationName -> protected
-    8:8:void <init>() -> <init>
-    142:142:boolean isGuiDefaultColored() -> do
-    146:146:boolean isCreateNoDuplicationName() -> if
-    150:150:java.lang.String getPapiNonStr() -> for
-    154:154:boolean isGuiDefaultUseGp() -> int
-    158:158:boolean isGuiDefaultUsePapi() -> new
-    162:162:java.lang.String getCreateInputCancelStr() -> try
-    166:166:int getCreateInputWaitSec() -> byte
-    170:170:double getDonatePointsFee() -> case
-    174:174:double getDonateMoneyFee() -> char
-    178:178:int getDismissWait() -> else
-    182:182:java.lang.String getDismissConfirmStr() -> goto
-    186:186:java.lang.String getDefaultIconMaterial() -> long
-    190:190:short getDefaultIconData() -> this
-    194:194:java.lang.String getDefaultIconFirstLore() -> void
-    198:198:boolean isMetricsEnabled() -> break
-    202:202:java.lang.String getCreateNameRegex() -> catch
-    206:206:int getCreateCostMoneyAmount() -> class
-    210:210:int getCreateCostPointsAmount() -> const
-    214:214:java.lang.String getCreateCostItemKeyLore() -> final
-    218:218:int getCreateCostItemAmount() -> float
-    222:222:java.lang.String getAnnouncementSplitChar() -> short
-    226:226:int getAnnouncementMaxCount() -> super
-    230:230:int getDefaultMaxMemberCount() -> throw
-    234:234:int getRequestJoinTimeout() -> while
-    238:238:int getDefaultMaxAdminCount() -> double
-    242:242:java.lang.String getDonateInputCancelString() -> import
-    246:246:int getDonateInputWaitSecond() -> native
-    250:250:int getDonateMoneyMin() -> public
-    254:254:int getDonatePointsMin() -> return
-    258:258:java.lang.String getUpgradeMoneyFormula() -> static
-    262:262:int getUpgradeMoneyMaxMemberCount() -> switch
-    266:266:java.lang.String getUpgradePointFormula() -> throws
-    270:270:int getUpgradePointsMaxMemberCount() -> boolean
-    274:274:int getTpAllInterval() -> default
-    278:278:int getTpAllShiftCountInterval() -> extends
-    282:282:int getTpAllShiftCount() -> finally
-    286:286:int getTpAllShiftTimeout() -> package
-    290:290:int getTpAllCostMoney() -> private
-    294:294:java.util.List getAnnouncementDefault() -> abstract
-    298:298:java.lang.String getRankingListFormula() -> continue
-    302:302:java.util.List getTpAllAllowedSendWorlds() -> strictfp
-    306:306:java.util.List getTpAllAllowedReceiveWorlds() -> volatile
-    310:310:int getExitWait() -> interface
-    314:314:java.lang.String getExitConfirmStr() -> protected
-com.github.julyss2019.mcsp.julyguild.gui.BaseConfirmGUI -> b.float:
+    java.lang.String upgradeMoneyFormula -> long
+    int upgradeMoneyMaxMemberCount -> this
+    java.lang.String upgradePointFormula -> void
+    int upgradePointsMaxMemberCount -> break
+    int tpAllInterval -> catch
+    int tpAllShiftCountInterval -> class
+    int tpAllShiftCount -> const
+    int tpAllShiftTimeout -> final
+    int tpAllCostMoney -> float
+    java.util.List announcementDefault -> short
+    java.lang.String rankingListFormula -> super
+    java.util.List tpAllAllowedSendWorlds -> throw
+    java.util.List tpAllAllowedReceiveWorlds -> while
+    java.lang.String defaultIconMaterial -> double
+    short defaultIconData -> import
+    java.lang.String defaultIconFirstLore -> native
+    int dismissWait -> public
+    java.lang.String dismissConfirmStr -> return
+    int exitWait -> static
+    java.lang.String exitConfirmStr -> switch
+    java.lang.String createInputCancelStr -> throws
+    int createInputWaitSec -> boolean
+    java.lang.String papiNonStr -> default
+    boolean createNoDuplicationName -> extends
+    int memberDamageDisableNoticeInterval -> finally
+    boolean guiDefaultColored -> package
+    boolean guiDefaultUsePapi -> private
+    9:9:void <init>() -> <init>
+    125:125:boolean isGuiDefaultUsePapi() -> do
+    129:129:boolean isGuiDefaultColored() -> if
+    133:133:int getMemberDamageDisableNoticeInterval() -> for
+    137:137:boolean isCreateNoDuplicationName() -> int
+    141:141:java.lang.String getPapiNonStr() -> new
+    145:145:java.lang.String getCreateInputCancelStr() -> try
+    149:149:int getCreateInputWaitSec() -> byte
+    153:153:int getDismissWait() -> case
+    157:157:java.lang.String getDismissConfirmStr() -> char
+    161:161:java.lang.String getDefaultIconMaterial() -> else
+    165:165:short getDefaultIconData() -> goto
+    169:169:java.lang.String getDefaultIconFirstLore() -> long
+    173:173:boolean isMetricsEnabled() -> this
+    177:177:java.lang.String getCreateNameRegex() -> void
+    181:181:int getCreateCostMoneyAmount() -> break
+    185:185:int getCreateCostPointsAmount() -> catch
+    189:189:java.lang.String getCreateCostItemKeyLore() -> class
+    193:193:int getCreateCostItemAmount() -> const
+    197:197:java.lang.String getAnnouncementSplitChar() -> final
+    201:201:int getAnnouncementMaxCount() -> float
+    205:205:int getDefaultMaxMemberCount() -> short
+    209:209:int getRequestJoinTimeout() -> super
+    213:213:int getDefaultMaxAdminCount() -> throw
+    217:217:java.lang.String getUpgradeMoneyFormula() -> while
+    221:221:int getUpgradeMoneyMaxMemberCount() -> double
+    225:225:java.lang.String getUpgradePointFormula() -> import
+    229:229:int getUpgradePointsMaxMemberCount() -> native
+    233:233:int getTpAllInterval() -> public
+    237:237:int getTpAllShiftCountInterval() -> return
+    241:241:int getTpAllShiftCount() -> static
+    245:245:int getTpAllShiftTimeout() -> switch
+    249:249:int getTpAllCostMoney() -> throws
+    253:253:java.util.List getAnnouncementDefault() -> boolean
+    257:257:java.lang.String getRankingListFormula() -> default
+    261:261:java.util.List getTpAllAllowedSendWorlds() -> extends
+    265:265:java.util.List getTpAllAllowedReceiveWorlds() -> finally
+    269:269:int getExitWait() -> package
+    273:273:java.lang.String getExitConfirmStr() -> private
+com.github.julyss2019.mcsp.julyguild.gui.BaseConfirmGUI -> class.const:
     org.bukkit.configuration.ConfigurationSection section -> do
-    org.bukkit.entity.Player bukkitPlayer -> new
+    org.bukkit.entity.Player bukkitPlayer -> if
     com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer placeholderContainer -> try
     21:22:void <init>(com.github.julyss2019.mcsp.julyguild.gui.GUI,com.github.julyss2019.mcsp.julyguild.player.GuildPlayer,org.bukkit.configuration.ConfigurationSection) -> <init>
     17:29:void <init>(com.github.julyss2019.mcsp.julyguild.gui.GUI,com.github.julyss2019.mcsp.julyguild.player.GuildPlayer,org.bukkit.configuration.ConfigurationSection,com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer) -> <init>
@@ -457,63 +415,58 @@ com.github.julyss2019.mcsp.julyguild.gui.BaseConfirmGUI -> b.float:
     void onConfirm() -> for
     void onCancel() -> int
     44:58:org.bukkit.inventory.Inventory createInventory() -> new
-com.github.julyss2019.mcsp.julyguild.gui.BaseConfirmGUI$1 -> b.short:
+com.github.julyss2019.mcsp.julyguild.gui.BaseConfirmGUI$1 -> class.final:
     com.github.julyss2019.mcsp.julyguild.gui.BaseConfirmGUI this$0 -> do
     52:52:void <init>(com.github.julyss2019.mcsp.julyguild.gui.BaseConfirmGUI) -> <init>
     55:56:void onClick(org.bukkit.event.inventory.InventoryClickEvent) -> onClick
-com.github.julyss2019.mcsp.julyguild.gui.BaseConfirmGUI$2 -> b.super:
+com.github.julyss2019.mcsp.julyguild.gui.BaseConfirmGUI$2 -> class.float:
     com.github.julyss2019.mcsp.julyguild.gui.BaseConfirmGUI this$0 -> do
     46:46:void <init>(com.github.julyss2019.mcsp.julyguild.gui.BaseConfirmGUI) -> <init>
     49:50:void onClick(org.bukkit.event.inventory.InventoryClickEvent) -> onClick
-com.github.julyss2019.mcsp.julyguild.gui.BaseMemberGUI -> b.throw:
-    com.github.julyss2019.mcsp.julyguild.guild.GuildMember guildMember -> do
-    10:13:void <init>(com.github.julyss2019.mcsp.julyguild.gui.GUI,com.github.julyss2019.mcsp.julyguild.gui.GUIType,com.github.julyss2019.mcsp.julyguild.guild.GuildMember) -> <init>
-    16:16:com.github.julyss2019.mcsp.julyguild.guild.GuildMember getGuildMember() -> do
-com.github.julyss2019.mcsp.julyguild.gui.BaseMemberPageableGUI -> b.while:
-    com.github.julyss2019.mcsp.julyguild.guild.GuildMember guildMember -> do
-    10:13:void <init>(com.github.julyss2019.mcsp.julyguild.gui.GUI,com.github.julyss2019.mcsp.julyguild.gui.GUIType,com.github.julyss2019.mcsp.julyguild.guild.GuildMember) -> <init>
-    16:16:com.github.julyss2019.mcsp.julyguild.guild.GuildMember getGuildMember() -> do
-com.github.julyss2019.mcsp.julyguild.gui.BasePayGUI -> b.double:
-    org.bukkit.configuration.ConfigurationSection section -> do
-    org.bukkit.entity.Player bukkitPlayer -> new
-    com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer placeholderContainer -> try
-    21:22:void <init>(com.github.julyss2019.mcsp.julyguild.gui.GUI,com.github.julyss2019.mcsp.julyguild.player.GuildPlayer,org.bukkit.configuration.ConfigurationSection) -> <init>
-    17:29:void <init>(com.github.julyss2019.mcsp.julyguild.gui.GUI,com.github.julyss2019.mcsp.julyguild.player.GuildPlayer,org.bukkit.configuration.ConfigurationSection,com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer) -> <init>
-    32:32:com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer getPlaceholderContainer() -> do
+com.github.julyss2019.mcsp.julyguild.gui.BasePayGUI -> class.short:
+    com.github.julyss2019.mcsp.julyguild.JulyGuild plugin -> try
+    com.github.julyss2019.mcsp.julyguild.thirdparty.economy.PlayerPointsEconomy playerPointsEconomy -> do
+    com.github.julyss2019.mcsp.julyguild.thirdparty.economy.VaultEconomy vaultEconomy -> if
+    org.bukkit.configuration.ConfigurationSection section -> byte
+    com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer placeholderContainer -> case
+    org.bukkit.entity.Player bukkitPlayer -> char
+    27:28:void <init>(com.github.julyss2019.mcsp.julyguild.gui.GUI,com.github.julyss2019.mcsp.julyguild.player.GuildPlayer,org.bukkit.configuration.ConfigurationSection) -> <init>
+    19:35:void <init>(com.github.julyss2019.mcsp.julyguild.gui.GUI,com.github.julyss2019.mcsp.julyguild.player.GuildPlayer,org.bukkit.configuration.ConfigurationSection,com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer) -> <init>
+    38:38:com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer getPlaceholderContainer() -> do
     boolean canUse() -> if
     void onMoneyPay() -> for
     void onPointsPay() -> int
-    44:66:org.bukkit.inventory.Inventory createInventory() -> new
-com.github.julyss2019.mcsp.julyguild.gui.BasePayGUI$1 -> b.import:
+    50:72:org.bukkit.inventory.Inventory createInventory() -> new
+com.github.julyss2019.mcsp.julyguild.gui.BasePayGUI$1 -> class.super:
     com.github.julyss2019.mcsp.julyguild.gui.BasePayGUI this$0 -> do
-    57:57:void <init>(com.github.julyss2019.mcsp.julyguild.gui.BasePayGUI) -> <init>
-    60:63:void onClick(org.bukkit.event.inventory.InventoryClickEvent) -> onClick
-com.github.julyss2019.mcsp.julyguild.gui.BasePayGUI$2 -> b.native:
+    63:63:void <init>(com.github.julyss2019.mcsp.julyguild.gui.BasePayGUI) -> <init>
+    66:69:void onClick(org.bukkit.event.inventory.InventoryClickEvent) -> onClick
+com.github.julyss2019.mcsp.julyguild.gui.BasePayGUI$2 -> class.throw:
+    com.github.julyss2019.mcsp.julyguild.gui.BasePayGUI this$0 -> do
+    58:58:void <init>(com.github.julyss2019.mcsp.julyguild.gui.BasePayGUI) -> <init>
+    61:62:void onClick(org.bukkit.event.inventory.InventoryClickEvent) -> onClick
+com.github.julyss2019.mcsp.julyguild.gui.BasePayGUI$3 -> class.while:
     com.github.julyss2019.mcsp.julyguild.gui.BasePayGUI this$0 -> do
     52:52:void <init>(com.github.julyss2019.mcsp.julyguild.gui.BasePayGUI) -> <init>
     55:56:void onClick(org.bukkit.event.inventory.InventoryClickEvent) -> onClick
-com.github.julyss2019.mcsp.julyguild.gui.BasePayGUI$3 -> b.public:
-    com.github.julyss2019.mcsp.julyguild.gui.BasePayGUI this$0 -> do
-    46:46:void <init>(com.github.julyss2019.mcsp.julyguild.gui.BasePayGUI) -> <init>
-    49:50:void onClick(org.bukkit.event.inventory.InventoryClickEvent) -> onClick
-com.github.julyss2019.mcsp.julyguild.gui.BasePlayerGUI -> b.return:
-    com.github.julyss2019.mcsp.julyguild.gui.GUI lastGUI -> if
-    com.github.julyss2019.mcsp.julyguild.gui.GUIType type -> for
-    com.github.julyss2019.mcsp.julyguild.player.GuildPlayer guildPlayer -> int
-    14:18:void <init>(com.github.julyss2019.mcsp.julyguild.gui.GUI,com.github.julyss2019.mcsp.julyguild.gui.GUIType,com.github.julyss2019.mcsp.julyguild.player.GuildPlayer) -> <init>
-    22:22:com.github.julyss2019.mcsp.julyguild.gui.GUI getLastGUI() -> try
-    27:27:com.github.julyss2019.mcsp.julyguild.player.GuildPlayer getGuildPlayer() -> byte
-    32:32:com.github.julyss2019.mcsp.julyguild.gui.GUIType getType() -> case
-com.github.julyss2019.mcsp.julyguild.gui.BasePlayerPageableGUI -> b.static:
+com.github.julyss2019.mcsp.julyguild.gui.BasePlayerGUI -> class.double:
+    com.github.julyss2019.mcsp.julyguild.gui.GUI lastGUI -> for
+    com.github.julyss2019.mcsp.julyguild.gui.GUIType type -> int
+    com.github.julyss2019.mcsp.julyguild.player.GuildPlayer guildPlayer -> new
+    15:19:void <init>(com.github.julyss2019.mcsp.julyguild.gui.GUI,com.github.julyss2019.mcsp.julyguild.gui.GUIType,com.github.julyss2019.mcsp.julyguild.player.GuildPlayer) -> <init>
+    23:23:com.github.julyss2019.mcsp.julyguild.gui.GUI getLastGUI() -> try
+    28:28:com.github.julyss2019.mcsp.julyguild.player.GuildPlayer getGuildPlayer() -> byte
+    33:33:com.github.julyss2019.mcsp.julyguild.gui.GUIType getType() -> case
+com.github.julyss2019.mcsp.julyguild.gui.BasePlayerPageableGUI -> class.import:
     8:9:void <init>(com.github.julyss2019.mcsp.julyguild.gui.GUI,com.github.julyss2019.mcsp.julyguild.gui.GUIType,com.github.julyss2019.mcsp.julyguild.player.GuildPlayer) -> <init>
-com.github.julyss2019.mcsp.julyguild.gui.CommonItem -> b.switch:
+com.github.julyss2019.mcsp.julyguild.gui.CommonItem -> class.native:
     org.bukkit.inventory.ItemStack NEXT_PAGE -> do
     org.bukkit.inventory.ItemStack PREVIOUS_PAGE -> if
     org.bukkit.inventory.ItemStack BACK_TO_MAIN -> for
     org.bukkit.inventory.ItemStack BACK -> int
     7:7:void <init>() -> <init>
     8:11:void <clinit>() -> <clinit>
-com.github.julyss2019.mcsp.julyguild.gui.GUI -> b.throws:
+com.github.julyss2019.mcsp.julyguild.gui.GUI -> class.public:
     boolean canUse() -> if
     com.github.julyss2019.mcsp.julyguild.gui.GUI getLastGUI() -> try
     com.github.julyss2019.mcsp.julyguild.player.GuildPlayer getGuildPlayer() -> byte
@@ -528,11 +481,11 @@ com.github.julyss2019.mcsp.julyguild.gui.GUI -> b.throws:
     84:86:void reopen() -> void
     93:101:void reopen(long) -> if
     66:66:java.lang.RuntimeException lambda$back$0() -> do
-com.github.julyss2019.mcsp.julyguild.gui.GUI$1 -> b.boolean:
+com.github.julyss2019.mcsp.julyguild.gui.GUI$1 -> class.return:
     com.github.julyss2019.mcsp.julyguild.gui.GUI this$0 -> do
     31:31:void <init>(com.github.julyss2019.mcsp.julyguild.gui.GUI) -> <init>
     34:35:void run() -> run
-com.github.julyss2019.mcsp.julyguild.gui.GUI$2 -> b.default:
+com.github.julyss2019.mcsp.julyguild.gui.GUI$2 -> class.static:
     com.github.julyss2019.mcsp.julyguild.gui.GUI this$0 -> do
     95:95:void <init>(com.github.julyss2019.mcsp.julyguild.gui.GUI) -> <init>
     98:99:void run() -> run
@@ -546,197 +499,187 @@ com.github.julyss2019.mcsp.julyguild.gui.GUIType -> com.github.julyss2019.mcsp.j
     com.github.julyss2019.mcsp.julyguild.gui.GUIType MEMBER_MANAGE -> MEMBER_MANAGE
     com.github.julyss2019.mcsp.julyguild.gui.GUIType PROMOTE -> PROMOTE
     com.github.julyss2019.mcsp.julyguild.gui.GUIType DONATE -> DONATE
-    com.github.julyss2019.mcsp.julyguild.gui.GUIType DONATE_CONFIRM -> DONATE_CONFIRM
+    com.github.julyss2019.mcsp.julyguild.gui.GUIType SHOP -> SHOP
     com.github.julyss2019.mcsp.julyguild.gui.GUIType BASE_CONFIRM -> BASE_CONFIRM
     com.github.julyss2019.mcsp.julyguild.gui.GUIType[] $VALUES -> $VALUES
     3:3:com.github.julyss2019.mcsp.julyguild.gui.GUIType[] values() -> values
     3:3:com.github.julyss2019.mcsp.julyguild.gui.GUIType valueOf(java.lang.String) -> valueOf
     3:3:void <init>(java.lang.String,int) -> <init>
     3:14:void <clinit>() -> <clinit>
-com.github.julyss2019.mcsp.julyguild.gui.PageableGUI -> b.extends:
+com.github.julyss2019.mcsp.julyguild.gui.PageableGUI -> class.switch:
     int currentPage -> do
-    int totalPage -> new
-    12:17:void <init>(com.github.julyss2019.mcsp.julyguild.gui.GUI,com.github.julyss2019.mcsp.julyguild.gui.GUIType,com.github.julyss2019.mcsp.julyguild.player.GuildPlayer) -> <init>
-    21:21:com.github.julyss2019.mcsp.julyguild.gui.GUI getLastGUI() -> try
-    26:33:void nextPage() -> for
-    37:44:void previousPage() -> int
-    48:48:boolean hasNextPage() -> break
-    53:53:boolean hasPreciousPage() -> catch
-    58:63:void setCurrentPage(int) -> do
-    67:67:int getTotalPage() -> class
-    71:72:void setTotalPage(int) -> if
-    76:76:int getCurrentPage() -> const
-    81:85:boolean isValidPage(int) -> for
-    void update() -> final
-    95:113:void open() -> else
-com.github.julyss2019.mcsp.julyguild.gui.entities.GuildCreateGUI -> b.finally:
-    java.lang.String guildName -> do
-    org.bukkit.entity.Player bukkitPlayer -> new
-    com.github.julyss2019.mcsp.julyguild.JulyGuild plugin -> try
-    com.github.julyss2019.mcsp.julyguild.thirdparty.economy.VaultEconomy vaultEconomy -> byte
-    com.github.julyss2019.mcsp.julyguild.thirdparty.economy.PlayerPointsEconomy playerPointsEconomy -> case
+    int pageCount -> if
+    10:15:void <init>(com.github.julyss2019.mcsp.julyguild.gui.GUI,com.github.julyss2019.mcsp.julyguild.gui.GUIType,com.github.julyss2019.mcsp.julyguild.player.GuildPlayer) -> <init>
+    19:19:com.github.julyss2019.mcsp.julyguild.gui.GUI getLastGUI() -> try
+    24:31:void nextPage() -> do
+    35:42:void previousPage() -> for
+    46:46:boolean hasNextPage() -> int
+    51:51:boolean hasPreciousPage() -> break
+    56:61:void setCurrentPage(int) -> do
+    65:65:int getPageCount() -> catch
+    69:70:void setPageCount(int) -> if
+    74:74:int getCurrentPage() -> class
+    79:83:boolean isValidPage(int) -> for
+    void update() -> const
+    93:111:void open() -> else
+com.github.julyss2019.mcsp.julyguild.gui.entities.GuildCreateGUI -> class.throws:
+    java.lang.String guildName -> try
+    org.bukkit.entity.Player bukkitPlayer -> byte
+    com.github.julyss2019.mcsp.julyguild.JulyGuild plugin -> case
     com.github.julyss2019.mcsp.julyguild.guild.GuildManager guildManager -> char
     org.bukkit.configuration.ConfigurationSection thisLangSection -> else
-    25:39:void <init>(com.github.julyss2019.mcsp.julyguild.gui.GUI,com.github.julyss2019.mcsp.julyguild.player.GuildPlayer,org.bukkit.configuration.ConfigurationSection,java.lang.String) -> <init>
-    47:47:boolean canUse() -> if
-    52:77:void onMoneyPay() -> for
-    81:106:void onPointsPay() -> int
-    109:128:void createGuild(com.github.julyss2019.mcsp.julyguild.player.GuildPlayer,java.lang.String) -> do
-    23:23:org.bukkit.entity.Player access$000(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildCreateGUI) -> do
-    23:23:com.github.julyss2019.mcsp.julyguild.thirdparty.economy.VaultEconomy access$100(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildCreateGUI) -> if
-    23:23:org.bukkit.configuration.ConfigurationSection access$200(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildCreateGUI) -> for
-    23:23:java.lang.String access$300(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildCreateGUI) -> int
-    23:23:void access$400(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildCreateGUI,com.github.julyss2019.mcsp.julyguild.player.GuildPlayer,java.lang.String) -> do
-    23:23:com.github.julyss2019.mcsp.julyguild.thirdparty.economy.PlayerPointsEconomy access$500(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildCreateGUI) -> new
-com.github.julyss2019.mcsp.julyguild.gui.entities.GuildCreateGUI$1 -> b.package:
+    23:35:void <init>(com.github.julyss2019.mcsp.julyguild.gui.GUI,com.github.julyss2019.mcsp.julyguild.player.GuildPlayer,java.lang.String) -> <init>
+    43:43:boolean canUse() -> if
+    48:72:void onMoneyPay() -> for
+    76:100:void onPointsPay() -> int
+    103:122:void createGuild(com.github.julyss2019.mcsp.julyguild.player.GuildPlayer,java.lang.String) -> do
+    21:21:org.bukkit.entity.Player access$000(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildCreateGUI) -> do
+    21:21:com.github.julyss2019.mcsp.julyguild.thirdparty.economy.VaultEconomy access$100(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildCreateGUI) -> if
+    21:21:com.github.julyss2019.mcsp.julyguild.thirdparty.economy.VaultEconomy access$200(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildCreateGUI) -> for
+    21:21:java.lang.String access$300(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildCreateGUI) -> int
+    21:21:void access$400(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildCreateGUI,com.github.julyss2019.mcsp.julyguild.player.GuildPlayer,java.lang.String) -> do
+    21:21:com.github.julyss2019.mcsp.julyguild.thirdparty.economy.PlayerPointsEconomy access$500(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildCreateGUI) -> new
+    21:21:com.github.julyss2019.mcsp.julyguild.thirdparty.economy.PlayerPointsEconomy access$600(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildCreateGUI) -> try
+com.github.julyss2019.mcsp.julyguild.gui.entities.GuildCreateGUI$1 -> class.boolean:
     com.github.julyss2019.mcsp.julyguild.gui.entities.GuildCreateGUI this$0 -> do
-    52:52:void <init>(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildCreateGUI,com.github.julyss2019.mcsp.julyguild.gui.GUI,com.github.julyss2019.mcsp.julyguild.player.GuildPlayer,org.bukkit.configuration.ConfigurationSection,com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer) -> <init>
-    55:55:boolean canUse() -> if
-    60:70:void onConfirm() -> for
-    74:75:void onCancel() -> int
-com.github.julyss2019.mcsp.julyguild.gui.entities.GuildCreateGUI$2 -> b.private:
+    54:54:void <init>(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildCreateGUI,com.github.julyss2019.mcsp.julyguild.gui.GUI,com.github.julyss2019.mcsp.julyguild.player.GuildPlayer,org.bukkit.configuration.ConfigurationSection,com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer) -> <init>
+    57:57:boolean canUse() -> if
+    62:65:void onConfirm() -> for
+    69:70:void onCancel() -> int
+com.github.julyss2019.mcsp.julyguild.gui.entities.GuildCreateGUI$2 -> class.default:
     com.github.julyss2019.mcsp.julyguild.gui.entities.GuildCreateGUI this$0 -> do
-    81:81:void <init>(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildCreateGUI,com.github.julyss2019.mcsp.julyguild.gui.GUI,com.github.julyss2019.mcsp.julyguild.player.GuildPlayer,org.bukkit.configuration.ConfigurationSection,com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer) -> <init>
-    84:84:boolean canUse() -> if
-    89:99:void onConfirm() -> for
-    103:104:void onCancel() -> int
-com.github.julyss2019.mcsp.julyguild.gui.entities.GuildCreateGUI$3 -> b.abstract:
+    82:82:void <init>(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildCreateGUI,com.github.julyss2019.mcsp.julyguild.gui.GUI,com.github.julyss2019.mcsp.julyguild.player.GuildPlayer,org.bukkit.configuration.ConfigurationSection,com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer) -> <init>
+    85:85:boolean canUse() -> if
+    90:93:void onConfirm() -> for
+    97:98:void onCancel() -> int
+com.github.julyss2019.mcsp.julyguild.gui.entities.GuildCreateGUI$3 -> class.extends:
     com.github.julyss2019.mcsp.julyguild.player.GuildPlayer val$guildPlayer -> do
     com.github.julyss2019.mcsp.julyguild.gui.entities.GuildCreateGUI this$0 -> if
-    122:122:void <init>(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildCreateGUI,com.github.julyss2019.mcsp.julyguild.player.GuildPlayer) -> <init>
-    125:126:void run() -> run
-com.github.julyss2019.mcsp.julyguild.gui.entities.GuildDonateGUI_ -> b.continue:
-    com.github.julyss2019.mcsp.julyguild.JulyGuild plugin -> new
-    org.bukkit.entity.Player bukkitPlayer -> try
-    com.github.julyss2019.mcsp.julyguild.thirdparty.economy.VaultEconomy vaultEconomy -> byte
-    com.github.julyss2019.mcsp.julyguild.thirdparty.economy.PlayerPointsEconomy playerPointsEconomy -> case
+    116:116:void <init>(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildCreateGUI,com.github.julyss2019.mcsp.julyguild.player.GuildPlayer) -> <init>
+    119:120:void run() -> run
+com.github.julyss2019.mcsp.julyguild.gui.entities.GuildDonateGUI -> class.finally:
+    com.github.julyss2019.mcsp.julyguild.JulyGuild plugin -> do
+    com.github.julyss2019.mcsp.julyguild.guild.GuildMember guildMember -> if
+    com.github.julyss2019.mcsp.julyguild.guild.Guild guild -> try
+    org.bukkit.entity.Player bukkitPlayer -> byte
+    org.bukkit.configuration.ConfigurationSection thisGUISection -> case
     org.bukkit.configuration.ConfigurationSection thisLangSection -> char
-    org.bukkit.configuration.ConfigurationSection thisGUISection -> else
-    112:121:void <init>(com.github.julyss2019.mcsp.julyguild.gui.GUI,com.github.julyss2019.mcsp.julyguild.guild.GuildMember) -> <init>
-    125:230:org.bukkit.inventory.Inventory createInventory() -> new
-    235:235:boolean canUse() -> if
-    30:30:org.bukkit.entity.Player access$800(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildDonateGUI_) -> do
-    30:30:org.bukkit.configuration.ConfigurationSection access$900(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildDonateGUI_) -> if
-    30:30:com.github.julyss2019.mcsp.julyguild.thirdparty.economy.VaultEconomy access$1000(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildDonateGUI_) -> for
-    30:30:com.github.julyss2019.mcsp.julyguild.guild.GuildMember access$1100(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildDonateGUI_) -> int
-    30:30:com.github.julyss2019.mcsp.julyguild.JulyGuild access$1200(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildDonateGUI_) -> new
-    30:30:com.github.julyss2019.mcsp.julyguild.thirdparty.economy.PlayerPointsEconomy access$1300(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildDonateGUI_) -> try
-    30:30:com.github.julyss2019.mcsp.julyguild.guild.GuildMember access$1400(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildDonateGUI_) -> byte
-com.github.julyss2019.mcsp.julyguild.gui.entities.GuildDonateGUI_$1 -> b.strictfp:
-    com.github.julyss2019.mcsp.julyguild.gui.entities.GuildDonateGUI_ this$0 -> do
-    128:128:void <init>(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildDonateGUI_) -> <init>
-    131:170:void onClick(org.bukkit.event.inventory.InventoryClickEvent) -> onClick
-com.github.julyss2019.mcsp.julyguild.gui.entities.GuildDonateGUI_$1$1 -> b.volatile:
-    com.github.julyss2019.mcsp.julyguild.gui.entities.GuildDonateGUI_$1 this$1 -> do
-    138:138:void <init>(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildDonateGUI_$1) -> <init>
-    141:163:void onChat(org.bukkit.event.player.AsyncPlayerChatEvent) -> onChat
-    167:168:void onTimeout(org.bukkit.event.player.AsyncPlayerChatEvent) -> onTimeout
-com.github.julyss2019.mcsp.julyguild.gui.entities.GuildDonateGUI_$2 -> b.interface:
-    com.github.julyss2019.mcsp.julyguild.gui.entities.GuildDonateGUI_ this$0 -> do
-    174:174:void <init>(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildDonateGUI_) -> <init>
-    177:219:void onClick(org.bukkit.event.inventory.InventoryClickEvent) -> onClick
-com.github.julyss2019.mcsp.julyguild.gui.entities.GuildDonateGUI_$2$1 -> b.protected:
-    com.github.julyss2019.mcsp.julyguild.gui.entities.GuildDonateGUI_$2 this$1 -> do
-    184:184:void <init>(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildDonateGUI_$2) -> <init>
-    187:212:void onChat(org.bukkit.event.player.AsyncPlayerChatEvent) -> onChat
-    216:217:void onTimeout(org.bukkit.event.player.AsyncPlayerChatEvent) -> onTimeout
-com.github.julyss2019.mcsp.julyguild.gui.entities.GuildDonateGUI_$3 -> b.transient:
-    com.github.julyss2019.mcsp.julyguild.gui.entities.GuildDonateGUI_ this$0 -> do
-    223:223:void <init>(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildDonateGUI_) -> <init>
-    226:227:void onClick(org.bukkit.event.inventory.InventoryClickEvent) -> onClick
-com.github.julyss2019.mcsp.julyguild.gui.entities.GuildDonateGUI_$4 -> b.implements:
-    int[] $SwitchMap$com$github$julyss2019$mcsp$julyguild$guild$GuildBank$BalanceType -> do
-    66:66:void <clinit>() -> <clinit>
-com.github.julyss2019.mcsp.julyguild.gui.entities.GuildDonateGUI_$ConfirmGUI -> b.continue$do:
-    com.github.julyss2019.mcsp.julyguild.JulyGuild plugin -> new
-    com.github.julyss2019.mcsp.julyguild.thirdparty.economy.VaultEconomy vaultEconomy -> try
-    com.github.julyss2019.mcsp.julyguild.thirdparty.economy.PlayerPointsEconomy playerPointsEconomy -> byte
-    org.bukkit.entity.Player bukkitPlayer -> case
-    org.bukkit.configuration.ConfigurationSection parentLangSection -> char
-    org.bukkit.configuration.ConfigurationSection thisGUISection -> else
-    com.github.julyss2019.mcsp.julyguild.guild.GuildBank$BalanceType donateType -> goto
-    int donateAmount -> long
-    com.github.julyss2019.mcsp.julyguild.guild.Guild guild -> this
-    32:48:void <init>(com.github.julyss2019.mcsp.julyguild.gui.GUI,com.github.julyss2019.mcsp.julyguild.guild.GuildMember,com.github.julyss2019.mcsp.julyguild.guild.GuildBank$BalanceType,int) -> <init>
-    52:103:org.bukkit.inventory.Inventory createInventory() -> new
-    108:108:boolean canUse() -> if
-    31:31:com.github.julyss2019.mcsp.julyguild.guild.GuildBank$BalanceType access$000(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildDonateGUI_$ConfirmGUI) -> do
-    31:31:org.bukkit.entity.Player access$100(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildDonateGUI_$ConfirmGUI) -> if
-    31:31:int access$200(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildDonateGUI_$ConfirmGUI) -> for
-    31:31:com.github.julyss2019.mcsp.julyguild.thirdparty.economy.VaultEconomy access$300(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildDonateGUI_$ConfirmGUI) -> int
-    31:31:org.bukkit.configuration.ConfigurationSection access$400(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildDonateGUI_$ConfirmGUI) -> new
-    31:31:com.github.julyss2019.mcsp.julyguild.thirdparty.economy.PlayerPointsEconomy access$500(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildDonateGUI_$ConfirmGUI) -> try
-    31:31:com.github.julyss2019.mcsp.julyguild.guild.Guild access$600(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildDonateGUI_$ConfirmGUI) -> byte
-    31:31:com.github.julyss2019.mcsp.julyguild.guild.GuildMember access$700(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildDonateGUI_$ConfirmGUI) -> case
-com.github.julyss2019.mcsp.julyguild.gui.entities.GuildDonateGUI_$ConfirmGUI$1 -> b.instanceof:
-    double val$exactlyDonateAmount -> do
-    double val$fee -> if
-    com.github.julyss2019.mcsp.julyguild.gui.entities.GuildDonateGUI_$ConfirmGUI this$0 -> for
-    61:61:void <init>(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildDonateGUI_$ConfirmGUI,double,double) -> <init>
-    64:93:void onClick(org.bukkit.event.inventory.InventoryClickEvent) -> onClick
-com.github.julyss2019.mcsp.julyguild.gui.entities.GuildDonateGUI_$ConfirmGUI$2 -> b.synchronized:
-    com.github.julyss2019.mcsp.julyguild.gui.entities.GuildDonateGUI_$ConfirmGUI this$0 -> do
-    96:96:void <init>(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildDonateGUI_$ConfirmGUI) -> <init>
-    100:100:void onClick(org.bukkit.event.inventory.InventoryClickEvent) -> onClick
-com.github.julyss2019.mcsp.julyguild.gui.entities.GuildInfoGUI -> b.a:
+    com.github.julyss2019.mcsp.julyguild.thirdparty.economy.PlayerPointsEconomy playerPointsEconomy -> else
+    com.github.julyss2019.mcsp.julyguild.thirdparty.economy.VaultEconomy vaultEconomy -> goto
+    33:47:void <init>(com.github.julyss2019.mcsp.julyguild.gui.GUI,com.github.julyss2019.mcsp.julyguild.guild.GuildMember) -> <init>
+    52:52:boolean canUse() -> if
+    57:170:org.bukkit.inventory.Inventory createInventory() -> new
+    28:28:org.bukkit.entity.Player access$000(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildDonateGUI) -> do
+    28:28:com.github.julyss2019.mcsp.julyguild.thirdparty.economy.PlayerPointsEconomy access$100(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildDonateGUI) -> if
+    28:28:org.bukkit.configuration.ConfigurationSection access$200(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildDonateGUI) -> for
+    28:28:com.github.julyss2019.mcsp.julyguild.player.GuildPlayer access$300(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildDonateGUI) -> int
+    28:28:com.github.julyss2019.mcsp.julyguild.guild.GuildMember access$400(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildDonateGUI) -> new
+    28:28:com.github.julyss2019.mcsp.julyguild.guild.Guild access$500(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildDonateGUI) -> try
+    28:28:com.github.julyss2019.mcsp.julyguild.JulyGuild access$600(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildDonateGUI) -> byte
+    28:28:com.github.julyss2019.mcsp.julyguild.thirdparty.economy.VaultEconomy access$700(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildDonateGUI) -> case
+    28:28:com.github.julyss2019.mcsp.julyguild.player.GuildPlayer access$800(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildDonateGUI) -> char
+com.github.julyss2019.mcsp.julyguild.gui.entities.GuildDonateGUI$1 -> class.package:
+    com.github.julyss2019.mcsp.julyguild.gui.entities.GuildDonateGUI this$0 -> do
+    60:60:void <init>(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildDonateGUI) -> <init>
+    63:66:void onClick(org.bukkit.event.inventory.InventoryClickEvent) -> onClick
+com.github.julyss2019.mcsp.julyguild.gui.entities.GuildDonateGUI$2 -> class.private:
+    com.github.julyss2019.mcsp.julyguild.gui.entities.GuildDonateGUI$PayType val$payType -> do
+    int val$cost -> if
+    org.bukkit.configuration.ConfigurationSection val$confirmGUISection -> for
+    int val$reward -> int
+    com.github.julyss2019.mcsp.julyguild.gui.entities.GuildDonateGUI this$0 -> new
+    81:81:void <init>(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildDonateGUI,com.github.julyss2019.mcsp.julyguild.gui.entities.GuildDonateGUI$PayType,int,org.bukkit.configuration.ConfigurationSection,int) -> <init>
+    84:165:void onClick(org.bukkit.event.inventory.InventoryClickEvent) -> onClick
+com.github.julyss2019.mcsp.julyguild.gui.entities.GuildDonateGUI$2$1 -> class.abstract:
+    com.github.julyss2019.mcsp.julyguild.gui.entities.GuildDonateGUI$2 this$1 -> do
+    94:94:void <init>(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildDonateGUI$2,com.github.julyss2019.mcsp.julyguild.gui.GUI,com.github.julyss2019.mcsp.julyguild.player.GuildPlayer,org.bukkit.configuration.ConfigurationSection,com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer) -> <init>
+    97:97:boolean canUse() -> if
+    102:114:void onConfirm() -> for
+    118:121:void onCancel() -> int
+com.github.julyss2019.mcsp.julyguild.gui.entities.GuildDonateGUI$2$1$1 -> class.continue:
+    com.github.julyss2019.mcsp.julyguild.gui.entities.GuildDonateGUI$2$1 this$2 -> do
+    108:108:void <init>(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildDonateGUI$2$1) -> <init>
+    111:112:void run() -> run
+com.github.julyss2019.mcsp.julyguild.gui.entities.GuildDonateGUI$2$2 -> class.strictfp:
+    com.github.julyss2019.mcsp.julyguild.gui.entities.GuildDonateGUI$2 this$1 -> do
+    135:135:void <init>(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildDonateGUI$2,com.github.julyss2019.mcsp.julyguild.gui.GUI,com.github.julyss2019.mcsp.julyguild.player.GuildPlayer,org.bukkit.configuration.ConfigurationSection,com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer) -> <init>
+    138:138:boolean canUse() -> if
+    143:155:void onConfirm() -> for
+    159:162:void onCancel() -> int
+com.github.julyss2019.mcsp.julyguild.gui.entities.GuildDonateGUI$2$2$1 -> class.volatile:
+    com.github.julyss2019.mcsp.julyguild.gui.entities.GuildDonateGUI$2$2 this$2 -> do
+    149:149:void <init>(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildDonateGUI$2$2) -> <init>
+    152:153:void run() -> run
+com.github.julyss2019.mcsp.julyguild.gui.entities.GuildDonateGUI$PayType -> class.finally$do:
+    com.github.julyss2019.mcsp.julyguild.gui.entities.GuildDonateGUI$PayType MONEY -> do
+    com.github.julyss2019.mcsp.julyguild.gui.entities.GuildDonateGUI$PayType POINTS -> if
+    com.github.julyss2019.mcsp.julyguild.gui.entities.GuildDonateGUI$PayType[] $VALUES -> for
+    29:29:com.github.julyss2019.mcsp.julyguild.gui.entities.GuildDonateGUI$PayType[] values() -> do
+    29:29:com.github.julyss2019.mcsp.julyguild.gui.entities.GuildDonateGUI$PayType valueOf(java.lang.String) -> do
+    29:29:void <init>(java.lang.String,int) -> <init>
+    29:30:void <clinit>() -> <clinit>
+com.github.julyss2019.mcsp.julyguild.gui.entities.GuildInfoGUI -> class.interface:
     org.bukkit.entity.Player bukkitPlayer -> do
-    com.github.julyss2019.mcsp.julyguild.guild.Guild guild -> new
+    com.github.julyss2019.mcsp.julyguild.guild.Guild guild -> if
     com.github.julyss2019.mcsp.julyguild.JulyGuild plugin -> try
     org.bukkit.configuration.ConfigurationSection thisGUISection -> byte
     org.bukkit.configuration.ConfigurationSection thisLangSection -> case
-    28:37:void <init>(com.github.julyss2019.mcsp.julyguild.gui.GUI,com.github.julyss2019.mcsp.julyguild.player.GuildPlayer,com.github.julyss2019.mcsp.julyguild.guild.Guild) -> <init>
-    41:76:org.bukkit.inventory.Inventory createInventory() -> new
-    80:80:com.github.julyss2019.mcsp.julyguild.guild.Guild getGuild() -> do
-    85:85:boolean canUse() -> if
-    25:25:com.github.julyss2019.mcsp.julyguild.guild.Guild access$000(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildInfoGUI) -> do
-    25:25:com.github.julyss2019.mcsp.julyguild.player.GuildPlayer access$100(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildInfoGUI) -> if
-    25:25:org.bukkit.entity.Player access$200(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildInfoGUI) -> for
-    25:25:org.bukkit.configuration.ConfigurationSection access$300(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildInfoGUI) -> int
-    25:25:com.github.julyss2019.mcsp.julyguild.player.GuildPlayer access$400(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildInfoGUI) -> new
-    25:25:com.github.julyss2019.mcsp.julyguild.player.GuildPlayer access$500(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildInfoGUI) -> try
-com.github.julyss2019.mcsp.julyguild.gui.entities.GuildInfoGUI$1 -> b.b:
+    30:39:void <init>(com.github.julyss2019.mcsp.julyguild.gui.GUI,com.github.julyss2019.mcsp.julyguild.player.GuildPlayer,com.github.julyss2019.mcsp.julyguild.guild.Guild) -> <init>
+    43:85:org.bukkit.inventory.Inventory createInventory() -> new
+    89:89:com.github.julyss2019.mcsp.julyguild.guild.Guild getGuild() -> do
+    94:94:boolean canUse() -> if
+    27:27:com.github.julyss2019.mcsp.julyguild.guild.Guild access$000(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildInfoGUI) -> do
+    27:27:com.github.julyss2019.mcsp.julyguild.player.GuildPlayer access$100(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildInfoGUI) -> if
+    27:27:org.bukkit.entity.Player access$200(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildInfoGUI) -> for
+    27:27:org.bukkit.configuration.ConfigurationSection access$300(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildInfoGUI) -> int
+    27:27:com.github.julyss2019.mcsp.julyguild.player.GuildPlayer access$400(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildInfoGUI) -> new
+    27:27:com.github.julyss2019.mcsp.julyguild.player.GuildPlayer access$500(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildInfoGUI) -> try
+com.github.julyss2019.mcsp.julyguild.gui.entities.GuildInfoGUI$1 -> class.protected:
     com.github.julyss2019.mcsp.julyguild.gui.entities.GuildInfoGUI this$0 -> do
-    69:69:void <init>(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildInfoGUI) -> <init>
-    73:73:void onClick(org.bukkit.event.inventory.InventoryClickEvent) -> onClick
-com.github.julyss2019.mcsp.julyguild.gui.entities.GuildInfoGUI$2 -> b.c:
+    76:76:void <init>(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildInfoGUI) -> <init>
+    79:82:void onClick(org.bukkit.event.inventory.InventoryClickEvent) -> onClick
+com.github.julyss2019.mcsp.julyguild.gui.entities.GuildInfoGUI$2 -> class.transient:
     com.github.julyss2019.mcsp.julyguild.gui.entities.GuildInfoGUI this$0 -> do
-    63:63:void <init>(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildInfoGUI) -> <init>
-    66:68:void onClick(org.bukkit.event.inventory.InventoryClickEvent) -> onClick
-com.github.julyss2019.mcsp.julyguild.gui.entities.GuildInfoGUI$3 -> b.d:
+    70:70:void <init>(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildInfoGUI) -> <init>
+    73:75:void onClick(org.bukkit.event.inventory.InventoryClickEvent) -> onClick
+com.github.julyss2019.mcsp.julyguild.gui.entities.GuildInfoGUI$3 -> class.implements:
     com.github.julyss2019.mcsp.julyguild.gui.entities.GuildInfoGUI this$0 -> do
-    43:43:void <init>(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildInfoGUI) -> <init>
-    46:62:void onClick(org.bukkit.event.inventory.InventoryClickEvent) -> onClick
-    53:53:com.github.julyss2019.mcsp.julyguild.request.entities.JoinRequest lambda$onClick$1(com.github.julyss2019.mcsp.julyguild.request.Request) -> do
-    53:53:boolean lambda$onClick$0(com.github.julyss2019.mcsp.julyguild.request.Request) -> if
-com.github.julyss2019.mcsp.julyguild.gui.entities.GuildJoinCheckGUI -> b.e:
-    com.github.julyss2019.mcsp.julyguild.JulyGuild plugin -> new
-    org.bukkit.configuration.ConfigurationSection thisGUISection -> try
-    org.bukkit.configuration.ConfigurationSection thisLangSection -> byte
-    org.bukkit.entity.Player bukkitPlayer -> case
-    com.github.julyss2019.mcsp.julyguild.guild.Guild guild -> char
-    java.util.List itemIndexes -> else
-    int itemIndexCount -> goto
+    45:45:void <init>(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildInfoGUI) -> <init>
+    48:69:void onClick(org.bukkit.event.inventory.InventoryClickEvent) -> onClick
+    65:66:void lambda$onClick$3(com.github.julyss2019.mcsp.julyguild.guild.GuildMember) -> do
+    64:64:boolean lambda$onClick$2(com.github.julyss2019.mcsp.julyguild.guild.GuildMember) -> if
+    55:55:com.github.julyss2019.mcsp.julyguild.request.entities.JoinRequest lambda$onClick$1(com.github.julyss2019.mcsp.julyguild.request.Request) -> do
+    55:55:boolean lambda$onClick$0(com.github.julyss2019.mcsp.julyguild.request.Request) -> if
+com.github.julyss2019.mcsp.julyguild.gui.entities.GuildJoinCheckGUI -> class.instanceof:
+    com.github.julyss2019.mcsp.julyguild.JulyGuild plugin -> do
+    org.bukkit.configuration.ConfigurationSection thisGUISection -> if
+    org.bukkit.configuration.ConfigurationSection thisLangSection -> try
+    org.bukkit.entity.Player bukkitPlayer -> byte
+    java.util.List itemIndexes -> case
+    int itemIndexCount -> char
+    com.github.julyss2019.mcsp.julyguild.guild.GuildMember guildMember -> else
+    com.github.julyss2019.mcsp.julyguild.guild.Guild guild -> goto
     java.util.List requests -> long
     int requestCount -> this
-    32:45:void <init>(com.github.julyss2019.mcsp.julyguild.gui.GUI,com.github.julyss2019.mcsp.julyguild.guild.GuildMember) -> <init>
-    49:53:void update() -> final
-    57:121:org.bukkit.inventory.Inventory createInventory() -> new
-    126:126:boolean canUse() -> if
-    31:31:org.bukkit.entity.Player access$000(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildJoinCheckGUI) -> do
-    31:31:org.bukkit.configuration.ConfigurationSection access$100(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildJoinCheckGUI) -> if
-    31:31:com.github.julyss2019.mcsp.julyguild.guild.Guild access$200(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildJoinCheckGUI) -> for
-com.github.julyss2019.mcsp.julyguild.gui.entities.GuildJoinCheckGUI$1 -> b.f:
+    33:50:void <init>(com.github.julyss2019.mcsp.julyguild.gui.GUI,com.github.julyss2019.mcsp.julyguild.guild.GuildMember) -> <init>
+    54:58:void update() -> const
+    62:128:org.bukkit.inventory.Inventory createInventory() -> new
+    133:133:boolean canUse() -> if
+    32:32:org.bukkit.entity.Player access$000(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildJoinCheckGUI) -> do
+    32:32:org.bukkit.configuration.ConfigurationSection access$100(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildJoinCheckGUI) -> if
+    32:32:com.github.julyss2019.mcsp.julyguild.guild.Guild access$200(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildJoinCheckGUI) -> for
+com.github.julyss2019.mcsp.julyguild.gui.entities.GuildJoinCheckGUI$1 -> class.synchronized:
     java.util.Map val$indexMap -> do
     com.github.julyss2019.mcsp.julyguild.gui.entities.GuildJoinCheckGUI this$0 -> if
-    69:69:void <init>(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildJoinCheckGUI,java.util.Map) -> <init>
-    72:102:void onClick(org.bukkit.event.inventory.InventoryClickEvent) -> onClick
-com.github.julyss2019.mcsp.julyguild.gui.entities.GuildJoinCheckGUI$2 -> b.g:
+    76:76:void <init>(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildJoinCheckGUI,java.util.Map) -> <init>
+    79:109:void onClick(org.bukkit.event.inventory.InventoryClickEvent) -> onClick
+com.github.julyss2019.mcsp.julyguild.gui.entities.GuildJoinCheckGUI$2 -> class.a:
     com.github.julyss2019.mcsp.julyguild.gui.entities.GuildJoinCheckGUI this$0 -> do
-    63:63:void <init>(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildJoinCheckGUI) -> <init>
-    66:67:void onClick(org.bukkit.event.inventory.InventoryClickEvent) -> onClick
-com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberListGUI -> b.h:
+    68:68:void <init>(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildJoinCheckGUI) -> <init>
+    71:74:void onClick(org.bukkit.event.inventory.InventoryClickEvent) -> onClick
+com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberListGUI -> class.b:
     java.util.List managerPermissions -> do
-    com.github.julyss2019.mcsp.julyguild.JulyGuild plugin -> new
+    com.github.julyss2019.mcsp.julyguild.JulyGuild plugin -> if
     com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberListGUI$ViewerType viewerType -> try
     com.github.julyss2019.mcsp.julyguild.guild.Guild guild -> byte
     org.bukkit.entity.Player bukkitPlayer -> case
@@ -745,203 +688,149 @@ com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberListGUI -> b.h:
     int positionCount -> goto
     java.util.List members -> long
     int memberCount -> this
-    40:41:void <init>(com.github.julyss2019.mcsp.julyguild.gui.GUI,com.github.julyss2019.mcsp.julyguild.guild.Guild,com.github.julyss2019.mcsp.julyguild.guild.GuildMember) -> <init>
-    29:67:void <init>(com.github.julyss2019.mcsp.julyguild.gui.GUI,com.github.julyss2019.mcsp.julyguild.guild.Guild,com.github.julyss2019.mcsp.julyguild.player.GuildPlayer) -> <init>
-    71:76:void update() -> final
-    80:129:org.bukkit.inventory.Inventory createInventory() -> new
-    134:134:boolean canUse() -> if
-    26:26:com.github.julyss2019.mcsp.julyguild.player.GuildPlayer access$000(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberListGUI) -> do
-    26:26:com.github.julyss2019.mcsp.julyguild.guild.Guild access$100(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberListGUI) -> if
-    28:28:void <clinit>() -> <clinit>
-com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberListGUI$1 -> b.i:
+    41:42:void <init>(com.github.julyss2019.mcsp.julyguild.gui.GUI,com.github.julyss2019.mcsp.julyguild.guild.Guild,com.github.julyss2019.mcsp.julyguild.guild.GuildMember) -> <init>
+    30:68:void <init>(com.github.julyss2019.mcsp.julyguild.gui.GUI,com.github.julyss2019.mcsp.julyguild.guild.Guild,com.github.julyss2019.mcsp.julyguild.player.GuildPlayer) -> <init>
+    72:77:void update() -> const
+    81:135:org.bukkit.inventory.Inventory createInventory() -> new
+    140:140:boolean canUse() -> if
+    27:27:com.github.julyss2019.mcsp.julyguild.player.GuildPlayer access$000(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberListGUI) -> do
+    27:27:com.github.julyss2019.mcsp.julyguild.guild.Guild access$100(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberListGUI) -> if
+    29:29:void <clinit>() -> <clinit>
+com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberListGUI$1 -> class.c:
     com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberListGUI this$0 -> do
-    84:84:void <init>(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberListGUI) -> <init>
-    87:88:void onClick(org.bukkit.event.inventory.InventoryClickEvent) -> onClick
-com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberListGUI$2 -> b.j:
+    87:87:void <init>(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberListGUI) -> <init>
+    90:93:void onClick(org.bukkit.event.inventory.InventoryClickEvent) -> onClick
+com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberListGUI$2 -> class.d:
     java.util.Map val$indexMap -> do
     com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberListGUI this$0 -> if
-    92:92:void <init>(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberListGUI,java.util.Map) -> <init>
-    95:109:void onClick(org.bukkit.event.inventory.InventoryClickEvent) -> onClick
-com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberListGUI$ViewerType -> b.h$do:
+    97:97:void <init>(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberListGUI,java.util.Map) -> <init>
+    100:114:void onClick(org.bukkit.event.inventory.InventoryClickEvent) -> onClick
+com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberListGUI$ViewerType -> class.b$do:
     com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberListGUI$ViewerType PLAYER -> do
     com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberListGUI$ViewerType MANAGER -> if
     com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberListGUI$ViewerType[] $VALUES -> for
-    27:27:com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberListGUI$ViewerType[] values() -> do
-    27:27:com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberListGUI$ViewerType valueOf(java.lang.String) -> do
-    27:27:void <init>(java.lang.String,int) -> <init>
-    27:27:void <clinit>() -> <clinit>
-com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberManageGUI -> b.k:
-    com.github.julyss2019.mcsp.julyguild.JulyGuild plugin -> new
-    org.bukkit.entity.Player bukkitPlayer -> try
-    org.bukkit.configuration.ConfigurationSection thisGUISection -> byte
-    org.bukkit.configuration.ConfigurationSection thisLangSection -> case
-    com.github.julyss2019.mcsp.julyguild.guild.Guild guild -> char
-    com.github.julyss2019.mcsp.julyguild.guild.GuildMember targetGuildMember -> else
-    25:37:void <init>(com.github.julyss2019.mcsp.julyguild.gui.GUI,com.github.julyss2019.mcsp.julyguild.guild.GuildMember,com.github.julyss2019.mcsp.julyguild.guild.GuildMember) -> <init>
-    41:148:org.bukkit.inventory.Inventory createInventory() -> new
-    157:162:boolean reopenIfInvalid(com.github.julyss2019.mcsp.julyguild.guild.Permission) -> do
-    170:170:com.github.julyss2019.mcsp.julyguild.config.gui.item.PriorityItem getToggleItem(org.bukkit.configuration.ConfigurationSection,com.github.julyss2019.mcsp.julyguild.guild.Permission) -> do
-    175:181:boolean canUse() -> if
-    24:24:boolean access$000(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberManageGUI,com.github.julyss2019.mcsp.julyguild.guild.Permission) -> do
-    24:24:com.github.julyss2019.mcsp.julyguild.player.GuildPlayer access$100(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberManageGUI) -> do
-    24:24:org.bukkit.configuration.ConfigurationSection access$200(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberManageGUI) -> if
-    24:24:com.github.julyss2019.mcsp.julyguild.guild.GuildMember access$300(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberManageGUI) -> for
-    24:24:com.github.julyss2019.mcsp.julyguild.guild.GuildMember access$400(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberManageGUI) -> int
-    24:24:com.github.julyss2019.mcsp.julyguild.guild.GuildMember access$500(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberManageGUI) -> new
-    24:24:com.github.julyss2019.mcsp.julyguild.guild.Guild access$600(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberManageGUI) -> try
-com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberManageGUI$1 -> b.l:
-    com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberManageGUI this$0 -> do
-    43:43:void <init>(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberManageGUI) -> <init>
-    46:47:void onClick(org.bukkit.event.inventory.InventoryClickEvent) -> onClick
-com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberManageGUI$2 -> b.m:
-    com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberManageGUI this$0 -> do
-    57:57:void <init>(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberManageGUI) -> <init>
-    60:86:void onClick(org.bukkit.event.inventory.InventoryClickEvent) -> onClick
-com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberManageGUI$2$1 -> b.n:
-    com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberManageGUI$2 this$1 -> do
-    67:67:void <init>(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberManageGUI$2,com.github.julyss2019.mcsp.julyguild.gui.GUI,com.github.julyss2019.mcsp.julyguild.player.GuildPlayer,org.bukkit.configuration.ConfigurationSection,com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer) -> <init>
-    70:70:boolean canUse() -> if
-    75:76:void onCancel() -> int
-    80:84:void onConfirm() -> for
-com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberManageGUI$3 -> b.o:
-    com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberManageGUI this$0 -> do
-    91:91:void <init>(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberManageGUI) -> <init>
-    94:100:void onClick(org.bukkit.event.inventory.InventoryClickEvent) -> onClick
-com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberManageGUI$4 -> b.p:
-    com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberManageGUI this$0 -> do
-    102:102:void <init>(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberManageGUI) -> <init>
-    105:111:void onClick(org.bukkit.event.inventory.InventoryClickEvent) -> onClick
-com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberManageGUI$5 -> b.q:
-    com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberManageGUI this$0 -> do
-    113:113:void <init>(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberManageGUI) -> <init>
-    116:122:void onClick(org.bukkit.event.inventory.InventoryClickEvent) -> onClick
-com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberManageGUI$6 -> b.r:
-    com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberManageGUI this$0 -> do
-    124:124:void <init>(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberManageGUI) -> <init>
-    127:133:void onClick(org.bukkit.event.inventory.InventoryClickEvent) -> onClick
-com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberManageGUI$7 -> b.s:
-    com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberManageGUI this$0 -> do
-    135:135:void <init>(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberManageGUI) -> <init>
-    138:144:void onClick(org.bukkit.event.inventory.InventoryClickEvent) -> onClick
-com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMineGUI -> b.t:
-    com.github.julyss2019.mcsp.julyguild.JulyGuild plugin -> new
-    org.bukkit.configuration.ConfigurationSection thisGUISection -> try
-    org.bukkit.configuration.ConfigurationSection thisLangSection -> byte
-    org.bukkit.entity.Player bukkitPlayer -> case
-    com.github.julyss2019.mcsp.julyguild.guild.Position position -> char
-    com.github.julyss2019.mcsp.julyguild.guild.Guild guild -> else
-    26:38:void <init>(com.github.julyss2019.mcsp.julyguild.gui.GUI,com.github.julyss2019.mcsp.julyguild.guild.GuildMember) -> <init>
-    42:187:org.bukkit.inventory.Inventory createInventory() -> new
-    192:192:boolean canUse() -> if
-    25:25:com.github.julyss2019.mcsp.julyguild.guild.GuildMember access$000(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMineGUI) -> do
-    25:25:com.github.julyss2019.mcsp.julyguild.guild.Guild access$100(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMineGUI) -> if
-    25:25:com.github.julyss2019.mcsp.julyguild.guild.GuildMember access$200(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMineGUI) -> for
-    25:25:org.bukkit.entity.Player access$300(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMineGUI) -> int
-    25:25:org.bukkit.configuration.ConfigurationSection access$400(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMineGUI) -> new
-    25:25:com.github.julyss2019.mcsp.julyguild.guild.GuildMember access$500(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMineGUI) -> try
-    25:25:com.github.julyss2019.mcsp.julyguild.guild.GuildMember access$600(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMineGUI) -> byte
-    25:25:com.github.julyss2019.mcsp.julyguild.JulyGuild access$700(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMineGUI) -> case
-    25:25:com.github.julyss2019.mcsp.julyguild.guild.GuildMember access$800(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMineGUI) -> char
-com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMineGUI$1 -> b.u:
-    com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMineGUI this$0 -> do
-    44:44:void <init>(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMineGUI) -> <init>
-    47:48:void onClick(org.bukkit.event.inventory.InventoryClickEvent) -> onClick
-com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMineGUI$10 -> b.v:
-    com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMineGUI this$0 -> do
-    156:156:void <init>(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMineGUI) -> <init>
-    159:183:void onClick(org.bukkit.event.inventory.InventoryClickEvent) -> onClick
-com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMineGUI$10$1 -> b.w:
-    com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMineGUI$10 this$1 -> do
-    167:167:void <init>(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMineGUI$10) -> <init>
-    170:176:void onChat(org.bukkit.event.player.AsyncPlayerChatEvent) -> onChat
-    180:181:void onTimeout(org.bukkit.event.player.AsyncPlayerChatEvent) -> onTimeout
-com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMineGUI$2 -> b.x:
-    com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMineGUI this$0 -> do
-    68:68:void <init>(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMineGUI) -> <init>
-    72:72:void onClick(org.bukkit.event.inventory.InventoryClickEvent) -> onClick
-com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMineGUI$3 -> b.y:
-    com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMineGUI this$0 -> do
-    61:61:void <init>(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMineGUI) -> <init>
-    64:66:void onClick(org.bukkit.event.inventory.InventoryClickEvent) -> onClick
-com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMineGUI$4 -> b.z:
-    com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMineGUI this$0 -> do
-    54:54:void <init>(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMineGUI) -> <init>
-    57:59:void onClick(org.bukkit.event.inventory.InventoryClickEvent) -> onClick
-com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMineGUI$5 -> b.A:
-    com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMineGUI this$0 -> do
-    82:82:void <init>(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMineGUI) -> <init>
-    86:86:void onClick(org.bukkit.event.inventory.InventoryClickEvent) -> onClick
-com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMineGUI$6 -> b.B:
-    com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMineGUI this$0 -> do
-    92:92:void <init>(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMineGUI) -> <init>
-    95:98:void onClick(org.bukkit.event.inventory.InventoryClickEvent) -> onClick
-com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMineGUI$7 -> b.C:
-    com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMineGUI this$0 -> do
-    104:104:void <init>(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMineGUI) -> <init>
-    107:109:void onClick(org.bukkit.event.inventory.InventoryClickEvent) -> onClick
-com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMineGUI$8 -> b.D:
-    com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMineGUI this$0 -> do
-    115:115:void <init>(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMineGUI) -> <init>
-    118:120:void onClick(org.bukkit.event.inventory.InventoryClickEvent) -> onClick
-com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMineGUI$9 -> b.E:
-    com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMineGUI this$0 -> do
-    126:126:void <init>(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMineGUI) -> <init>
-    129:153:void onClick(org.bukkit.event.inventory.InventoryClickEvent) -> onClick
-com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMineGUI$9$1 -> b.F:
-    com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMineGUI$9 this$1 -> do
-    137:137:void <init>(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMineGUI$9) -> <init>
-    140:146:void onChat(org.bukkit.event.player.AsyncPlayerChatEvent) -> onChat
-    150:151:void onTimeout(org.bukkit.event.player.AsyncPlayerChatEvent) -> onTimeout
-com.github.julyss2019.mcsp.julyguild.gui.entities.GuildUpgradeGUI -> b.G:
-    org.bukkit.entity.Player bukkitPlayer -> new
-    com.github.julyss2019.mcsp.julyguild.guild.Guild guild -> try
-    com.github.julyss2019.mcsp.julyguild.guild.GuildBank guildBank -> byte
-    com.github.julyss2019.mcsp.julyguild.JulyGuild plugin -> case
-    org.bukkit.configuration.ConfigurationSection thisGUISection -> char
-    org.bukkit.configuration.ConfigurationSection thisLangSection -> else
-    33:43:void <init>(com.github.julyss2019.mcsp.julyguild.gui.GUI,com.github.julyss2019.mcsp.julyguild.guild.GuildMember) -> <init>
-    47:159:org.bukkit.inventory.Inventory createInventory() -> new
-    164:164:boolean canUse() -> if
-    29:29:com.github.julyss2019.mcsp.julyguild.guild.GuildBank access$000(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildUpgradeGUI) -> do
-    29:29:org.bukkit.entity.Player access$100(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildUpgradeGUI) -> if
-    29:29:org.bukkit.configuration.ConfigurationSection access$200(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildUpgradeGUI) -> for
-    29:29:com.github.julyss2019.mcsp.julyguild.JulyGuild access$300(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildUpgradeGUI) -> int
-    29:29:com.github.julyss2019.mcsp.julyguild.guild.Guild access$400(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildUpgradeGUI) -> new
-com.github.julyss2019.mcsp.julyguild.gui.entities.GuildUpgradeGUI$1 -> b.H:
-    com.github.julyss2019.mcsp.julyguild.gui.entities.GuildUpgradeGUI this$0 -> do
-    51:51:void <init>(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildUpgradeGUI) -> <init>
-    54:55:void onClick(org.bukkit.event.inventory.InventoryClickEvent) -> onClick
-com.github.julyss2019.mcsp.julyguild.gui.entities.GuildUpgradeGUI$2 -> b.I:
-    int val$needMoney -> do
-    int val$oldMaxMemberCount -> if
-    com.github.julyss2019.mcsp.julyguild.gui.entities.GuildUpgradeGUI this$0 -> for
-    76:76:void <init>(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildUpgradeGUI,int,int) -> <init>
-    79:105:void onClick(org.bukkit.event.inventory.InventoryClickEvent) -> onClick
-com.github.julyss2019.mcsp.julyguild.gui.entities.GuildUpgradeGUI$2$1 -> b.J:
-    com.github.julyss2019.mcsp.julyguild.gui.entities.GuildUpgradeGUI$2 this$1 -> do
-    84:84:void <init>(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildUpgradeGUI$2) -> <init>
-    87:88:void run() -> run
-com.github.julyss2019.mcsp.julyguild.gui.entities.GuildUpgradeGUI$2$2 -> b.K:
-    com.github.julyss2019.mcsp.julyguild.gui.entities.GuildUpgradeGUI$2 this$1 -> do
-    99:99:void <init>(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildUpgradeGUI$2) -> <init>
-    102:103:void run() -> run
-com.github.julyss2019.mcsp.julyguild.gui.entities.GuildUpgradeGUI$3 -> b.L:
-    int val$needPoints -> do
-    int val$oldMaxMemberCount -> if
-    com.github.julyss2019.mcsp.julyguild.gui.entities.GuildUpgradeGUI this$0 -> for
-    125:125:void <init>(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildUpgradeGUI,int,int) -> <init>
-    128:154:void onClick(org.bukkit.event.inventory.InventoryClickEvent) -> onClick
-com.github.julyss2019.mcsp.julyguild.gui.entities.GuildUpgradeGUI$3$1 -> b.M:
-    com.github.julyss2019.mcsp.julyguild.gui.entities.GuildUpgradeGUI$3 this$1 -> do
-    133:133:void <init>(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildUpgradeGUI$3) -> <init>
-    136:137:void run() -> run
-com.github.julyss2019.mcsp.julyguild.gui.entities.GuildUpgradeGUI$3$2 -> b.N:
-    com.github.julyss2019.mcsp.julyguild.gui.entities.GuildUpgradeGUI$3 this$1 -> do
-    148:148:void <init>(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildUpgradeGUI$3) -> <init>
-    151:152:void run() -> run
-com.github.julyss2019.mcsp.julyguild.gui.entities.MainGUI -> b.O:
+    28:28:com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberListGUI$ViewerType[] values() -> do
+    28:28:com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberListGUI$ViewerType valueOf(java.lang.String) -> do
+    28:28:void <init>(java.lang.String,int) -> <init>
+    28:28:void <clinit>() -> <clinit>
+com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberManageGUI -> class.e:
     com.github.julyss2019.mcsp.julyguild.JulyGuild plugin -> do
-    org.bukkit.entity.Player bukkitPlayer -> new
+    org.bukkit.configuration.ConfigurationSection thisGUISection -> if
+    com.github.julyss2019.mcsp.julyguild.guild.Guild guild -> try
+    com.github.julyss2019.mcsp.julyguild.guild.GuildMember managerGuildMember -> byte
+    com.github.julyss2019.mcsp.julyguild.guild.GuildMember targetGuildMember -> case
+    org.bukkit.entity.Player targetBukkitPlayer -> char
+    26:41:void <init>(com.github.julyss2019.mcsp.julyguild.gui.GUI,com.github.julyss2019.mcsp.julyguild.guild.GuildMember,com.github.julyss2019.mcsp.julyguild.guild.GuildMember) -> <init>
+    45:154:org.bukkit.inventory.Inventory createInventory() -> new
+    163:168:boolean reopenIfInvalid(com.github.julyss2019.mcsp.julyguild.guild.Permission) -> do
+    176:176:com.github.julyss2019.mcsp.julyguild.config.gui.item.PriorityItem getToggleItem(org.bukkit.configuration.ConfigurationSection,com.github.julyss2019.mcsp.julyguild.guild.Permission) -> do
+    181:187:boolean canUse() -> if
+    25:25:boolean access$000(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberManageGUI,com.github.julyss2019.mcsp.julyguild.guild.Permission) -> do
+    25:25:com.github.julyss2019.mcsp.julyguild.player.GuildPlayer access$100(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberManageGUI) -> do
+    25:25:org.bukkit.configuration.ConfigurationSection access$200(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberManageGUI) -> if
+    25:25:com.github.julyss2019.mcsp.julyguild.guild.GuildMember access$300(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberManageGUI) -> for
+    25:25:com.github.julyss2019.mcsp.julyguild.guild.GuildMember access$400(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberManageGUI) -> int
+    25:25:com.github.julyss2019.mcsp.julyguild.guild.Guild access$500(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberManageGUI) -> new
+com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberManageGUI$1 -> class.f:
+    com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberManageGUI this$0 -> do
+    47:47:void <init>(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberManageGUI) -> <init>
+    50:53:void onClick(org.bukkit.event.inventory.InventoryClickEvent) -> onClick
+com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberManageGUI$2 -> class.g:
+    com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberManageGUI this$0 -> do
+    63:63:void <init>(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberManageGUI) -> <init>
+    66:92:void onClick(org.bukkit.event.inventory.InventoryClickEvent) -> onClick
+com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberManageGUI$2$1 -> class.h:
+    com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberManageGUI$2 this$1 -> do
+    73:73:void <init>(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberManageGUI$2,com.github.julyss2019.mcsp.julyguild.gui.GUI,com.github.julyss2019.mcsp.julyguild.player.GuildPlayer,org.bukkit.configuration.ConfigurationSection,com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer) -> <init>
+    76:76:boolean canUse() -> if
+    81:82:void onCancel() -> int
+    86:90:void onConfirm() -> for
+com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberManageGUI$3 -> class.i:
+    com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberManageGUI this$0 -> do
+    97:97:void <init>(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberManageGUI) -> <init>
+    100:106:void onClick(org.bukkit.event.inventory.InventoryClickEvent) -> onClick
+com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberManageGUI$4 -> class.j:
+    com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberManageGUI this$0 -> do
+    108:108:void <init>(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberManageGUI) -> <init>
+    111:117:void onClick(org.bukkit.event.inventory.InventoryClickEvent) -> onClick
+com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberManageGUI$5 -> class.k:
+    com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberManageGUI this$0 -> do
+    119:119:void <init>(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberManageGUI) -> <init>
+    122:128:void onClick(org.bukkit.event.inventory.InventoryClickEvent) -> onClick
+com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberManageGUI$6 -> class.l:
+    com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberManageGUI this$0 -> do
+    130:130:void <init>(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberManageGUI) -> <init>
+    133:139:void onClick(org.bukkit.event.inventory.InventoryClickEvent) -> onClick
+com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberManageGUI$7 -> class.m:
+    com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberManageGUI this$0 -> do
+    141:141:void <init>(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberManageGUI) -> <init>
+    144:150:void onClick(org.bukkit.event.inventory.InventoryClickEvent) -> onClick
+com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMineGUI -> class.n:
+    com.github.julyss2019.mcsp.julyguild.JulyGuild plugin -> do
+    org.bukkit.configuration.ConfigurationSection thisGUISection -> if
+    org.bukkit.configuration.ConfigurationSection thisLangSection -> try
+    org.bukkit.entity.Player bukkitPlayer -> byte
+    com.github.julyss2019.mcsp.julyguild.guild.Position position -> case
+    com.github.julyss2019.mcsp.julyguild.guild.GuildMember guildMember -> char
+    com.github.julyss2019.mcsp.julyguild.guild.Guild guild -> else
+    27:42:void <init>(com.github.julyss2019.mcsp.julyguild.gui.GUI,com.github.julyss2019.mcsp.julyguild.guild.GuildMember) -> <init>
+    46:173:org.bukkit.inventory.Inventory createInventory() -> new
+    178:178:boolean canUse() -> if
+    26:26:com.github.julyss2019.mcsp.julyguild.guild.GuildMember access$000(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMineGUI) -> do
+    26:26:com.github.julyss2019.mcsp.julyguild.guild.Guild access$100(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMineGUI) -> if
+    26:26:org.bukkit.entity.Player access$200(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMineGUI) -> for
+    26:26:org.bukkit.configuration.ConfigurationSection access$300(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMineGUI) -> int
+    26:26:com.github.julyss2019.mcsp.julyguild.JulyGuild access$400(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMineGUI) -> new
+com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMineGUI$1 -> class.o:
+    com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMineGUI this$0 -> do
+    48:48:void <init>(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMineGUI) -> <init>
+    51:54:void onClick(org.bukkit.event.inventory.InventoryClickEvent) -> onClick
+com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMineGUI$2 -> class.p:
+    com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMineGUI this$0 -> do
+    74:74:void <init>(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMineGUI) -> <init>
+    78:78:void onClick(org.bukkit.event.inventory.InventoryClickEvent) -> onClick
+com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMineGUI$3 -> class.q:
+    com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMineGUI this$0 -> do
+    67:67:void <init>(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMineGUI) -> <init>
+    70:72:void onClick(org.bukkit.event.inventory.InventoryClickEvent) -> onClick
+com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMineGUI$4 -> class.r:
+    com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMineGUI this$0 -> do
+    60:60:void <init>(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMineGUI) -> <init>
+    63:65:void onClick(org.bukkit.event.inventory.InventoryClickEvent) -> onClick
+com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMineGUI$5 -> class.s:
+    com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMineGUI this$0 -> do
+    89:89:void <init>(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMineGUI) -> <init>
+    92:95:void onClick(org.bukkit.event.inventory.InventoryClickEvent) -> onClick
+com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMineGUI$6 -> class.t:
+    com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMineGUI this$0 -> do
+    101:101:void <init>(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMineGUI) -> <init>
+    104:106:void onClick(org.bukkit.event.inventory.InventoryClickEvent) -> onClick
+com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMineGUI$7 -> class.u:
+    com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMineGUI this$0 -> do
+    112:112:void <init>(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMineGUI) -> <init>
+    115:139:void onClick(org.bukkit.event.inventory.InventoryClickEvent) -> onClick
+com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMineGUI$7$1 -> class.v:
+    com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMineGUI$7 this$1 -> do
+    123:123:void <init>(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMineGUI$7) -> <init>
+    126:132:void onChat(org.bukkit.event.player.AsyncPlayerChatEvent) -> onChat
+    136:137:void onTimeout(org.bukkit.event.player.AsyncPlayerChatEvent) -> onTimeout
+com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMineGUI$8 -> class.w:
+    com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMineGUI this$0 -> do
+    142:142:void <init>(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMineGUI) -> <init>
+    145:169:void onClick(org.bukkit.event.inventory.InventoryClickEvent) -> onClick
+com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMineGUI$8$1 -> class.x:
+    com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMineGUI$8 this$1 -> do
+    153:153:void <init>(com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMineGUI$8) -> <init>
+    156:162:void onChat(org.bukkit.event.player.AsyncPlayerChatEvent) -> onChat
+    166:167:void onTimeout(org.bukkit.event.player.AsyncPlayerChatEvent) -> onTimeout
+com.github.julyss2019.mcsp.julyguild.gui.entities.GuildShopGUI -> class.y:
+    com.github.julyss2019.mcsp.julyguild.guild.GuildMember guildMember -> do
+    16:19:void <init>(com.github.julyss2019.mcsp.julyguild.gui.GUI,com.github.julyss2019.mcsp.julyguild.guild.GuildMember,org.bukkit.configuration.file.YamlConfiguration) -> <init>
+    23:23:boolean canUse() -> if
+    28:28:org.bukkit.inventory.Inventory createInventory() -> new
+com.github.julyss2019.mcsp.julyguild.gui.entities.MainGUI -> class.z:
+    com.github.julyss2019.mcsp.julyguild.JulyGuild plugin -> do
+    org.bukkit.entity.Player bukkitPlayer -> if
     java.lang.String playerName -> try
     org.bukkit.configuration.ConfigurationSection thisGUISection -> byte
     org.bukkit.configuration.ConfigurationSection thisLangSection -> case
@@ -949,37 +838,37 @@ com.github.julyss2019.mcsp.julyguild.gui.entities.MainGUI -> b.O:
     int itemIndexCount -> else
     java.util.List guilds -> goto
     int guildCount -> long
-    38:50:void <init>(com.github.julyss2019.mcsp.julyguild.player.GuildPlayer) -> <init>
-    54:58:void update() -> final
-    62:174:org.bukkit.inventory.Inventory createInventory() -> new
-    179:179:boolean canUse() -> if
-    37:37:com.github.julyss2019.mcsp.julyguild.player.GuildPlayer access$000(com.github.julyss2019.mcsp.julyguild.gui.entities.MainGUI) -> do
-    37:37:com.github.julyss2019.mcsp.julyguild.player.GuildPlayer access$100(com.github.julyss2019.mcsp.julyguild.gui.entities.MainGUI) -> if
-    37:37:com.github.julyss2019.mcsp.julyguild.player.GuildPlayer access$200(com.github.julyss2019.mcsp.julyguild.gui.entities.MainGUI) -> for
-    37:37:com.github.julyss2019.mcsp.julyguild.player.GuildPlayer access$300(com.github.julyss2019.mcsp.julyguild.gui.entities.MainGUI) -> int
-    37:37:com.github.julyss2019.mcsp.julyguild.player.GuildPlayer access$400(com.github.julyss2019.mcsp.julyguild.gui.entities.MainGUI) -> new
-    37:37:org.bukkit.entity.Player access$500(com.github.julyss2019.mcsp.julyguild.gui.entities.MainGUI) -> try
-    37:37:org.bukkit.configuration.ConfigurationSection access$600(com.github.julyss2019.mcsp.julyguild.gui.entities.MainGUI) -> byte
-    37:37:com.github.julyss2019.mcsp.julyguild.JulyGuild access$700(com.github.julyss2019.mcsp.julyguild.gui.entities.MainGUI) -> case
-    37:37:com.github.julyss2019.mcsp.julyguild.player.GuildPlayer access$800(com.github.julyss2019.mcsp.julyguild.gui.entities.MainGUI) -> char
-com.github.julyss2019.mcsp.julyguild.gui.entities.MainGUI$1 -> b.P:
+    37:49:void <init>(com.github.julyss2019.mcsp.julyguild.player.GuildPlayer) -> <init>
+    53:57:void update() -> const
+    61:173:org.bukkit.inventory.Inventory createInventory() -> new
+    178:178:boolean canUse() -> if
+    36:36:com.github.julyss2019.mcsp.julyguild.player.GuildPlayer access$000(com.github.julyss2019.mcsp.julyguild.gui.entities.MainGUI) -> do
+    36:36:com.github.julyss2019.mcsp.julyguild.player.GuildPlayer access$100(com.github.julyss2019.mcsp.julyguild.gui.entities.MainGUI) -> if
+    36:36:com.github.julyss2019.mcsp.julyguild.player.GuildPlayer access$200(com.github.julyss2019.mcsp.julyguild.gui.entities.MainGUI) -> for
+    36:36:com.github.julyss2019.mcsp.julyguild.player.GuildPlayer access$300(com.github.julyss2019.mcsp.julyguild.gui.entities.MainGUI) -> int
+    36:36:com.github.julyss2019.mcsp.julyguild.player.GuildPlayer access$400(com.github.julyss2019.mcsp.julyguild.gui.entities.MainGUI) -> new
+    36:36:org.bukkit.entity.Player access$500(com.github.julyss2019.mcsp.julyguild.gui.entities.MainGUI) -> try
+    36:36:org.bukkit.configuration.ConfigurationSection access$600(com.github.julyss2019.mcsp.julyguild.gui.entities.MainGUI) -> byte
+    36:36:com.github.julyss2019.mcsp.julyguild.JulyGuild access$700(com.github.julyss2019.mcsp.julyguild.gui.entities.MainGUI) -> case
+    36:36:com.github.julyss2019.mcsp.julyguild.player.GuildPlayer access$800(com.github.julyss2019.mcsp.julyguild.gui.entities.MainGUI) -> char
+com.github.julyss2019.mcsp.julyguild.gui.entities.MainGUI$1 -> class.A:
     java.util.Map val$indexMap -> do
     com.github.julyss2019.mcsp.julyguild.gui.entities.MainGUI this$0 -> if
-    69:69:void <init>(com.github.julyss2019.mcsp.julyguild.gui.entities.MainGUI,java.util.Map) -> <init>
-    72:90:void onClick(org.bukkit.event.inventory.InventoryClickEvent) -> onClick
-com.github.julyss2019.mcsp.julyguild.gui.entities.MainGUI$2 -> b.Q:
+    68:68:void <init>(com.github.julyss2019.mcsp.julyguild.gui.entities.MainGUI,java.util.Map) -> <init>
+    71:89:void onClick(org.bukkit.event.inventory.InventoryClickEvent) -> onClick
+com.github.julyss2019.mcsp.julyguild.gui.entities.MainGUI$2 -> class.B:
     com.github.julyss2019.mcsp.julyguild.gui.entities.MainGUI this$0 -> do
-    97:97:void <init>(com.github.julyss2019.mcsp.julyguild.gui.entities.MainGUI) -> <init>
-    100:102:void onClick(org.bukkit.event.inventory.InventoryClickEvent) -> onClick
-com.github.julyss2019.mcsp.julyguild.gui.entities.MainGUI$3 -> b.R:
+    96:96:void <init>(com.github.julyss2019.mcsp.julyguild.gui.entities.MainGUI) -> <init>
+    99:101:void onClick(org.bukkit.event.inventory.InventoryClickEvent) -> onClick
+com.github.julyss2019.mcsp.julyguild.gui.entities.MainGUI$3 -> class.C:
     com.github.julyss2019.mcsp.julyguild.gui.entities.MainGUI this$0 -> do
-    105:105:void <init>(com.github.julyss2019.mcsp.julyguild.gui.entities.MainGUI) -> <init>
-    108:155:void onClick(org.bukkit.event.inventory.InventoryClickEvent) -> onClick
-com.github.julyss2019.mcsp.julyguild.gui.entities.MainGUI$3$1 -> b.S:
+    104:104:void <init>(com.github.julyss2019.mcsp.julyguild.gui.entities.MainGUI) -> <init>
+    107:154:void onClick(org.bukkit.event.inventory.InventoryClickEvent) -> onClick
+com.github.julyss2019.mcsp.julyguild.gui.entities.MainGUI$3$1 -> class.D:
     com.github.julyss2019.mcsp.julyguild.gui.entities.MainGUI$3 this$1 -> do
-    116:116:void <init>(com.github.julyss2019.mcsp.julyguild.gui.entities.MainGUI$3) -> <init>
-    119:148:void onChat(org.bukkit.event.player.AsyncPlayerChatEvent) -> onChat
-    152:153:void onTimeout(org.bukkit.event.player.AsyncPlayerChatEvent) -> onTimeout
+    115:115:void <init>(com.github.julyss2019.mcsp.julyguild.gui.entities.MainGUI$3) -> <init>
+    118:147:void onChat(org.bukkit.event.player.AsyncPlayerChatEvent) -> onChat
+    151:152:void onTimeout(org.bukkit.event.player.AsyncPlayerChatEvent) -> onTimeout
 com.github.julyss2019.mcsp.julyguild.guild.CacheGuildManager -> com.github.julyss2019.mcsp.julyguild.guild.CacheGuildManager:
     com.github.julyss2019.mcsp.julyguild.JulyGuild plugin -> do
     com.github.julyss2019.mcsp.julyguild.guild.GuildManager guildManager -> if
@@ -1011,6 +900,7 @@ com.github.julyss2019.mcsp.julyguild.guild.Guild -> com.github.julyss2019.mcsp.j
     int additionMemberCount -> void
     com.github.julyss2019.mcsp.julyguild.guild.GuildSpawn guildSpawn -> break
     boolean memberDamageEnabled -> catch
+    boolean valid -> class
     31:52:void <init>(java.io.File) -> <init>
     59:89:void load() -> if
     92:92:com.github.julyss2019.mcsp.julyguild.guild.GuildSpawn getGuildSpawn() -> getGuildSpawn
@@ -1041,65 +931,63 @@ com.github.julyss2019.mcsp.julyguild.guild.Guild -> com.github.julyss2019.mcsp.j
     304:304:java.util.List getMembers() -> getMembers
     312:322:void addMember(com.github.julyss2019.mcsp.julyguild.player.GuildPlayer) -> addMember
     329:341:void removeMember(com.github.julyss2019.mcsp.julyguild.guild.GuildMember) -> removeMember
-    344:344:boolean isValid() -> isValid
-    352:357:void delete() -> delete
-    360:360:int getMaxMemberCount() -> getMaxMemberCount
-    368:368:int getAdditionMemberCount() -> getAdditionMemberCount
-    377:380:void setAdditionMemberCount(int) -> setAdditionMemberCount
-    387:387:long getCreateTime() -> getCreateTime
-    395:398:void setAnnouncements(java.util.List) -> setAnnouncements
-    405:405:java.util.List getAnnouncements() -> getAnnouncements
-    413:413:org.bukkit.configuration.file.YamlConfiguration getYaml() -> getYaml
-    420:421:void save() -> save
-    428:434:int getRank() -> getRank
-    443:448:void broadcastMessage(java.lang.String) -> broadcastMessage
-    455:455:java.util.List getOnlineMembers() -> getOnlineMembers
-    463:463:int getOnlineMemberCount() -> getOnlineMemberCount
-    468:468:com.github.julyss2019.mcsp.julyguild.request.Receiver$Type getReceiverType() -> getReceiverType
-    473:473:java.util.List getReceivedRequests() -> getReceivedRequests
-    478:478:com.github.julyss2019.mcsp.julyguild.request.Sender$Type getSenderType() -> getSenderType
+    344:345:void setValid(boolean) -> setValid
+    348:348:boolean isValid() -> isValid
+    356:361:void delete() -> delete
+    364:364:int getMaxMemberCount() -> getMaxMemberCount
+    372:372:int getAdditionMemberCount() -> getAdditionMemberCount
+    381:384:void setAdditionMemberCount(int) -> setAdditionMemberCount
+    391:391:long getCreateTime() -> getCreateTime
+    399:402:void setAnnouncements(java.util.List) -> setAnnouncements
+    409:409:java.util.List getAnnouncements() -> getAnnouncements
+    417:417:org.bukkit.configuration.file.YamlConfiguration getYaml() -> getYaml
+    424:425:void save() -> save
+    432:438:int getRank() -> getRank
+    447:452:void broadcastMessage(java.lang.String) -> broadcastMessage
+    459:459:java.util.List getOnlineMembers() -> getOnlineMembers
+    467:467:int getOnlineMemberCount() -> getOnlineMemberCount
+    472:472:com.github.julyss2019.mcsp.julyguild.request.Receiver$Type getReceiverType() -> getReceiverType
+    477:477:java.util.List getReceivedRequests() -> getReceivedRequests
+    482:482:com.github.julyss2019.mcsp.julyguild.request.Sender$Type getSenderType() -> getSenderType
 com.github.julyss2019.mcsp.julyguild.guild.GuildBank -> com.github.julyss2019.mcsp.julyguild.guild.GuildBank:
     com.github.julyss2019.mcsp.julyguild.JulyGuild plugin -> do
     com.github.julyss2019.mcsp.julyguild.guild.Guild guild -> if
     java.util.Map balanceMap -> for
     org.bukkit.configuration.ConfigurationSection section -> int
-    17:24:void <init>(com.github.julyss2019.mcsp.julyguild.guild.Guild) -> <init>
-    27:35:com.github.julyss2019.mcsp.julyguild.guild.GuildBank load() -> do
-    45:45:boolean has(com.github.julyss2019.mcsp.julyguild.guild.GuildBank$BalanceType,double) -> has
-    55:55:boolean has(com.github.julyss2019.mcsp.julyguild.guild.GuildBank$BalanceType,java.math.BigDecimal) -> has
-    64:65:void deposit(com.github.julyss2019.mcsp.julyguild.guild.GuildBank$BalanceType,double) -> deposit
-    73:78:void deposit(com.github.julyss2019.mcsp.julyguild.guild.GuildBank$BalanceType,java.math.BigDecimal) -> deposit
-    86:87:void withdraw(com.github.julyss2019.mcsp.julyguild.guild.GuildBank$BalanceType,double) -> withdraw
-    95:104:void withdraw(com.github.julyss2019.mcsp.julyguild.guild.GuildBank$BalanceType,java.math.BigDecimal) -> withdraw
-    112:118:void setBalance(com.github.julyss2019.mcsp.julyguild.guild.GuildBank$BalanceType,java.math.BigDecimal) -> setBalance
-    126:126:java.math.BigDecimal getBalance(com.github.julyss2019.mcsp.julyguild.guild.GuildBank$BalanceType) -> getBalance
-    13:13:void <clinit>() -> <clinit>
+    17:26:void <init>(com.github.julyss2019.mcsp.julyguild.guild.Guild) -> <init>
+    29:38:void load() -> do
+    47:47:boolean has(com.github.julyss2019.mcsp.julyguild.guild.GuildBank$BalanceType,double) -> has
+    57:57:boolean has(com.github.julyss2019.mcsp.julyguild.guild.GuildBank$BalanceType,java.math.BigDecimal) -> has
+    66:67:void deposit(com.github.julyss2019.mcsp.julyguild.guild.GuildBank$BalanceType,double) -> deposit
+    75:80:void deposit(com.github.julyss2019.mcsp.julyguild.guild.GuildBank$BalanceType,java.math.BigDecimal) -> deposit
+    88:89:void withdraw(com.github.julyss2019.mcsp.julyguild.guild.GuildBank$BalanceType,double) -> withdraw
+    97:106:void withdraw(com.github.julyss2019.mcsp.julyguild.guild.GuildBank$BalanceType,java.math.BigDecimal) -> withdraw
+    114:120:void setBalance(com.github.julyss2019.mcsp.julyguild.guild.GuildBank$BalanceType,java.math.BigDecimal) -> setBalance
+    128:128:java.math.BigDecimal getBalance(com.github.julyss2019.mcsp.julyguild.guild.GuildBank$BalanceType) -> getBalance
 com.github.julyss2019.mcsp.julyguild.guild.GuildBank$BalanceType -> com.github.julyss2019.mcsp.julyguild.guild.GuildBank$BalanceType:
-    com.github.julyss2019.mcsp.julyguild.guild.GuildBank$BalanceType POINTS -> POINTS
-    com.github.julyss2019.mcsp.julyguild.guild.GuildBank$BalanceType MONEY -> MONEY
+    com.github.julyss2019.mcsp.julyguild.guild.GuildBank$BalanceType GMONEY -> GMONEY
     com.github.julyss2019.mcsp.julyguild.guild.GuildBank$BalanceType[] $VALUES -> $VALUES
-    14:14:com.github.julyss2019.mcsp.julyguild.guild.GuildBank$BalanceType[] values() -> values
-    14:14:com.github.julyss2019.mcsp.julyguild.guild.GuildBank$BalanceType valueOf(java.lang.String) -> valueOf
-    14:14:void <init>(java.lang.String,int) -> <init>
-    14:14:void <clinit>() -> <clinit>
+    13:13:com.github.julyss2019.mcsp.julyguild.guild.GuildBank$BalanceType[] values() -> values
+    13:13:com.github.julyss2019.mcsp.julyguild.guild.GuildBank$BalanceType valueOf(java.lang.String) -> valueOf
+    13:13:void <init>(java.lang.String,int) -> <init>
+    13:14:void <clinit>() -> <clinit>
 com.github.julyss2019.mcsp.julyguild.guild.GuildHuman -> com.github.julyss2019.mcsp.julyguild.guild.GuildHuman:
 com.github.julyss2019.mcsp.julyguild.guild.GuildManager -> com.github.julyss2019.mcsp.julyguild.guild.GuildManager:
     com.github.julyss2019.mcsp.julyguild.JulyGuild plugin -> do
-    com.github.julyss2019.mcsp.julyguild.player.GuildPlayerManager guildPlayerManager -> if
-    java.util.Map guildMap -> for
-    20:24:void <init>() -> <init>
-    32:52:void createGuild(com.github.julyss2019.mcsp.julyguild.player.GuildPlayer,java.lang.String) -> createGuild
-    55:55:int getGuildCount() -> getGuildCount
-    59:59:java.util.Collection getGuilds() -> getGuilds
-    67:67:java.util.List getSortedGuilds() -> getSortedGuilds
-    71:71:boolean isLoaded(java.util.UUID) -> isLoaded
-    75:75:boolean isValid(com.github.julyss2019.mcsp.julyguild.guild.Guild) -> isValid
-    83:89:void unloadGuild(com.github.julyss2019.mcsp.julyguild.guild.Guild) -> unloadGuild
+    java.util.Map guildMap -> if
+    20:23:void <init>() -> <init>
+    31:51:void createGuild(com.github.julyss2019.mcsp.julyguild.player.GuildPlayer,java.lang.String) -> createGuild
+    54:54:int getGuildCount() -> getGuildCount
+    58:58:java.util.Collection getGuilds() -> getGuilds
+    66:66:java.util.List getSortedGuilds() -> getSortedGuilds
+    70:70:boolean isLoaded(java.util.UUID) -> isLoaded
+    74:74:boolean isValid(com.github.julyss2019.mcsp.julyguild.guild.Guild) -> isValid
+    82:89:void unloadGuild(com.github.julyss2019.mcsp.julyguild.guild.Guild) -> unloadGuild
     96:109:void loadGuild(java.io.File) -> loadGuild
     115:130:void loadGuilds() -> loadGuilds
     133:133:com.github.julyss2019.mcsp.julyguild.guild.Guild getGuild(java.util.UUID) -> getGuild
     137:140:void unloadAll() -> unloadAll
-    67:67:int lambda$getSortedGuilds$0(com.github.julyss2019.mcsp.julyguild.guild.Guild,com.github.julyss2019.mcsp.julyguild.guild.Guild) -> do
+    66:66:int lambda$getSortedGuilds$0(com.github.julyss2019.mcsp.julyguild.guild.Guild,com.github.julyss2019.mcsp.julyguild.guild.Guild) -> do
 com.github.julyss2019.mcsp.julyguild.guild.GuildMember -> com.github.julyss2019.mcsp.julyguild.guild.GuildMember:
     com.github.julyss2019.mcsp.julyguild.guild.Guild guild -> do
     java.util.UUID uuid -> if
@@ -1183,14 +1071,21 @@ com.github.julyss2019.mcsp.julyguild.guild.Position -> com.github.julyss2019.mcs
     11:13:void <init>(java.lang.String,int,int) -> <init>
     16:16:int getLevel() -> getLevel
     6:7:void <clinit>() -> <clinit>
-com.github.julyss2019.mcsp.julyguild.listener.GUIListener -> b.T:
+com.github.julyss2019.mcsp.julyguild.listener.GUIListener -> class.E:
     com.github.julyss2019.mcsp.julyguild.JulyGuild plugin -> do
     com.github.julyss2019.mcsp.julyguild.player.GuildPlayerManager guildPlayerManager -> if
     15:15:void <init>() -> <init>
     21:26:void onInventoryCloseEvent(org.bukkit.event.inventory.InventoryCloseEvent) -> do
     36:53:void onItemClickEvent(com.github.julyss2019.mcsp.julylibrary.event.ItemClickEvent) -> do
     16:17:void <clinit>() -> <clinit>
-com.github.julyss2019.mcsp.julyguild.log.BaseGuildLog -> b.U:
+com.github.julyss2019.mcsp.julyguild.listener.GuildListener -> class.F:
+    com.github.julyss2019.mcsp.julyguild.JulyGuild plugin -> do
+    org.bukkit.configuration.ConfigurationSection langSection -> if
+    com.github.julyss2019.mcsp.julyguild.player.GuildPlayerManager guildPlayerManager -> for
+    java.util.Map msgIntervalMap -> int
+    21:25:void <init>() -> <init>
+    29:60:void onEntityDamageEvent(org.bukkit.event.entity.EntityDamageByEntityEvent) -> do
+com.github.julyss2019.mcsp.julyguild.log.BaseGuildLog -> class.G:
     com.github.julyss2019.mcsp.julyguild.log.GuildLogType type -> do
     java.lang.Long creationTime -> if
     java.util.UUID uuid -> for
@@ -1200,7 +1095,7 @@ com.github.julyss2019.mcsp.julyguild.log.BaseGuildLog -> b.U:
     27:27:com.github.julyss2019.mcsp.julyguild.log.GuildLogType getType() -> do
     32:32:long getCreationTime() -> if
     37:37:java.lang.String getUuid() -> for
-com.github.julyss2019.mcsp.julyguild.log.GuildLog -> b.V:
+com.github.julyss2019.mcsp.julyguild.log.GuildLog -> class.H:
     com.github.julyss2019.mcsp.julyguild.log.GuildLogType getType() -> do
     long getCreationTime() -> if
     java.lang.String getUuid() -> for
@@ -1212,7 +1107,7 @@ com.github.julyss2019.mcsp.julyguild.log.GuildLogType -> com.github.julyss2019.m
     3:3:com.github.julyss2019.mcsp.julyguild.log.GuildLogType valueOf(java.lang.String) -> valueOf
     3:3:void <init>(java.lang.String,int) -> <init>
     3:4:void <clinit>() -> <clinit>
-com.github.julyss2019.mcsp.julyguild.log.guild.GuildBalanceChangedLog -> b.W:
+com.github.julyss2019.mcsp.julyguild.log.guild.GuildBalanceChangedLog -> class.I:
     com.github.julyss2019.mcsp.julyguild.guild.GuildBank$BalanceType balanceType -> do
     java.math.BigDecimal oldBalance -> if
     java.math.BigDecimal newBalance -> for
@@ -1223,7 +1118,7 @@ com.github.julyss2019.mcsp.julyguild.log.guild.GuildBalanceChangedLog -> b.W:
     36:37:void setOldBalance(java.math.BigDecimal) -> do
     40:40:java.math.BigDecimal getNewBalance() -> try
     44:45:void setNewBalance(java.math.BigDecimal) -> if
-com.github.julyss2019.mcsp.julyguild.log.guild.GuildCreateLog -> b.X:
+com.github.julyss2019.mcsp.julyguild.log.guild.GuildCreateLog -> class.J:
     java.lang.String owner -> do
     java.lang.String guildName -> if
     13:17:void <init>(java.util.UUID,java.lang.String,java.lang.String) -> <init>
@@ -1231,7 +1126,7 @@ com.github.julyss2019.mcsp.julyguild.log.guild.GuildCreateLog -> b.X:
     24:25:void setGuildName(java.lang.String) -> do
     28:28:java.lang.String getOwner() -> new
     32:33:void setOwner(java.lang.String) -> if
-com.github.julyss2019.mcsp.julyguild.messagebox.BaseMessage -> b.Y:
+com.github.julyss2019.mcsp.julyguild.messagebox.BaseMessage -> class.K:
     java.util.UUID uuid -> do
     java.lang.String message -> if
     long creationTime -> for
@@ -1240,15 +1135,15 @@ com.github.julyss2019.mcsp.julyguild.messagebox.BaseMessage -> b.Y:
     24:24:long getCreationTime() -> do
     29:29:java.lang.String getMessage() -> if
     34:34:java.util.UUID getUuid() -> for
-com.github.julyss2019.mcsp.julyguild.messagebox.Message -> b.Z:
+com.github.julyss2019.mcsp.julyguild.messagebox.Message -> class.L:
     long getCreationTime() -> do
     java.lang.String getMessage() -> if
     java.util.UUID getUuid() -> for
-com.github.julyss2019.mcsp.julyguild.messagebox.MessageBox -> b.aa:
+com.github.julyss2019.mcsp.julyguild.messagebox.MessageBox -> class.M:
     java.util.Collection getMessages() -> getMessages
     void removeMessage(com.github.julyss2019.mcsp.julyguild.messagebox.Message) -> removeMessage
     void sendMessage(com.github.julyss2019.mcsp.julyguild.messagebox.Message) -> sendMessage
-com.github.julyss2019.mcsp.julyguild.messagebox.YamlMessageBox -> b.ab:
+com.github.julyss2019.mcsp.julyguild.messagebox.YamlMessageBox -> class.N:
     org.bukkit.configuration.ConfigurationSection section -> do
     java.util.Map messageMap -> if
     10:15:void <init>(org.bukkit.configuration.ConfigurationSection) -> <init>
@@ -1258,22 +1153,20 @@ com.github.julyss2019.mcsp.julyguild.messagebox.YamlMessageBox -> b.ab:
     47:53:void removeMessage(com.github.julyss2019.mcsp.julyguild.messagebox.Message) -> removeMessage
     57:66:void sendMessage(com.github.julyss2019.mcsp.julyguild.messagebox.Message) -> sendMessage
     29:34:void lambda$load$0(java.lang.String) -> do
-com.github.julyss2019.mcsp.julyguild.placeholder.Placeholder -> b.ac:
+com.github.julyss2019.mcsp.julyguild.placeholder.Placeholder -> class.O:
     java.lang.String key -> do
     java.lang.String value -> if
     7:10:void <init>(java.lang.String,java.lang.String) -> <init>
     13:13:java.lang.String getKey() -> do
     17:17:java.lang.String getValue() -> if
-com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer -> b.ad:
+com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer -> class.P:
     java.util.List placeholders -> do
     20:21:void <init>() -> <init>
     24:24:java.util.List getPlaceholders() -> do
-    33:41:com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer addGuildPlaceholders(com.github.julyss2019.mcsp.julyguild.guild.Guild) -> do
-    45:50:com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer addGuildMemberPlaceholders(com.github.julyss2019.mcsp.julyguild.guild.GuildMember) -> do
-    54:54:com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer add(java.lang.String,double) -> do
-    58:58:com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer add(java.lang.String,int) -> do
-    62:63:com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer add(java.lang.String,java.lang.String) -> do
-com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderText -> b.ae:
+    33:40:com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer addGuildPlaceholders(com.github.julyss2019.mcsp.julyguild.guild.Guild) -> do
+    44:48:com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer addGuildMemberPlaceholders(com.github.julyss2019.mcsp.julyguild.guild.GuildMember) -> do
+    52:53:com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer add(java.lang.String,java.lang.Object) -> do
+com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderText -> class.Q:
     14:14:void <init>() -> <init>
     20:20:java.util.List replacePlaceholders(java.util.List,org.bukkit.entity.Player) -> do
     28:28:java.lang.String replacePlaceholders(java.lang.String,org.bukkit.entity.Player) -> do
@@ -1328,7 +1221,7 @@ com.github.julyss2019.mcsp.julyguild.player.GuildPlayerMessageBox -> com.github.
     9:12:void <init>(com.github.julyss2019.mcsp.julyguild.player.GuildPlayer) -> <init>
     15:15:com.github.julyss2019.mcsp.julyguild.player.GuildPlayer getGuildPlayer() -> getGuildPlayer
     20:21:void save() -> save
-com.github.julyss2019.mcsp.julyguild.request.BaseRequest -> b.af:
+com.github.julyss2019.mcsp.julyguild.request.BaseRequest -> class.R:
     long creationTime -> do
     java.util.UUID uuid -> if
     com.github.julyss2019.mcsp.julyguild.request.Sender sender -> for
@@ -1340,12 +1233,12 @@ com.github.julyss2019.mcsp.julyguild.request.BaseRequest -> b.af:
     32:32:java.util.UUID getUuid() -> if
     37:37:com.github.julyss2019.mcsp.julyguild.request.Sender getSender() -> for
     42:42:com.github.julyss2019.mcsp.julyguild.request.Receiver getReceiver() -> int
-    47:54:void save(org.bukkit.configuration.ConfigurationSection) -> do
-    58:82:void load(org.bukkit.configuration.ConfigurationSection) -> if
+    47:54:void onSave(org.bukkit.configuration.ConfigurationSection) -> do
+    58:82:void onLoad(org.bukkit.configuration.ConfigurationSection) -> if
     86:88:void delete() -> new
     92:93:void send() -> try
     97:97:boolean isValid() -> byte
-com.github.julyss2019.mcsp.julyguild.request.BaseRequest$1 -> b.ag:
+com.github.julyss2019.mcsp.julyguild.request.BaseRequest$1 -> class.S:
     int[] $SwitchMap$com$github$julyss2019$mcsp$julyguild$request$Sender$Type -> do
     int[] $SwitchMap$com$github$julyss2019$mcsp$julyguild$request$Receiver$Type -> if
     61:72:void <clinit>() -> <clinit>
@@ -1367,8 +1260,8 @@ com.github.julyss2019.mcsp.julyguild.request.Request -> com.github.julyss2019.mc
     long getCreationTime() -> do
     java.util.UUID getUuid() -> if
     com.github.julyss2019.mcsp.julyguild.request.Request$Type getType() -> case
-    void save(org.bukkit.configuration.ConfigurationSection) -> do
-    void load(org.bukkit.configuration.ConfigurationSection) -> if
+    void onSave(org.bukkit.configuration.ConfigurationSection) -> do
+    void onLoad(org.bukkit.configuration.ConfigurationSection) -> if
     void delete() -> new
     void send() -> try
     boolean isValid() -> byte
@@ -1381,7 +1274,7 @@ com.github.julyss2019.mcsp.julyguild.request.Request$Type -> com.github.julyss20
     14:16:void <init>(java.lang.String,int,java.lang.Class) -> <init>
     19:19:java.lang.Class getClazz() -> getClazz
     9:10:void <clinit>() -> <clinit>
-com.github.julyss2019.mcsp.julyguild.request.RequestManager -> b.ah:
+com.github.julyss2019.mcsp.julyguild.request.RequestManager -> class.T:
     com.github.julyss2019.mcsp.julyguild.JulyGuild plugin -> do
     java.util.Map requestMap -> if
     java.util.Map sentMap -> for
@@ -1411,23 +1304,23 @@ com.github.julyss2019.mcsp.julyguild.request.Sender$Type -> com.github.julyss201
     9:9:com.github.julyss2019.mcsp.julyguild.request.Sender$Type valueOf(java.lang.String) -> valueOf
     9:9:void <init>(java.lang.String,int) -> <init>
     9:10:void <clinit>() -> <clinit>
-com.github.julyss2019.mcsp.julyguild.request.entities.InviteRequest -> b.ai:
+com.github.julyss2019.mcsp.julyguild.request.entities.InviteRequest -> class.U:
     5:5:void <init>() -> <init>
     8:8:com.github.julyss2019.mcsp.julyguild.request.Request$Type getType() -> case
     13:13:boolean isValid() -> byte
-com.github.julyss2019.mcsp.julyguild.request.entities.JoinRequest -> b.aj:
+com.github.julyss2019.mcsp.julyguild.request.entities.JoinRequest -> class.V:
     12:12:void <init>() -> <init>
     15:16:void <init>(com.github.julyss2019.mcsp.julyguild.player.GuildPlayer,com.github.julyss2019.mcsp.julyguild.guild.Guild) -> <init>
     20:20:com.github.julyss2019.mcsp.julyguild.request.Request$Type getType() -> case
     25:25:boolean isValid() -> byte
-com.github.julyss2019.mcsp.julyguild.task.RequestCleanTask -> b.ak:
+com.github.julyss2019.mcsp.julyguild.task.RequestCleanTask -> class.W:
     com.github.julyss2019.mcsp.julyguild.JulyGuild plugin -> do
     com.github.julyss2019.mcsp.julyguild.request.RequestManager requestManager -> if
     9:9:void <init>() -> <init>
     15:20:void run() -> run
     16:19:void lambda$run$0(com.github.julyss2019.mcsp.julyguild.request.Request) -> do
     10:11:void <clinit>() -> <clinit>
-com.github.julyss2019.mcsp.julyguild.thirdparty.PlaceholderAPIExpansion -> b.al:
+com.github.julyss2019.mcsp.julyguild.thirdparty.PlaceholderAPIExpansion -> class.X:
     com.github.julyss2019.mcsp.julyguild.JulyGuild plugin -> do
     org.bukkit.configuration.file.YamlConfiguration langYml -> if
     com.github.julyss2019.mcsp.julyguild.guild.CacheGuildManager cacheGuildManager -> for
@@ -1436,33 +1329,32 @@ com.github.julyss2019.mcsp.julyguild.thirdparty.PlaceholderAPIExpansion -> b.al:
     28:28:java.lang.String getIdentifier() -> getIdentifier
     33:33:java.lang.String getAuthor() -> getAuthor
     38:38:java.lang.String getVersion() -> getVersion
-    43:87:java.lang.String onRequest(org.bukkit.OfflinePlayer,java.lang.String) -> onRequest
-    92:92:java.lang.String onPlaceholderRequest(org.bukkit.entity.Player,java.lang.String) -> onPlaceholderRequest
-    97:97:boolean canRegister() -> canRegister
+    43:83:java.lang.String onRequest(org.bukkit.OfflinePlayer,java.lang.String) -> onRequest
+    88:88:java.lang.String onPlaceholderRequest(org.bukkit.entity.Player,java.lang.String) -> onPlaceholderRequest
+    93:93:boolean canRegister() -> canRegister
     21:24:void <clinit>() -> <clinit>
-com.github.julyss2019.mcsp.julyguild.thirdparty.economy.PlayerPointsEconomy -> b.am:
+com.github.julyss2019.mcsp.julyguild.thirdparty.economy.PlayerPointsEconomy -> class.Y:
     org.black_ixx.playerpoints.PlayerPointsAPI playerPointsAPI -> do
     9:11:void <init>(org.black_ixx.playerpoints.PlayerPointsAPI) -> <init>
     15:15:boolean has(org.bukkit.entity.Player,int) -> do
     19:20:void withdraw(org.bukkit.entity.Player,int) -> if
     23:24:void deposit(org.bukkit.entity.Player,int) -> for
     27:27:int getBalance(org.bukkit.entity.Player) -> do
-com.github.julyss2019.mcsp.julyguild.thirdparty.economy.VaultEconomy -> b.an:
+com.github.julyss2019.mcsp.julyguild.thirdparty.economy.VaultEconomy -> class.Z:
     net.milkbowl.vault.economy.Economy economy -> do
     10:12:void <init>(net.milkbowl.vault.economy.Economy) -> <init>
     15:15:boolean has(org.bukkit.entity.Player,double) -> do
     19:22:void withdraw(org.bukkit.entity.Player,double) -> if
     25:28:void deposit(org.bukkit.entity.Player,double) -> for
     31:31:double getBalance(org.bukkit.entity.Player) -> do
-com.github.julyss2019.mcsp.julyguild.util.Util -> b.ao:
+com.github.julyss2019.mcsp.julyguild.util.Util -> class.aa:
     java.text.DecimalFormat SIMPLE_DECIMAL_FORMAT -> do
     14:14:void <init>() -> <init>
     23:45:java.util.List getIndexes(java.lang.String) -> do
-    49:53:java.lang.String getTimeLeftStr(long) -> do
-    57:58:void sendColoredMessage(org.bukkit.command.CommandSender,java.lang.String,com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer) -> do
-    61:62:void sendColoredMessage(org.bukkit.command.CommandSender,java.lang.String) -> do
-    65:66:void sendColoredConsoleMessage(java.lang.String) -> if
-    72:77:int parseIntegerOrThrow(java.lang.String,java.lang.String) -> do
+    49:50:void sendMsg(org.bukkit.command.CommandSender,java.lang.String,com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer) -> do
+    53:54:void sendMsg(org.bukkit.command.CommandSender,java.lang.String) -> do
+    57:58:void sendConsoleMsg(java.lang.String) -> if
+    64:69:int parseIntegerOrThrow(java.lang.String,java.lang.String) -> do
     15:15:void <clinit>() -> <clinit>
 org.apache.commons.lang3.AnnotationUtils -> org.apache.commons.lang3.AnnotationUtils:
     org.apache.commons.lang3.builder.ToStringStyle TO_STRING_STYLE -> TO_STRING_STYLE
@@ -3873,7 +3765,7 @@ org.apache.commons.lang3.concurrent.EventCountCircuitBreaker -> org.apache.commo
     138:138:boolean incrementAndCheckState(java.lang.Object) -> incrementAndCheckState
     141:141:void <clinit>() -> <clinit>
 org.apache.commons.lang3.concurrent.EventCountCircuitBreaker$1 -> org.apache.commons.lang3.concurrent.EventCountCircuitBreaker$1:
-org.apache.commons.lang3.concurrent.EventCountCircuitBreaker$CheckIntervalData -> org.apache.commons.lang3.concurrent.EventCountCircuitBreaker$CheckIntervaldurability:
+org.apache.commons.lang3.concurrent.EventCountCircuitBreaker$CheckIntervalData -> org.apache.commons.lang3.concurrent.EventCountCircuitBreaker$CheckIntervalData:
     int eventCount -> eventCount
     long checkIntervalStart -> checkIntervalStart
     443:446:void <init>(int,long) -> <init>
@@ -6030,7 +5922,7 @@ org.apache.commons.lang3.tuple.Triple -> org.apache.commons.lang3.tuple.Triple:
     140:140:java.lang.String toString() -> toString
     155:155:java.lang.String toString(java.lang.String) -> toString
     40:40:int compareTo(java.lang.Object) -> compareTo
-parsii.eval.BinaryFunction -> b.ap:
+parsii.eval.BinaryFunction -> class.ab:
     20:20:void <init>() -> <init>
     24:24:int getNumberOfArguments() -> do
     29:37:double eval(java.util.List) -> do
@@ -6074,7 +5966,7 @@ parsii.eval.BinaryOperation$Op -> parsii.eval.BinaryOperation$Op:
     31:31:int getPriority() -> getPriority
     36:38:void <init>(java.lang.String,int,int) -> <init>
     26:28:void <clinit>() -> <clinit>
-parsii.eval.Constant -> b.aq:
+parsii.eval.Constant -> class.ac:
     double value -> if
     parsii.eval.Constant EMPTY -> do
     25:27:void <init>(double) -> <init>
@@ -6082,16 +5974,16 @@ parsii.eval.Constant -> b.aq:
     36:36:boolean isConstant() -> a_
     41:41:java.lang.String toString() -> toString
     23:23:void <clinit>() -> <clinit>
-parsii.eval.Expression -> b.ar:
+parsii.eval.Expression -> class.ad:
     20:20:void <init>() -> <init>
     double evaluate() -> try
     35:35:parsii.eval.Expression simplify() -> byte
     45:45:boolean isConstant() -> a_
-parsii.eval.Function -> b.as:
+parsii.eval.Function -> class.ae:
     int getNumberOfArguments() -> do
     double eval(java.util.List) -> do
     boolean isNaturalFunction() -> if
-parsii.eval.FunctionCall -> b.at:
+parsii.eval.FunctionCall -> class.af:
     java.util.List parameters -> do
     parsii.eval.Function function -> if
     20:21:void <init>() -> <init>
@@ -6100,7 +5992,7 @@ parsii.eval.FunctionCall -> b.at:
     48:49:void setFunction(parsii.eval.Function) -> do
     57:58:void addParameter(parsii.eval.Expression) -> do
     66:66:java.util.List getParameters() -> if
-parsii.eval.Functions -> b.au:
+parsii.eval.Functions -> class.ag:
     parsii.eval.Function SIN -> do
     parsii.eval.Function SINH -> if
     parsii.eval.Function COS -> for
@@ -6128,84 +6020,84 @@ parsii.eval.Functions -> b.au:
     parsii.eval.Function IF -> double
     22:22:void <init>() -> <init>
     27:272:void <clinit>() -> <clinit>
-parsii.eval.Functions$1 -> b.av:
+parsii.eval.Functions$1 -> class.ah:
     27:27:void <init>() -> <init>
     30:30:double eval(double) -> do
-parsii.eval.Functions$10 -> b.aw:
+parsii.eval.Functions$10 -> class.ai:
     117:117:void <init>() -> <init>
     120:120:double eval(double) -> do
-parsii.eval.Functions$11 -> b.ax:
+parsii.eval.Functions$11 -> class.aj:
     127:127:void <init>() -> <init>
     130:130:double eval(double,double) -> do
-parsii.eval.Functions$12 -> b.ay:
+parsii.eval.Functions$12 -> class.ak:
     138:138:void <init>() -> <init>
     141:141:double eval(double) -> do
-parsii.eval.Functions$13 -> b.az:
+parsii.eval.Functions$13 -> class.al:
     148:148:void <init>() -> <init>
     151:151:double eval(double) -> do
-parsii.eval.Functions$14 -> b.aA:
+parsii.eval.Functions$14 -> class.am:
     158:158:void <init>() -> <init>
     161:161:double eval(double) -> do
-parsii.eval.Functions$15 -> b.aB:
+parsii.eval.Functions$15 -> class.an:
     168:168:void <init>() -> <init>
     171:171:double eval(double) -> do
-parsii.eval.Functions$16 -> b.aC:
+parsii.eval.Functions$16 -> class.ao:
     178:178:void <init>() -> <init>
     181:181:double eval(double) -> do
-parsii.eval.Functions$17 -> b.aD:
+parsii.eval.Functions$17 -> class.ap:
     188:188:void <init>() -> <init>
     191:191:double eval(double) -> do
-parsii.eval.Functions$18 -> b.aE:
+parsii.eval.Functions$18 -> class.aq:
     198:198:void <init>() -> <init>
     201:201:double eval(double) -> do
-parsii.eval.Functions$19 -> b.aF:
+parsii.eval.Functions$19 -> class.ar:
     208:208:void <init>() -> <init>
     211:211:double eval(double,double) -> do
-parsii.eval.Functions$2 -> b.aG:
+parsii.eval.Functions$2 -> class.as:
     37:37:void <init>() -> <init>
     40:40:double eval(double) -> do
-parsii.eval.Functions$20 -> b.aH:
+parsii.eval.Functions$20 -> class.at:
     218:218:void <init>() -> <init>
     221:221:double eval(double,double) -> do
-parsii.eval.Functions$21 -> b.aI:
+parsii.eval.Functions$21 -> class.au:
     228:228:void <init>() -> <init>
     231:231:double eval(double) -> do
-parsii.eval.Functions$22 -> b.aJ:
+parsii.eval.Functions$22 -> class.av:
     238:238:void <init>() -> <init>
     241:241:double eval(double) -> do
-parsii.eval.Functions$23 -> b.aK:
+parsii.eval.Functions$23 -> class.aw:
     248:248:void <init>() -> <init>
     251:251:double eval(double) -> do
-parsii.eval.Functions$24 -> b.aL:
+parsii.eval.Functions$24 -> class.ax:
     258:258:void <init>() -> <init>
     261:261:double eval(double) -> do
-parsii.eval.Functions$25 -> b.aM:
+parsii.eval.Functions$25 -> class.ay:
     272:272:void <init>() -> <init>
     275:275:int getNumberOfArguments() -> do
     280:287:double eval(java.util.List) -> do
     293:293:boolean isNaturalFunction() -> if
-parsii.eval.Functions$3 -> b.aN:
+parsii.eval.Functions$3 -> class.az:
     47:47:void <init>() -> <init>
     50:50:double eval(double) -> do
-parsii.eval.Functions$4 -> b.aO:
+parsii.eval.Functions$4 -> class.aA:
     57:57:void <init>() -> <init>
     60:60:double eval(double) -> do
-parsii.eval.Functions$5 -> b.aP:
+parsii.eval.Functions$5 -> class.aB:
     67:67:void <init>() -> <init>
     70:70:double eval(double) -> do
-parsii.eval.Functions$6 -> b.aQ:
+parsii.eval.Functions$6 -> class.aC:
     77:77:void <init>() -> <init>
     80:80:double eval(double) -> do
-parsii.eval.Functions$7 -> b.aR:
+parsii.eval.Functions$7 -> class.aD:
     87:87:void <init>() -> <init>
     90:90:double eval(double) -> do
-parsii.eval.Functions$8 -> b.aS:
+parsii.eval.Functions$8 -> class.aE:
     97:97:void <init>() -> <init>
     100:100:double eval(double) -> do
-parsii.eval.Functions$9 -> b.aT:
+parsii.eval.Functions$9 -> class.aF:
     107:107:void <init>() -> <init>
     110:110:double eval(double) -> do
-parsii.eval.Parser -> b.aU:
+parsii.eval.Parser -> class.aG:
     parsii.eval.Scope scope -> do
     java.util.List errors -> if
     parsii.tokenizer.Tokenizer tokenizer -> for
@@ -6228,7 +6120,7 @@ parsii.eval.Parser -> b.aU:
     433:460:parsii.eval.Expression functionCall() -> case
     474:482:void expect(parsii.tokenizer.Token$TokenType,java.lang.String) -> do
     73:100:void <clinit>() -> <clinit>
-parsii.eval.Scope -> b.aV:
+parsii.eval.Scope -> class.aH:
     parsii.eval.Scope parent -> do
     java.util.Map context -> if
     parsii.eval.Scope root -> for
@@ -6243,13 +6135,13 @@ parsii.eval.Scope -> b.aV:
     158:164:java.util.Set getNames() -> for
     173:173:java.util.Collection getLocalVariables() -> int
     182:188:java.util.Collection getVariables() -> new
-parsii.eval.UnaryFunction -> b.aW:
+parsii.eval.UnaryFunction -> class.aI:
     20:20:void <init>() -> <init>
     24:24:int getNumberOfArguments() -> do
     29:33:double eval(java.util.List) -> do
     double eval(double) -> do
     46:46:boolean isNaturalFunction() -> if
-parsii.eval.Variable -> b.aX:
+parsii.eval.Variable -> class.aJ:
     double value -> do
     java.lang.String name -> if
     boolean constant -> for
@@ -6261,14 +6153,14 @@ parsii.eval.Variable -> b.aX:
     86:86:java.lang.String getName() -> if
     95:95:boolean isConstant() -> for
     105:106:parsii.eval.Variable withValue(double) -> for
-parsii.eval.VariableReference -> b.aY:
+parsii.eval.VariableReference -> class.aK:
     parsii.eval.Variable var -> do
     26:28:void <init>(parsii.eval.Variable) -> <init>
     32:32:double evaluate() -> try
     37:37:java.lang.String toString() -> toString
     42:42:boolean isConstant() -> a_
     47:50:parsii.eval.Expression simplify() -> byte
-parsii.tokenizer.Char -> b.aZ:
+parsii.tokenizer.Char -> class.aL:
     char value -> if
     int line -> for
     int pos -> int
@@ -6284,7 +6176,7 @@ parsii.tokenizer.Char -> b.aZ:
     101:104:java.lang.String toString() -> toString
     115:120:boolean is(char[]) -> do
     129:132:java.lang.String getStringValue() -> char
-parsii.tokenizer.Lookahead -> b.ba:
+parsii.tokenizer.Lookahead -> class.aM:
     java.util.List itemBuffer -> do
     boolean endReached -> if
     java.util.List problemCollector -> for
@@ -6299,7 +6191,7 @@ parsii.tokenizer.Lookahead -> b.ba:
     148:165:void consume(int) -> if
     174:174:java.util.List getProblemCollector() -> try
     183:184:void setProblemCollector(java.util.List) -> do
-parsii.tokenizer.LookaheadReader -> b.bb:
+parsii.tokenizer.LookaheadReader -> class.aN:
     java.io.Reader input -> new
     int line -> try
     int pos -> byte
@@ -6328,18 +6220,18 @@ parsii.tokenizer.ParseError$Severity -> parsii.tokenizer.ParseError$Severity:
     28:28:parsii.tokenizer.ParseError$Severity valueOf(java.lang.String) -> valueOf
     28:28:void <init>(java.lang.String,int) -> <init>
     28:29:void <clinit>() -> <clinit>
-parsii.tokenizer.ParseException -> b.bc:
+parsii.tokenizer.ParseException -> class.aO:
     java.util.List errors -> do
     33:40:parsii.tokenizer.ParseException create(java.util.List) -> do
     45:47:void <init>(java.lang.String,java.util.List) -> <init>
     55:55:java.util.List getErrors() -> do
     60:68:java.lang.String toString() -> toString
-parsii.tokenizer.Position -> b.bd:
+parsii.tokenizer.Position -> class.aP:
     parsii.tokenizer.Position UNKNOWN -> do
     int getLine() -> if
     int getPos() -> for
     35:35:void <clinit>() -> <clinit>
-parsii.tokenizer.Position$1 -> b.be:
+parsii.tokenizer.Position$1 -> class.aQ:
     35:35:void <init>() -> <init>
     39:39:int getLine() -> if
     44:44:int getPos() -> for
@@ -6398,7 +6290,7 @@ parsii.tokenizer.Token$TokenType -> parsii.tokenizer.Token$TokenType:
     50:50:parsii.tokenizer.Token$TokenType valueOf(java.lang.String) -> valueOf
     50:50:void <init>(java.lang.String,int) -> <init>
     50:51:void <clinit>() -> <clinit>
-parsii.tokenizer.Tokenizer -> b.bf:
+parsii.tokenizer.Tokenizer -> class.aR:
     parsii.tokenizer.LookaheadReader input -> new
     char decimalSeparator -> try
     char effectiveDecimalSeparator -> byte
