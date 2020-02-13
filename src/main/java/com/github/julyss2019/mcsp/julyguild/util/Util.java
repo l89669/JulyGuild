@@ -6,7 +6,11 @@ import com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderText;
 import com.github.julyss2019.mcsp.julylibrary.message.JulyMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
+import org.jetbrains.annotations.NotNull;
+import parsii.eval.Parser;
+import parsii.tokenizer.ParseException;
 
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +23,7 @@ public class Util {
      * @param str 以 "," 作为分隔符的字符串 以 "-" 作为范围界定符的字符串 单个字符串
      * @return
      */
-    public static List<Integer> getIndexes(String str) {
+    public static List<Integer> getIndexes(@NotNull String str) {
         List<Integer> result = new ArrayList<>();
 
         try {
@@ -45,27 +49,23 @@ public class Util {
         return result;
     }
 
-    public static void sendMsg(CommandSender cs, String msg, PlaceholderContainer placeholderContainer) {
+    public static void sendMsg(@NotNull CommandSender cs, @NotNull String msg, @NotNull PlaceholderContainer placeholderContainer) {
         sendMsg(cs, PlaceholderText.replacePlaceholders(msg, placeholderContainer));
     }
 
-    public static void sendMsg(CommandSender cs, String msg) {
+    public static void sendMsg(@NotNull CommandSender cs, @NotNull String msg) {
         JulyMessage.sendColoredMessage(cs, LangHelper.Global.getPrefix() + msg);
     }
 
-    public static void sendConsoleMsg(String msg) {
+    public static void sendConsoleMsg(@NotNull String msg) {
         JulyMessage.sendColoredMessage(Bukkit.getConsoleSender(), "&a[JulyGuild] &f" + msg);
     }
 
-    public static int parseIntegerOrThrow(String str, String message) {
-        int result;
-
+    public static double calculate(@NotNull String formula) {
         try {
-            result = Integer.parseInt(str);
-        } catch (Exception e) {
-            throw new RuntimeException(message);
+            return Parser.parse(formula).evaluate();
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
         }
-
-        return result;
     }
 }

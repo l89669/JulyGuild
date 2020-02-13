@@ -1,7 +1,7 @@
 package com.github.julyss2019.mcsp.julyguild;
 
 import com.github.julyss2019.mcsp.julyguild.guild.GuildMember;
-import com.github.julyss2019.mcsp.julyguild.guild.Position;
+import com.github.julyss2019.mcsp.julyguild.guild.GuildPosition;
 import com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer;
 import com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderText;
 import org.bukkit.configuration.ConfigurationSection;
@@ -23,12 +23,12 @@ public class LangHelper {
             String format = langSection.getString("Global.nick_name");
 
             return PlaceholderText.replacePlaceholders(format, new PlaceholderContainer()
-                    .add("PERMISSION", langSection.getString("Position." + guildMember.getPosition().name().toLowerCase()))
+                    .add("PERMISSION", langSection.getString("GuildPosition." + guildMember.getPosition().name().toLowerCase()))
                     .add("NAME", guildMember.getName()));
         }
 
-        public static String getPositionName(Position position) {
-            return JulyGuild.getInstance().getLangYaml().getString("Position." + position.name().toLowerCase());
+        public static String getPositionName(GuildPosition guildPosition) {
+            return JulyGuild.getInstance().getLangYaml().getString("GuildPosition." + guildPosition.name().toLowerCase());
         }
     }
 }

@@ -1,0 +1,39 @@
+name: Shop1
+title: '&e&l公会商店(1/2)'
+row: 6
+simple_confirm_gui: &simple_confirm_gui
+  row: 3
+  title: '&c&l确认支付'
+  items:
+    confirm:
+      index: 14
+      icon:
+        material: NETHER_STAR
+        display_name: '&a确认'
+        lores:
+          - ' &e支付公会币: {price}'
+    cancel:
+      index: 27
+      icon:
+        material: ARROW
+        display_name: '&c返回'
+items:
+  back:
+    index: 50
+    icon:
+      material: ARROW
+      display_name: '&c返回'
+shop_items:
+  '1':
+    index: 11
+    icon:
+      material: GRASS
+      display_name: '&f设置公会主城'
+      lores:
+        - ' &f花费公会币: {price}'
+        - ' &f位置为你现在所在的位置'
+    reward_type: GUILD_SET_SPAWN
+    sell:
+      price: 1000 # 消费公会币 支持公式 支持公会变量
+      success_message: '&f设置公会主城成功, 消费公会币: &ex{price}&f.'
+      ConfirmGUI: *simple_confirm_gui

@@ -8,7 +8,7 @@ import com.github.julyss2019.mcsp.julyguild.gui.GUI;
 import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
 import com.github.julyss2019.mcsp.julyguild.guild.Guild;
 import com.github.julyss2019.mcsp.julyguild.guild.GuildMember;
-import com.github.julyss2019.mcsp.julyguild.guild.Permission;
+import com.github.julyss2019.mcsp.julyguild.guild.GuildPermission;
 import com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
 import com.github.julyss2019.mcsp.julyguild.util.Util;
@@ -26,7 +26,7 @@ import java.util.*;
 
 public class GuildMemberListGUI extends BasePlayerPageableGUI {
     private enum ViewerType {PLAYER, MANAGER}
-    private static final List<Permission> managerPermissions = Arrays.asList(Permission.MEMBER_KICK, Permission.MANAGE_PERMISSION);
+    private static final List<GuildPermission> MANAGER_GUILD_PERMISSIONS = Arrays.asList(GuildPermission.MEMBER_KICK, GuildPermission.MANAGE_PERMISSION);
     private final JulyGuild plugin = JulyGuild.getInstance();
     private final ViewerType viewerType;
     private final Guild guild;
@@ -52,8 +52,8 @@ public class GuildMemberListGUI extends BasePlayerPageableGUI {
         if (member == null) {
             viewerType = ViewerType.PLAYER;
         } else {
-            for (Permission permission : managerPermissions) {
-                if (member.hasPermission(permission)) {
+            for (GuildPermission guildPermission : MANAGER_GUILD_PERMISSIONS) {
+                if (member.hasPermission(guildPermission)) {
                     viewerType = ViewerType.MANAGER;
                     break out;
                 }

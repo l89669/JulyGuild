@@ -5,7 +5,7 @@ import com.github.julyss2019.mcsp.julyguild.config.gui.IndexConfigGUI;
 import com.github.julyss2019.mcsp.julyguild.config.gui.item.GUIItemManager;
 import com.github.julyss2019.mcsp.julyguild.gui.*;
 import com.github.julyss2019.mcsp.julyguild.guild.Guild;
-import com.github.julyss2019.mcsp.julyguild.guild.Permission;
+import com.github.julyss2019.mcsp.julyguild.guild.GuildPermission;
 import com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
 import com.github.julyss2019.mcsp.julyguild.request.entities.JoinRequest;
@@ -61,7 +61,7 @@ public class GuildInfoGUI extends BasePlayerGUI {
 
                         new JoinRequest(guildPlayer, guild).send();
 
-                        guild.getMembers().stream().filter(guildMember -> guildMember.hasPermission(Permission.PLAYER_JOIN_CHECK)).forEach(guildMember -> {
+                        guild.getMembers().stream().filter(guildMember -> guildMember.hasPermission(GuildPermission.PLAYER_JOIN_CHECK)).forEach(guildMember -> {
                             Util.sendMsg(bukkitPlayer, "request_join.received");
                         });
 

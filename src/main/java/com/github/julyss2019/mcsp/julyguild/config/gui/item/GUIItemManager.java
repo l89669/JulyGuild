@@ -2,11 +2,8 @@ package com.github.julyss2019.mcsp.julyguild.config.gui.item;
 
 import com.github.julyss2019.mcsp.julyguild.JulyGuild;
 import com.github.julyss2019.mcsp.julyguild.config.setting.MainSettings;
-import com.github.julyss2019.mcsp.julyguild.guild.Guild;
-import com.github.julyss2019.mcsp.julyguild.guild.GuildMember;
 import com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer;
 import com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderText;
-import com.github.julyss2019.mcsp.julyguild.util.Util;
 import com.github.julyss2019.mcsp.julylibrary.item.ItemBuilder;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Material;
@@ -74,13 +71,16 @@ public class GUIItemManager {
     // 实现方法
     public static ItemBuilder getItemBuilder(@NotNull ConfigurationSection section, @Nullable OfflinePlayer papiPlayer, @Nullable PlaceholderContainer placeholderContainer) {
         ItemBuilder itemBuilder = new ItemBuilder();
+        boolean usePapi = section.getBoolean("use_papi", MainSettings.isGuiDefaultUsePapi());
 
         itemBuilder
                 .material(Material.valueOf(section.getString("material")))
                 .durability((short) section.getInt("durability", 0))
                 .colored(section.getBoolean("colored", MainSettings.isGuiDefaultColored()));
 
-        boolean usePapi = section.getBoolean("use_papi", MainSettings.isGuiDefaultUsePapi());
+        if (MainSettings.isGuiDefaultHideAllFlags()) {
+            itemBuilder.addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_DESTROYS, ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_PLACED_ON, ItemFlag.HIDE_POTION_EFFECTS, ItemFlag.HIDE_UNBREAKABLE);
+        }
 
         if (section.contains("display_name")) {
             itemBuilder.displayName(replacePlaceholders(section.getString("display_name"), placeholderContainer, !usePapi ? null : papiPlayer));

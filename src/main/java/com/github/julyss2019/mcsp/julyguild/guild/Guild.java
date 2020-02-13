@@ -1,7 +1,6 @@
 package com.github.julyss2019.mcsp.julyguild.guild;
 
 import com.github.julyss2019.mcsp.julyguild.JulyGuild;
-import com.github.julyss2019.mcsp.julyguild.config.ConfigGuildIcon;
 import com.github.julyss2019.mcsp.julyguild.config.setting.MainSettings;
 import com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer;
 import com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderText;
@@ -11,8 +10,9 @@ import com.github.julyss2019.mcsp.julyguild.request.Request;
 import com.github.julyss2019.mcsp.julyguild.request.Sender;
 import com.github.julyss2019.mcsp.julyguild.util.Util;
 import com.github.julyss2019.mcsp.julylibrary.utils.YamlUtil;
-import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.Location;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.jetbrains.annotations.NotNull;
 import parsii.eval.Parser;
 import parsii.tokenizer.ParseException;
 
@@ -29,15 +29,14 @@ public class Guild implements Sender, Receiver {
     private String name;
     private GuildOwner owner;
     private Map<UUID, GuildMember> memberMap = new HashMap<>();
-
-    private Map<String, OwnedIcon> iconMap = new HashMap<>();
-    private OwnedIcon currentIcon;
+    private Map<UUID, GuildIcon> iconMap = new HashMap<>();
+    private GuildIcon currentIcon;
     private GuildBank guildBank;
     private GuildMessageBox guildMessageBox;
     private List<String> announcements;
     private long createTime;
     private int additionMemberCount;
-    private GuildSpawn guildSpawn;
+    private GuildSpawn spawn;
     private boolean memberDamageEnabled;
     private boolean valid = true;
 
@@ -72,35 +71,22 @@ public class Guild implements Sender, Receiver {
         this.additionMemberCount = yml.getInt("addition_member_count");
         this.memberDamageEnabled = yml.getBoolean("member_pvp_enabled", true);
 
-        if (yml.contains("spawn_location")) {
-            ConfigurationSection spawnLocationSection = yml.getConfigurationSection("spawn_location");
-
-            this.guildSpawn = new GuildSpawn(spawnLocationSection.getString("world")
-                    , spawnLocationSection.getDouble("x")
-                    , spawnLocationSection.getDouble("y")
-                    , spawnLocationSection.getDouble("z")
-                    , (float) spawnLocationSection.getDouble("yaw")
-                    , (float) spawnLocationSection.getDouble("pitch"));
+        if (yml.contains("spawn")) {
+            this.spawn = new GuildSpawn(this);
         }
 
         loadMembers();
-
         loadIcons();
     }
 
-    public GuildSpawn getGuildSpawn() {
-        return guildSpawn;
+    public GuildSpawn getSpawn() {
+        return spawn;
     }
 
-    public void setGuildSpawn(GuildSpawn guildSpawn) {
-        yml.set("guild_spawn.world", guildSpawn.getWorldName());
-        yml.set("guild_spawn.x", guildSpawn.getX());
-        yml.set("guild_spawn.y", guildSpawn.getY());
-        yml.set("guild_spawn.z", guildSpawn.getZ());
-        yml.set("guild_spawn.yaw", guildSpawn.getYaw());
-        yml.set("guild_spawn.pitch", guildSpawn.getPitch());
+    public void setSpawn(@NotNull Location location) {
+        yml.set("spawn", location);
         save();
-        this.guildSpawn = guildSpawn;
+        this.spawn = new GuildSpawn(this);
     }
 
     public boolean isMemberDamageEnabled() {
@@ -108,7 +94,7 @@ public class Guild implements Sender, Receiver {
     }
 
     public void setMemberDamageEnabled(boolean b) {
-        yml.set("member_pvp_enabled", b);
+        yml.set("member_damage_enabled", b);
         save();
         this.memberDamageEnabled = b;
     }
@@ -122,17 +108,17 @@ public class Guild implements Sender, Receiver {
 
         if (yml.contains("members")) {
             for (String memberUuidStr : yml.getConfigurationSection("members").getKeys(false)) {
-                Position position = Position.valueOf(yml
+                GuildPosition guildPosition = GuildPosition.valueOf(yml
                         .getConfigurationSection("members")
                         .getConfigurationSection(memberUuidStr)
                         .getString("position"));
                 UUID memberUuid = UUID.fromString(memberUuidStr);
-                GuildMember member = position == Position.MEMBER
-                        ? new GuildMember(this, memberUuid)
-                        : new GuildOwner(this, memberUuid);
+                GuildPlayer guildPlayer = JulyGuild.getInstance().getGuildPlayerManager().getGuildPlayer(memberUuid);
+                GuildMember member = guildPosition == GuildPosition.MEMBER
+                        ? new GuildMember(this, guildPlayer)
+                        : new GuildOwner(this, guildPlayer);
 
                 memberMap.put(memberUuid, member);
-
                 member.getGuildPlayer().pointGuild(this);
 
                 if (member instanceof GuildOwner) {
@@ -144,6 +130,10 @@ public class Guild implements Sender, Receiver {
 
     private void loadIcons() {
         iconMap.clear();
+    }
+
+    public  boolean hasSpawn() {
+        return spawn != null;
     }
 
     /**
@@ -175,7 +165,7 @@ public class Guild implements Sender, Receiver {
      * 旧主人将变成普通成员
      * @param newOwner
      */
-    public void setOwner(GuildMember newOwner) {
+    public void setOwner(@NotNull GuildMember newOwner) {
         GuildMember oldOwner = owner;
         UUID newOwnerUuid = newOwner.getUuid();
 
@@ -187,8 +177,8 @@ public class Guild implements Sender, Receiver {
             throw new IllegalArgumentException("成员不存在");
         }
 
-        yml.set("members." + newOwnerUuid + ".position", Position.OWNER.name());
-        yml.set("members." + oldOwner.getUuid() + ".position", Position.MEMBER.name());
+        yml.set("members." + newOwnerUuid + ".position", GuildPosition.OWNER.name());
+        yml.set("members." + oldOwner.getUuid() + ".position", GuildPosition.MEMBER.name());
         save();
         loadMembers();
     }
@@ -198,51 +188,23 @@ public class Guild implements Sender, Receiver {
      * @param guildPlayer
      * @return
      */
-    public boolean isMember(GuildPlayer guildPlayer) {
+    public boolean isMember(@NotNull GuildPlayer guildPlayer) {
         return memberMap.containsKey(guildPlayer.getUuid());
     }
 
-    public boolean isMember(UUID uuid) {
+    public boolean isMember(@NotNull UUID uuid) {
         return memberMap.containsKey(uuid);
     }
 
-    public boolean isOwnedIcon(ConfigGuildIcon configGuildIcon) {
-        return iconMap.containsKey(configGuildIcon.getName());
-    }
-
-    public OwnedIcon getCurrentIcon() {
+    public GuildIcon getCurrentIcon() {
         return currentIcon;
     }
 
-    public void setCurrentIcon(OwnedIcon ownedIcon) {
-        String iconName = ownedIcon.getName();
-
-        if (!iconMap.containsKey(iconName)) {
-            throw new IllegalArgumentException("图标不存在");
-        }
-
-        yml.set("current_icon", iconName);
-        save();
-        this.currentIcon = iconMap.get(iconName);
-    }
-
-    public void giveIcon(ConfigGuildIcon configGuildIcon) {
-        for (OwnedIcon ownedIcon : getIcons()) {
-            if (ownedIcon.getConfigGuildIcon().equals(configGuildIcon)) {
-                throw new IllegalArgumentException("图标已拥有");
-            }
-        }
-
-        yml.set("icons." + configGuildIcon.getName() + ".create_time", System.currentTimeMillis());
-        save();
-        loadIcons();
-    }
-
-    public Collection<OwnedIcon> getIcons() {
+    public Collection<GuildIcon> getIcons() {
         return new ArrayList<>(iconMap.values());
     }
 
-    public boolean isOwner(GuildMember guildMember) {
+    public boolean isOwner(@NotNull GuildMember guildMember) {
         return owner.equals(guildMember);
     }
 
@@ -251,7 +213,7 @@ public class Guild implements Sender, Receiver {
      * @param guildPlayer
      * @return
      */
-    public boolean isOwner(GuildPlayer guildPlayer) {
+    public boolean isOwner(@NotNull GuildPlayer guildPlayer) {
         return owner.getGuildPlayer().equals(guildPlayer);
     }
 
@@ -260,7 +222,7 @@ public class Guild implements Sender, Receiver {
      * @param guildPlayer
      * @return
      */
-    public GuildMember getMember(GuildPlayer guildPlayer) {
+    public GuildMember getMember(@NotNull GuildPlayer guildPlayer) {
         return memberMap.get(guildPlayer.getUuid());
     }
 
@@ -308,24 +270,26 @@ public class Guild implements Sender, Receiver {
      * 添加成员
      * @param guildPlayer
      */
-    public void addMember(GuildPlayer guildPlayer) {
+    public void addMember(@NotNull GuildPlayer guildPlayer) {
         UUID uuid = guildPlayer.getUuid();
 
         if (isMember(guildPlayer)) {
             throw new IllegalArgumentException("成员已存在");
         }
 
-        yml.set("members." + uuid + ".position", Position.MEMBER.name());
+        yml.set("members." + uuid + ".position", GuildPosition.MEMBER.name());
         yml.set("members." + uuid + ".join_time", System.currentTimeMillis());
         save();
-        loadMembers();
+
+        memberMap.put(guildPlayer.getUuid(), new GuildMember(this, guildPlayer));
+        guildPlayer.pointGuild(this);
     }
 
     /**
      * 删除成员
      * @param guildMember
      */
-    public void removeMember(GuildMember guildMember) {
+    public void removeMember(@NotNull GuildMember guildMember) {
         if (guildMember instanceof GuildOwner) {
             throw new IllegalArgumentException("不能删除会长成员");
         }
@@ -336,7 +300,7 @@ public class Guild implements Sender, Receiver {
 
         yml.set("members." + guildMember.getUuid(), null);
         save();
-        loadMembers();
+        memberMap.remove(guildMember.getUuid());
         guildMember.getGuildPlayer().pointGuild(null);
     }
 
@@ -356,7 +320,9 @@ public class Guild implements Sender, Receiver {
         yml.set("deleted", true);
         YamlUtil.saveYaml(yml, file, StandardCharsets.UTF_8);
         this.deleted = true;
+        getMembers().forEach(guildMember -> guildMember.getGuildPlayer().pointGuild(null));
         JulyGuild.getInstance().getRequestManager().getSentRequests(this).forEach(Request::delete);
+        JulyGuild.getInstance().getRequestManager().getReceivedRequests(this).forEach(Request::delete);
         JulyGuild.getInstance().getGuildManager().unloadGuild(this);
     }
 
@@ -395,7 +361,7 @@ public class Guild implements Sender, Receiver {
      * 设置公告
      * @param announcements
      */
-    public void setAnnouncements(List<String> announcements) {
+    public void setAnnouncements(@NotNull List<String> announcements) {
         yml.set("announcements", announcements);
         YamlUtil.saveYaml(yml, file);
         this.announcements = announcements;
@@ -421,7 +387,7 @@ public class Guild implements Sender, Receiver {
      * 保存文件
      */
     public void save() {
-        YamlUtil.saveYaml(yml, file);
+        YamlUtil.saveYaml(yml, file, StandardCharsets.UTF_8);
     }
 
     /**

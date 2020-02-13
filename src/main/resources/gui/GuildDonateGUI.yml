@@ -1,4 +1,3 @@
-version: 1.0.0
 row: 6
 title: '&e&l捐赠'
 simple_money_confirm_gui: &simple_money_confirm_gui
@@ -12,7 +11,7 @@ simple_money_confirm_gui: &simple_money_confirm_gui
         display_name: '&a确认'
         lores:
           - ' &e支付方式: 金币'
-          - ' &e支付金额: {cost}'
+          - ' &e支付金额: {price}'
           - ' &e赞助公会币: {reawrd}'
     cancel:
       index: 27
@@ -30,7 +29,7 @@ simple_points_confirm_gui: &simple_points_confirm_gui
         display_name: '&a确认'
         lores:
           - ' &e支付方式: 点券'
-          - ' &e支付金额: {cost}'
+          - ' &e支付金额: {price}'
           - ' &e赞助公会币: {reward}'
     cancel:
       index: 27
@@ -50,7 +49,7 @@ donate_items:
       display_name: '&f赞助 &e{reward}个 &f公会币'
       lores:
         - ' &f支付方式: 金币'
-        - ' &f价格: {cost}'
+        - ' &f价格: {price}'
   'm2':
     index: 13
     donate:
@@ -63,7 +62,7 @@ donate_items:
       display_name: '&f赞助 &e{reward}个 &f公会币'
       lores:
         - ' &f支付方式: 金币'
-        - ' &f价格: {cost}'
+        - ' &f价格: {price}'
   'm3':
     index: 15
     donate:
@@ -76,7 +75,7 @@ donate_items:
       display_name: '&f赞助 &e{reward}个 &f公会币'
       lores:
         - ' &f支付方式: 金币'
-        - ' &f价格: {cost}'
+        - ' &f价格: {price}'
   'm4':
     index: 17
     donate:
@@ -89,7 +88,7 @@ donate_items:
       display_name: '&f赞助 &e{reward}个 &f公会币'
       lores:
         - ' &f支付方式: 金币'
-        - ' &f价格: {cost}'
+        - ' &f价格: {price}'
   'p1':
     index: 29
     donate:
@@ -102,7 +101,7 @@ donate_items:
       display_name: '&f赞助 &e{reward}个 &f公会币'
       lores:
         - ' &f支付方式: 点券'
-        - ' &f价格: {cost}'
+        - ' &f价格: {price}'
   'p2':
     index: 31
     donate:
@@ -115,7 +114,7 @@ donate_items:
       display_name: '&f赞助 &e{reward}个 &f公会币'
       lores:
         - ' &f支付方式: 点券'
-        - ' &f价格: {cost}'
+        - ' &f价格: {price}'
   'p3':
     index: 33
     donate:
@@ -128,7 +127,7 @@ donate_items:
       display_name: '&f赞助 &e{reward}个 &f公会币'
       lores:
         - ' &f支付方式: 点券'
-        - ' &f价格: {cost}'
+        - ' &f价格: {price}'
   'p4':
     index: 35
     donate:
@@ -141,10 +140,10 @@ donate_items:
       display_name: '&f赞助 &e{reward}个 &f公会币'
       lores:
         - ' &f支付方式: 点券'
-        - ' &f价格: {cost}'
+        - ' &f价格: {price}'
 items:
   back:
-    index: 54
+    index: 50
     icon:
       material: ARROW
       display_name: '&c返回'

@@ -1,22 +1,27 @@
 package com.github.julyss2019.mcsp.julyguild.guild;
 
+import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
 public class GuildOwner extends GuildMember {
-    GuildOwner(Guild guild, UUID uniqueId) {
-        super(guild, uniqueId);
+
+
+    GuildOwner(@NotNull Guild guild, @NotNull GuildPlayer guildPlayer) {
+        super(guild, guildPlayer);
     }
 
     @Override
-    public Position getPosition() {
-        return Position.OWNER;
+    public GuildPosition getPosition() {
+        return GuildPosition.OWNER;
     }
 
     @Override
-    public Set<Permission> getPermissions() {
-        return new HashSet<>(Arrays.asList(Permission.values()));
+    public Set<GuildPermission> getGuildPermissions() {
+        return new HashSet<>(Arrays.asList(GuildPermission.values()));
     }
 }

@@ -1,23 +1,25 @@
 package com.github.julyss2019.mcsp.julyguild.guild;
 
-import com.github.julyss2019.mcsp.julyguild.JulyGuild;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
 import org.bukkit.configuration.ConfigurationSection;
+import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
 import java.util.*;
 
 public class GuildMember implements GuildHuman {
     private Guild guild;
+    private GuildPlayer guildPlayer;
     private UUID uuid;
     private ConfigurationSection section;
-    private Set<Permission> permissions = new HashSet<>();
+    private Set<GuildPermission> guildPermissions = new HashSet<>();
     private long joinTime;
     private Map<GuildBank.BalanceType, BigDecimal> donatedMap = new HashMap<>();
 
-    GuildMember(Guild guild, UUID uuid) {
+    GuildMember(@NotNull Guild guild, @NotNull GuildPlayer guildPlayer) {
         this.guild = guild;
-        this.uuid = uuid;
+        this.guildPlayer = guildPlayer;
+        this.uuid = guildPlayer.getUuid();
 
         load();
     }
@@ -29,11 +31,11 @@ public class GuildMember implements GuildHuman {
 
         this.section = guild.getYaml().getConfigurationSection("members").getConfigurationSection(uuid.toString());
 
-        if (section.contains("permissions")) {
-            Set<String> permissions = section.getConfigurationSection("permissions").getKeys(false);
+        if (section.contains("guild_permissions")) {
+            Set<String> permissions = section.getConfigurationSection("guild_permissions").getKeys(false);
 
             if (permissions != null) {
-                permissions.forEach(s -> this.permissions.add(Permission.valueOf(s)));
+                permissions.forEach(s -> this.guildPermissions.add(GuildPermission.valueOf(s)));
             }
         }
 
@@ -56,54 +58,54 @@ public class GuildMember implements GuildHuman {
         return uuid;
     }
 
-    public void removePermission(Permission permission) {
-        setPermission(permission, false);
+    public void removePermission(@NotNull GuildPermission guildPermission) {
+        setPermission(guildPermission, false);
     }
 
-    public void addPermission(Permission permission) {
-        setPermission(permission, true);
+    public void addPermission(@NotNull GuildPermission guildPermission) {
+        setPermission(guildPermission, true);
     }
 
     /**
      * 设置权限
-     * @param permission
+     * @param guildPermission
      * @param b true 为设置 false 为删除
      */
-    public void setPermission(Permission permission, boolean b) {
-        if (getPosition() == Position.OWNER) {
+    public void setPermission(@NotNull GuildPermission guildPermission, boolean b) {
+        if (getPosition() == GuildPosition.OWNER) {
             throw new RuntimeException("会长不允许被设置权限");
         }
 
-        if (b && permissions.contains(permission)) {
+        if (b && guildPermissions.contains(guildPermission)) {
             throw new RuntimeException("成员已经有该权限了");
-        } else if (!b && !permissions.contains(permission)) {
+        } else if (!b && !guildPermissions.contains(guildPermission)) {
             throw new RuntimeException("成员没有该权限");
         }
 
-        Set<Permission> newPermissions = getPermissions();
+        Set<GuildPermission> newGuildPermissions = getGuildPermissions();
 
         if (b) {
-            newPermissions.add(permission);
+            newGuildPermissions.add(guildPermission);
         } else {
-            newPermissions.remove(permission);
+            newGuildPermissions.remove(guildPermission);
         }
 
         Set<String> stringPermissions = new HashSet<>();
 
-        newPermissions.forEach(permission1 -> stringPermissions.add(permission1.name()));
+        newGuildPermissions.forEach(permission1 -> stringPermissions.add(permission1.name()));
 
-        section.set("permissions", stringPermissions);
+        section.set("guildPermissions", stringPermissions);
     }
 
-    public Set<Permission> getPermissions() {
-        return permissions;
+    public Set<GuildPermission> getGuildPermissions() {
+        return guildPermissions;
     }
 
-    public boolean hasPermission(Permission permission) {
-        return getPosition() == Position.OWNER || getPermissions().contains(permission);
+    public boolean hasPermission(@NotNull GuildPermission guildPermission) {
+        return getPosition() == GuildPosition.OWNER || getGuildPermissions().contains(guildPermission);
     }
 
-    public void addDonated(GuildBank.BalanceType balanceType, double amount) {
+    public void addDonated(@NotNull GuildBank.BalanceType balanceType, double amount) {
         if (amount <= 0) {
             throw new RuntimeException("数量必须大于0");
         }
@@ -111,11 +113,11 @@ public class GuildMember implements GuildHuman {
         setDonated(balanceType, getDonated(balanceType).add(new BigDecimal(amount)));
     }
 
-    public BigDecimal getDonated(GuildBank.BalanceType balanceType) {
+    public BigDecimal getDonated(@NotNull GuildBank.BalanceType balanceType) {
         return donatedMap.getOrDefault(balanceType, new BigDecimal(0));
     }
 
-    public void setDonated(GuildBank.BalanceType balanceType, BigDecimal value) {
+    public void setDonated(@NotNull GuildBank.BalanceType balanceType, @NotNull BigDecimal value) {
         section.set("donated." + balanceType.name(), value.toString());
         save();
         donatedMap.put(balanceType, value);
@@ -130,15 +132,15 @@ public class GuildMember implements GuildHuman {
     }
 
     public GuildPlayer getGuildPlayer() {
-        return JulyGuild.getInstance().getGuildPlayerManager().getGuildPlayer(uuid);
+        return guildPlayer;
     }
 
     public boolean isOnline() {
         return getGuildPlayer().isOnline();
     }
 
-    public Position getPosition() {
-        return Position.MEMBER;
+    public GuildPosition getPosition() {
+        return GuildPosition.MEMBER;
     }
 
     public boolean isValid() {

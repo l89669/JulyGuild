@@ -3,19 +3,27 @@ package com.github.julyss2019.mcsp.julyguild.guild;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.configuration.ConfigurationSection;
+import org.jetbrains.annotations.NotNull;
+import sun.security.krb5.Config;
 
 public class GuildSpawn {
+    private Guild guild;
     private String worldName;
     private double x, y, z;
     private float yaw, pitch;
 
-    GuildSpawn(String worldName, double x, double y, double z, float yaw, float pitch) {
-        this.worldName = worldName;
-        this.x = x;
-        this.y = y;
-        this.z = z;
-        this.yaw = yaw;
-        this.pitch = pitch;
+    GuildSpawn(@NotNull Guild guild) {
+        this.guild = guild;
+
+        ConfigurationSection section = guild.getYaml().getConfigurationSection("spawn");
+
+        this.worldName = section.getString("world");
+        this.x = section.getDouble("x");
+        this.y = section.getDouble("y");
+        this.z = section.getDouble("z");
+        this.yaw = (float) section.getDouble("yaw");
+        this.pitch = (float) section.getDouble("pitch");
     }
 
     public String getWorldName() {
@@ -50,9 +58,5 @@ public class GuildSpawn {
         }
 
         return new Location(world, x, y, z, yaw, pitch);
-    }
-
-    public static GuildSpawn createByLocation(Location location) {
-        return new GuildSpawn(location.getWorld().getName(), location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
     }
 }

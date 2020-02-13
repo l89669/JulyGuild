@@ -67,7 +67,7 @@ public class PlaceholderText {
                     .replace("^", "\\^").replace("$", "\\$")
                     .replace("[", "\\[").replace("]", "\\]")
                     .replace("?", "\\?").replace(",", "\\,")
-                    .replace(".", "\\.").replace("&", "\\&"), placeholder.getValue());
+                    .replace(".", "\\.").replace("&", "\\&"), placeholder.getValue().toString());
         }
 
         return result;

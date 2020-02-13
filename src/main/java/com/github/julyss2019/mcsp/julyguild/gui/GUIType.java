@@ -11,5 +11,7 @@ public enum GUIType {
     PROMOTE,
     DONATE,
     SHOP,
-    BASE_CONFIRM
+    CONFIRM,
+    PAY,
+    SHOP_CONFIRM
 }

@@ -2,8 +2,6 @@ package com.github.julyss2019.mcsp.julyguild;
 
 import com.github.julyss2019.mcsp.julyguild.command.GUICommand;
 import com.github.julyss2019.mcsp.julyguild.command.PluginCommand;
-import com.github.julyss2019.mcsp.julyguild.config.GuildShopConfig;
-import com.github.julyss2019.mcsp.julyguild.config.IconShopConfig;
 import com.github.julyss2019.mcsp.julyguild.config.setting.MainSettings;
 import com.github.julyss2019.mcsp.julyguild.guild.CacheGuildManager;
 import com.github.julyss2019.mcsp.julyguild.guild.Guild;
@@ -25,8 +23,8 @@ import com.github.julyss2019.mcsp.julylibrary.commandv2.JulyCommandHandler;
 import com.github.julyss2019.mcsp.julylibrary.config.JulyConfig;
 import com.github.julyss2019.mcsp.julylibrary.logger.FileLogger;
 import com.github.julyss2019.mcsp.julylibrary.message.JulyMessage;
+import com.github.julyss2019.mcsp.julylibrary.utils.FileUtil;
 import com.github.julyss2019.mcsp.julylibrary.utils.YamlUtil;
-import com.google.gson.Gson;
 import me.clip.placeholderapi.PlaceholderAPI;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import net.milkbowl.vault.economy.Economy;
@@ -37,19 +35,19 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 强制依赖：JulyLibrary, Vault
  * 软依赖：PlaceholderAPI, PlayerPoints
  */
 public class JulyGuild extends JavaPlugin {
-    public static final String VERSION = "2.0.0-beta2";
-    private final boolean DEV_MODE = false;
+    public static final String VERSION = "2.0.0-beta4";
+    private final boolean DEV_MODE = true;
     private final String[] GUI_RESOURCES = new String[] {
             "GuildCreateGUI.yml",
             "GuildInfoGUI.yml",
@@ -61,7 +59,6 @@ public class JulyGuild extends JavaPlugin {
             "MainGUI.yml"}; // GUI资源文件
     private final String[] CONFIG_RESOURCES = new String[] {"config.yml", "lang.yml"}; // 根资源文件
     private final String[] SHOP_RESOURCES = new String[] {"Shop1.yml", "Shop2.yml"};
-
     private final String[] DEPEND_PLUGINS = new String[] {"JulyLibrary", "Vault"};
 
     private static JulyGuild instance;
@@ -78,24 +75,13 @@ public class JulyGuild extends JavaPlugin {
     private PluginManager pluginManager;
 
     private YamlConfiguration langYaml;
-    private IconShopConfig iconShopConfig;
-    private GuildShopConfig guildShopConfig;
     private Map<String, YamlConfiguration> guiYamlMap = new HashMap<>();
+    private Map<String, YamlConfiguration> shopYamlMap = new HashMap<>();
 
     private Object placeholderAPIExpansion; // 这里不能使用 PlaceholderAPIExpansion 作为类型，否则可能会出现 NoClassDefFoundError。
 
     private String getFileVersion(File file) {
         return !file.exists() ? null : YamlConfiguration.loadConfiguration(file).getString("version");
-    }
-
-    private String getLatestFileVersion(String fileName) {
-        InputStream inputStream = getResource(fileName);
-
-        if (inputStream == null) {
-            throw new RuntimeException(fileName + " 不存在");
-        }
-
-        return YamlConfiguration.loadConfiguration(new InputStreamReader(inputStream)).getString("version");
     }
 
     /**
@@ -112,19 +98,17 @@ public class JulyGuild extends JavaPlugin {
             throw new RuntimeException("创建文件夹失败: " + outParentFile.getAbsolutePath());
         }
 
-        String currentVersion = getFileVersion(outFile); // 当前版本
-        String latestVersion = getLatestFileVersion(fileName); // 最新版本
-
-        if (currentVersion != null && latestVersion != null && !currentVersion.equals(latestVersion)) {
-            warning("文件 " + outFile.getAbsolutePath() + " 可能需要更新(v" + currentVersion + "," + latestVersion + ")");
-        }
-
         if (!outFile.exists()) {
             InputStream in = null;
             FileOutputStream out = null;
 
             try {
                 in = getResource(fileName);
+
+                if (in == null) {
+                    throw new RuntimeException("文件不存在: " + fileName);
+                }
+
                 out = new FileOutputStream(outFile);
                 byte[] buf = new byte[1024];
                 int len;
@@ -155,7 +139,7 @@ public class JulyGuild extends JavaPlugin {
                 }
             }
 
-            warning("文件 " + outFile.getAbsolutePath() + " 被创建(v" + latestVersion + ").");
+            warning("文件 " + outFile.getAbsolutePath() + " 被创建.");
         }
     }
 
@@ -191,7 +175,7 @@ public class JulyGuild extends JavaPlugin {
         }
 
         if (changed) {
-            YamlUtil.saveYaml(targetYaml, targetFile);
+            YamlUtil.saveYaml(targetYaml, targetFile, StandardCharsets.UTF_8);
         }
     }
 
@@ -206,6 +190,10 @@ public class JulyGuild extends JavaPlugin {
         for (String fileName : GUI_RESOURCES) {
             saveResourceFile("gui/" + fileName, new File(getDataFolder(), "config" + File.separator + "gui" + File.separator + fileName));
         }
+
+        for (String fileName : SHOP_RESOURCES) {
+            saveResourceFile("shop/" + fileName, new File(getDataFolder(), "config" + File.separator + "shop" + File.separator + fileName));
+        }
     }
 
     @Override
@@ -215,12 +203,10 @@ public class JulyGuild extends JavaPlugin {
 
         if (DEV_MODE) {
             warning("&c警告: 当前处于开发模式.");
-            File[] files = new File(getDataFolder(), "config" + File.separator + "gui").listFiles();
+            File dataFolder = new File(getDataFolder(), "config");
 
-            if (files != null) {
-                for (File file : files) {
-                    file.delete();
-                }
+            if (dataFolder.exists()) {
+                dataFolder.renameTo(new File(dataFolder.getParentFile(), dataFolder.getName() + "_" + System.currentTimeMillis()));
             }
         }
 
@@ -311,7 +297,6 @@ public class JulyGuild extends JavaPlugin {
         runTasks();
         info("载入了 " + guildManager.getGuilds().size() + "个 公会.");
         info("载入了 " + requestManager.getRequests().size() + "个 请求.");
-        info("载入了 " + guildShopConfig.getShopItems().size() + "个 公会商店物品.");
         info("插件初始化完毕.");
     }
 
@@ -433,19 +418,31 @@ public class JulyGuild extends JavaPlugin {
 
         for (String fileName : GUI_RESOURCES) {
             File guiFile = getGUIFile(fileName);
-            YamlConfiguration yaml;
+            YamlConfiguration guiYaml;
 
             try {
-                yaml = YamlUtil.loadYaml(guiFile, StandardCharsets.UTF_8);
+                guiYaml = YamlUtil.loadYaml(guiFile, StandardCharsets.UTF_8);
             } catch (Exception e) {
                 throw new RuntimeException("读取文件异常: " + guiFile.getAbsolutePath(), e);
             }
 
-            guiYamlMap.put(fileName.substring(0, fileName.indexOf(".yml")), yaml);
+            guiYamlMap.put(FileUtil.getFileName(guiFile), guiYaml);
         }
 
-        this.guildShopConfig = new GuildShopConfig();
-        this.iconShopConfig = new IconShopConfig();
+        File[] shopFiles = new File(getDataFolder(), "config" + File.separator + "shop").listFiles();
+
+        //noinspection ConstantConditions
+        for (File shopFile : shopFiles) {
+            YamlConfiguration shopYaml;
+
+            try {
+                shopYaml = YamlUtil.loadYaml(shopFile, StandardCharsets.UTF_8);
+            } catch (Exception e) {
+                throw new RuntimeException("读取文件异常: " + shopFile.getAbsolutePath(), e);
+            }
+
+            shopYamlMap.put(shopYaml.getString("name"), shopYaml);
+        }
 
         File langFile = getConfigFile("lang.yml");
 
@@ -456,11 +453,15 @@ public class JulyGuild extends JavaPlugin {
         }
     }
 
+    public YamlConfiguration getShopYaml(@NotNull String name) {
+        return shopYamlMap.get(name);
+    }
+
     public YamlConfiguration getLangYaml() {
         return langYaml;
     }
 
-    public YamlConfiguration getGUIYaml(String name) {
+    public YamlConfiguration getGUIYaml(@NotNull String name) {
         return guiYamlMap.get(name);
     }
 
@@ -486,10 +487,6 @@ public class JulyGuild extends JavaPlugin {
 
     public static JulyGuild getInstance() {
         return instance;
-    }
-
-    public IconShopConfig getIconShopConfig() {
-        return iconShopConfig;
     }
 
     public void warning(String msg) {

@@ -52,6 +52,10 @@ public interface GUI {
 
         Inventory inventory = createInventory();
 
+        if (inventory == null) {
+            throw new RuntimeException("getInventory() 不能返回 null");
+        }
+
         getGuildPlayer().getBukkitPlayer().openInventory(inventory);
         getGuildPlayer().setUsingGUI(this);
     }
@@ -66,6 +70,23 @@ public interface GUI {
         GUI lastGUI = Optional.ofNullable(getLastGUI()).orElseThrow(() -> new RuntimeException("没有上一个GUI了"));
 
         lastGUI.open();
+    }
+
+    /**
+     * 先关闭等待later秒后再返回
+     * @param later
+     */
+    default void back(long later) {
+        close();
+
+        GUI lastGUI = Optional.ofNullable(getLastGUI()).orElseThrow(() -> new RuntimeException("没有上一个GUI了"));
+
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                lastGUI.open();
+            }
+        }.runTaskLater(JulyGuild.getInstance(), later);
     }
 
     default void close() {

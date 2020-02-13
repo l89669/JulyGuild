@@ -1,4 +1,3 @@
-version: 1.0.0
 # 最重要的GUI,集成了所有功能
 # 该GUI除了 back 以外的物品都不允许自定义位置，将根据 positions 属性排序
 # 可供显示的位置，必须大于等于最大项目数，支持使用 - 作为范围界定符，使用,分隔
@@ -24,7 +23,7 @@ items:
         - ' &f人数: {guild_member_count}/{guild_max_member_count}'
         - ' &f创建时间: {guild_creation_time}'
   self_info:
-    priority: -1
+    priority: -2
     icon:
       material: SKULL_ITEM
       durability: 3
@@ -33,60 +32,72 @@ items:
       lores:
         - ' &fID: %player_name%'
         - ' &f金币: %vault_eco_balance%'
+  guild_announcements:
+    priority: -1
+    icon:
+      material: MAP
+      display_name: '&f公会公告'
   guild_members:
     # 成员看到的图标
     member:
-      priority: -2
+      priority: -3
       icon:
         material: SKULL_ITEM
         durability: 3
         display_name: '&f公会成员'
     # 有“管理”权限的成员看到的图标
     manager:
-      priority: -2
+      priority: -3
       icon:
         material: SKULL_ITEM
         durability: 3
+        skull_texture: 'eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYWQwNzRiMjZiMDljNjdmZWVmZWE0ZTAyNDVmNjMzMDZlNDVjYjkzNWU5OGRiZmFhMzAyMGViNDBjNzA2OTcxOSJ9fX0='
         display_name: '&f成员管理'
   guild_join_check:
-    priority: -2
+    priority: -4
     icon:
       material: SKULL_ITEM
       durability: 3
+      skull_texture: 'eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZjZhNWE0YjQ5MmNmMzg2MWQzMDQ0YTkxMWUxMzY0ZGFkZjdhMmJlNDFmYjJmOWE1YzYxOWRlNWNjOWE1YWYwMCJ9fX0='
       display_name: '&f入会审批'
-  guild_announcements:
-    priority: -3
-    icon:
-      material: MAP
-      display_name: '&f公会公告'
   guild_donate:
-    priority: -4
+    priority: -5
     icon:
       material: DIAMOND
       display_name: '&f捐赠'
       lores:
         - ' &f捐赠公会币'
-  guild_upgrade:
-    priority: -5
-    icon:
-      material: EXP_BOTTLE
-      display_name: '&f公会升级'
-  guild_spawn:
+  guild_shop:
     priority: -6
     icon:
-      material: ENDER_PEARL
-      display_name: '&f传送到主城'
+      material: EMERALD
+      display_name: '&f公会商店'
+      lores:
+        - ' &f点击跳转'
+  guild_spawn:
+    available:
+      priority: -8
+      icon:
+        material: ENDER_PEARL
+        display_name: '&f传送到主城'
+    unavailable:
+      priority: -8
+      icon:
+        material: ENDER_PEARL
+        display_name: '&f传送到主城'
+        lores:
+          - ' &c未设置'
   guild_set_member_damage:
     state_on:
-      priority: -7
+      priority: -9
       icon:
         material: WOOD_SWORD
-        display_name: '&f关闭成员PVP'
+        display_name: '&f关闭成员免伤'
     state_off:
-      priority: -7
+      priority: -9
       icon:
         material: WOOD_SWORD
-        display_name: '&f打开成员PVP'
+        display_name: '&f打开成员免伤'
   guild_exit:
     priority: -999
     icon:

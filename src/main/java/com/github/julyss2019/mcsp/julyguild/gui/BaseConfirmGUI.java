@@ -22,7 +22,7 @@ public abstract class BaseConfirmGUI extends BasePlayerGUI {
     }
 
     protected BaseConfirmGUI(@Nullable GUI lastGUI, @NotNull GuildPlayer guildPlayer, @NotNull ConfigurationSection section, @Nullable PlaceholderContainer placeholderContainer) {
-        super(lastGUI, GUIType.BASE_CONFIRM, guildPlayer);
+        super(lastGUI, GUIType.CONFIRM, guildPlayer);
 
         this.section = section;
         this.placeholderContainer = placeholderContainer;
@@ -55,6 +55,7 @@ public abstract class BaseConfirmGUI extends BasePlayerGUI {
                         onConfirm();
                     }
                 });
+
         return guiBuilder.build();
     }
 }

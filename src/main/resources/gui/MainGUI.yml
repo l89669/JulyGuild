@@ -1,4 +1,3 @@
-version: 1.0.0
 row: 6
 title: '&e&l公会({page}/{total_page})'
 # 公会可显示的位置，支持使用 '-' 作为范围界定符，使用 ',' 分隔

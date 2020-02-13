@@ -7,6 +7,7 @@ import com.github.julyss2019.mcsp.julyguild.config.setting.MainSettings;
 import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
 import com.github.julyss2019.mcsp.julyguild.gui.BasePlayerPageableGUI;
 import com.github.julyss2019.mcsp.julyguild.guild.Guild;
+import com.github.julyss2019.mcsp.julyguild.guild.GuildIcon;
 import com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
 import com.github.julyss2019.mcsp.julyguild.util.Util;
@@ -16,12 +17,12 @@ import com.github.julyss2019.mcsp.julylibrary.inventory.InventoryListener;
 import com.github.julyss2019.mcsp.julylibrary.inventory.ItemListener;
 import com.github.julyss2019.mcsp.julylibrary.item.ItemBuilder;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -143,7 +144,12 @@ public class MainGUI extends BasePlayerPageableGUI {
                                         return;
                                     }
 
-                                    new GuildCreateGUI(MainGUI.this, guildPlayer, guildName).open();
+                                    new BukkitRunnable() {
+                                        @Override
+                                        public void run() {
+                                            new GuildCreateGUI(MainGUI.this, guildPlayer, guildName).open();
+                                        }
+                                    }.runTask(plugin);
                                 }
 
                                 @Override
@@ -162,8 +168,24 @@ public class MainGUI extends BasePlayerPageableGUI {
             // 公会图标
             for (int i = 0; i < loopCount; i++) {
                 Guild guild = guilds.get(itemCounter++);
-                ItemBuilder itemBuilder = GUIItemManager.getItemBuilder(thisGUISection.getConfigurationSection("items.guild.icon"), bukkitPlayer, new PlaceholderContainer().addGuildPlaceholders(guild))
-                        .material(Material.STONE);
+                ItemBuilder itemBuilder = GUIItemManager.getItemBuilder(thisGUISection.getConfigurationSection("items.guild.icon"), bukkitPlayer, new PlaceholderContainer().addGuildPlaceholders(guild));
+                GuildIcon guildIcon = guild.getCurrentIcon();
+
+                if (guildIcon != null) {
+                    itemBuilder.material(guildIcon.getMaterial());
+                    itemBuilder.durability(guildIcon.getDurability());
+
+                    if (guildIcon.getFirstLore() != null) {
+                        itemBuilder.insertLore(0, guildIcon.getFirstLore());
+                    }
+                } else {
+                    itemBuilder.material(MainSettings.getIconDefaultMaterial());
+                    itemBuilder.durability(MainSettings.getIconDefaultDurability());
+
+                    if (MainSettings.getIconDefaultFirstLore() != null) {
+                        itemBuilder.insertLore(0, MainSettings.getIconDefaultFirstLore());
+                    }
+                }
 
                 indexMap.put(itemIndexes.get(i), guild);
                 guiBuilder.item(itemIndexes.get(i), itemBuilder.build());

@@ -11,7 +11,7 @@ simple_confirm_gui: &simple_confirm_gui
         material: NETHER_STAR
         display_name: '&a确认'
         lores:
-          - ' &e支付公会币: {cost}'
+          - ' &e支付公会币: {price}'
     cancel:
       index: 27
       icon:

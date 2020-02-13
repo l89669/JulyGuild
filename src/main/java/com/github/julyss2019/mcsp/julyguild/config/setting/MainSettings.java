@@ -1,8 +1,6 @@
 package com.github.julyss2019.mcsp.julyguild.config.setting;
 
 import com.github.julyss2019.mcsp.julylibrary.config.Config;
-import org.bukkit.Sound;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -37,56 +35,20 @@ public class MainSettings {
     @Config(path = "guild.default_max_member_count")
     private static int defaultMaxMemberCount;
 
-    @Config(path = "guild.default_max_admin_count")
-    private static int defaultMaxAdminCount;
-
-    @Config(path = "guild.upgrade.money.formula")
-    private static String upgradeMoneyFormula;
-
-    @Config(path = "guild.upgrade.money.max_member_count")
-    private static int upgradeMoneyMaxMemberCount;
-
-    @Config(path = "guild.upgrade.points.formula")
-    private static String upgradePointFormula;
-
-    @Config(path = "guild.upgrade.points.max_member_count")
-    private static int upgradePointsMaxMemberCount;
-
-    @Config(path = "guild.tp_all.interval")
-    private static int tpAllInterval;
-
-    @Config(path = "guild.tp_all.shift_count_interval")
-    private static int tpAllShiftCountInterval;
-
-    @Config(path = "guild.tp_all.shift_count")
-    private static int tpAllShiftCount;
-
-    @Config(path = "guild.tp_all.timeout")
-    private static int tpAllShiftTimeout;
-
-    @Config(path = "guild.tp_all.cost.money")
-    private static int tpAllCostMoney;
-
     @Config(path = "guild.announcement.default")
     private static List<String> announcementDefault;
 
     @Config(path = "guild.ranking_list.formula")
     private static String rankingListFormula;
 
-    @Config(path = "guild.tp_all.allowed_send_worlds")
-    private static List<String> tpAllAllowedSendWorlds;
+    @Config(path = "guild.icon.default.material")
+    private static String iconDefaultMaterial;
 
-    @Config(path = "guild.tp_all.allowed_receive_worlds")
-    private static List<String> tpAllAllowedReceiveWorlds;
+    @Config(path = "guild.icon.default.durability")
+    private static short iconDefaultDurability;
 
-    @Config(path = "guild.default_icon.material")
-    private static String defaultIconMaterial;
-
-    @Config(path = "guild.default_icon.data")
-    private static short defaultIconData;
-
-    @Config(path = "guild.default_icon.first_lore")
-    private static String defaultIconFirstLore;
+    @Config(path = "guild.icon.default.first_lore")
+    private static String iconDefaultFirstLore;
 
     @Config(path = "guild.dismiss.wait")
     private static int dismissWait;
@@ -106,7 +68,7 @@ public class MainSettings {
     @Config(path = "guild.create.input.wait_sec")
     private static int createInputWaitSec;
 
-    @Config(path = "papi.non_str")
+    @Config(path = "guild.papi.non_str")
     private static String papiNonStr;
 
     @Config(path = "guild.create.no_duplication_name")
@@ -115,11 +77,25 @@ public class MainSettings {
     @Config(path = "guild.member_damage.disabled_notice_interval")
     private static int memberDamageDisableNoticeInterval;
 
-    @Config(path = "gui.default.colored")
+    @Config(path = "guild.gui.default.colored")
     private static boolean guiDefaultColored;
 
-    @Config(path = "gui.default.use_papi")
+    @Config(path = "guild.gui.default.use_papi")
     private static boolean guiDefaultUsePapi;
+
+    @Config(path = "guild.gui.default.hide_all_flags")
+    private static boolean guiDefaultHideAllFlags;
+
+    @Config(path = "guild.shop.launcher")
+    private static String shopLauncher;
+
+    public static boolean isGuiDefaultHideAllFlags() {
+        return guiDefaultHideAllFlags;
+    }
+
+    public static String getShopLauncher() {
+        return shopLauncher;
+    }
 
     public static boolean isGuiDefaultUsePapi() {
         return guiDefaultUsePapi;
@@ -157,16 +133,16 @@ public class MainSettings {
         return dismissConfirmStr;
     }
 
-    public static String getDefaultIconMaterial() {
-        return defaultIconMaterial;
+    public static String getIconDefaultMaterial() {
+        return iconDefaultMaterial;
     }
 
-    public static short getDefaultIconData() {
-        return defaultIconData;
+    public static short getIconDefaultDurability() {
+        return iconDefaultDurability;
     }
 
-    public static String getDefaultIconFirstLore() {
-        return defaultIconFirstLore;
+    public static String getIconDefaultFirstLore() {
+        return iconDefaultFirstLore;
     }
 
     public static boolean isMetricsEnabled() {
@@ -209,60 +185,12 @@ public class MainSettings {
         return requestJoinTimeout;
     }
 
-    public static int getDefaultMaxAdminCount() {
-        return defaultMaxAdminCount;
-    }
-
-    public static String getUpgradeMoneyFormula() {
-        return upgradeMoneyFormula;
-    }
-
-    public static int getUpgradeMoneyMaxMemberCount() {
-        return upgradeMoneyMaxMemberCount;
-    }
-
-    public static String getUpgradePointFormula() {
-        return upgradePointFormula;
-    }
-
-    public static int getUpgradePointsMaxMemberCount() {
-        return upgradePointsMaxMemberCount;
-    }
-
-    public static int getTpAllInterval() {
-        return tpAllInterval;
-    }
-
-    public static int getTpAllShiftCountInterval() {
-        return tpAllShiftCountInterval;
-    }
-
-    public static int getTpAllShiftCount() {
-        return tpAllShiftCount;
-    }
-
-    public static int getTpAllShiftTimeout() {
-        return tpAllShiftTimeout;
-    }
-
-    public static int getTpAllCostMoney() {
-        return tpAllCostMoney;
-    }
-
     public static List<String> getAnnouncementDefault() {
         return announcementDefault;
     }
 
     public static String getRankingListFormula() {
         return rankingListFormula;
-    }
-
-    public static List<String> getTpAllAllowedSendWorlds() {
-        return tpAllAllowedSendWorlds;
-    }
-
-    public static List<String> getTpAllAllowedReceiveWorlds() {
-        return tpAllAllowedReceiveWorlds;
     }
 
     public static int getExitWait() {

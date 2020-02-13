@@ -10,7 +10,7 @@ import com.github.julyss2019.mcsp.julyguild.gui.GUI;
 import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
 import com.github.julyss2019.mcsp.julyguild.guild.Guild;
 import com.github.julyss2019.mcsp.julyguild.guild.GuildMember;
-import com.github.julyss2019.mcsp.julyguild.guild.Permission;
+import com.github.julyss2019.mcsp.julyguild.guild.GuildPermission;
 import com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer;
 import com.github.julyss2019.mcsp.julylibrary.inventory.ItemListener;
 import org.bukkit.configuration.ConfigurationSection;
@@ -59,11 +59,11 @@ public class GuildMemberManageGUI extends BasePlayerGUI {
         }
 
         // 自己有权限且对方无权限才能使用
-        if (guild.isOwner(managerGuildMember) || managerGuildMember.hasPermission(Permission.MEMBER_KICK) && !targetGuildMember.hasPermission(Permission.MEMBER_KICK)) {
+        if (guild.isOwner(managerGuildMember) || managerGuildMember.hasPermission(GuildPermission.MEMBER_KICK) && !targetGuildMember.hasPermission(GuildPermission.MEMBER_KICK)) {
             guiBuilder.item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.kick"), targetBukkitPlayer), new ItemListener() {
                 @Override
                 public void onClick(InventoryClickEvent event) {
-                    if (reopenIfInvalid(Permission.MEMBER_KICK)) {
+                    if (reopenIfInvalid(GuildPermission.MEMBER_KICK)) {
                         return;
                     }
 
@@ -73,7 +73,7 @@ public class GuildMemberManageGUI extends BasePlayerGUI {
                             , new PlaceholderContainer().add("target", targetGuildMember.getName())) {
                         @Override
                         public boolean canUse() {
-                            return targetGuildMember.isValid() && managerGuildMember.isValid() && managerGuildMember.hasPermission(Permission.MEMBER_KICK);
+                            return targetGuildMember.isValid() && managerGuildMember.isValid() && managerGuildMember.hasPermission(GuildPermission.MEMBER_KICK);
                         }
 
                         @Override
@@ -93,59 +93,37 @@ public class GuildMemberManageGUI extends BasePlayerGUI {
             });
         }
 
-        if (managerGuildMember.hasPermission(Permission.MANAGE_PERMISSION)) {
-            guiBuilder.item(getToggleItem(thisGUISection.getConfigurationSection("items.manage_member_kick"), Permission.MEMBER_KICK), new ItemListener() {
+        if (managerGuildMember.hasPermission(GuildPermission.MANAGE_PERMISSION)) {
+            guiBuilder.item(getToggleItem(thisGUISection.getConfigurationSection("items.manage_member_kick"), GuildPermission.MEMBER_KICK), new ItemListener() {
                 @Override
                 public void onClick(InventoryClickEvent event) {
-                    if (reopenIfInvalid(Permission.MANAGE_PERMISSION)) {
+                    if (reopenIfInvalid(GuildPermission.MANAGE_PERMISSION)) {
                         return;
                     }
 
-                    targetGuildMember.setPermission(Permission.MEMBER_KICK, !targetGuildMember.hasPermission(Permission.MEMBER_KICK));
+                    targetGuildMember.setPermission(GuildPermission.MEMBER_KICK, !targetGuildMember.hasPermission(GuildPermission.MEMBER_KICK));
                     reopen();
                 }
             });
-            guiBuilder.item(getToggleItem(thisGUISection.getConfigurationSection("items.manage_set_spawn"), Permission.SET_SPAWN), new ItemListener() {
+            guiBuilder.item(getToggleItem(thisGUISection.getConfigurationSection("items.manage_set_member_damage"), GuildPermission.SET_MEMBER_DAMAGE), new ItemListener() {
                 @Override
                 public void onClick(InventoryClickEvent event) {
-                    if (reopenIfInvalid(Permission.MANAGE_PERMISSION)) {
+                    if (reopenIfInvalid(GuildPermission.MANAGE_PERMISSION)) {
                         return;
                     }
 
-                    targetGuildMember.setPermission(Permission.SET_SPAWN, !targetGuildMember.hasPermission(Permission.SET_SPAWN));
+                    targetGuildMember.setPermission(GuildPermission.SET_MEMBER_DAMAGE, !targetGuildMember.hasPermission(GuildPermission.SET_MEMBER_DAMAGE));
                     reopen();
                 }
             });
-            guiBuilder.item(getToggleItem(thisGUISection.getConfigurationSection("items.manage_set_member_damage"), Permission.SET_MEMBER_DAMAGE), new ItemListener() {
+            guiBuilder.item(getToggleItem(thisGUISection.getConfigurationSection("items.manage_player_join_check"), GuildPermission.PLAYER_JOIN_CHECK), new ItemListener() {
                 @Override
                 public void onClick(InventoryClickEvent event) {
-                    if (reopenIfInvalid(Permission.MANAGE_PERMISSION)) {
+                    if (reopenIfInvalid(GuildPermission.MANAGE_PERMISSION)) {
                         return;
                     }
 
-                    targetGuildMember.setPermission(Permission.SET_MEMBER_DAMAGE, !targetGuildMember.hasPermission(Permission.SET_MEMBER_DAMAGE));
-                    reopen();
-                }
-            });
-            guiBuilder.item(getToggleItem(thisGUISection.getConfigurationSection("items.manage_player_join_check"), Permission.PLAYER_JOIN_CHECK), new ItemListener() {
-                @Override
-                public void onClick(InventoryClickEvent event) {
-                    if (reopenIfInvalid(Permission.MANAGE_PERMISSION)) {
-                        return;
-                    }
-
-                    targetGuildMember.setPermission(Permission.PLAYER_JOIN_CHECK, !targetGuildMember.hasPermission(Permission.PLAYER_JOIN_CHECK));
-                    reopen();
-                }
-            });
-            guiBuilder.item(getToggleItem(thisGUISection.getConfigurationSection("items.manage_guild_upgrade"), Permission.GUILD_UPGRADE), new ItemListener() {
-                @Override
-                public void onClick(InventoryClickEvent event) {
-                    if (reopenIfInvalid(Permission.MANAGE_PERMISSION)) {
-                        return;
-                    }
-
-                    targetGuildMember.setPermission(Permission.GUILD_UPGRADE, !targetGuildMember.hasPermission(Permission.GUILD_UPGRADE));
+                    targetGuildMember.setPermission(GuildPermission.PLAYER_JOIN_CHECK, !targetGuildMember.hasPermission(GuildPermission.PLAYER_JOIN_CHECK));
                     reopen();
                 }
             });
@@ -156,11 +134,11 @@ public class GuildMemberManageGUI extends BasePlayerGUI {
 
     /**
      * 重开GUI如果自己无权限或者对方有同样的权限了
-     * @param permission
+     * @param guildPermission
      * @return
      */
-    private boolean reopenIfInvalid(Permission permission) {
-        if (!managerGuildMember.hasPermission(permission) || managerGuildMember.hasPermission(permission)) {
+    private boolean reopenIfInvalid(GuildPermission guildPermission) {
+        if (!managerGuildMember.hasPermission(guildPermission) || managerGuildMember.hasPermission(guildPermission)) {
             reopen();
             return false;
         }
@@ -172,8 +150,8 @@ public class GuildMemberManageGUI extends BasePlayerGUI {
      * 得到物品（give，take两种状态）
      * @param section
      */
-    private PriorityItem getToggleItem(ConfigurationSection section, Permission permission) {
-        return GUIItemManager.getPriorityItem(section.getConfigurationSection(targetGuildMember.hasPermission(permission) ? "take" : "give"), targetBukkitPlayer);
+    private PriorityItem getToggleItem(ConfigurationSection section, GuildPermission guildPermission) {
+        return GUIItemManager.getPriorityItem(section.getConfigurationSection(targetGuildMember.hasPermission(guildPermission) ? "take" : "give"), targetBukkitPlayer);
     }
 
     @Override
@@ -182,8 +160,8 @@ public class GuildMemberManageGUI extends BasePlayerGUI {
             return false;
         }
 
-        Set<Permission> permissions = managerGuildMember.getPermissions(); // 最新的权限
+        Set<GuildPermission> guildPermissions = managerGuildMember.getGuildPermissions(); // 最新的权限
 
-        return permissions.contains(Permission.MEMBER_KICK) || permissions.contains(Permission.MANAGE_PERMISSION);
+        return guildPermissions.contains(GuildPermission.MEMBER_KICK) || guildPermissions.contains(GuildPermission.MANAGE_PERMISSION);
     }
 }

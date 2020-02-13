@@ -101,16 +101,18 @@ public class GuildCreateGUI extends BasePayGUI {
 
     private void createGuild(GuildPlayer guildPlayer, String guildName) {
         Player bukkitPlayer = guildPlayer.getBukkitPlayer();
+        PlaceholderContainer placeholderContainer = new PlaceholderContainer()
+                .add("player", bukkitPlayer.getName())
+                .add("guild_name", guildName);
 
         guildManager.createGuild(guildPlayer, guildName);
-        JulyMessage.broadcastColoredMessage(PlaceholderText.replacePlaceholders(thisLangSection.getString("success.broadcast"), new PlaceholderContainer()
-                .add("player", bukkitPlayer.getName())
-                .add("guild", guildName)));
+        JulyMessage.broadcastColoredMessage(PlaceholderText.replacePlaceholders(thisLangSection.getString("success.broadcast"), placeholderContainer));
 
         if (JulyMessage.canUseTitle()) {
-            JulyMessage.sendTitle(bukkitPlayer, new Title.Builder().text(thisLangSection.getString("success.self_title")).colored().build());
+            JulyMessage.sendTitle(bukkitPlayer, new Title.Builder().text(PlaceholderText.replacePlaceholders(thisLangSection.getString("success.title"), placeholderContainer)).colored().build());
+            JulyMessage.sendTitle(bukkitPlayer, new Title.Builder().type(Title.Type.SUBTITLE).text(PlaceholderText.replacePlaceholders(thisLangSection.getString("success.subtitle"), placeholderContainer)).colored().build());
         } else {
-            JulyMessage.sendColoredMessage(bukkitPlayer, thisLangSection.getString("success.self_title"));
+            JulyMessage.sendColoredMessage(bukkitPlayer, thisLangSection.getString("success.msg"));
         }
 
         new BukkitRunnable() {

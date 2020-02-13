@@ -2,10 +2,8 @@ package com.github.julyss2019.mcsp.julyguild.guild;
 
 import com.github.julyss2019.mcsp.julyguild.JulyGuild;
 import com.github.julyss2019.mcsp.julyguild.api.event.GuildCreateEvent;
-import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
 import com.github.julyss2019.mcsp.julyguild.log.guild.GuildCreateLog;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
-import com.github.julyss2019.mcsp.julyguild.player.GuildPlayerManager;
 import com.github.julyss2019.mcsp.julylibrary.utils.YamlUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -13,6 +11,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -39,10 +38,10 @@ public class GuildManager {
         yml.set("uuid", uuid.toString());
         yml.set("name", guildName);
         yml.set("creation_time", System.currentTimeMillis());
-        yml.set("members." + ownerPlayer.getUuid() + ".position", Position.OWNER.name());
+        yml.set("members." + ownerPlayer.getUuid() + ".position", GuildPosition.OWNER.name());
         yml.set("members." + ownerPlayer.getUuid() + ".join_time", System.currentTimeMillis());
 
-        YamlUtil.saveYaml(yml, file);
+        YamlUtil.saveYaml(yml, file, StandardCharsets.UTF_8);
 
         loadGuild(file); // 载入公会
         // 触发 Bukkit 事件

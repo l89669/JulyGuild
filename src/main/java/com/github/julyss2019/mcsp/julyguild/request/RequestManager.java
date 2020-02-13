@@ -3,6 +3,7 @@ package com.github.julyss2019.mcsp.julyguild.request;
 import com.github.julyss2019.mcsp.julyguild.JulyGuild;
 import com.github.julyss2019.mcsp.julylibrary.utils.YamlUtil;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.nio.charset.StandardCharsets;
@@ -14,13 +15,7 @@ public class RequestManager {
     private Map<UUID, List<Request>> sentMap = new HashMap<>();
     private Map<UUID, List<Request>> receiveMap = new HashMap<>();
 
-    public RequestManager() {
-
-    }
-
-    public boolean isValid(Request request) {
-        return isLoaded(request.getUuid());
-    }
+    public RequestManager() {}
 
     public Collection<Request> getRequests() {
         return new HashSet<>(requestMap.values());
@@ -30,7 +25,7 @@ public class RequestManager {
      * 卸载请求
      * @param request
      */
-    public void unloadRequest(Request request) {
+    public void unloadRequest(@NotNull Request request) {
         if (!isLoaded(request.getUuid())) {
             throw new RuntimeException("请求未载入");
         }
@@ -44,7 +39,7 @@ public class RequestManager {
      * 发送请求
      * @param request
      */
-    public void sendRequest(Request request) {
+    public void sendRequest(@NotNull Request request) {
         if (getRequest(request.getUuid()) != null) {
             throw new RuntimeException("该请求已经发送过了");
         }
@@ -61,7 +56,7 @@ public class RequestManager {
      * 摧毁请求
      * @param request
      */
-    public void deleteRequest(Request request) {
+    public void deleteRequest(@NotNull Request request) {
         if (!isLoaded(request.getUuid())) {
             throw new RuntimeException("该请求未被载入");
         }
@@ -93,7 +88,7 @@ public class RequestManager {
      * @param uuid
      * @return
      */
-    public boolean isLoaded(UUID uuid) {
+    public boolean isLoaded(@NotNull UUID uuid) {
         return requestMap.containsKey(uuid);
     }
 
@@ -101,7 +96,7 @@ public class RequestManager {
      * 载入请求
      * @param file
      */
-    public void loadRequest(File file) {
+    private void loadRequest(@NotNull File file) {
         YamlConfiguration yml = YamlConfiguration.loadConfiguration(file);
         Request.Type type = Request.Type.valueOf(yml.getString("type"));
         Request request;
@@ -125,7 +120,7 @@ public class RequestManager {
      * 潮衣库请求
      * @param request
      */
-    private void handleRequest(Request request) {
+    private void handleRequest(@NotNull Request request) {
         UUID senderUuid = request.getSender().getUuid();
         UUID receiverUuid = request.getReceiver().getUuid();
 
@@ -147,7 +142,7 @@ public class RequestManager {
      * @param sender
      * @return
      */
-    public List<Request> getSentRequests(Sender sender) {
+    public List<Request> getSentRequests(@NotNull Sender sender) {
         return new ArrayList<>(sentMap.getOrDefault(sender.getUuid(), new ArrayList<>()));
     }
 
@@ -156,7 +151,7 @@ public class RequestManager {
      * @param receiver
      * @return
      */
-    public List<Request> getReceivedRequests(Receiver receiver) {
+    public List<Request> getReceivedRequests(@NotNull Receiver receiver) {
         return new ArrayList<>(receiveMap.getOrDefault(receiver.getUuid(), new ArrayList<>()));
     }
 
@@ -165,7 +160,7 @@ public class RequestManager {
      * @param uuid
      * @return
      */
-    public Request getRequest(UUID uuid) {
+    public Request getRequest(@NotNull UUID uuid) {
         return requestMap.get(uuid);
     }
 }

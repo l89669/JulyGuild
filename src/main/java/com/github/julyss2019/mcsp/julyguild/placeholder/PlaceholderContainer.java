@@ -18,10 +18,14 @@ import java.util.Map;
  * 用于内部的占位符
  */
 public class PlaceholderContainer {
-    private List<Placeholder> placeholders = new ArrayList<>();
+    private Map<String, Placeholder> placeholderMap = new HashMap<>();
+
+    public Placeholder getPlaceholder(@NotNull String key) {
+        return placeholderMap.get(key);
+    }
 
     public List<Placeholder> getPlaceholders() {
-        return new ArrayList<>(placeholders);
+        return new ArrayList<>(placeholderMap.values());
     }
 
     /**
@@ -34,6 +38,7 @@ public class PlaceholderContainer {
         add("guild_ranking", JulyGuild.getInstance().getCacheGuildManager().getRanking(guild));
         add("guild_owner", guild.getOwner().getName());
         add("guild_gmoney", Util.SIMPLE_DECIMAL_FORMAT.format(guild.getGuildBank().getBalance(GuildBank.BalanceType.GMONEY)));
+        add("guild_online_member_count", guild.getOnlineMemberCount());
         add("guild_member_count", guild.getMemberCount());
         add("guild_max_member_count", guild.getMaxMemberCount());
         add("guild_creation_time", TimeUtil.YMD_SDF.format(guild.getCreateTime()));
@@ -49,7 +54,7 @@ public class PlaceholderContainer {
     }
 
     public PlaceholderContainer add(@NotNull String key, @NotNull Object value) {
-        placeholders.add(new Placeholder(key, value.toString()));
+        placeholderMap.put(key, new Placeholder(key, value.toString()));
         return this;
     }
 }

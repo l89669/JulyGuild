@@ -28,7 +28,7 @@ public abstract class BasePayGUI extends BasePlayerGUI {
     }
 
     protected BasePayGUI(@Nullable GUI lastGUI, @NotNull GuildPlayer guildPlayer, @NotNull ConfigurationSection section, @Nullable PlaceholderContainer placeholderContainer) {
-        super(lastGUI, GUIType.BASE_CONFIRM, guildPlayer);
+        super(lastGUI, GUIType.PAY, guildPlayer);
 
         this.section = section;
         this.placeholderContainer = placeholderContainer;

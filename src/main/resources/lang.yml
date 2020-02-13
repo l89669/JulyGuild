@@ -1,4 +1,6 @@
 VERSION: 2.0.0
+Shop:
+  gmoney_not_enough: '&c公会币不足, 还需要 &e{need}个&c.'
 Guild:
   member_damage_disabled: '&c成员PVP已关闭!'
 Command:
@@ -31,8 +33,11 @@ GuildCreateGUI:
     not_enough: '&c要创建公会, 你还需要 &e{need}个 &c建帮令.'
   on_close: '&c创建公会失败!'
   success:
-    self_title: '&d创建公会成功'
-    broadcast: '&d恭喜 &e{player} &d创建了公会 &e{guild}&d.'
+    # 不支持title的服务器使用此项发送消息
+    msg: '&d创建公会成功.'
+    title: '&d创建公会成功'
+    subtitle: '{guild_name}'
+    broadcast: '&d恭喜 &e{player} &d创建了公会 &e{guild_name}&d.'
 MainGUI:
   create:
     input:
@@ -43,6 +48,17 @@ MainGUI:
       no_colored_name_permission: '&c你没有彩色公会名的使用权限.'
       no_duplication_name: '&c这个公会名字已经有人使用了.'
 GuildMineGUI:
+  guild_spawn:
+    not_set: '&c管理员还没有设置公会主城.'
+    count_down:
+      title: '&c请不要移动'
+      subtitle: '&e{count_down}s'
+      # 不支持title的服务器使用此项发送消息
+      msg: '&e倒计时 {count_down}s, 请不要移动!'
+    teleported:
+      title: '&d已传送'
+      # 不支持title的服务器使用此项发送消息
+      msg: '&d已传送.'
   guild_exit:
     success: '&d退出公会成功.'
     failed: '&c退出公会失败.'
@@ -59,10 +75,10 @@ GuildMineGUI:
 GuildDonateGUI:
   money:
     not_enough: '&c金币不足, 至少还需要 &e{need}个 &c金币.'
-    success: '&d成功赞助 &e{reward}个 &d公会币, 花费 &e{cost}个 &d金币.'
+    success: '&d成功赞助 &e{reward}个 &d公会币, 花费 &e{price}个 &d金币.'
   points:
     not_enough: '&c点券不足, 至少还需要 &e{need}个 &c点券.'
-    success: '&d成功赞助 &e{reward}个 &d公会币, 花费 &e{cost}个 &d点券.'
+    success: '&d成功赞助 &e{reward}个 &d公会币, 花费 &e{price}个 &d点券.'
 GuildInfoGUI:
   request_join:
     already_have: '&c你已经有一个申请加入请求了, 请等待审批.'
