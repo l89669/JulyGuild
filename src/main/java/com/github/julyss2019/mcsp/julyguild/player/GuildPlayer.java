@@ -2,7 +2,6 @@ package com.github.julyss2019.mcsp.julyguild.player;
 
 import com.github.julyss2019.mcsp.julyguild.JulyGuild;
 import com.github.julyss2019.mcsp.julyguild.gui.GUI;
-import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
 import com.github.julyss2019.mcsp.julyguild.gui.PageableGUI;
 import com.github.julyss2019.mcsp.julyguild.guild.Guild;
 import com.github.julyss2019.mcsp.julyguild.request.Receiver;
@@ -12,6 +11,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
@@ -25,6 +25,7 @@ public class GuildPlayer implements Sender, Receiver {
     private String name;
     private GUI usingGUI;
     private GuildPlayerMessageBox messageBox;
+    private BukkitTask teleportTask;
 
     GuildPlayer(File file) {
         this.file = file;
@@ -49,6 +50,18 @@ public class GuildPlayer implements Sender, Receiver {
                 .map(OfflinePlayer::getName)
                 .orElse(uuid.toString());
         this.messageBox = new GuildPlayerMessageBox(this);
+    }
+
+    public boolean hasTeleportTask() {
+        return teleportTask != null;
+    }
+
+    public BukkitTask getTeleportTask() {
+        return teleportTask;
+    }
+
+    public void setTeleportTask(BukkitTask teleportTask) {
+        this.teleportTask = teleportTask;
     }
 
     public String getName() {
@@ -113,10 +126,10 @@ public class GuildPlayer implements Sender, Receiver {
     /**
      * 深度更新GUI
      */
-    public void updateGUI(GUIType... guiTypes) {
-        GUIType usingGUIType = usingGUI.getType();
+    public void updateGUI(GUI.Type... guiTypes) {
+        GUI.Type usingGUIType = usingGUI.getGUIType();
 
-        for (GUIType guiType : guiTypes) {
+        for (GUI.Type guiType : guiTypes) {
             if (usingGUIType == guiType) {
                 usingGUI.reopen();
             }

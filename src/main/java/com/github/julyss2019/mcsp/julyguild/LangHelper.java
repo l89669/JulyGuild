@@ -23,12 +23,12 @@ public class LangHelper {
             String format = langSection.getString("Global.nick_name");
 
             return PlaceholderText.replacePlaceholders(format, new PlaceholderContainer()
-                    .add("PERMISSION", langSection.getString("GuildPosition." + guildMember.getPosition().name().toLowerCase()))
+                    .add("PERMISSION", langSection.getString("Guild.Position." + guildMember.getPosition().name().toLowerCase()))
                     .add("NAME", guildMember.getName()));
         }
 
         public static String getPositionName(GuildPosition guildPosition) {
-            return JulyGuild.getInstance().getLangYaml().getString("GuildPosition." + guildPosition.name().toLowerCase());
+            return JulyGuild.getInstance().getLangYaml().getString("Guild.Position." + guildPosition.name().toLowerCase());
         }
     }
 }

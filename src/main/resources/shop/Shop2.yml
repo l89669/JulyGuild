@@ -1,4 +1,4 @@
-shop_name: Shop2
+name: Shop2
 title: '&e&l公会商店(2/2)'
 row: 6
 simple_confirm_gui: &simple_confirm_gui
@@ -18,16 +18,78 @@ simple_confirm_gui: &simple_confirm_gui
         material: ARROW
         display_name: '&c返回'
 items:
-  back:
-    index: 54
+  '11':
+    index: 11
+    icon:
+      material: GOLD_INGOT
+      display_name: ' &f购买金锭图标'
+      lores:
+        - ' &f花费公会币: {price}'
+    reward_type: GUILD_ICON
+    sell:
+      price: 1000
+      success_message: '&f购买公会图标 {display_name} &f成功, 花费公会币: x{price}.'
+      ConfirmGUI: *simple_confirm_gui
+      guild_icon:
+        material: GOLD_INGOT
+        display_name: '&e金锭'
+  '12':
+    index: 12
+    icon:
+      material: DIAMOND
+      display_name: ' &f购买钻石图标'
+      lores:
+        - ' &f花费公会币: {price}'
+    reward_type: GUILD_ICON
+    sell:
+      price: 1000
+      success_message: '&f购买公会图标 {display_name} &f成功, 花费公会币: x{price}.'
+      ConfirmGUI: *simple_confirm_gui
+      guild_icon:
+        material: DIAMOND
+        display_name: '&b钻石'
+  '13':
+    index: 13
+    icon:
+      material: TNT
+      display_name: ' &f购买TNT图标'
+      lores:
+        - ' &f花费公会币: {price}'
+    reward_type: GUILD_ICON
+    sell:
+      price: 1000
+      success_message: '&f购买公会图标 {display_name} &f成功, 花费公会币: x{price}.'
+      ConfirmGUI: *simple_confirm_gui
+      guild_icon:
+        material: TNT
+        display_name: '&bTNT'
+  '14':
+    index: 14
+    icon:
+      material: SKULL_ITEM
+      durability: 5
+      display_name: ' &f购买龙头图标'
+      lores:
+        - ' &f花费公会币: {price}'
+    reward_type: GUILD_ICON
+    sell:
+      price: 1000
+      success_message: '&f购买公会图标 {display_name} &f成功, 花费公会币: x{price}.'
+      ConfirmGUI: *simple_confirm_gui
+      guild_icon:
+        material: SKULL_ITEM
+        durability: 5
+        display_name: '&b龙头'
+  '50':
+    index: 51
     icon:
       material: ARROW
       display_name: '&c返回'
-shop_items:
-  '1':
-    type: CUSTOM
-    cost: '1000*(1+0.05)^{guild_online_member_count}' # 消费公会币 支持公会变量
-    index: 12
+    reward_type: BACK
+  '54':
+    index: 49
     icon:
-      material:
-    ConfirmGUI: *simple_confirm_gui
+      material: BOOK
+      display_name: '&f上一页'
+    reward_type: GUILD_SHOP
+    shop: Shop1

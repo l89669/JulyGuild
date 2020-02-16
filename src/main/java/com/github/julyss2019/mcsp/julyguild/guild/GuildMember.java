@@ -31,8 +31,8 @@ public class GuildMember implements GuildHuman {
 
         this.section = guild.getYaml().getConfigurationSection("members").getConfigurationSection(uuid.toString());
 
-        if (section.contains("guild_permissions")) {
-            Set<String> permissions = section.getConfigurationSection("guild_permissions").getKeys(false);
+        if (section.contains("permissions")) {
+            Set<String> permissions = section.getConfigurationSection("permissions").getKeys(false);
 
             if (permissions != null) {
                 permissions.forEach(s -> this.guildPermissions.add(GuildPermission.valueOf(s)));
@@ -72,10 +72,6 @@ public class GuildMember implements GuildHuman {
      * @param b true 为设置 false 为删除
      */
     public void setPermission(@NotNull GuildPermission guildPermission, boolean b) {
-        if (getPosition() == GuildPosition.OWNER) {
-            throw new RuntimeException("会长不允许被设置权限");
-        }
-
         if (b && guildPermissions.contains(guildPermission)) {
             throw new RuntimeException("成员已经有该权限了");
         } else if (!b && !guildPermissions.contains(guildPermission)) {
@@ -94,7 +90,7 @@ public class GuildMember implements GuildHuman {
 
         newGuildPermissions.forEach(permission1 -> stringPermissions.add(permission1.name()));
 
-        section.set("guildPermissions", stringPermissions);
+        section.set("permissions", stringPermissions);
     }
 
     public Set<GuildPermission> getGuildPermissions() {

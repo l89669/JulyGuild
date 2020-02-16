@@ -12,16 +12,28 @@ public class VaultEconomy {
     }
 
     public boolean has(Player player, double amount) {
+        if (amount <= 0) {
+            throw new RuntimeException("数量不合法: " + amount);
+        }
+
         return getBalance(player) >= amount;
     }
 
     public void withdraw(Player player, double amount) {
+        if (amount <= 0) {
+            throw new RuntimeException("数量不合法: " + amount);
+        }
+
         if (economy.withdrawPlayer(player, amount).type != EconomyResponse.ResponseType.SUCCESS) {
             throw new RuntimeException("扣除金币失败");
         }
     }
 
     public void deposit(Player player, double amount) {
+        if (amount <= 0) {
+            throw new RuntimeException("数量不合法: " + amount);
+        }
+
         if (economy.depositPlayer(player, amount).type != EconomyResponse.ResponseType.SUCCESS) {
             throw new RuntimeException("扣除金币失败");
         }

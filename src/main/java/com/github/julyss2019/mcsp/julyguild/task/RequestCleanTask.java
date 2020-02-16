@@ -14,7 +14,7 @@ public class RequestCleanTask extends BukkitRunnable {
     public void run() {
         requestManager.getRequests().forEach(request -> {
             if (!request.isValid()) {
-                request.delete();
+                requestManager.deleteRequest(request);
             }
         });
     }

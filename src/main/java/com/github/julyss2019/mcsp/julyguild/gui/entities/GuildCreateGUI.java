@@ -26,10 +26,10 @@ public class GuildCreateGUI extends BasePayGUI {
     private final ConfigurationSection thisLangSection = plugin.getLangYaml().getConfigurationSection("GuildCreateGUI");
 
     protected GuildCreateGUI(@Nullable GUI lastGUI, @NotNull GuildPlayer guildPlayer, @NotNull String guildName) {
-        super(lastGUI, guildPlayer, JulyGuild.getInstance().getGUIYaml("GuildCreateGUI"), new PlaceholderContainer()
+        super(lastGUI, Type.CREATE, guildPlayer, JulyGuild.getInstance().getGUIYaml("GuildCreateGUI"), new PlaceholderContainer()
                 .add("name", guildName)
-                .add("points_cost", MainSettings.getCreateCostPointsAmount())
-                .add("money_cost", MainSettings.getCreateCostMoneyAmount()));
+                .add("points_cost", MainSettings.getGuildCreateCostPointsAmount())
+                .add("money_cost", MainSettings.getGuildCreateCostMoneyAmount()));
 
         this.guildName = guildName;
     }
@@ -45,22 +45,22 @@ public class GuildCreateGUI extends BasePayGUI {
 
     @Override
     public void onMoneyPay() {
-        if (!vaultEconomy.has(bukkitPlayer, MainSettings.getCreateCostMoneyAmount())) {
+        if (!vaultEconomy.has(bukkitPlayer, MainSettings.getGuildCreateCostMoneyAmount())) {
             Util.sendMsg(bukkitPlayer, PlaceholderText.replacePlaceholders(thisLangSection.getString("money.not_enough"), new PlaceholderContainer()
-                    .add("need", MainSettings.getCreateCostMoneyAmount() - vaultEconomy.getBalance(bukkitPlayer))));
+                    .add("need", MainSettings.getGuildCreateCostMoneyAmount() - vaultEconomy.getBalance(bukkitPlayer))));
             return;
         }
 
         new BaseConfirmGUI(this, guildPlayer, plugin.getGUIYaml("GuildCreateGUI").getConfigurationSection("items.money.ConfirmGUI"), super.getPlaceholderContainer()) {
             @Override
             public boolean canUse() {
-                return !guildPlayer.isInGuild() && !vaultEconomy.has(bukkitPlayer, MainSettings.getCreateCostMoneyAmount());
+                return !guildPlayer.isInGuild() && vaultEconomy.has(bukkitPlayer, MainSettings.getGuildCreateCostMoneyAmount());
             }
 
             @Override
             public void onConfirm() {
                 close();
-                vaultEconomy.withdraw(bukkitPlayer, MainSettings.getCreateCostMoneyAmount());
+                vaultEconomy.withdraw(bukkitPlayer, MainSettings.getGuildCreateCostMoneyAmount());
                 createGuild(guildPlayer, guildName);
             }
 
@@ -73,22 +73,22 @@ public class GuildCreateGUI extends BasePayGUI {
 
     @Override
     public void onPointsPay() {
-        if (!playerPointsEconomy.has(bukkitPlayer, MainSettings.getCreateCostPointsAmount())) {
+        if (!playerPointsEconomy.has(bukkitPlayer, MainSettings.getGuildCreateCostPointsAmount())) {
             Util.sendMsg(bukkitPlayer, PlaceholderText.replacePlaceholders(thisLangSection.getString("points.not_enough"), new PlaceholderContainer()
-                    .add("need", String.valueOf(MainSettings.getCreateCostPointsAmount() - playerPointsEconomy.getBalance(bukkitPlayer)))));
+                    .add("need", String.valueOf(MainSettings.getGuildCreateCostPointsAmount() - playerPointsEconomy.getBalance(bukkitPlayer)))));
             return;
         }
 
         new BaseConfirmGUI(this, guildPlayer, plugin.getGUIYaml("GuildCreateGUI").getConfigurationSection("items.points.ConfirmGUI"), super.getPlaceholderContainer()) {
             @Override
             public boolean canUse() {
-                return !guildPlayer.isInGuild() && playerPointsEconomy.has(bukkitPlayer, MainSettings.getCreateCostPointsAmount());
+                return !guildPlayer.isInGuild() && playerPointsEconomy.has(bukkitPlayer, MainSettings.getGuildCreateCostPointsAmount());
             }
 
             @Override
             public void onConfirm() {
                 close();
-                playerPointsEconomy.withdraw(bukkitPlayer, MainSettings.getCreateCostPointsAmount());
+                playerPointsEconomy.withdraw(bukkitPlayer, MainSettings.getGuildCreateCostPointsAmount());
                 createGuild(guildPlayer, guildName);
             }
 

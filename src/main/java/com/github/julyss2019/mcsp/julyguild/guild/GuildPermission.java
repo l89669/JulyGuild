@@ -1,15 +1,10 @@
 package com.github.julyss2019.mcsp.julyguild.guild;
 
-import com.github.julyss2019.mcsp.julyguild.JulyGuild;
-
 public enum GuildPermission {
+    MANAGE_PERMISSION, // 权限管理
     MEMBER_KICK, // 成员踢出
     SET_MEMBER_DAMAGE, // 成员PVP
     PLAYER_JOIN_CHECK, // 玩家审批
-    MANAGE_PERMISSION, // 管理权限
-    USE_SHOP; // 商店
-
-    String getChineseName(GuildPermission guildPermission) {
-        return JulyGuild.getInstance().getLangYaml().getConfigurationSection("GuildPermission").getString(guildPermission.name());
-    }
+    USE_SHOP, // 商店
+    USE_ICON_REPOSITORY // 图标仓库
 }

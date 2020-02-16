@@ -2,6 +2,9 @@ VERSION: 2.0.0
 Shop:
   gmoney_not_enough: '&c公会币不足, 还需要 &e{need}个&c.'
 Guild:
+  Position:
+    member: '&a会员'
+    owner: '&d会长'
   member_damage_disabled: '&c成员PVP已关闭!'
 Command:
   command_format: '&f/${label} ${arg} - ${desc}'
@@ -20,9 +23,6 @@ Global:
   money: '金币'
   points: '点券'
   command_prefix: '&a[公会] &f'
-Position:
-  member: '&a会员'
-  owner: '&d会长'
 GuildCreateGUI:
   already_in: '&c你已经在一个公会里了.'
   money:
@@ -49,14 +49,18 @@ MainGUI:
       no_duplication_name: '&c这个公会名字已经有人使用了.'
 GuildMineGUI:
   guild_spawn:
-    not_set: '&c管理员还没有设置公会主城.'
+    cancelled:
+      title: '&c已取消传送'
+      subtitle: ''
+      msg: '&c已取消传送.'
     count_down:
-      title: '&c请不要移动'
-      subtitle: '&e{count_down}s'
+      title: '&c请勿移动'
+      subtitle: '&e传送中 {count_down}s'
       # 不支持title的服务器使用此项发送消息
       msg: '&e倒计时 {count_down}s, 请不要移动!'
     teleported:
       title: '&d已传送'
+      subtitle: ''
       # 不支持title的服务器使用此项发送消息
       msg: '&d已传送.'
   guild_exit:
@@ -70,8 +74,8 @@ GuildMineGUI:
     timeout: '&c确认请求超时.'
     confirm: '&c如果要解散公会请在 &e{wait}秒内 &c发送: &e{confirm_str}&c, 注意: 这将使你的公会财产和成员全部清空, 请务必谨慎操作, 输入 &e取消 &c以取消操作.'
   guild_set_member_damage:
-    state_on: '&f成员PVP已开启.'
-    state_off: '&f成员PVP已关闭.'
+    turn_on: '&f成员PVP已开启.'
+    turn_off: '&f成员PVP已关闭.'
 GuildDonateGUI:
   money:
     not_enough: '&c金币不足, 至少还需要 &e{need}个 &c金币.'
@@ -84,7 +88,7 @@ GuildInfoGUI:
     already_have: '&c你已经有一个申请加入请求了, 请等待审批.'
     guild_full: '&c公会人数已满({max}/{max}).'
     success: '&d已向公会发送加入申请, 请等待审批.'
-    received: '&e公会收到了一个来自 &c{sender} 的入会请求, 请及时处理.'
+    received: '&e公会收到了一个来自 &c{sender} &e的入会请求, 请及时处理.'
 GuildJoinCheckGUI:
   invalid: '&c请求已失效.'
   accept:

@@ -7,7 +7,7 @@ import java.util.UUID;
 
 public interface Sender {
     enum Type {
-        GUILD, GUILD_PLAYER
+        GUILD, GUILD_PLAYER, GUILD_MEMBER
     }
     Type getSenderType();
     default List<Request> getSentRequests() {

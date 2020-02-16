@@ -82,18 +82,12 @@ public abstract class BaseRequest implements Request {
     }
 
     @Override
-    public void delete() {
-        JulyGuild.getInstance().getRequestManager().deleteRequest(this);
-        this.valid = false;
-    }
-
-    @Override
-    public void send() {
-        JulyGuild.getInstance().getRequestManager().sendRequest(this);
-    }
-
-    @Override
     public boolean isValid() {
         return valid;
+    }
+
+    @Override
+    public void setValid(boolean b) {
+        this.valid = b;
     }
 }

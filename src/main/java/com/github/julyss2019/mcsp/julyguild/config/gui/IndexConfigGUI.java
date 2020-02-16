@@ -5,8 +5,6 @@ import com.github.julyss2019.mcsp.julyguild.config.gui.item.GUIItemManager;
 import com.github.julyss2019.mcsp.julyguild.config.gui.item.IndexItem;
 import com.github.julyss2019.mcsp.julyguild.config.setting.MainSettings;
 import com.github.julyss2019.mcsp.julyguild.gui.PageableGUI;
-import com.github.julyss2019.mcsp.julyguild.guild.Guild;
-import com.github.julyss2019.mcsp.julyguild.guild.GuildMember;
 import com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer;
 import com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderText;
 import com.github.julyss2019.mcsp.julyguild.util.Util;
@@ -47,7 +45,7 @@ public class IndexConfigGUI {
             }
 
             title(finalTitle);
-            colored(section.getBoolean("colored", MainSettings.isGuiDefaultColored()));
+            colored(section.getBoolean("colored", MainSettings.isGuildGuiDefaultColored()));
 
             // 其他物品
             if (section.contains("other_items")) {
@@ -62,10 +60,10 @@ public class IndexConfigGUI {
                 ConfigurationSection keySection = section.getConfigurationSection(key);
 
                 if (keySection.contains("index")) {
-                    item(new IndexItem(keySection.getInt("index") - 1, GUIItemManager.getItemBuilder(keySection, papiPlayer, placeholderContainer)));
-                } else if (keySection.contains("indexes")) {
+                    item(GUIItemManager.getIndexItem(keySection, papiPlayer, placeholderContainer));
+                } else {
                     for (int index : Util.getIndexes(keySection.getString("indexes"))) {
-                        item(new IndexItem(index, GUIItemManager.getItemBuilder(keySection, papiPlayer, placeholderContainer)));
+                        item(new IndexItem(index, GUIItemManager.getItemBuilder(keySection.getConfigurationSection("icon"), papiPlayer, placeholderContainer)));
                     }
                 }
             }

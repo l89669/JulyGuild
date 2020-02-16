@@ -2,6 +2,9 @@
 # 是否开启数据统计
 metrics_enabled: true
 guild:
+  spawn:
+    teleport:
+      wait: 3 # 传送等待
   shop:
     launcher: Shop1 # 引导商店，即第一个打开的商店
   papi:
@@ -25,7 +28,7 @@ guild:
       durability: 0
       first_lore: '' # 用于支持 SX-Attribute 的物品
   # 排行榜
-  ranking_list:
+  rank:
     # 计算公式，可用变量：
     # {guild_money} 公会金币储备
     # {guild_points} 公会点券储备
@@ -78,12 +81,3 @@ guild:
   exit:
     wait: 10
     confirm_str: '确认'
-  member:
-    # 成员列表最多能预览多少
-    most_show: 10
-  set_spawn:
-    cost:
-      money:
-        amount: 100
-      points:
-        amount: 100

@@ -12,14 +12,26 @@ public class PlayerPointsEconomy {
 
 
     public boolean has(Player player, int amount) {
+        if (amount <= 0) {
+            throw new RuntimeException("数量不合法: " + amount);
+        }
+
         return getBalance(player) >= amount;
     }
 
     public void withdraw(Player player, int amount) {
+        if (amount <= 0) {
+            throw new RuntimeException("数量不合法: " + amount);
+        }
+
         playerPointsAPI.take(player.getUniqueId(), amount);
     }
 
     public void deposit(Player player, int amount) {
+        if (amount <= 0) {
+            throw new RuntimeException("数量不合法: " + amount);
+        }
+
         playerPointsAPI.give(player.getUniqueId(), amount);
     }
 

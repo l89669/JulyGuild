@@ -4,9 +4,6 @@ import com.github.julyss2019.mcsp.julyguild.config.setting.MainSettings;
 import com.github.julyss2019.mcsp.julyguild.guild.Guild;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
 import com.github.julyss2019.mcsp.julyguild.request.BaseRequest;
-import com.github.julyss2019.mcsp.julyguild.request.Receiver;
-import com.github.julyss2019.mcsp.julyguild.request.Sender;
-import org.bukkit.configuration.ConfigurationSection;
 
 public class JoinRequest extends BaseRequest {
     public JoinRequest() {}
@@ -22,6 +19,6 @@ public class JoinRequest extends BaseRequest {
 
     @Override
     public boolean isValid() {
-        return super.isValid() && (System.currentTimeMillis() - getCreationTime()) / 1000L < MainSettings.getRequestJoinTimeout() && !((GuildPlayer) getSender()).isInGuild() && ((Guild) getReceiver()).isValid();
+        return super.isValid() && (System.currentTimeMillis() - getCreationTime()) / 1000L < MainSettings.getGuildRequestJoinTimeout() && !((GuildPlayer) getSender()).isInGuild() && ((Guild) getReceiver()).isValid();
     }
 }

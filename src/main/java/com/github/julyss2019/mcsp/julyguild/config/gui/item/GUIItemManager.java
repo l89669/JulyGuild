@@ -28,6 +28,10 @@ public class GUIItemManager {
         return getPriorityItem(section, papiPlayer, null);
     }
 
+    public static PriorityItem getPriorityItem(@NotNull ConfigurationSection section, @Nullable PlaceholderContainer placeholderContainer) {
+        return getPriorityItem(section, null, placeholderContainer);
+    }
+
     // 实现方法
     public static PriorityItem getPriorityItem(@NotNull ConfigurationSection section, @Nullable OfflinePlayer papiPlayer, @Nullable PlaceholderContainer placeholderContainer) {
         if (!section.getBoolean("enabled", true)) {
@@ -71,14 +75,22 @@ public class GUIItemManager {
     // 实现方法
     public static ItemBuilder getItemBuilder(@NotNull ConfigurationSection section, @Nullable OfflinePlayer papiPlayer, @Nullable PlaceholderContainer placeholderContainer) {
         ItemBuilder itemBuilder = new ItemBuilder();
-        boolean usePapi = section.getBoolean("use_papi", MainSettings.isGuiDefaultUsePapi());
+        boolean usePapi = section.getBoolean("use_papi", MainSettings.isGuildGuiDefaultUsePapi());
+
+        Material material;
+
+        try {
+            material = Material.valueOf(section.getString("material"));
+        } catch (Exception e) {
+            throw new RuntimeException(section.getCurrentPath() + ".material 不合法");
+        }
 
         itemBuilder
-                .material(Material.valueOf(section.getString("material")))
+                .material(material)
                 .durability((short) section.getInt("durability", 0))
-                .colored(section.getBoolean("colored", MainSettings.isGuiDefaultColored()));
+                .colored(section.getBoolean("colored", MainSettings.isGuildGuiDefaultColored()));
 
-        if (MainSettings.isGuiDefaultHideAllFlags()) {
+        if (MainSettings.isGuildGuiDefaultHideAllFlags()) {
             itemBuilder.addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_DESTROYS, ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_PLACED_ON, ItemFlag.HIDE_POTION_EFFECTS, ItemFlag.HIDE_UNBREAKABLE);
         }
 

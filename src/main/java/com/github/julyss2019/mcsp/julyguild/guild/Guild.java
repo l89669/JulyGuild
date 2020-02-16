@@ -11,8 +11,11 @@ import com.github.julyss2019.mcsp.julyguild.request.Sender;
 import com.github.julyss2019.mcsp.julyguild.util.Util;
 import com.github.julyss2019.mcsp.julylibrary.utils.YamlUtil;
 import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import parsii.eval.Parser;
 import parsii.tokenizer.ParseException;
 
@@ -22,6 +25,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class Guild implements Sender, Receiver {
+    private final JulyGuild plugin = JulyGuild.getInstance();
     private final File file;
     private YamlConfiguration yml;
     private boolean deleted;
@@ -40,7 +44,7 @@ public class Guild implements Sender, Receiver {
     private boolean memberDamageEnabled;
     private boolean valid = true;
 
-    Guild(File file) {
+    public Guild(File file) {
         this.file = file;
 
         if (!file.exists()) {
@@ -77,6 +81,8 @@ public class Guild implements Sender, Receiver {
 
         loadMembers();
         loadIcons();
+
+        this.currentIcon = Optional.ofNullable(yml.getString("current_icon")).map(s -> iconMap.get(UUID.fromString(s))).orElse(null);
     }
 
     public GuildSpawn getSpawn() {
@@ -84,7 +90,11 @@ public class Guild implements Sender, Receiver {
     }
 
     public void setSpawn(@NotNull Location location) {
-        yml.set("spawn", location);
+        if (!yml.contains("spawn")) {
+            yml.createSection("spawn");
+        }
+
+        YamlUtil.setLocationToSection(yml.getConfigurationSection("spawn"), location);
         save();
         this.spawn = new GuildSpawn(this);
     }
@@ -130,6 +140,58 @@ public class Guild implements Sender, Receiver {
 
     private void loadIcons() {
         iconMap.clear();
+
+        if (yml.contains("icons")) {
+            for (String iconUuidStr : yml.getConfigurationSection("icons").getKeys(false)) {
+                UUID iconUuid = UUID.fromString(iconUuidStr);
+
+                iconMap.put(iconUuid, new GuildIcon(this, iconUuid));
+            }
+        }
+    }
+
+    public void removeIcon(@NotNull GuildIcon guildIcon) {
+        yml.set("icons." + guildIcon.getUuid(), null);
+        save();
+        loadIcons();
+    }
+
+
+    public void setCurrentIcon(@Nullable GuildIcon guildIcon) {
+        if (guildIcon == null) {
+            yml.set("current_icon", null);
+            save();
+            this.currentIcon = null;
+            return;
+        }
+
+        UUID iconUuid = guildIcon.getUuid();
+
+        if (!iconMap.containsKey(iconUuid)) {
+            throw new RuntimeException("图标不存在");
+        }
+
+        yml.set("current_icon", iconUuid.toString());
+        save();
+        this.currentIcon = guildIcon;
+    }
+
+    public GuildIcon giveIcon(@NotNull Material material, short durability, @Nullable String firstLore, @Nullable String displayName) {
+        UUID uuid = UUID.randomUUID();
+
+        if (!yml.contains("icons." + uuid)) {
+            yml.createSection("icons." + uuid);
+        }
+
+        ConfigurationSection iconSection = yml.getConfigurationSection("icons." + uuid);
+
+        iconSection.set("material", material.name());
+        iconSection.set("durability", durability);
+        iconSection.set("first_lore", firstLore);
+        iconSection.set("display_name", displayName);
+        save();
+        loadIcons();
+        return iconMap.get(uuid);
     }
 
     public  boolean hasSpawn() {
@@ -200,7 +262,7 @@ public class Guild implements Sender, Receiver {
         return currentIcon;
     }
 
-    public Collection<GuildIcon> getIcons() {
+    public List<GuildIcon> getIcons() {
         return new ArrayList<>(iconMap.values());
     }
 
@@ -280,9 +342,7 @@ public class Guild implements Sender, Receiver {
         yml.set("members." + uuid + ".position", GuildPosition.MEMBER.name());
         yml.set("members." + uuid + ".join_time", System.currentTimeMillis());
         save();
-
-        memberMap.put(guildPlayer.getUuid(), new GuildMember(this, guildPlayer));
-        guildPlayer.pointGuild(this);
+        loadMembers();
     }
 
     /**
@@ -300,7 +360,7 @@ public class Guild implements Sender, Receiver {
 
         yml.set("members." + guildMember.getUuid(), null);
         save();
-        memberMap.remove(guildMember.getUuid());
+        loadMembers();
         guildMember.getGuildPlayer().pointGuild(null);
     }
 
@@ -321,13 +381,13 @@ public class Guild implements Sender, Receiver {
         YamlUtil.saveYaml(yml, file, StandardCharsets.UTF_8);
         this.deleted = true;
         getMembers().forEach(guildMember -> guildMember.getGuildPlayer().pointGuild(null));
-        JulyGuild.getInstance().getRequestManager().getSentRequests(this).forEach(Request::delete);
-        JulyGuild.getInstance().getRequestManager().getReceivedRequests(this).forEach(Request::delete);
-        JulyGuild.getInstance().getGuildManager().unloadGuild(this);
+        plugin.getRequestManager().getSentRequests(this).forEach(request -> plugin.getRequestManager().deleteRequest(request));
+        plugin.getRequestManager().getReceivedRequests(this).forEach(request -> plugin.getRequestManager().deleteRequest(request));
+        plugin.getGuildManager().unloadGuild(this);
     }
 
     public int getMaxMemberCount() {
-        return MainSettings.getDefaultMaxMemberCount() + getAdditionMemberCount();
+        return MainSettings.getGuildDefaultMaxMemberCount() + getAdditionMemberCount();
     }
 
     /**
@@ -345,7 +405,7 @@ public class Guild implements Sender, Receiver {
      */
     public void setAdditionMemberCount(int additionMemberCount) {
         yml.set("addition_member_count", additionMemberCount);
-        YamlUtil.saveYaml(yml, file);
+        save();
         this.additionMemberCount = additionMemberCount;
     }
 
@@ -363,7 +423,7 @@ public class Guild implements Sender, Receiver {
      */
     public void setAnnouncements(@NotNull List<String> announcements) {
         yml.set("announcements", announcements);
-        YamlUtil.saveYaml(yml, file);
+        save();
         this.announcements = announcements;
     }
 
@@ -395,7 +455,7 @@ public class Guild implements Sender, Receiver {
      * @return
      */
     public int getRank() {
-        String formula = PlaceholderText.replacePlaceholders(MainSettings.getRankingListFormula(), new PlaceholderContainer().addGuildPlaceholders(this));
+        String formula = PlaceholderText.replacePlaceholders(MainSettings.getGuildRankFormula(), new PlaceholderContainer().addGuildPlaceholders(this));
 
         try {
             return (int) Parser.parse(formula).evaluate();

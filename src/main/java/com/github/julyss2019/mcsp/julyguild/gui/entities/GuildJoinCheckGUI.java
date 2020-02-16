@@ -6,13 +6,13 @@ import com.github.julyss2019.mcsp.julyguild.config.gui.IndexConfigGUI;
 import com.github.julyss2019.mcsp.julyguild.config.gui.item.GUIItemManager;
 import com.github.julyss2019.mcsp.julyguild.gui.BasePlayerPageableGUI;
 import com.github.julyss2019.mcsp.julyguild.gui.GUI;
-import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
 import com.github.julyss2019.mcsp.julyguild.guild.Guild;
 import com.github.julyss2019.mcsp.julyguild.guild.GuildMember;
 import com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer;
 import com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderText;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
 import com.github.julyss2019.mcsp.julyguild.request.Request;
+import com.github.julyss2019.mcsp.julyguild.request.RequestManager;
 import com.github.julyss2019.mcsp.julyguild.util.Util;
 import com.github.julyss2019.mcsp.julylibrary.inventory.InventoryListener;
 import com.github.julyss2019.mcsp.julylibrary.inventory.ItemListener;
@@ -31,6 +31,7 @@ import java.util.Map;
 
 public class GuildJoinCheckGUI extends BasePlayerPageableGUI {
     private final JulyGuild plugin = JulyGuild.getInstance();
+    private final RequestManager requestManager = plugin.getRequestManager();
     private final ConfigurationSection thisGUISection = plugin.getGUIYaml("GuildJoinCheckGUI");
     private final ConfigurationSection thisLangSection = plugin.getLangYaml().getConfigurationSection("GuildJoinCheckGUI");
     private final Player bukkitPlayer = getBukkitPlayer();
@@ -43,7 +44,7 @@ public class GuildJoinCheckGUI extends BasePlayerPageableGUI {
     private int requestCount;
 
     public GuildJoinCheckGUI(@Nullable GUI lastGUI, @NotNull GuildMember guildMember) {
-        super(lastGUI, GUIType.PLAYER_JOIN_CHECK, guildMember.getGuildPlayer());
+        super(lastGUI, Type.PLAYER_JOIN_CHECK, guildMember.getGuildPlayer());
 
         this.guildMember = guildMember;
         this.guild = guildMember.getGuild();
@@ -90,7 +91,7 @@ public class GuildJoinCheckGUI extends BasePlayerPageableGUI {
                             }
 
                             if (action == InventoryAction.PICKUP_ALL) {
-                                request.delete();
+                                requestManager.deleteRequest(request);
                                 guild.addMember(sender);
 
                                 guild.broadcastMessage(PlaceholderText.replacePlaceholders(thisLangSection.getString("accept.broadcast"), new PlaceholderContainer()
@@ -100,7 +101,7 @@ public class GuildJoinCheckGUI extends BasePlayerPageableGUI {
                             }
 
                             if (action == InventoryAction.PICKUP_HALF) {
-                                request.delete();
+                                requestManager.deleteRequest(request);
                                 Util.sendMsg(bukkitPlayer, PlaceholderText.replacePlaceholders(thisLangSection.getString("deny.approver"), new PlaceholderContainer()
                                         .add("player", sender.getName())));
                                 reopen(20L);

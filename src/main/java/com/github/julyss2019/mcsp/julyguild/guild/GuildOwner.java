@@ -21,6 +21,11 @@ public class GuildOwner extends GuildMember {
     }
 
     @Override
+    public void setPermission(@NotNull GuildPermission guildPermission, boolean b) {
+        throw new RuntimeException("会长不允许被设置权限");
+    }
+
+    @Override
     public Set<GuildPermission> getGuildPermissions() {
         return new HashSet<>(Arrays.asList(GuildPermission.values()));
     }

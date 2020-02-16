@@ -11,25 +11,56 @@ com.github.julyss2019.mcsp.julyguild.api.event.GuildCreateEvent: org.bukkit.even
 com.github.julyss2019.mcsp.julyguild.api.event.GuildDeleteEvent
 com.github.julyss2019.mcsp.julyguild.api.event.GuildDeleteEvent: GuildDeleteEvent()
 com.github.julyss2019.mcsp.julyguild.api.event.GuildDeleteEvent: org.bukkit.event.HandlerList getHandlers()
-com.github.julyss2019.mcsp.julyguild.gui.GUIType
-com.github.julyss2019.mcsp.julyguild.gui.GUIType: com.github.julyss2019.mcsp.julyguild.gui.GUIType CREATE
-com.github.julyss2019.mcsp.julyguild.gui.GUIType: com.github.julyss2019.mcsp.julyguild.gui.GUIType INFO
-com.github.julyss2019.mcsp.julyguild.gui.GUIType: com.github.julyss2019.mcsp.julyguild.gui.GUIType MEMBER_LIST
-com.github.julyss2019.mcsp.julyguild.gui.GUIType: com.github.julyss2019.mcsp.julyguild.gui.GUIType MINE
-com.github.julyss2019.mcsp.julyguild.gui.GUIType: com.github.julyss2019.mcsp.julyguild.gui.GUIType MAIN
-com.github.julyss2019.mcsp.julyguild.gui.GUIType: com.github.julyss2019.mcsp.julyguild.gui.GUIType PLAYER_JOIN_CHECK
-com.github.julyss2019.mcsp.julyguild.gui.GUIType: com.github.julyss2019.mcsp.julyguild.gui.GUIType MEMBER_MANAGE
-com.github.julyss2019.mcsp.julyguild.gui.GUIType: com.github.julyss2019.mcsp.julyguild.gui.GUIType PROMOTE
-com.github.julyss2019.mcsp.julyguild.gui.GUIType: com.github.julyss2019.mcsp.julyguild.gui.GUIType DONATE
-com.github.julyss2019.mcsp.julyguild.gui.GUIType: com.github.julyss2019.mcsp.julyguild.gui.GUIType SHOP
-com.github.julyss2019.mcsp.julyguild.gui.GUIType: com.github.julyss2019.mcsp.julyguild.gui.GUIType CONFIRM
-com.github.julyss2019.mcsp.julyguild.gui.GUIType: com.github.julyss2019.mcsp.julyguild.gui.GUIType PAY
-com.github.julyss2019.mcsp.julyguild.gui.GUIType: com.github.julyss2019.mcsp.julyguild.gui.GUIType SHOP_CONFIRM
-com.github.julyss2019.mcsp.julyguild.gui.GUIType: com.github.julyss2019.mcsp.julyguild.gui.GUIType[] $VALUES
-com.github.julyss2019.mcsp.julyguild.gui.GUIType: com.github.julyss2019.mcsp.julyguild.gui.GUIType[] values()
-com.github.julyss2019.mcsp.julyguild.gui.GUIType: com.github.julyss2019.mcsp.julyguild.gui.GUIType valueOf(java.lang.String)
-com.github.julyss2019.mcsp.julyguild.gui.GUIType: GUIType(java.lang.String,int)
-com.github.julyss2019.mcsp.julyguild.gui.GUIType: void <clinit>()
+com.github.julyss2019.mcsp.julyguild.gui.GUI$Type
+com.github.julyss2019.mcsp.julyguild.gui.GUI$Type: com.github.julyss2019.mcsp.julyguild.gui.GUI$Type CREATE
+com.github.julyss2019.mcsp.julyguild.gui.GUI$Type: com.github.julyss2019.mcsp.julyguild.gui.GUI$Type INFO
+com.github.julyss2019.mcsp.julyguild.gui.GUI$Type: com.github.julyss2019.mcsp.julyguild.gui.GUI$Type MEMBER_LIST
+com.github.julyss2019.mcsp.julyguild.gui.GUI$Type: com.github.julyss2019.mcsp.julyguild.gui.GUI$Type MINE
+com.github.julyss2019.mcsp.julyguild.gui.GUI$Type: com.github.julyss2019.mcsp.julyguild.gui.GUI$Type MAIN
+com.github.julyss2019.mcsp.julyguild.gui.GUI$Type: com.github.julyss2019.mcsp.julyguild.gui.GUI$Type PLAYER_JOIN_CHECK
+com.github.julyss2019.mcsp.julyguild.gui.GUI$Type: com.github.julyss2019.mcsp.julyguild.gui.GUI$Type MEMBER_MANAGE
+com.github.julyss2019.mcsp.julyguild.gui.GUI$Type: com.github.julyss2019.mcsp.julyguild.gui.GUI$Type PROMOTE
+com.github.julyss2019.mcsp.julyguild.gui.GUI$Type: com.github.julyss2019.mcsp.julyguild.gui.GUI$Type DONATE
+com.github.julyss2019.mcsp.julyguild.gui.GUI$Type: com.github.julyss2019.mcsp.julyguild.gui.GUI$Type SHOP
+com.github.julyss2019.mcsp.julyguild.gui.GUI$Type: com.github.julyss2019.mcsp.julyguild.gui.GUI$Type CONFIRM
+com.github.julyss2019.mcsp.julyguild.gui.GUI$Type: com.github.julyss2019.mcsp.julyguild.gui.GUI$Type PAY
+com.github.julyss2019.mcsp.julyguild.gui.GUI$Type: com.github.julyss2019.mcsp.julyguild.gui.GUI$Type SHOP_CONFIRM
+com.github.julyss2019.mcsp.julyguild.gui.GUI$Type: com.github.julyss2019.mcsp.julyguild.gui.GUI$Type ICON_REPOSITORY
+com.github.julyss2019.mcsp.julyguild.gui.GUI$Type: com.github.julyss2019.mcsp.julyguild.gui.GUI$Type[] $VALUES
+com.github.julyss2019.mcsp.julyguild.gui.GUI$Type: com.github.julyss2019.mcsp.julyguild.gui.GUI$Type[] values()
+com.github.julyss2019.mcsp.julyguild.gui.GUI$Type: com.github.julyss2019.mcsp.julyguild.gui.GUI$Type valueOf(java.lang.String)
+com.github.julyss2019.mcsp.julyguild.gui.GUI$Type: GUI$Type(java.lang.String,int)
+com.github.julyss2019.mcsp.julyguild.gui.GUI$Type: void <clinit>()
+com.github.julyss2019.mcsp.julyguild.gui.entities.GuildDonateGUI$PayType
+com.github.julyss2019.mcsp.julyguild.gui.entities.GuildDonateGUI$PayType: com.github.julyss2019.mcsp.julyguild.gui.entities.GuildDonateGUI$PayType MONEY
+com.github.julyss2019.mcsp.julyguild.gui.entities.GuildDonateGUI$PayType: com.github.julyss2019.mcsp.julyguild.gui.entities.GuildDonateGUI$PayType POINTS
+com.github.julyss2019.mcsp.julyguild.gui.entities.GuildDonateGUI$PayType: com.github.julyss2019.mcsp.julyguild.gui.entities.GuildDonateGUI$PayType[] $VALUES
+com.github.julyss2019.mcsp.julyguild.gui.entities.GuildDonateGUI$PayType: com.github.julyss2019.mcsp.julyguild.gui.entities.GuildDonateGUI$PayType[] values()
+com.github.julyss2019.mcsp.julyguild.gui.entities.GuildDonateGUI$PayType: com.github.julyss2019.mcsp.julyguild.gui.entities.GuildDonateGUI$PayType valueOf(java.lang.String)
+com.github.julyss2019.mcsp.julyguild.gui.entities.GuildDonateGUI$PayType: GuildDonateGUI$PayType(java.lang.String,int)
+com.github.julyss2019.mcsp.julyguild.gui.entities.GuildDonateGUI$PayType: void <clinit>()
+com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberListGUI$ViewerType
+com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberListGUI$ViewerType: com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberListGUI$ViewerType PLAYER
+com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberListGUI$ViewerType: com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberListGUI$ViewerType MANAGER
+com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberListGUI$ViewerType: com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberListGUI$ViewerType[] $VALUES
+com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberListGUI$ViewerType: com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberListGUI$ViewerType[] values()
+com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberListGUI$ViewerType: com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberListGUI$ViewerType valueOf(java.lang.String)
+com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberListGUI$ViewerType: GuildMemberListGUI$ViewerType(java.lang.String,int)
+com.github.julyss2019.mcsp.julyguild.gui.entities.GuildMemberListGUI$ViewerType: void <clinit>()
+com.github.julyss2019.mcsp.julyguild.gui.entities.GuildShopGUI$RewardType
+com.github.julyss2019.mcsp.julyguild.gui.entities.GuildShopGUI$RewardType: com.github.julyss2019.mcsp.julyguild.gui.entities.GuildShopGUI$RewardType GUILD_SET_SPAWN
+com.github.julyss2019.mcsp.julyguild.gui.entities.GuildShopGUI$RewardType: com.github.julyss2019.mcsp.julyguild.gui.entities.GuildShopGUI$RewardType GUILD_UPGRADE
+com.github.julyss2019.mcsp.julyguild.gui.entities.GuildShopGUI$RewardType: com.github.julyss2019.mcsp.julyguild.gui.entities.GuildShopGUI$RewardType GUILD_TP_ALL
+com.github.julyss2019.mcsp.julyguild.gui.entities.GuildShopGUI$RewardType: com.github.julyss2019.mcsp.julyguild.gui.entities.GuildShopGUI$RewardType GUILD_SHOP
+com.github.julyss2019.mcsp.julyguild.gui.entities.GuildShopGUI$RewardType: com.github.julyss2019.mcsp.julyguild.gui.entities.GuildShopGUI$RewardType GUILD_ICON
+com.github.julyss2019.mcsp.julyguild.gui.entities.GuildShopGUI$RewardType: com.github.julyss2019.mcsp.julyguild.gui.entities.GuildShopGUI$RewardType NONE
+com.github.julyss2019.mcsp.julyguild.gui.entities.GuildShopGUI$RewardType: com.github.julyss2019.mcsp.julyguild.gui.entities.GuildShopGUI$RewardType BACK
+com.github.julyss2019.mcsp.julyguild.gui.entities.GuildShopGUI$RewardType: com.github.julyss2019.mcsp.julyguild.gui.entities.GuildShopGUI$RewardType CUSTOM
+com.github.julyss2019.mcsp.julyguild.gui.entities.GuildShopGUI$RewardType: com.github.julyss2019.mcsp.julyguild.gui.entities.GuildShopGUI$RewardType[] $VALUES
+com.github.julyss2019.mcsp.julyguild.gui.entities.GuildShopGUI$RewardType: com.github.julyss2019.mcsp.julyguild.gui.entities.GuildShopGUI$RewardType[] values()
+com.github.julyss2019.mcsp.julyguild.gui.entities.GuildShopGUI$RewardType: com.github.julyss2019.mcsp.julyguild.gui.entities.GuildShopGUI$RewardType valueOf(java.lang.String)
+com.github.julyss2019.mcsp.julyguild.gui.entities.GuildShopGUI$RewardType: GuildShopGUI$RewardType(java.lang.String,int)
+com.github.julyss2019.mcsp.julyguild.gui.entities.GuildShopGUI$RewardType: void <clinit>()
 com.github.julyss2019.mcsp.julyguild.guild.CacheGuildManager
 com.github.julyss2019.mcsp.julyguild.guild.CacheGuildManager: CacheGuildManager()
 com.github.julyss2019.mcsp.julyguild.guild.CacheGuildManager: void startTask()
@@ -40,11 +71,15 @@ com.github.julyss2019.mcsp.julyguild.guild.CacheGuildManager: void reset()
 com.github.julyss2019.mcsp.julyguild.guild.CacheGuildManager$1
 com.github.julyss2019.mcsp.julyguild.guild.CacheGuildManager$1: void run()
 com.github.julyss2019.mcsp.julyguild.guild.Guild
-com.github.julyss2019.mcsp.julyguild.guild.Guild: org.bukkit.Location getSpawn()
+com.github.julyss2019.mcsp.julyguild.guild.Guild: Guild(java.io.File)
+com.github.julyss2019.mcsp.julyguild.guild.Guild: com.github.julyss2019.mcsp.julyguild.guild.GuildSpawn getSpawn()
 com.github.julyss2019.mcsp.julyguild.guild.Guild: void setSpawn(org.bukkit.Location)
 com.github.julyss2019.mcsp.julyguild.guild.Guild: boolean isMemberDamageEnabled()
 com.github.julyss2019.mcsp.julyguild.guild.Guild: void setMemberDamageEnabled(boolean)
 com.github.julyss2019.mcsp.julyguild.guild.Guild: com.github.julyss2019.mcsp.julyguild.guild.GuildMessageBox getGuildMessageBox()
+com.github.julyss2019.mcsp.julyguild.guild.Guild: void removeIcon(com.github.julyss2019.mcsp.julyguild.guild.GuildIcon)
+com.github.julyss2019.mcsp.julyguild.guild.Guild: void setCurrentIcon(com.github.julyss2019.mcsp.julyguild.guild.GuildIcon)
+com.github.julyss2019.mcsp.julyguild.guild.Guild: com.github.julyss2019.mcsp.julyguild.guild.GuildIcon giveIcon(org.bukkit.Material,short,java.lang.String,java.lang.String)
 com.github.julyss2019.mcsp.julyguild.guild.Guild: boolean hasSpawn()
 com.github.julyss2019.mcsp.julyguild.guild.Guild: java.util.UUID getUuid()
 com.github.julyss2019.mcsp.julyguild.guild.Guild: boolean isDeleted()
@@ -53,7 +88,7 @@ com.github.julyss2019.mcsp.julyguild.guild.Guild: void setOwner(com.github.julys
 com.github.julyss2019.mcsp.julyguild.guild.Guild: boolean isMember(com.github.julyss2019.mcsp.julyguild.player.GuildPlayer)
 com.github.julyss2019.mcsp.julyguild.guild.Guild: boolean isMember(java.util.UUID)
 com.github.julyss2019.mcsp.julyguild.guild.Guild: com.github.julyss2019.mcsp.julyguild.guild.GuildIcon getCurrentIcon()
-com.github.julyss2019.mcsp.julyguild.guild.Guild: java.util.Collection getIcons()
+com.github.julyss2019.mcsp.julyguild.guild.Guild: java.util.List getIcons()
 com.github.julyss2019.mcsp.julyguild.guild.Guild: boolean isOwner(com.github.julyss2019.mcsp.julyguild.guild.GuildMember)
 com.github.julyss2019.mcsp.julyguild.guild.Guild: boolean isOwner(com.github.julyss2019.mcsp.julyguild.player.GuildPlayer)
 com.github.julyss2019.mcsp.julyguild.guild.Guild: com.github.julyss2019.mcsp.julyguild.guild.GuildMember getMember(com.github.julyss2019.mcsp.julyguild.player.GuildPlayer)
@@ -100,13 +135,14 @@ com.github.julyss2019.mcsp.julyguild.guild.GuildBank$BalanceType: GuildBank$Bala
 com.github.julyss2019.mcsp.julyguild.guild.GuildBank$BalanceType: void <clinit>()
 com.github.julyss2019.mcsp.julyguild.guild.GuildHuman
 com.github.julyss2019.mcsp.julyguild.guild.GuildIcon
-com.github.julyss2019.mcsp.julyguild.guild.GuildIcon: GuildIcon(com.github.julyss2019.mcsp.julyguild.guild.Guild,java.util.UUID,org.bukkit.Material,short,java.lang.String)
+com.github.julyss2019.mcsp.julyguild.guild.GuildIcon: GuildIcon(com.github.julyss2019.mcsp.julyguild.guild.Guild,java.util.UUID)
 com.github.julyss2019.mcsp.julyguild.guild.GuildIcon: java.util.UUID getUuid()
 com.github.julyss2019.mcsp.julyguild.guild.GuildIcon: com.github.julyss2019.mcsp.julyguild.guild.Guild getGuild()
 com.github.julyss2019.mcsp.julyguild.guild.GuildIcon: java.lang.String getDisplayName()
 com.github.julyss2019.mcsp.julyguild.guild.GuildIcon: org.bukkit.Material getMaterial()
 com.github.julyss2019.mcsp.julyguild.guild.GuildIcon: short getDurability()
 com.github.julyss2019.mcsp.julyguild.guild.GuildIcon: java.lang.String getFirstLore()
+com.github.julyss2019.mcsp.julyguild.guild.GuildIcon: boolean isValid()
 com.github.julyss2019.mcsp.julyguild.guild.GuildManager
 com.github.julyss2019.mcsp.julyguild.guild.GuildManager: GuildManager()
 com.github.julyss2019.mcsp.julyguild.guild.GuildManager: void createGuild(com.github.julyss2019.mcsp.julyguild.player.GuildPlayer,java.lang.String)
@@ -144,6 +180,7 @@ com.github.julyss2019.mcsp.julyguild.guild.GuildMessageBox: com.github.julyss201
 com.github.julyss2019.mcsp.julyguild.guild.GuildMessageBox: void save()
 com.github.julyss2019.mcsp.julyguild.guild.GuildOwner
 com.github.julyss2019.mcsp.julyguild.guild.GuildOwner: com.github.julyss2019.mcsp.julyguild.guild.GuildPosition getPosition()
+com.github.julyss2019.mcsp.julyguild.guild.GuildOwner: void setPermission(com.github.julyss2019.mcsp.julyguild.guild.GuildPermission,boolean)
 com.github.julyss2019.mcsp.julyguild.guild.GuildOwner: java.util.Set getGuildPermissions()
 com.github.julyss2019.mcsp.julyguild.guild.GuildPermission
 com.github.julyss2019.mcsp.julyguild.guild.GuildPermission: com.github.julyss2019.mcsp.julyguild.guild.GuildPermission MEMBER_KICK
@@ -151,11 +188,11 @@ com.github.julyss2019.mcsp.julyguild.guild.GuildPermission: com.github.julyss201
 com.github.julyss2019.mcsp.julyguild.guild.GuildPermission: com.github.julyss2019.mcsp.julyguild.guild.GuildPermission PLAYER_JOIN_CHECK
 com.github.julyss2019.mcsp.julyguild.guild.GuildPermission: com.github.julyss2019.mcsp.julyguild.guild.GuildPermission MANAGE_PERMISSION
 com.github.julyss2019.mcsp.julyguild.guild.GuildPermission: com.github.julyss2019.mcsp.julyguild.guild.GuildPermission USE_SHOP
+com.github.julyss2019.mcsp.julyguild.guild.GuildPermission: com.github.julyss2019.mcsp.julyguild.guild.GuildPermission USE_ICON_REPOSITORY
 com.github.julyss2019.mcsp.julyguild.guild.GuildPermission: com.github.julyss2019.mcsp.julyguild.guild.GuildPermission[] $VALUES
 com.github.julyss2019.mcsp.julyguild.guild.GuildPermission: com.github.julyss2019.mcsp.julyguild.guild.GuildPermission[] values()
 com.github.julyss2019.mcsp.julyguild.guild.GuildPermission: com.github.julyss2019.mcsp.julyguild.guild.GuildPermission valueOf(java.lang.String)
 com.github.julyss2019.mcsp.julyguild.guild.GuildPermission: GuildPermission(java.lang.String,int)
-com.github.julyss2019.mcsp.julyguild.guild.GuildPermission: java.lang.String getChineseName(com.github.julyss2019.mcsp.julyguild.guild.GuildPermission)
 com.github.julyss2019.mcsp.julyguild.guild.GuildPermission: void <clinit>()
 com.github.julyss2019.mcsp.julyguild.guild.GuildPosition
 com.github.julyss2019.mcsp.julyguild.guild.GuildPosition: com.github.julyss2019.mcsp.julyguild.guild.GuildPosition MEMBER
@@ -168,12 +205,14 @@ com.github.julyss2019.mcsp.julyguild.guild.GuildPosition: GuildPosition(java.lan
 com.github.julyss2019.mcsp.julyguild.guild.GuildPosition: int getLevel()
 com.github.julyss2019.mcsp.julyguild.guild.GuildPosition: void <clinit>()
 com.github.julyss2019.mcsp.julyguild.guild.GuildSpawn
+com.github.julyss2019.mcsp.julyguild.guild.GuildSpawn: com.github.julyss2019.mcsp.julyguild.guild.Guild getGuild()
 com.github.julyss2019.mcsp.julyguild.guild.GuildSpawn: java.lang.String getWorldName()
 com.github.julyss2019.mcsp.julyguild.guild.GuildSpawn: double getX()
 com.github.julyss2019.mcsp.julyguild.guild.GuildSpawn: double getY()
 com.github.julyss2019.mcsp.julyguild.guild.GuildSpawn: double getZ()
 com.github.julyss2019.mcsp.julyguild.guild.GuildSpawn: float getYaw()
 com.github.julyss2019.mcsp.julyguild.guild.GuildSpawn: float getPitch()
+com.github.julyss2019.mcsp.julyguild.guild.GuildSpawn: boolean isValid()
 com.github.julyss2019.mcsp.julyguild.guild.GuildSpawn: org.bukkit.Location getLocation()
 com.github.julyss2019.mcsp.julyguild.log.GuildLogType
 com.github.julyss2019.mcsp.julyguild.log.GuildLogType: com.github.julyss2019.mcsp.julyguild.log.GuildLogType CREATE
@@ -190,6 +229,9 @@ com.github.julyss2019.mcsp.julyguild.messagebox.YamlMessageBox: void removeMessa
 com.github.julyss2019.mcsp.julyguild.messagebox.YamlMessageBox: void sendMessage(com.github.julyss2019.mcsp.julyguild.messagebox.Message)
 com.github.julyss2019.mcsp.julyguild.player.GuildPlayer
 com.github.julyss2019.mcsp.julyguild.player.GuildPlayer: void load()
+com.github.julyss2019.mcsp.julyguild.player.GuildPlayer: boolean hasTeleportTask()
+com.github.julyss2019.mcsp.julyguild.player.GuildPlayer: org.bukkit.scheduler.BukkitTask getTeleportTask()
+com.github.julyss2019.mcsp.julyguild.player.GuildPlayer: void setTeleportTask(org.bukkit.scheduler.BukkitTask)
 com.github.julyss2019.mcsp.julyguild.player.GuildPlayer: java.lang.String getName()
 com.github.julyss2019.mcsp.julyguild.player.GuildPlayer: void closeInventory()
 com.github.julyss2019.mcsp.julyguild.player.GuildPlayer: boolean isUsingGUI()
@@ -201,7 +243,7 @@ com.github.julyss2019.mcsp.julyguild.player.GuildPlayer: java.util.UUID getGuild
 com.github.julyss2019.mcsp.julyguild.player.GuildPlayer: org.bukkit.entity.Player getBukkitPlayer()
 com.github.julyss2019.mcsp.julyguild.player.GuildPlayer: boolean isOnline()
 com.github.julyss2019.mcsp.julyguild.player.GuildPlayer: boolean isInGuild()
-com.github.julyss2019.mcsp.julyguild.player.GuildPlayer: void updateGUI(com.github.julyss2019.mcsp.julyguild.gui.GUIType[])
+com.github.julyss2019.mcsp.julyguild.player.GuildPlayer: void updateGUI(com.github.julyss2019.mcsp.julyguild.gui.GUI$Type[])
 com.github.julyss2019.mcsp.julyguild.player.GuildPlayer: java.util.UUID getUuid()
 com.github.julyss2019.mcsp.julyguild.player.GuildPlayer: org.bukkit.OfflinePlayer getOfflineBukkitPlayer()
 com.github.julyss2019.mcsp.julyguild.player.GuildPlayer: void save()
@@ -247,16 +289,6 @@ com.github.julyss2019.mcsp.julyguild.request.Sender$Type: com.github.julyss2019.
 com.github.julyss2019.mcsp.julyguild.request.Sender$Type: com.github.julyss2019.mcsp.julyguild.request.Sender$Type valueOf(java.lang.String)
 com.github.julyss2019.mcsp.julyguild.request.Sender$Type: Sender$Type(java.lang.String,int)
 com.github.julyss2019.mcsp.julyguild.request.Sender$Type: void <clinit>()
-com.github.julyss2019.mcsp.julyguild.shop.reward.Rewardype
-com.github.julyss2019.mcsp.julyguild.shop.reward.Rewardype: com.github.julyss2019.mcsp.julyguild.shop.reward.Rewardype GUILD_SET_SPAWN
-com.github.julyss2019.mcsp.julyguild.shop.reward.Rewardype: com.github.julyss2019.mcsp.julyguild.shop.reward.Rewardype GUILD_UPGRADE
-com.github.julyss2019.mcsp.julyguild.shop.reward.Rewardype: com.github.julyss2019.mcsp.julyguild.shop.reward.Rewardype GUILD_TP_ALL
-com.github.julyss2019.mcsp.julyguild.shop.reward.Rewardype: com.github.julyss2019.mcsp.julyguild.shop.reward.Rewardype CUSTOM
-com.github.julyss2019.mcsp.julyguild.shop.reward.Rewardype: com.github.julyss2019.mcsp.julyguild.shop.reward.Rewardype[] $VALUES
-com.github.julyss2019.mcsp.julyguild.shop.reward.Rewardype: com.github.julyss2019.mcsp.julyguild.shop.reward.Rewardype[] values()
-com.github.julyss2019.mcsp.julyguild.shop.reward.Rewardype: com.github.julyss2019.mcsp.julyguild.shop.reward.Rewardype valueOf(java.lang.String)
-com.github.julyss2019.mcsp.julyguild.shop.reward.Rewardype: Function$Type(java.lang.String,int)
-com.github.julyss2019.mcsp.julyguild.shop.reward.Rewardype: void <clinit>()
 org.apache.commons.lang3.AnnotationUtils
 org.apache.commons.lang3.AnnotationUtils: org.apache.commons.lang3.builder.ToStringStyle TO_STRING_STYLE
 org.apache.commons.lang3.AnnotationUtils: AnnotationUtils()

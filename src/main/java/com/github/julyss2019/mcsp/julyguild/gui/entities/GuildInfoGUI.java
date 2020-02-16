@@ -5,6 +5,7 @@ import com.github.julyss2019.mcsp.julyguild.config.gui.IndexConfigGUI;
 import com.github.julyss2019.mcsp.julyguild.config.gui.item.GUIItemManager;
 import com.github.julyss2019.mcsp.julyguild.gui.*;
 import com.github.julyss2019.mcsp.julyguild.guild.Guild;
+import com.github.julyss2019.mcsp.julyguild.guild.GuildMember;
 import com.github.julyss2019.mcsp.julyguild.guild.GuildPermission;
 import com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
@@ -32,7 +33,7 @@ public class GuildInfoGUI extends BasePlayerGUI {
     private final ConfigurationSection thisLangSection = plugin.getLangYaml().getConfigurationSection("GuildInfoGUI");
 
     public GuildInfoGUI(@Nullable GUI lastGUI, @NotNull GuildPlayer guildPlayer, @NotNull Guild guild) {
-        super(lastGUI, GUIType.INFO, guildPlayer);
+        super(lastGUI, Type.INFO, guildPlayer);
 
         this.bukkitPlayer = guildPlayer.getBukkitPlayer();
         this.guild = guild;
@@ -61,8 +62,8 @@ public class GuildInfoGUI extends BasePlayerGUI {
 
                         new JoinRequest(guildPlayer, guild).send();
 
-                        guild.getMembers().stream().filter(guildMember -> guildMember.hasPermission(GuildPermission.PLAYER_JOIN_CHECK)).forEach(guildMember -> {
-                            Util.sendMsg(bukkitPlayer, "request_join.received");
+                        guild.getMembers().stream().filter(guildMember -> guildMember.hasPermission(GuildPermission.PLAYER_JOIN_CHECK)).filter(GuildMember::isOnline).forEach(guildMember -> {
+                            Util.sendMsg(guildMember.getGuildPlayer().getBukkitPlayer(), thisLangSection.getString("request_join.received"), new PlaceholderContainer().add("sender", bukkitPlayer.getName()));
                         });
 
                         Util.sendMsg(bukkitPlayer, thisLangSection.getString("request_join.success"));

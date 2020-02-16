@@ -6,7 +6,6 @@ import com.github.julyss2019.mcsp.julyguild.config.gui.item.GUIItemManager;
 import com.github.julyss2019.mcsp.julyguild.gui.BaseConfirmGUI;
 import com.github.julyss2019.mcsp.julyguild.gui.BasePlayerGUI;
 import com.github.julyss2019.mcsp.julyguild.gui.GUI;
-import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
 import com.github.julyss2019.mcsp.julyguild.guild.Guild;
 import com.github.julyss2019.mcsp.julyguild.guild.GuildBank;
 import com.github.julyss2019.mcsp.julyguild.guild.GuildMember;
@@ -40,7 +39,7 @@ public class GuildDonateGUI extends BasePlayerGUI {
     private final VaultEconomy vaultEconomy = plugin.getVaultEconomy();
 
     protected GuildDonateGUI(@Nullable GUI lastGUI, @NotNull GuildMember guildMember) {
-        super(lastGUI, GUIType.DONATE, guildMember.getGuildPlayer());
+        super(lastGUI, Type.DONATE, guildMember.getGuildPlayer());
 
         this.guildMember = guildMember;
         this.guild = guildMember.getGuild();
@@ -72,38 +71,39 @@ public class GuildDonateGUI extends BasePlayerGUI {
                 ConfigurationSection donateItemSection = itemSection.getConfigurationSection("donate");
 
                 PayType payType = PayType.valueOf(donateItemSection.getString("pay_type"));
-                int cost = donateItemSection.getInt("cost");
-                int reward = donateItemSection.getInt("reward");
+                double price = donateItemSection.getInt("price");
+                double reward = donateItemSection.getDouble("reward");
                 ConfigurationSection confirmGUISection = donateItemSection.getConfigurationSection("ConfirmGUI");
 
-                guiBuilder.item(GUIItemManager.getIndexItem(itemSection, bukkitPlayer, new PlaceholderContainer().add("cost", cost)
-                        .add("cost", cost)
+                guiBuilder.item(GUIItemManager.getIndexItem(itemSection, bukkitPlayer, new PlaceholderContainer()
+                        .add("price", price)
                         .add("reward", reward)), new ItemListener() {
                     @Override
                     public void onClick(InventoryClickEvent event) {
                         if (payType == PayType.POINTS) {
-                            if (!playerPointsEconomy.has(bukkitPlayer, cost)) {
+                            if (!playerPointsEconomy.has(bukkitPlayer, (int) price)) {
                                 Util.sendMsg(bukkitPlayer, thisLangSection.getString("points.not_enough"), new PlaceholderContainer()
-                                        .add("need", cost - playerPointsEconomy.getBalance(bukkitPlayer)));
+                                        .add("need", price - playerPointsEconomy.getBalance(bukkitPlayer)));
                                 reopen(40);
                                 return;
                             }
 
                             new BaseConfirmGUI(GuildDonateGUI.this, guildPlayer, confirmGUISection, new PlaceholderContainer()
                                     .add("reward", reward)
-                                    .add("cost", cost)) {
+                                    .add("price", price)) {
                                 @Override
                                 public boolean canUse() {
-                                    return guildMember.isValid() && playerPointsEconomy.has(bukkitPlayer, cost);
+                                    return guildMember.isValid() && playerPointsEconomy.has(bukkitPlayer, (int) price);
                                 }
 
                                 @Override
                                 public void onConfirm() {
-                                    playerPointsEconomy.withdraw(bukkitPlayer, cost);
+                                    playerPointsEconomy.withdraw(bukkitPlayer, (int) price);
                                     guild.getGuildBank().deposit(GuildBank.BalanceType.GMONEY, new BigDecimal(reward));
+                                    guildMember.addDonated(GuildBank.BalanceType.GMONEY, reward);
                                     Util.sendMsg(bukkitPlayer, thisLangSection.getString("points.success"), new PlaceholderContainer()
                                             .add("reward", reward)
-                                            .add("cost", cost));
+                                            .add("price", price));
                                     close();
                                     new BukkitRunnable() {
                                         @Override
@@ -120,31 +120,34 @@ public class GuildDonateGUI extends BasePlayerGUI {
                                     }
                                 }
                             }.open();
+
+                            return;
                         }
 
                         if (payType == PayType.MONEY) {
-                            if (!vaultEconomy.has(bukkitPlayer, cost)) {
+                            if (!vaultEconomy.has(bukkitPlayer, price)) {
                                 Util.sendMsg(bukkitPlayer, thisLangSection.getString("money.not_enough"), new PlaceholderContainer()
-                                        .add("need", cost - vaultEconomy.getBalance(bukkitPlayer)));
+                                        .add("need", price - vaultEconomy.getBalance(bukkitPlayer)));
                                 reopen(40);
                                 return;
                             }
 
                             new BaseConfirmGUI(GuildDonateGUI.this, guildPlayer, confirmGUISection, new PlaceholderContainer()
                                     .add("reward", reward)
-                                    .add("cost", cost)) {
+                                    .add("price", price)) {
                                 @Override
                                 public boolean canUse() {
-                                    return guildMember.isValid() && vaultEconomy.has(bukkitPlayer, cost);
+                                    return guildMember.isValid() && vaultEconomy.has(bukkitPlayer, price);
                                 }
 
                                 @Override
                                 public void onConfirm() {
-                                    vaultEconomy.withdraw(bukkitPlayer, cost);
+                                    vaultEconomy.withdraw(bukkitPlayer, price);
                                     guild.getGuildBank().deposit(GuildBank.BalanceType.GMONEY, new BigDecimal(reward));
+                                    guildMember.addDonated(GuildBank.BalanceType.GMONEY, reward);
                                     Util.sendMsg(bukkitPlayer, thisLangSection.getString("money.success"), new PlaceholderContainer()
                                             .add("reward", reward)
-                                            .add("cost", cost));
+                                            .add("price", price));
                                     close();
                                     new BukkitRunnable() {
                                         @Override

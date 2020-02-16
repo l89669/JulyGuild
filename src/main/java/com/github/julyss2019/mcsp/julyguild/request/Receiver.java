@@ -7,7 +7,7 @@ import java.util.UUID;
 
 public interface Receiver {
     enum Type {
-        GUILD, GUILD_PLAYER
+        GUILD, GUILD_PLAYER, GUILD_MEMBER
     }
     Receiver.Type getReceiverType();
     default List<Request> getReceivedRequests() {

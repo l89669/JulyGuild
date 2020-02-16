@@ -15,6 +15,9 @@ import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * 基础支付GUI，仅包含：点券支付、金币支付、返回
+ */
 public abstract class BasePayGUI extends BasePlayerGUI {
     private final JulyGuild plugin = JulyGuild.getInstance();
     protected final PlayerPointsEconomy playerPointsEconomy = plugin.getPlayerPointsEconomy();
@@ -23,12 +26,12 @@ public abstract class BasePayGUI extends BasePlayerGUI {
     private final PlaceholderContainer placeholderContainer;
     private final Player bukkitPlayer = getBukkitPlayer();
 
-    protected BasePayGUI(@Nullable GUI lastGUI, @NotNull GuildPlayer guildPlayer, @NotNull ConfigurationSection section) {
-        this(lastGUI, guildPlayer, section, null);
+    protected BasePayGUI(@Nullable GUI lastGUI, @NotNull GUI.Type guiType, @NotNull GuildPlayer guildPlayer, @NotNull ConfigurationSection section) {
+        this(lastGUI, guiType, guildPlayer, section, null);
     }
 
-    protected BasePayGUI(@Nullable GUI lastGUI, @NotNull GuildPlayer guildPlayer, @NotNull ConfigurationSection section, @Nullable PlaceholderContainer placeholderContainer) {
-        super(lastGUI, GUIType.PAY, guildPlayer);
+    protected BasePayGUI(@Nullable GUI lastGUI, @NotNull GUI.Type guiType, @NotNull GuildPlayer guildPlayer, @NotNull ConfigurationSection section, @Nullable PlaceholderContainer placeholderContainer) {
+        super(lastGUI, guiType, guildPlayer);
 
         this.section = section;
         this.placeholderContainer = placeholderContainer;

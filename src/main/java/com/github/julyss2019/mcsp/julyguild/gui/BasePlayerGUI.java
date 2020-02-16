@@ -9,10 +9,10 @@ import org.jetbrains.annotations.Nullable;
  */
 public abstract class BasePlayerGUI implements GUI {
     protected final GUI lastGUI;
-    protected final GUIType type;
+    protected final GUI.Type type;
     protected final GuildPlayer guildPlayer;
 
-    protected BasePlayerGUI(@Nullable GUI lastGUI, @NotNull GUIType guiType, @NotNull GuildPlayer guildPlayer) {
+    protected BasePlayerGUI(@Nullable GUI lastGUI, @NotNull GUI.Type guiType, @NotNull GuildPlayer guildPlayer) {
         this.lastGUI = lastGUI;
         this.type = guiType;
         this.guildPlayer = guildPlayer;
@@ -29,7 +29,7 @@ public abstract class BasePlayerGUI implements GUI {
     }
 
     @Override
-    public GUIType getType() {
+    public GUI.Type getGUIType() {
         return type;
     }
 }

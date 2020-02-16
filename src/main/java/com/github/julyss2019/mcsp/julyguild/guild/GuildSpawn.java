@@ -26,6 +26,10 @@ public class GuildSpawn {
         this.pitch = (float) section.getDouble("pitch");
     }
 
+    public Guild getGuild() {
+        return guild;
+    }
+
     public String getWorldName() {
         return worldName;
     }
@@ -50,13 +54,15 @@ public class GuildSpawn {
         return pitch;
     }
 
-    public Location getLocation() {
-        World world = Bukkit.getWorld(worldName);
+    public boolean isValid() {
+        return Bukkit.getWorld(worldName) != null;
+    }
 
-        if (world == null) {
-            return null;
+    public Location getLocation() {
+        if (!isValid()) {
+            throw new RuntimeException("Location 当前不合法");
         }
 
-        return new Location(world, x, y, z, yaw, pitch);
+        return new Location(Bukkit.getWorld(worldName), x, y, z, yaw, pitch);
     }
 }

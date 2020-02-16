@@ -32,6 +32,8 @@ items:
       lores:
         - ' &fID: %player_name%'
         - ' &f金币: %vault_eco_balance%'
+        - ' &f入会时间: {member_join_time}'
+        - ' &f已赞助公会币: {member_donated_gmoney}'
   guild_announcements:
     priority: -1
     icon:
@@ -67,6 +69,11 @@ items:
       display_name: '&f捐赠'
       lores:
         - ' &f捐赠公会币'
+  guild_icon_repository:
+    priority: -5
+    icon:
+      material: ITEM_FRAME
+      display_name: '&f图标仓库'
   guild_shop:
     priority: -6
     icon:
@@ -88,16 +95,16 @@ items:
         lores:
           - ' &c未设置'
   guild_set_member_damage:
-    state_on:
+    turn_off:
       priority: -9
       icon:
         material: WOOD_SWORD
-        display_name: '&f关闭成员免伤'
-    state_off:
+        display_name: '&f关闭成员PVP'
+    turn_on:
       priority: -9
       icon:
         material: WOOD_SWORD
-        display_name: '&f打开成员免伤'
+        display_name: '&f打开成员PVP'
   guild_exit:
     priority: -999
     icon:

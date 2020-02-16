@@ -13,6 +13,23 @@ import java.util.Optional;
  * 采用被动式，容错式更新设计，每次点击如果遇到无效的情况则强制更新，否则继续使用
  */
 public interface GUI {
+    enum Type {
+        CREATE,
+        INFO,
+        MEMBER_LIST,
+        MINE,
+        MAIN,
+        PLAYER_JOIN_CHECK,
+        MEMBER_MANAGE,
+        PROMOTE,
+        DONATE,
+        SHOP,
+        CONFIRM,
+        PAY,
+        SHOP_CONFIRM,
+        ICON_REPOSITORY
+    }
+
     boolean canUse();
 
     GUI getLastGUI();
@@ -21,7 +38,7 @@ public interface GUI {
 
     Inventory createInventory();
 
-    GUIType getType();
+    Type getGUIType();
 
     default Player getBukkitPlayer() {
         return getGuildPlayer().getBukkitPlayer();

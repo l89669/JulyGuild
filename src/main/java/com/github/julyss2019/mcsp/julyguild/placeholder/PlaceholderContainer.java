@@ -20,6 +20,10 @@ import java.util.Map;
 public class PlaceholderContainer {
     private Map<String, Placeholder> placeholderMap = new HashMap<>();
 
+    public boolean hasPlaceholder(@NotNull String key) {
+        return placeholderMap.containsKey(key);
+    }
+
     public Placeholder getPlaceholder(@NotNull String key) {
         return placeholderMap.get(key);
     }
@@ -54,7 +58,7 @@ public class PlaceholderContainer {
     }
 
     public PlaceholderContainer add(@NotNull String key, @NotNull Object value) {
-        placeholderMap.put(key, new Placeholder(key, value.toString()));
+        placeholderMap.put(key, new Placeholder(key, value));
         return this;
     }
 }

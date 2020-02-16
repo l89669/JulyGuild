@@ -5,10 +5,11 @@ title: '&e&l公会({page}/{total_page})'
 other_items:
   glass:
     indexes: '46-49,51-54'
-    material: STAINED_GLASS_PANE
-    display_name: ''
-    lores:
-      - '&cby July_ss'
+    icon:
+      material: STAINED_GLASS_PANE
+      display_name: ''
+      lores:
+        - '&cby July_ss'
 # 插件物品
 items:
   guild:
@@ -16,12 +17,10 @@ items:
     icon:
       material: STONE # 该 material 会被强制设置为公会图标
       use_papi: true
-      use_gp: true
       display_name: '&bNo.{guild_ranking} {guild_name}'
       lores:
         - ' &f会长: {guild_owner}'
-        - ' &f金币储备: {guild_money}'
-        - ' &f点券储备: {guild_points}'
+        - ' &f公会币储备: {guild_gmoney}'
         - ' &f人数: {guild_member_count}/{guild_max_member_count}'
         - ' &f创建时间: {guild_creation_time}'
         - ' &f点击查看详细信息或加入'

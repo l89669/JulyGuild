@@ -52,7 +52,7 @@ public class GuildListener implements Listener {
         if (!guild.isMemberDamageEnabled()) {
             event.setCancelled(true);
 
-            if (!msgIntervalMap.containsKey(damagerUuid) || (System.currentTimeMillis() - msgIntervalMap.get(damagerUuid)) / 1000L > MainSettings.getMemberDamageDisableNoticeInterval()) {
+            if (!msgIntervalMap.containsKey(damagerUuid) || (System.currentTimeMillis() - msgIntervalMap.get(damagerUuid)) / 1000L > MainSettings.getGuildMemberDamageDisableNoticeInterval()) {
                 Util.sendMsg(damagerBukkitPlayer, langSection.getString("Guild.member_damage_disabled"));
                 msgIntervalMap.put(damagerUuid, System.currentTimeMillis());
             }

@@ -9,6 +9,7 @@ import com.github.julyss2019.mcsp.julyguild.guild.GuildManager;
 import com.github.julyss2019.mcsp.julyguild.guild.GuildMember;
 import com.github.julyss2019.mcsp.julyguild.listener.GUIListener;
 import com.github.julyss2019.mcsp.julyguild.listener.GuildListener;
+import com.github.julyss2019.mcsp.julyguild.listener.TeleportListener;
 import com.github.julyss2019.mcsp.julyguild.log.GuildLog;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayerManager;
@@ -46,7 +47,7 @@ import java.util.*;
  * 软依赖：PlaceholderAPI, PlayerPoints
  */
 public class JulyGuild extends JavaPlugin {
-    public static final String VERSION = "2.0.0-beta4";
+    public static final String VERSION = "2.0.0-beta7";
     private final boolean DEV_MODE = true;
     private final String[] GUI_RESOURCES = new String[] {
             "GuildCreateGUI.yml",
@@ -56,6 +57,7 @@ public class JulyGuild extends JavaPlugin {
             "GuildDonateGUI.yml",
             "GuildJoinCheckGUI.yml",
             "GuildMemberManageGUI.yml",
+            "GuildIconRepositoryGUI.yml",
             "MainGUI.yml"}; // GUI资源文件
     private final String[] CONFIG_RESOURCES = new String[] {"config.yml", "lang.yml"}; // 根资源文件
     private final String[] SHOP_RESOURCES = new String[] {"Shop1.yml", "Shop2.yml"};
@@ -79,10 +81,6 @@ public class JulyGuild extends JavaPlugin {
     private Map<String, YamlConfiguration> shopYamlMap = new HashMap<>();
 
     private Object placeholderAPIExpansion; // 这里不能使用 PlaceholderAPIExpansion 作为类型，否则可能会出现 NoClassDefFoundError。
-
-    private String getFileVersion(File file) {
-        return !file.exists() ? null : YamlConfiguration.loadConfiguration(file).getString("version");
-    }
 
     /**
      * 创建jar包内的资源文件（如果不存在）
@@ -198,8 +196,8 @@ public class JulyGuild extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        Util.sendConsoleMsg("&f插件版本: " + VERSION + ".");
-        Util.sendConsoleMsg("&b作者: 柒 月, QQ: 884633197, Bug反馈/插件交流群: 786184610.");
+        info("插件版本: " + VERSION + ".");
+        info("作者: 柒 月, QQ: 884633197, Bug反馈/插件交流群: 786184610.");
 
         if (DEV_MODE) {
             warning("&c警告: 当前处于开发模式.");
@@ -316,9 +314,8 @@ public class JulyGuild extends JavaPlugin {
 
         JulyLibrary.getInstance().getChatInterceptorManager().unregisterAll(this);
         Bukkit.getScheduler().cancelTasks(this);
-        Util.sendConsoleMsg("&c插件被卸载.");
-        Util.sendConsoleMsg("&f插件版本: " + VERSION + ".");
-        Util.sendConsoleMsg("&b作者: 柒 月, QQ: 884633197, Bug反馈/插件交流群: 786184610.");
+        info("插件被卸载.");
+        info("作者: 柒 月, QQ: 884633197, Bug反馈/插件交流群: 786184610.");
     }
 
     private void checkGuilds() {
@@ -362,6 +359,7 @@ public class JulyGuild extends JavaPlugin {
     private void registerListeners() {
         pluginManager.registerEvents(new GUIListener(), this);
         pluginManager.registerEvents(new GuildListener(), this);
+        pluginManager.registerEvents(new TeleportListener(), this);
     }
 
     public void writeGuildLog(GuildLog log) {
@@ -441,7 +439,13 @@ public class JulyGuild extends JavaPlugin {
                 throw new RuntimeException("读取文件异常: " + shopFile.getAbsolutePath(), e);
             }
 
-            shopYamlMap.put(shopYaml.getString("name"), shopYaml);
+            String shopName = shopYaml.getString("name");
+
+            if (shopName == null) {
+                throw new RuntimeException("name 未设置: " + shopFile.getAbsolutePath());
+            }
+
+            shopYamlMap.put(shopName, shopYaml);
         }
 
         File langFile = getConfigFile("lang.yml");

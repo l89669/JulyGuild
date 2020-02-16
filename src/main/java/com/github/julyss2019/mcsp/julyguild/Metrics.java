@@ -177,7 +177,7 @@ public class Metrics {
                 Bukkit.getScheduler().runTask(plugin, () -> submitData());
             }
         }, 1000 * 60 * 5, 1000 * 60 * 30);
-        // Submit the data every 30 minutes, first time after 5 minutes to give other plugins enough time to start
+        // Submit the data every 30 minutes, first time after 5 minutes to onPaid other plugins enough time to start
         // WARNING: Changing the frequency has no effect but your plugin WILL be blocked/deleted!
         // WARNING: Just don't do it!
     }

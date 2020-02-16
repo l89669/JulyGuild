@@ -4,7 +4,6 @@ import com.github.julyss2019.mcsp.julyguild.JulyGuild;
 import com.github.julyss2019.mcsp.julyguild.config.gui.IndexConfigGUI;
 import com.github.julyss2019.mcsp.julyguild.config.gui.item.GUIItemManager;
 import com.github.julyss2019.mcsp.julyguild.config.setting.MainSettings;
-import com.github.julyss2019.mcsp.julyguild.gui.GUIType;
 import com.github.julyss2019.mcsp.julyguild.gui.BasePlayerPageableGUI;
 import com.github.julyss2019.mcsp.julyguild.guild.Guild;
 import com.github.julyss2019.mcsp.julyguild.guild.GuildIcon;
@@ -46,7 +45,7 @@ public class MainGUI extends BasePlayerPageableGUI {
     private int guildCount;
 
     public MainGUI(@NotNull GuildPlayer guildPlayer) {
-        super(null, GUIType.MAIN, guildPlayer);
+        super(null, Type.MAIN, guildPlayer);
     }
 
     @Override
@@ -107,25 +106,25 @@ public class MainGUI extends BasePlayerPageableGUI {
                 public void onClick(InventoryClickEvent event) {
                     close();
                     Util.sendMsg(bukkitPlayer, thisLangSection.getString("create.input.tip"), new PlaceholderContainer()
-                            .add("cancel_str", MainSettings.getCreateInputCancelStr()));
+                            .add("cancel_str", MainSettings.getGuildCreateInputCancelStr()));
                     new ChatInterceptor.Builder()
                             .plugin(plugin)
                             .player(bukkitPlayer)
                             .onlyFirst(true)
-                            .timeout(MainSettings.getCreateInputWaitSec())
+                            .timeout(MainSettings.getGuildCreateInputWaitSec())
                             .chatListener(new ChatListener() {
                                 @Override
                                 public void onChat(AsyncPlayerChatEvent event) {
                                     String msg = event.getMessage();
 
-                                    if (msg.equalsIgnoreCase(MainSettings.getCreateInputCancelStr())) {
+                                    if (msg.equalsIgnoreCase(MainSettings.getGuildCreateInputCancelStr())) {
                                         Util.sendMsg(bukkitPlayer, thisLangSection.getString("create.input.cancelled"));
                                         return;
                                     }
 
                                     String guildName = ChatColor.translateAlternateColorCodes('&', msg);
 
-                                    if (MainSettings.isCreateNoDuplicationName()) {
+                                    if (MainSettings.isGuildCreateNoDuplicationName()) {
                                         for (Guild guild : plugin.getGuildManager().getGuilds()) {
                                             if (guild.getName().equalsIgnoreCase(guildName)) {
                                                 Util.sendMsg(bukkitPlayer, thisLangSection.getString("create.input.no_duplication_name"));
@@ -134,7 +133,7 @@ public class MainGUI extends BasePlayerPageableGUI {
                                         }
                                     }
 
-                                    if (!guildName.matches(MainSettings.getCreateNameRegex())) {
+                                    if (!guildName.matches(MainSettings.getGuildCreateNameRegex())) {
                                         Util.sendMsg(bukkitPlayer, thisLangSection.getString("create.input.regex_not_match"));
                                         return;
                                     }
@@ -175,15 +174,19 @@ public class MainGUI extends BasePlayerPageableGUI {
                     itemBuilder.material(guildIcon.getMaterial());
                     itemBuilder.durability(guildIcon.getDurability());
 
-                    if (guildIcon.getFirstLore() != null) {
+                    String firstLore = guildIcon.getFirstLore();
+
+                    if (firstLore != null && !firstLore.equals("")) {
                         itemBuilder.insertLore(0, guildIcon.getFirstLore());
                     }
                 } else {
-                    itemBuilder.material(MainSettings.getIconDefaultMaterial());
-                    itemBuilder.durability(MainSettings.getIconDefaultDurability());
+                    itemBuilder.material(MainSettings.getGuildIconDefaultMaterial());
+                    itemBuilder.durability(MainSettings.getGuildIconDefaultDurability());
 
-                    if (MainSettings.getIconDefaultFirstLore() != null) {
-                        itemBuilder.insertLore(0, MainSettings.getIconDefaultFirstLore());
+                    String firstLore = MainSettings.getGuildIconDefaultFirstLore();
+
+                    if (firstLore != null && !firstLore.equals("")) {
+                        itemBuilder.insertLore(0, MainSettings.getGuildIconDefaultFirstLore());
                     }
                 }
 

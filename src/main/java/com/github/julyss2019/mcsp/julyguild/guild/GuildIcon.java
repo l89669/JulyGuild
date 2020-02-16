@@ -2,6 +2,7 @@ package com.github.julyss2019.mcsp.julyguild.guild;
 
 import com.github.julyss2019.mcsp.julylibrary.validate.NotNull;
 import org.bukkit.Material;
+import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
@@ -14,12 +15,16 @@ public class GuildIcon {
     private short durability;
     private String firstLore;
 
-    public GuildIcon(@NotNull Guild guild, @NotNull UUID uuid, @NotNull Material material, short durability, @Nullable String firstLore) {
+    public GuildIcon(@NotNull Guild guild, @NotNull UUID uuid) {
         this.guild = guild;
         this.uuid = uuid;
-        this.material = material;
-        this.durability = durability;
-        this.firstLore = firstLore;
+
+        ConfigurationSection iconSection = guild.getYaml().getConfigurationSection("icons").getConfigurationSection(uuid.toString());
+
+        this.material = Material.valueOf(iconSection.getString("material"));
+        this.durability = (short) iconSection.getInt("durability");
+        this.firstLore = iconSection.getString("first_lore");
+        this.displayName = iconSection.getString("display_name");
     }
 
     public UUID getUuid() {
@@ -44,5 +49,9 @@ public class GuildIcon {
 
     public String getFirstLore() {
         return firstLore;
+    }
+
+    public boolean isValid() {
+        return guild.getIcons().contains(this);
     }
 }

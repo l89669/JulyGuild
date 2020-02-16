@@ -12,8 +12,8 @@ import java.util.*;
 public class RequestManager {
     private final JulyGuild plugin = JulyGuild.getInstance();
     private Map<UUID, Request> requestMap = new HashMap<>();
-    private Map<UUID, List<Request>> sentMap = new HashMap<>();
-    private Map<UUID, List<Request>> receiveMap = new HashMap<>();
+    private Map<Sender, List<Request>> sentMap = new HashMap<>();
+    private Map<Receiver, List<Request>> receiveMap = new HashMap<>();
 
     public RequestManager() {}
 
@@ -25,14 +25,15 @@ public class RequestManager {
      * 卸载请求
      * @param request
      */
-    public void unloadRequest(@NotNull Request request) {
+    private void unloadRequest(@NotNull Request request) {
         if (!isLoaded(request.getUuid())) {
             throw new RuntimeException("请求未载入");
         }
 
         requestMap.remove(request.getUuid());
-        sentMap.get(request.getSender().getUuid()).remove(request);
-        receiveMap.get(request.getReceiver().getUuid()).remove(request);
+        sentMap.get(request.getSender()).remove(request);
+        receiveMap.get(request.getReceiver()).remove(request);
+        request.setValid(false);
     }
 
     /**
@@ -121,19 +122,19 @@ public class RequestManager {
      * @param request
      */
     private void handleRequest(@NotNull Request request) {
-        UUID senderUuid = request.getSender().getUuid();
-        UUID receiverUuid = request.getReceiver().getUuid();
+        Sender sender = request.getSender();
+        Receiver receiver = request.getReceiver();
 
-        if (!sentMap.containsKey(senderUuid)) {
-            sentMap.put(senderUuid, new ArrayList<>());
+        if (!sentMap.containsKey(sender)) {
+            sentMap.put(sender, new ArrayList<>());
         }
 
-        if (!receiveMap.containsKey(receiverUuid)) {
-            receiveMap.put(receiverUuid, new ArrayList<>());
+        if (!receiveMap.containsKey(receiver)) {
+            receiveMap.put(receiver, new ArrayList<>());
         }
 
-        sentMap.get(senderUuid).add(request);
-        receiveMap.get(receiverUuid).add(request);
+        sentMap.get(sender).add(request);
+        receiveMap.get(receiver).add(request);
         requestMap.put(request.getUuid(), request);
     }
 
@@ -143,7 +144,7 @@ public class RequestManager {
      * @return
      */
     public List<Request> getSentRequests(@NotNull Sender sender) {
-        return new ArrayList<>(sentMap.getOrDefault(sender.getUuid(), new ArrayList<>()));
+        return new ArrayList<>(sentMap.getOrDefault(sender, new ArrayList<>()));
     }
 
     /**
@@ -152,7 +153,7 @@ public class RequestManager {
      * @return
      */
     public List<Request> getReceivedRequests(@NotNull Receiver receiver) {
-        return new ArrayList<>(receiveMap.getOrDefault(receiver.getUuid(), new ArrayList<>()));
+        return new ArrayList<>(receiveMap.getOrDefault(receiver, new ArrayList<>()));
     }
 
     /**

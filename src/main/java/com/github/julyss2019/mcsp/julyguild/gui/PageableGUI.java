@@ -10,7 +10,7 @@ public abstract class PageableGUI extends BasePlayerGUI {
     private int currentPage = -1;
     private int pageCount;
 
-    public PageableGUI(@Nullable GUI lastGUI, GUIType guiType, GuildPlayer guildPlayer) {
+    public PageableGUI(@Nullable GUI lastGUI, GUI.Type guiType, GuildPlayer guildPlayer) {
         super(lastGUI, guiType, guildPlayer);
     }
 
