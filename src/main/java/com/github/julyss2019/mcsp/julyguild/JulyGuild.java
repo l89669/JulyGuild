@@ -49,7 +49,7 @@ import java.util.*;
  */
 public class JulyGuild extends JavaPlugin {
     public static final String VERSION = "2.0.0-beta7";
-    private final boolean DEV_MODE = true;
+    private final boolean DEV_MODE = false;
     private final String[] GUI_RESOURCES = new String[] {
             "GuildCreateGUI.yml",
             "GuildInfoGUI.yml",
