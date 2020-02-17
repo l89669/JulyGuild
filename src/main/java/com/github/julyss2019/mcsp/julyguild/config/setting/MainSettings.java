@@ -89,6 +89,41 @@ public class MainSettings {
     @Config(path = "guild.upgrade.max_member_count")
     private static int guildUpgradeMaxMemberCount;
 
+    @Config(path = "guild.tp_all.timeout")
+    private static int guildTpAllTimeout;
+
+    @Config(path = "guild.tp_all.sneak_count")
+    private static int guildTpAllSneakCount;
+
+    @Config(path = "guild.tp_all.sneak_count_interval")
+    private static int guildTpAllSneakCountInterval;
+
+    @Config(path = "guild.tp_all.send_worlds")
+    private static List<String> guildTpAllSendWorlds;
+
+    @Config(path = "guild.tp_all.receive_worlds")
+    private static List<String> guildTpAllReceiveWorlds;
+
+    public static List<String> getGuildTpAllSendWorlds() {
+        return guildTpAllSendWorlds;
+    }
+
+    public static List<String> getGuildTpAllReceiveWorlds() {
+        return guildTpAllReceiveWorlds;
+    }
+
+    public static int getGuildTpAllTimeout() {
+        return guildTpAllTimeout;
+    }
+
+    public static int getGuildTpAllSneakCount() {
+        return guildTpAllSneakCount;
+    }
+
+    public static int getGuildTpAllSneakCountInterval() {
+        return guildTpAllSneakCountInterval;
+    }
+
     public static int getGuildUpgradeMaxMemberCount() {
         return guildUpgradeMaxMemberCount;
     }

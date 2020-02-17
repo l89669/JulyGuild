@@ -49,6 +49,11 @@ public class GuildPlayer implements Sender, Receiver {
                 .ofNullable(Bukkit.getOfflinePlayer(getUuid()))
                 .map(OfflinePlayer::getName)
                 .orElse(uuid.toString());
+
+        if (!yaml.contains("message_box")) {
+            yaml.createSection("message_box");
+        }
+
         this.messageBox = new GuildPlayerMessageBox(this);
     }
 
@@ -105,10 +110,6 @@ public class GuildPlayer implements Sender, Receiver {
         this.guildUuid = guild.getUuid();
     }
 
-    public UUID getGuildUuid() {
-        return guildUuid;
-    }
-
     public Player getBukkitPlayer() {
         return Bukkit.getPlayer(uuid);
     }
@@ -162,15 +163,5 @@ public class GuildPlayer implements Sender, Receiver {
 
     public GuildPlayerMessageBox getMessageBox() {
         return messageBox;
-    }
-
-    @Override
-    public Receiver.Type getReceiverType() {
-        return Receiver.Type.GUILD_PLAYER;
-    }
-
-    @Override
-    public Sender.Type getSenderType() {
-        return Sender.Type.GUILD_PLAYER;
     }
 }

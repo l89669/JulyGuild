@@ -10,6 +10,7 @@ import com.github.julyss2019.mcsp.julyguild.guild.GuildMember;
 import com.github.julyss2019.mcsp.julyguild.listener.GUIListener;
 import com.github.julyss2019.mcsp.julyguild.listener.GuildListener;
 import com.github.julyss2019.mcsp.julyguild.listener.TeleportListener;
+import com.github.julyss2019.mcsp.julyguild.listener.TpAllListener;
 import com.github.julyss2019.mcsp.julyguild.log.GuildLog;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayerManager;
@@ -360,6 +361,7 @@ public class JulyGuild extends JavaPlugin {
         pluginManager.registerEvents(new GUIListener(), this);
         pluginManager.registerEvents(new GuildListener(), this);
         pluginManager.registerEvents(new TeleportListener(), this);
+        pluginManager.registerEvents(new TpAllListener(), this);
     }
 
     public void writeGuildLog(GuildLog log) {

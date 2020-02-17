@@ -1,13 +1,15 @@
 package com.github.julyss2019.mcsp.julyguild.guild;
 
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
+import com.github.julyss2019.mcsp.julyguild.request.Receiver;
+import com.github.julyss2019.mcsp.julyguild.request.Sender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
 import java.util.*;
 
-public class GuildMember implements GuildHuman {
+public class GuildMember implements GuildHuman, Receiver, Sender {
     private Guild guild;
     private GuildPlayer guildPlayer;
     private UUID uuid;

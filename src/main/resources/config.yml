@@ -81,3 +81,14 @@ guild:
   exit:
     wait: 10
     confirm_str: '确认'
+  tp_all:
+    # 允许传送的世界
+    send_worlds:
+      - 'world'
+    # 允许被传送的世界
+    receive_worlds:
+      - 'world'
+    timeout: 60 # 秒，过期时间
+    # Shift次数
+    sneak_count: 3
+    sneak_count_interval: 500 # 毫秒，Shift有效计次间隔

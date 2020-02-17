@@ -2,10 +2,8 @@ package com.github.julyss2019.mcsp.julyguild.guild;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.NotNull;
-import sun.security.krb5.Config;
 
 public class GuildSpawn {
     private Guild guild;
@@ -54,15 +52,7 @@ public class GuildSpawn {
         return pitch;
     }
 
-    public boolean isValid() {
-        return Bukkit.getWorld(worldName) != null;
-    }
-
     public Location getLocation() {
-        if (!isValid()) {
-            throw new RuntimeException("Location 当前不合法");
-        }
-
         return new Location(Bukkit.getWorld(worldName), x, y, z, yaw, pitch);
     }
 }

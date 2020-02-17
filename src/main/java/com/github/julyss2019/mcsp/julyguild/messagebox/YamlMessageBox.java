@@ -9,16 +9,13 @@ public abstract class YamlMessageBox implements MessageBox {
     private ConfigurationSection section;
     private Map<UUID, Message> messageMap = new HashMap<>();
 
-    public YamlMessageBox(ConfigurationSection section) {
+    public YamlMessageBox(@NotNull ConfigurationSection section) {
         this.section = section;
+
         load();
     }
 
     private void load() {
-        if (section == null) {
-            return;
-        }
-
         Set<String> keys = section.getKeys(false);
 
         if (keys == null) {
@@ -36,7 +33,6 @@ public abstract class YamlMessageBox implements MessageBox {
 
     public abstract void save();
 
-
     @Override
     public Collection<Message> getMessages() {
         return new ArrayList<>(messageMap.values());
@@ -53,15 +49,11 @@ public abstract class YamlMessageBox implements MessageBox {
     }
 
     @Override
-    public void sendMessage(Message message) {
-        if (messageMap.containsKey(message.getUuid())) {
-            throw new RuntimeException("已有这条消息");
-        }
+    public void sendMessage(@NotNull String message) {
+        String uuidStr = UUID.randomUUID().toString();
 
-        String uuidStr = message.getUuid().toString();
-
-        section.set(uuidStr + ".message", message.getMessage());
-        section.set(uuidStr + ".creation_time", message.getCreationTime());
+        section.set(uuidStr + ".message", message);
+        section.set(uuidStr + ".creation_time", System.currentTimeMillis());
         save();
     }
 }

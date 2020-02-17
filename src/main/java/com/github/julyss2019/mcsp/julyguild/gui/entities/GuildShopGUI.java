@@ -1,6 +1,7 @@
 package com.github.julyss2019.mcsp.julyguild.gui.entities;
 
 import com.github.julyss2019.mcsp.julyguild.JulyGuild;
+import com.github.julyss2019.mcsp.julyguild.LangHelper;
 import com.github.julyss2019.mcsp.julyguild.config.gui.item.GUIItemManager;
 import com.github.julyss2019.mcsp.julyguild.config.setting.MainSettings;
 import com.github.julyss2019.mcsp.julyguild.gui.BasePlayerGUI;
@@ -9,9 +10,13 @@ import com.github.julyss2019.mcsp.julyguild.gui.ShopItemConfirmGUI;
 import com.github.julyss2019.mcsp.julyguild.guild.*;
 import com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer;
 import com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderText;
+import com.github.julyss2019.mcsp.julyguild.request.entities.TpAllRequest;
 import com.github.julyss2019.mcsp.julyguild.util.Util;
 import com.github.julyss2019.mcsp.julylibrary.inventory.InventoryBuilder;
 import com.github.julyss2019.mcsp.julylibrary.inventory.ItemListener;
+import com.github.julyss2019.mcsp.julylibrary.message.JulyMessage;
+import com.github.julyss2019.mcsp.julylibrary.message.JulyText;
+import com.github.julyss2019.mcsp.julylibrary.message.Title;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -22,6 +27,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 public class GuildShopGUI extends BasePlayerGUI {
     private enum RewardType {
@@ -32,6 +38,7 @@ public class GuildShopGUI extends BasePlayerGUI {
     private YamlConfiguration yml;
     private Guild guild;
     private JulyGuild plugin = JulyGuild.getInstance();
+    private ConfigurationSection tpAllLangSection = plugin.getLangYaml().getConfigurationSection("TpAll");
     private ConfigurationSection thisLangSection = plugin.getLangYaml().getConfigurationSection("Shop");
     private Player bukkitPlayer = getBukkitPlayer();
 
@@ -104,6 +111,63 @@ public class GuildShopGUI extends BasePlayerGUI {
     private void setGuildTpAllReward(@NotNull ConfigurationSection shopItemSection, @NotNull InventoryBuilder inventoryBuilder) {
         ConfigurationSection sellSection = shopItemSection.getConfigurationSection("sell");
         double price = sellSection.getDouble("price");
+
+        inventoryBuilder.item(shopItemSection.getInt("index") - 1, GUIItemManager.getItemBuilder(shopItemSection.getConfigurationSection("icon"), bukkitPlayer, new PlaceholderContainer()
+                .add("price", price)).build(), new ItemListener() {
+            @Override
+            public void onClick(InventoryClickEvent event) {
+                if (checkGuildMoneyOrNotify(price)) {
+                    if (guild.getOnlineMembers().size() <= 1) {
+                        Util.sendMsg(bukkitPlayer, tpAllLangSection.getString("no_available_players"));
+                        reopen(40L);
+                        return;
+                    }
+
+                    if (!MainSettings.getGuildTpAllSendWorlds().contains(bukkitPlayer.getWorld().getName())) {
+                        Util.sendMsg(bukkitPlayer, tpAllLangSection.getString("no_send_world"));
+                        reopen(40L);
+                        return;
+                    }
+
+                    new ShopItemConfirmGUI(GuildShopGUI.this, guildMember, sellSection.getConfigurationSection("ConfirmGUI"), new PlaceholderContainer().add("price", price), price) {
+                        @Override
+                        public boolean canUse() {
+                            return super.canUse()
+                                    && getGuild().getOnlineMembers().size() > 1
+                                    && MainSettings.getGuildTpAllSendWorlds().contains(guildMember.getGuildPlayer().getBukkitPlayer().getWorld().getName());
+                        }
+
+                        @Override
+                        public void onPaid() {
+                            List<GuildMember> receiverGuildMembers = guild.getMembers();
+
+                            receiverGuildMembers.remove(guildMember);
+
+                            receiverGuildMembers.forEach(receiverGuildMember -> {
+                                Player receiverBukkitPlayer = receiverGuildMember.getGuildPlayer().getBukkitPlayer();
+
+                                new TpAllRequest(guildMember, receiverGuildMember).send();
+
+                                if (JulyMessage.canUseTitle()) {
+                                    new Title.Builder().text(tpAllLangSection.getString("received.title")).build().send(receiverBukkitPlayer);
+                                    new Title.Builder().type(Title.Type.SUBTITLE).text(tpAllLangSection.getString("received.subtitle")).build().send(receiverBukkitPlayer);
+                                }
+
+                                Util.sendMsg(receiverBukkitPlayer, tpAllLangSection.getString("received.msg"), new PlaceholderContainer()
+                                        .add("sender", guildMember.getName())
+                                        .add("timeout", JulyText.secondToStr(MainSettings.getGuildTpAllTimeout(), LangHelper.Global.getDateTimeUnit()))
+                                        .add("shift_count", MainSettings.getGuildTpAllSneakCount()));
+                            });
+
+                            Util.sendMsg(getBukkitPlayer(), PlaceholderText.replacePlaceholders(sellSection.getString("success_message"), new PlaceholderContainer()
+                                    .add("count", receiverGuildMembers.size())
+                                    .add("price", price)));
+                            close();
+                        }
+                    }.open();
+                }
+            }
+        });
     }
 
     private void setGuildIconReward(@NotNull ConfigurationSection shopItemSection, @NotNull InventoryBuilder inventoryBuilder) {

@@ -62,7 +62,7 @@ items:
     reward_type: GUILD_TP_ALL
     sell:
       price: 1000
-      success_message: '&f发出全员集结令成功, 花费公会币: &ex{price}&f.'
+      success_message: '&f发出全员集结令成功, 花费公会币: &ex{price}&f, 人数: x{count}.'
       ConfirmGUI: *simple_confirm_gui
   '50':
     index: 49

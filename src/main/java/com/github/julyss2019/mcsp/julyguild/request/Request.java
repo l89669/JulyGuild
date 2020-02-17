@@ -2,13 +2,15 @@ package com.github.julyss2019.mcsp.julyguild.request;
 
 import com.github.julyss2019.mcsp.julyguild.JulyGuild;
 import com.github.julyss2019.mcsp.julyguild.request.entities.JoinRequest;
+import com.github.julyss2019.mcsp.julyguild.request.entities.TpAllRequest;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 
-public interface Request {
+public interface Request<T1 extends Sender, T2 extends Receiver> {
     enum Type {
+        TP_ALL(TpAllRequest.class),
         JOIN(JoinRequest.class);
 
         private Class<? extends Request> clazz;
@@ -22,15 +24,26 @@ public interface Request {
         }
     }
 
-    Sender getSender();
-    Receiver getReceiver();
+    T1 getSender();
+
+    T2 getReceiver();
+
     long getCreationTime();
+
     UUID getUuid();
+
     Type getType();
+
     void onSave(@NotNull ConfigurationSection section);
+
     void onLoad(@NotNull ConfigurationSection section);
+
     boolean isValid();
-    void setValid(boolean b);
+
+    default void delete() {
+        JulyGuild.getInstance().getRequestManager().deleteRequest(this);
+    }
+
     default void send() {
         JulyGuild.getInstance().getRequestManager().sendRequest(this);
     }

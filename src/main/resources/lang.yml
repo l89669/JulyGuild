@@ -1,4 +1,22 @@
 VERSION: 2.0.0
+
+TpAll:
+  no_available_players: '&c当前没有成员可被传送.'
+  no_send_world: '&c当前世界不能发出集结请求.'
+  no_receive_world: '&c当前世界不能接受集结请求.'
+  sneak_counter:
+    title: '&c再按{count}次'
+    subtitle: ''
+    msg: '&c再按{count}次.'
+  received:
+    title: '&c全员集结令'
+    subtitle: ''
+    msg: '&e{sender} 发出了一个全员集结令, 连按Shift键{shift_count}次来接受({timeout}内有效).'
+  teleported:
+    title: '&c已传送'
+    subtitle: ''
+    msg: '&c已传送'
+    sender_msg: '&e成员 &c{member} &e已传送.'
 Shop:
   gmoney_not_enough: '&c公会币不足, 还需要 &e{need}个&c.'
 Guild:
@@ -14,15 +32,15 @@ Command:
   no_per: '&c无权限.'
   none: '&c没有可供显示的内容.'
 Global:
+  year: '年'
+  month: '月'
+  day: '日'
+  hour: '时'
+  minute: '分'
+  second: '秒'
   date_format: 'yyyy-MM-dd'
   date_time_format: 'yyyy-MM-dd HH:mm'
   prefix: '&a[公会] &f'
-  nick_name: '&f[{permission}&f] &e{name}'
-  enabled: '已启用'
-  disabled: '未启用'
-  money: '金币'
-  points: '点券'
-  command_prefix: '&a[公会] &f'
 GuildCreateGUI:
   already_in: '&c你已经在一个公会里了.'
   money:

@@ -22,21 +22,6 @@ public class RequestManager {
     }
 
     /**
-     * 卸载请求
-     * @param request
-     */
-    private void unloadRequest(@NotNull Request request) {
-        if (!isLoaded(request.getUuid())) {
-            throw new RuntimeException("请求未载入");
-        }
-
-        requestMap.remove(request.getUuid());
-        sentMap.get(request.getSender()).remove(request);
-        receiveMap.get(request.getReceiver()).remove(request);
-        request.setValid(false);
-    }
-
-    /**
      * 发送请求
      * @param request
      */
@@ -51,6 +36,20 @@ public class RequestManager {
         request.onSave(yml);
         YamlUtil.saveYaml(yml, file, StandardCharsets.UTF_8);
         handleRequest(request);
+    }
+
+    /**
+     * 卸载请求
+     * @param request
+     */
+    public void unloadRequest(@NotNull Request request) {
+        if (!isLoaded(request.getUuid())) {
+            throw new RuntimeException("请求未载入");
+        }
+
+        requestMap.remove(request.getUuid());
+        sentMap.get(request.getSender()).remove(request);
+        receiveMap.get(request.getReceiver()).remove(request);
     }
 
     /**
@@ -75,6 +74,10 @@ public class RequestManager {
      * 载入所有请求
      */
     public void loadRequests() {
+        requestMap.clear();
+        receiveMap.clear();
+        sentMap.clear();
+
         File[] files = new File(plugin.getDataFolder(), "data" + File.separator + "requests").listFiles();
 
         if (files != null) {
@@ -89,7 +92,7 @@ public class RequestManager {
      * @param uuid
      * @return
      */
-    public boolean isLoaded(@NotNull UUID uuid) {
+    private boolean isLoaded(@NotNull UUID uuid) {
         return requestMap.containsKey(uuid);
     }
 
