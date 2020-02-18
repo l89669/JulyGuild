@@ -58,9 +58,9 @@ public class PlaceholderAPIExpansion extends PlaceholderExpansion {
         switch (params.toLowerCase()) {
             case "name":
                 return guild.getName();
-            case "member_per":
+            case "member_position":
                 return LangHelper.Global.getPositionName(guildMember.getPosition());
-            case "member_donate_gmoney":
+            case "member_donated_gmoney":
                 return LangHelper.Global.getDateTimeFormat().format(guildMember.getDonated(GuildBank.BalanceType.GMONEY));
             case "member_join_time":
                 return LangHelper.Global.getDateTimeFormat().format(guildMember.getJoinTime());
@@ -74,7 +74,7 @@ public class PlaceholderAPIExpansion extends PlaceholderExpansion {
                 return String.valueOf(guild.getMaxMemberCount());
             case "creation_time":
                 return LangHelper.Global.getDateTimeFormat().format(guild.getCreateTime());
-            case "gmoney":
+            case "bank_gmoney":
                 return guildBank.getBalance(GuildBank.BalanceType.GMONEY).toString();
             case "online_member_count":
                 return String.valueOf(guild.getOnlineMembers().size());

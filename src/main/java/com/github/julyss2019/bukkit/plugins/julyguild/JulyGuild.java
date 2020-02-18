@@ -49,7 +49,7 @@ import java.util.*;
  */
 public class JulyGuild extends JavaPlugin {
     public static final String VERSION = "2.0.0-RELEASE";
-    private final boolean DEV_MODE = false;
+    private final boolean DEV_MODE = true;
     private final String[] GUI_RESOURCES = new String[] {
             "GuildCreateGUI.yml",
             "GuildInfoGUI.yml",
@@ -60,7 +60,7 @@ public class JulyGuild extends JavaPlugin {
             "GuildMemberManageGUI.yml",
             "GuildIconRepositoryGUI.yml",
             "MainGUI.yml"}; // GUI资源文件
-    private final String[] CONFIG_RESOURCES = new String[] {"config.yml", "lang.yml"}; // 根资源文件
+    private final String[] CONFIG_RESOURCES = new String[] {"conf.yml", "lang.yml"}; // 根资源文件
     private final String[] SHOP_RESOURCES = new String[] {"Shop1.yml", "Shop2.yml"};
     private final String[] DEPEND_PLUGINS = new String[] {"JulyLibrary", "Vault"};
 
@@ -405,7 +405,7 @@ public class JulyGuild extends JavaPlugin {
      * 载入配置
      */
     private void loadConfig() {
-        File configFile = getConfigFile("config.yml");
+        File configFile = getConfigFile("conf.yml");
         YamlConfiguration configYaml;
 
         try {

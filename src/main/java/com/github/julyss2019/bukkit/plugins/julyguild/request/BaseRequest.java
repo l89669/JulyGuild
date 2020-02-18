@@ -130,10 +130,10 @@ public abstract class BaseRequest<T1 extends Sender, T2 extends Receiver> implem
 
         switch (Receiver.Type.valueOf(section.getString("receiver.type"))) {
             case GUILD:
-                this.receiver = (T2) JulyGuild.getInstance().getGuildManager().getGuild(UUID.fromString(section.getString("receiver.uuid")));
+                this.receiver = (T2) JulyGuild.getInstance().getGuildManager().getGuild(UUID.fromString(section.getString("receiver.guild.uuid")));
                 break;
             case GUILD_PLAYER:
-                this.receiver = (T2) JulyGuild.getInstance().getGuildPlayerManager().getGuildPlayer(UUID.fromString(section.getString("receiver.uuid")));
+                this.receiver = (T2) JulyGuild.getInstance().getGuildPlayerManager().getGuildPlayer(UUID.fromString(section.getString("receiver.guild_player.uuid")));
                 break;
             case GUILD_MEMBER:
                 this.receiver = (T2) guildManager.getGuild(UUID.fromString(section.getString("receiver.guild.uuid"))).getMember(UUID.fromString(section.getString("receiver.guild_member.uuid")));

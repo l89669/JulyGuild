@@ -117,7 +117,7 @@ items:
       priority: -5
       icon:
         material: ITEM_FRAME
-        display_name: '&c给予使用图标商店的权限'
+        display_name: '&c给予使用图标仓库的权限'
         lores:
           - ' &f这将允许 {member_name} 设置公会图标'
     take:

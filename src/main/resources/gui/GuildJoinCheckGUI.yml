@@ -6,8 +6,8 @@ items:
     icon:
       use_papi: true
       material: PAPER
+      display_name: '{sender_name}'
       lores:
-        - ' &f玩家名: {sender_name}'
         - ' &f申请时间: {send_time}'
         - ' &f拥有金币: %vault_eco_balance%'
         - ' &a左键接受 &c右键拒绝'

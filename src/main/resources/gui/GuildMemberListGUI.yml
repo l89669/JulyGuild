@@ -1,7 +1,7 @@
 # manager 管理者的定义：
 # 拥有：MANAGE_PERMISSION, MEMBER_KICK 中一个或多个权限的成员
 # 管理员看到的GUI
-manager:
+MANAGER:
   row: 6
   title: '&e&l成员管理({page}/{total_page})'
   items:
@@ -67,7 +67,7 @@ manager:
         material: ARROW
         display_name: '&f返回'
 # 玩家或成员看到的GUI
-player:
+PLAYER:
   row: 6
   title: '&e&l成员列表({page}/{total_page})'
   items:
@@ -83,7 +83,7 @@ player:
           - ' &f公会: {guild_name}'
           - ' &f职位: {member_position}'
           - ' &f入会时间: {member_join_time}'
-          - ' &f已赞助公会币: {member_donate_gmoney}'
+          - ' &f已赞助公会币: {member_donated_gmoney}'
     page_items:
       precious_page:
         have:
@@ -98,13 +98,13 @@ player:
               - 'HIDE_ENCHANTS'
             lores:
               - ' &f点击切换'
-          not_have:
-            index: 46
-            icon:
-              material: BOOK
-              display_name: '&f上一页'
-              lores:
-                - ' &7没有上一页了'
+        not_have:
+          index: 46
+          icon:
+            material: BOOK
+            display_name: '&f上一页'
+            lores:
+              - ' &7没有上一页了'
       next_page:
         have:
           index: 54

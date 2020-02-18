@@ -30,11 +30,10 @@ guild:
   # 排行榜
   rank:
     # 计算公式，可用变量：
-    # {guild_money} 公会金币储备
-    # {guild_points} 公会点券储备
+    # {guild_gmoney} 公会币
     # {guild_member_count} 公会玩家数量
     # {guild_max_member_count} 公会最大玩家数量
-    formula: '{guild_money}*0.3+{guild_points}*0.5+{guild_member_count}*0.2'
+    formula: '{guild_gmoney}*0.8+{guild_member_count}*0.2'
   upgrade:
     # 最大能升级到的人数
     max_member_count: 10

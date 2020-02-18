@@ -7,16 +7,10 @@ import com.github.julyss2019.bukkit.plugins.julyguild.request.BaseRequest;
 import org.jetbrains.annotations.NotNull;
 
 public class JoinRequest extends BaseRequest<GuildPlayer, Guild> {
-    private GuildPlayer sender;
-    private Guild receiver;
-
     public JoinRequest() {}
 
     public JoinRequest(@NotNull GuildPlayer sender, @NotNull Guild receiver) {
         super(sender, receiver);
-
-        this.sender = sender;
-        this.receiver = receiver;
     }
 
     @Override
@@ -26,6 +20,6 @@ public class JoinRequest extends BaseRequest<GuildPlayer, Guild> {
 
     @Override
     public boolean isValid() {
-        return (System.currentTimeMillis() - getCreationTime()) / 1000L < MainSettings.getGuildRequestJoinTimeout() && !sender.isInGuild() && receiver.isValid();
+        return (System.currentTimeMillis() - getCreationTime()) / 1000L < MainSettings.getGuildRequestJoinTimeout() && !getSender().isInGuild() && getReceiver().isValid();
     }
 }

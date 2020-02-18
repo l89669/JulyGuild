@@ -11,7 +11,7 @@ import org.bukkit.command.CommandSender;
 public class PluginCommand implements JulyCommand {
     private JulyGuild plugin = JulyGuild.getInstance();
 
-    @SubCommand(firstArg = "reload", description = "重载插件配置", length = 0)
+    @SubCommand(firstArg = "reload", description = "重载插件配置", length = 0, permission = "JulyGuild.admin")
     public void onReload(CommandSender cs, String[] args) {
         plugin.reloadPluginConfig();
         Util.sendMsg(cs, "&f配置重载完毕.");
