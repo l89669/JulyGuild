@@ -4,9 +4,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.github.julyss2019.mcsp</groupId>
+    <groupId>com.github.julyss2019.bukkit.plugins</groupId>
     <artifactId>JulyGuild</artifactId>
-    <version>2.0.0-beta7</version>
+    <version>2.0.0-RELEASE</version>
 
     <properties>
         <!-- 防止中文乱码 -->
@@ -43,7 +43,7 @@
                         </executions>
                         <configuration>
                             <osCopyers>
-                                <osCoper>
+                                <osCopyer>
                                     <source>${build.directory}/${build.finalName}.jar</source>
                                     <operatingSystems>
                                         <operatingSystem>
@@ -63,7 +63,7 @@
                                             <overwrite>true</overwrite>
                                         </operatingSystem>
                                     </operatingSystems>
-                                </osCoper>
+                                </osCopyer>
                             </osCopyers>
                         </configuration>
                     </plugin>
@@ -74,28 +74,6 @@
             <id>release</id>
             <build>
                 <plugins>
-                    <plugin>
-                        <groupId>com.github.wvengen</groupId>
-                        <artifactId>proguard-maven-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <phase>package</phase>
-                                <goals>
-                                    <goal>proguard</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                        <configuration>
-                            <proguardInclude>${basedir}/proguard.conf</proguardInclude>
-                            <options>
-                                <option>-allowaccessmodification</option>
-                            </options>
-                            <libs>
-                                <lib>${java.home}/lib/rt.jar</lib>
-                                <lib>${java.home}/lib/jce.jar</lib>
-                            </libs>
-                        </configuration>
-                    </plugin>
                     <plugin>
                         <groupId>com.github.julyss2019.maven.plugins</groupId>
                         <artifactId>copyer-plugin</artifactId>
@@ -110,23 +88,23 @@
                         </executions>
                         <configuration>
                             <commonCopyers>
-                                <commonCoper>
+                                <commonCopyer>
                                     <source>${build.directory}/proguard_map.txt</source>
                                     <overwrite>true</overwrite>
                                     <dests>
                                         <dest>${basedir}/proguard/proguard_map-${version}.txt</dest>
                                     </dests>
-                                </commonCoper>
-                                <commonCoper>
+                                </commonCopyer>
+                                <commonCopyer>
                                     <source>${build.directory}/proguard_seed.txt</source>
                                     <overwrite>true</overwrite>
                                     <dests>
                                         <dest>${basedir}/proguard/proguard_seed-${version}.txt</dest>
                                     </dests>
-                                </commonCoper>
+                                </commonCopyer>
                             </commonCopyers>
                             <osCopyers>
-                                <osCoper>
+                                <osCopyer>
                                     <source>${build.directory}/${build.finalName}.jar</source>
                                     <operatingSystems>
                                         <operatingSystem>
@@ -146,7 +124,7 @@
                                             <overwrite>true</overwrite>
                                         </operatingSystem>
                                     </operatingSystems>
-                                </osCoper>
+                                </osCopyer>
                             </osCopyers>
                         </configuration>
                     </plugin>
@@ -253,7 +231,7 @@
         <dependency>
             <groupId>com.github.julyss2019.mcsp</groupId>
             <artifactId>JulyLibrary</artifactId>
-            <version>RELEASE</version>
+            <version>2.0.0-RELEASE</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
