@@ -93,6 +93,7 @@
 
 * /jguild gui main
   打开主界面。
+  **需要权限：JulyGuild.use**
   
 * /jguild plugin reload
   

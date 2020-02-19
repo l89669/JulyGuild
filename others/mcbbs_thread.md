@@ -1,4 +1,6 @@
-# JulyGuild（V2.0.0）
+# JulyGuild（V2.0.1）
+
+> 本贴使用 [MCBBS Markdown To BBCode Converter](https://mm2bc.ustc-zzzz.net/) 生成
 
 ## 插件特点
 
@@ -53,9 +55,9 @@
 
 ## 详细介绍
 
-因mcbbs写文档很麻烦，所以把详细介绍写在了 segmentfault.com。
+因mcbbs排版很麻烦，所以把详细介绍写在了CSDN博客。
 
-[点击传送](https://segmentfault.com/a/1190000021779099)
+[点击传送](https://blog.csdn.net/weixin_43244527/article/details/104384812)
 
 ## 交流
 
@@ -67,6 +69,11 @@
 
 [点击传送](https://github.com/julyss2019/JulyGuild/)
 
+## 统计
+
+![](https://bstats.org/signatures/bukkit/JulyGuild.svg)
+
 ## 下载
 
 [hide]链接：https://pan.baidu.com/s/1qmSlpemcI4NT7CqDhkWlQw 提取码：v2ic[/hide]
+

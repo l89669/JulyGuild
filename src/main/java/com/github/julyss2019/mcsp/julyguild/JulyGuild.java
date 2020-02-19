@@ -48,8 +48,8 @@ import java.util.*;
  * 软依赖：PlaceholderAPI, PlayerPoints
  */
 public class JulyGuild extends JavaPlugin {
-    public static final String VERSION = "2.0.0-RELEASE";
-    private final boolean DEV_MODE = true;
+    public static final String VERSION = "2.0.1";
+    private final boolean DEV_MODE = false;
     private final String[] GUI_RESOURCES = new String[] {
             "GuildCreateGUI.yml",
             "GuildInfoGUI.yml",
@@ -211,6 +211,11 @@ public class JulyGuild extends JavaPlugin {
 
         instance = this;
         this.pluginManager = Bukkit.getPluginManager();
+        this.guildPlayerManager = new GuildPlayerManager();
+        this.guildManager = new GuildManager();
+        this.cacheGuildManager = new CacheGuildManager();
+        this.requestManager = new RequestManager();
+        this.julyCommandHandler = new JulyCommandHandler();
 
         for (String pluginName : DEPEND_PLUGINS) {
             if (!Bukkit.getPluginManager().isPluginEnabled(pluginName)) {
@@ -270,12 +275,6 @@ public class JulyGuild extends JavaPlugin {
         } else {
             info("PlayerPoints: 未启用.");
         }
-
-        this.guildPlayerManager = new GuildPlayerManager();
-        this.guildManager = new GuildManager();
-        this.cacheGuildManager = new CacheGuildManager();
-        this.requestManager = new RequestManager();
-        this.julyCommandHandler = new JulyCommandHandler();
 
         guildManager.loadGuilds();
         checkGuilds();
