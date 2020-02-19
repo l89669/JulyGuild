@@ -79,15 +79,15 @@
 
 ## 图片（仅展示部分功能）
 
-[![3FqyEn.gif](https://s2.ax1x.com/2020/02/18/3FqyEn.gif)](https://imgchr.com/i/3FqyEn)
+![6ccde8bc-1fd5-48b6-87d0-ff4e396becf6](document.assets/6ccde8bc-1fd5-48b6-87d0-ff4e396becf6.gif)
 
-![3FXJE9.gif](https://s2.ax1x.com/2020/02/18/3FXJE9.gif)
+![9d62ff22-020e-4d5c-a74f-dc5498725376](document.assets/9d62ff22-020e-4d5c-a74f-dc5498725376.gif)
 
-![3FqTER.gif](https://s2.ax1x.com/2020/02/18/3FqTER.gif)
+![2d2400b5-5049-4fac-867b-e10a7b9a2de9](document.assets/2d2400b5-5049-4fac-867b-e10a7b9a2de9.gif)
 
-[![3FLoQS.gif](https://s2.ax1x.com/2020/02/18/3FLoQS.gif)](https://imgchr.com/i/3FLoQS)
+![2a098fcd-eb50-475e-8320-3c4fd804b413](document.assets/2a098fcd-eb50-475e-8320-3c4fd804b413.gif)
 
-![3FO7p6.gif](https://s2.ax1x.com/2020/02/18/3FO7p6.gif)
+![15e43c08-08e0-4595-8162-9619b867e497](document.assets/15e43c08-08e0-4595-8162-9619b867e497.gif)
 
 ## 命令
 
