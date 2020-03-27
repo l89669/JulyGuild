@@ -3,7 +3,7 @@ package com.github.julyss2019.mcsp.julyguild.request;
 import com.github.julyss2019.mcsp.julyguild.JulyGuild;
 import com.github.julyss2019.mcsp.julyguild.guild.Guild;
 import com.github.julyss2019.mcsp.julyguild.guild.GuildManager;
-import com.github.julyss2019.mcsp.julyguild.guild.GuildMember;
+import com.github.julyss2019.mcsp.julyguild.guild.member.GuildMember;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayerManager;
 import org.bukkit.configuration.ConfigurationSection;
@@ -12,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.UUID;
 
 public abstract class BaseRequest<T1 extends Sender, T2 extends Receiver> implements Request {
-    private JulyGuild plugin = JulyGuild.getInstance();
+    private JulyGuild plugin = JulyGuild.inst();
     private GuildManager guildManager = plugin.getGuildManager();
     private GuildPlayerManager guildPlayerManager = plugin.getGuildPlayerManager();
     private long creationTime;
@@ -20,8 +20,7 @@ public abstract class BaseRequest<T1 extends Sender, T2 extends Receiver> implem
     private T1 sender;
     private T2 receiver;
 
-    public BaseRequest() {
-    }
+    public BaseRequest() {}
 
     public BaseRequest(@NotNull T1 sender, @NotNull T2 receiver) {
         if (sender.equals(receiver)) {
@@ -79,8 +78,6 @@ public abstract class BaseRequest<T1 extends Sender, T2 extends Receiver> implem
             Guild guild = (Guild) sender;
 
             section.set("sender.guild.uuid", guild.getUuid().toString());
-        } else {
-            throw new UnsupportedOperationException("Sender 类型不支持");
         }
 
         if (receiver instanceof GuildPlayer) {
@@ -102,8 +99,6 @@ public abstract class BaseRequest<T1 extends Sender, T2 extends Receiver> implem
             Guild guild = (Guild) receiver;
 
             section.set("receiver.guild.uuid", guild.getUuid().toString());
-        } else {
-            throw new UnsupportedOperationException("Receiver 类型不支持");
         }
     }
 
@@ -124,22 +119,18 @@ public abstract class BaseRequest<T1 extends Sender, T2 extends Receiver> implem
             case GUILD_MEMBER:
                 this.sender = (T1) guildManager.getGuild(UUID.fromString(section.getString("sender.guild.uuid"))).getMember(UUID.fromString(section.getString("sender.guild_member.uuid")));
                 break;
-            default:
-                throw new RuntimeException("不支持的 Sender 类型");
         }
 
         switch (Receiver.Type.valueOf(section.getString("receiver.type"))) {
             case GUILD:
-                this.receiver = (T2) JulyGuild.getInstance().getGuildManager().getGuild(UUID.fromString(section.getString("receiver.guild.uuid")));
+                this.receiver = (T2) JulyGuild.inst().getGuildManager().getGuild(UUID.fromString(section.getString("receiver.guild.uuid")));
                 break;
             case GUILD_PLAYER:
-                this.receiver = (T2) JulyGuild.getInstance().getGuildPlayerManager().getGuildPlayer(UUID.fromString(section.getString("receiver.guild_player.uuid")));
+                this.receiver = (T2) JulyGuild.inst().getGuildPlayerManager().getGuildPlayer(UUID.fromString(section.getString("receiver.guild_player.uuid")));
                 break;
             case GUILD_MEMBER:
                 this.receiver = (T2) guildManager.getGuild(UUID.fromString(section.getString("receiver.guild.uuid"))).getMember(UUID.fromString(section.getString("receiver.guild_member.uuid")));
                 break;
-            default:
-                throw new RuntimeException("不支持的 Receiver 类型");
         }
     }
 }

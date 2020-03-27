@@ -2,6 +2,7 @@ package com.github.julyss2019.mcsp.julyguild.config.gui.item;
 
 import com.github.julyss2019.mcsp.julyguild.JulyGuild;
 import com.github.julyss2019.mcsp.julyguild.config.setting.MainSettings;
+import com.github.julyss2019.mcsp.julyguild.logger.GuildLogger;
 import com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer;
 import com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderText;
 import com.github.julyss2019.mcsp.julylibrary.item.ItemBuilder;
@@ -14,14 +15,12 @@ import org.bukkit.inventory.ItemFlag;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class GUIItemManager {
+
     public static PriorityItem getPriorityItem(@NotNull ConfigurationSection section) {
-        return getPriorityItem(section, (OfflinePlayer) null, null);
+        return getPriorityItem(section, null, null);
     }
 
     public static PriorityItem getPriorityItem(@NotNull ConfigurationSection section, @Nullable OfflinePlayer papiPlayer) {
@@ -43,7 +42,7 @@ public class GUIItemManager {
 
 
     public static IndexItem getIndexItem(@NotNull ConfigurationSection section) {
-        return getIndexItem(section, (OfflinePlayer) null, null);
+        return getIndexItem(section, null, null);
     }
 
     public static IndexItem getIndexItem(@NotNull ConfigurationSection section, @Nullable PlaceholderContainer placeholderContainer) {
@@ -76,14 +75,13 @@ public class GUIItemManager {
     public static ItemBuilder getItemBuilder(@NotNull ConfigurationSection section, @Nullable OfflinePlayer papiPlayer, @Nullable PlaceholderContainer placeholderContainer) {
         ItemBuilder itemBuilder = new ItemBuilder();
         boolean usePapi = section.getBoolean("use_papi", MainSettings.isGuildGuiDefaultUsePapi());
-
         Material material;
 
         try {
             material = Material.valueOf(section.getString("material"));
         } catch (Exception e) {
             material = Material.STONE;
-            JulyGuild.getInstance().warning(section.getCurrentPath() + ".material 不合法");
+            GuildLogger.warning("material 不合法, 路径: '" + section.getCurrentPath() + "'.");
         }
 
         itemBuilder
@@ -91,51 +89,75 @@ public class GUIItemManager {
                 .durability((short) section.getInt("durability", 0))
                 .colored(section.getBoolean("colored", MainSettings.isGuildGuiDefaultColored()));
 
-        if (MainSettings.isGuildGuiDefaultHideAllFlags()) {
-            itemBuilder.addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_DESTROYS, ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_PLACED_ON, ItemFlag.HIDE_POTION_EFFECTS, ItemFlag.HIDE_UNBREAKABLE);
+        if (MainSettings.isGuildGuiDefaultHideAllFlags() && ItemBuilder.isItemFlagEnabled()) {
+            itemBuilder.itemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_DESTROYS, ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_PLACED_ON, ItemFlag.HIDE_POTION_EFFECTS, ItemFlag.HIDE_UNBREAKABLE);
+        } else if (section.contains("flags") && ItemBuilder.isItemFlagEnabled()) {
+            for (String flagName : section.getStringList("flags")) {
+                if (flagName.equals("*")) {
+                    itemBuilder.itemFlags(ItemFlag.values());
+                    break;
+                }
+
+                ItemFlag itemFlag;
+
+                try {
+                    itemFlag = ItemFlag.valueOf(flagName);
+                } catch (IllegalArgumentException e) {
+                    GuildLogger.warning("flag = " + flagName + " 不合法, 路径: '" + section.getCurrentPath() + "'.");
+                    continue;
+                }
+
+                itemBuilder.addItemFlag(itemFlag);
+            }
         }
 
         if (section.contains("display_name")) {
-            itemBuilder.displayName(replacePlaceholders(section.getString("display_name"), placeholderContainer, !usePapi ? null : papiPlayer));
+            itemBuilder.displayName(replacePlaceholders(section.getString("display_name", ""), placeholderContainer, !usePapi ? null : papiPlayer));
         }
 
         if (section.contains("lores")) {
             itemBuilder.lores(replacePlaceholders(section.getStringList("lores"), placeholderContainer, !usePapi ? null : papiPlayer));
         }
 
+        String materialName = material.name();
+
         if (section.contains("skull_owner")) {
-            itemBuilder.skullOwner(placeholderContainer == null ? section.getString("skull_owner") : replacePlaceholders(section.getString("skull_owner"), placeholderContainer, !usePapi ? null : papiPlayer));
+            if (!materialName.equals("PLAYER_HEAD") && !materialName.equals("SKULL_ITEM")) {
+                GuildLogger.warning("skull_owner 不合法, 因为 material 不是头颅, 路径: '" + section.getCurrentPath() + "'.");
+            } else {
+                itemBuilder.skullOwner(section.getString("skull_owner"));
+            }
         }
 
-        if (section.contains("skull_texture")) {
-            itemBuilder.skullTexture(placeholderContainer == null ? section.getString("skull_texture") : replacePlaceholders(section.getString("skull_texture"), placeholderContainer, !usePapi ? null : papiPlayer));
-        }
-
-        if (section.contains("flags")) {
-            for (String flagName : section.getStringList("flags")) {
-                if (flagName.equals("*")) {
-                    itemBuilder.addItemFlags(ItemFlag.values());
-                    break;
-                }
-
-                try {
-                    itemBuilder.addItemFlag(ItemFlag.valueOf(flagName));
-                } catch (IllegalArgumentException e) {
-                    throw new RuntimeException("flags 不合法: " + section, e);
-                }
+        if (section.contains("skull_texture") && ItemBuilder.isSkullTextureEnabled()) {
+            if (!materialName.equals("PLAYER_HEAD") && !materialName.equals("SKULL_ITEM")) {
+                GuildLogger.warning("skull_owner 不合法, 因为 material 不是头颅, 路径: '" + section.getCurrentPath() + "'.");
+            } else {
+                itemBuilder.skullTexture(section.getString("skull_texture"));
             }
         }
 
         if (section.contains("enchantments")) {
-            if (section.isConfigurationSection("enchantments")) {
-                ConfigurationSection enchantmentSection = section.getConfigurationSection("enchantments");
+            for (String enchantmentName : Optional.ofNullable(section.getConfigurationSection("enchantments").getKeys(false)).orElse(new HashSet<>())) {
+                Enchantment enchantment;
 
-                for (String enchantmentName : Optional.ofNullable(enchantmentSection.getKeys(false)).orElse(new HashSet<>())) {
-                    itemBuilder.enchant(Enchantment.getByName(enchantmentName)
-                            , section.getConfigurationSection("enchantments").getInt(enchantmentName));
+                try {
+                    enchantment = Enchantment.getByName(enchantmentName);
+                } catch (Exception e) {
+                    GuildLogger.warning("enchantment = " + enchantmentName + " 不合法, 路径: '" + section.getCurrentPath() + "'.");
+                    continue;
                 }
-            } else {
-                throw new RuntimeException("enchantments 不合法: " + section);
+
+                int level;
+
+                try {
+                    level = section.getConfigurationSection("enchantments").getInt(enchantmentName);
+                } catch (Exception e1) {
+                    GuildLogger.warning("enchantment.lv = " + enchantmentName + " 不合法, 路径: '" + section.getCurrentPath() + "'.");
+                    continue;
+                }
+
+                itemBuilder.enchantment(enchantment, level);
             }
         }
 
@@ -157,7 +179,7 @@ public class GUIItemManager {
             result = PlaceholderText.replacePlaceholders(result, placeholderContainer);
         }
 
-        if (papiPlayer != null && JulyGuild.getInstance().isPlaceHolderAPIEnabled()) {
+        if (papiPlayer != null && JulyGuild.inst().isPlaceHolderAPIEnabled()) {
             result = PlaceholderAPI.setPlaceholders(papiPlayer, result);
         }
 

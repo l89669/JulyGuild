@@ -1,8 +1,11 @@
 package com.github.julyss2019.mcsp.julyguild.guild;
 
 import com.github.julyss2019.mcsp.julyguild.JulyGuild;
-import com.github.julyss2019.mcsp.julyguild.api.event.GuildDeleteEvent;
+import com.github.julyss2019.mcsp.julyguild.api.event.GuildDeletedEvent;
 import com.github.julyss2019.mcsp.julyguild.config.setting.MainSettings;
+import com.github.julyss2019.mcsp.julyguild.guild.member.GuildMember;
+import com.github.julyss2019.mcsp.julyguild.guild.member.GuildOwner;
+import com.github.julyss2019.mcsp.julyguild.guild.member.GuildPosition;
 import com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer;
 import com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderText;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
@@ -27,7 +30,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class Guild implements Sender, Receiver {
-    private final JulyGuild plugin = JulyGuild.getInstance();
+    private final JulyGuild plugin = JulyGuild.inst();
     private final File file;
     private YamlConfiguration yaml;
     private boolean deleted;
@@ -130,7 +133,7 @@ public class Guild implements Sender, Receiver {
                         .getConfigurationSection(memberUuidStr)
                         .getString("position"));
                 UUID memberUuid = UUID.fromString(memberUuidStr);
-                GuildPlayer guildPlayer = JulyGuild.getInstance().getGuildPlayerManager().getGuildPlayer(memberUuid);
+                GuildPlayer guildPlayer = JulyGuild.inst().getGuildPlayerManager().getGuildPlayer(memberUuid);
                 GuildMember member = guildPosition == GuildPosition.MEMBER
                         ? new GuildMember(this, guildPlayer)
                         : new GuildOwner(this, guildPlayer);
@@ -201,7 +204,7 @@ public class Guild implements Sender, Receiver {
         return iconMap.get(uuid);
     }
 
-    public  boolean hasSpawn() {
+    public boolean hasSpawn() {
         return spawn != null;
     }
 
@@ -398,7 +401,7 @@ public class Guild implements Sender, Receiver {
         getSentRequests().forEach(Request::delete);
         getReceivedRequests().forEach(Request::delete);
         plugin.getGuildManager().unloadGuild(this);
-        Bukkit.getPluginManager().callEvent(new GuildDeleteEvent(this));
+        Bukkit.getPluginManager().callEvent(new GuildDeletedEvent(this));
     }
 
     public int getMaxMemberCount() {
@@ -447,7 +450,7 @@ public class Guild implements Sender, Receiver {
      * @return
      */
     public List<String> getAnnouncements() {
-        return announcements;
+        return new ArrayList<>(announcements);
     }
 
     /**

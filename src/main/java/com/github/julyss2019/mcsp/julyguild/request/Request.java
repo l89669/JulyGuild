@@ -41,10 +41,10 @@ public interface Request<T1 extends Sender, T2 extends Receiver> {
     boolean isValid();
 
     default void delete() {
-        JulyGuild.getInstance().getRequestManager().deleteRequest(this);
+        JulyGuild.inst().getRequestManager().deleteRequest(this);
     }
 
     default void send() {
-        JulyGuild.getInstance().getRequestManager().sendRequest(this);
+        JulyGuild.inst().getRequestManager().sendRequest(this);
     }
 }

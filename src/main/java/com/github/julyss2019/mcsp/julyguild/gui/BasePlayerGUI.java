@@ -1,5 +1,7 @@
 package com.github.julyss2019.mcsp.julyguild.gui;
 
+import com.github.julyss2019.mcsp.julyguild.JulyGuild;
+import com.github.julyss2019.mcsp.julyguild.logger.GuildLogger;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -16,6 +18,8 @@ public abstract class BasePlayerGUI implements GUI {
         this.lastGUI = lastGUI;
         this.type = guiType;
         this.guildPlayer = guildPlayer;
+
+        GuildLogger.debug("开始创建 GUI 类 " + getClass().getName() + ".");
     }
 
     @Override

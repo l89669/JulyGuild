@@ -2,24 +2,22 @@ package com.github.julyss2019.mcsp.julyguild.thirdparty;
 
 import com.github.julyss2019.mcsp.julyguild.JulyGuild;
 import com.github.julyss2019.mcsp.julyguild.LangHelper;
+import com.github.julyss2019.mcsp.julyguild.config.setting.MainSettings;
 import com.github.julyss2019.mcsp.julyguild.guild.CacheGuildManager;
 import com.github.julyss2019.mcsp.julyguild.guild.Guild;
 import com.github.julyss2019.mcsp.julyguild.guild.GuildBank;
-import com.github.julyss2019.mcsp.julyguild.guild.GuildMember;
-import com.github.julyss2019.mcsp.julyguild.config.setting.MainSettings;
+import com.github.julyss2019.mcsp.julyguild.guild.member.GuildMember;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayerManager;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 /**
  * PAPI扩展
  */
 public class PlaceholderAPIExpansion extends PlaceholderExpansion {
-    private static final JulyGuild plugin = JulyGuild.getInstance();
-    private static final YamlConfiguration langYml = plugin.getLangYaml();
+    private static final JulyGuild plugin = JulyGuild.inst();
     private static final CacheGuildManager cacheGuildManager = plugin.getCacheGuildManager();
     private static final GuildPlayerManager guildPlayerManager = plugin.getGuildPlayerManager();
 
@@ -27,6 +25,7 @@ public class PlaceholderAPIExpansion extends PlaceholderExpansion {
     public String getIdentifier() {
         return "guild";
     }
+
 
     @Override
     public String getAuthor() {
@@ -39,7 +38,7 @@ public class PlaceholderAPIExpansion extends PlaceholderExpansion {
     }
 
     @Override
-    public String onRequest(OfflinePlayer p, String params) {
+    public String onPlaceholderRequest(Player p, String params) {
         GuildPlayer guildPlayer = guildPlayerManager.getGuildPlayer(p.getUniqueId());
         Guild guild = guildPlayer.getGuild();
         boolean isInGuild = guild != null;
@@ -49,7 +48,7 @@ public class PlaceholderAPIExpansion extends PlaceholderExpansion {
         }
 
         if (!isInGuild) {
-            return langYml.getString(MainSettings.getGuildPapiNonStr());
+            return MainSettings.getGuildPapiNonStr();
         }
 
         GuildMember guildMember = guild.getMember(guildPlayer);
@@ -58,6 +57,8 @@ public class PlaceholderAPIExpansion extends PlaceholderExpansion {
         switch (params.toLowerCase()) {
             case "name":
                 return guild.getName();
+            case "member_signed_count":
+                return String.valueOf(guildMember.getSign().getSignedCount());
             case "member_position":
                 return LangHelper.Global.getPositionName(guildMember.getPosition());
             case "member_donated_gmoney":
@@ -84,12 +85,7 @@ public class PlaceholderAPIExpansion extends PlaceholderExpansion {
     }
 
     @Override
-    public String onPlaceholderRequest(Player p, String params) {
-        return onRequest(p, params);
-    }
-
-    @Override
     public boolean canRegister() {
-        return true;
+        return Bukkit.getPluginManager().isPluginEnabled("JulyGuild");
     }
 }

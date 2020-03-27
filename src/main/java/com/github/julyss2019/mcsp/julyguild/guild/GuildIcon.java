@@ -1,8 +1,8 @@
 package com.github.julyss2019.mcsp.julyguild.guild;
 
-import com.github.julyss2019.mcsp.julylibrary.validate.NotNull;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 

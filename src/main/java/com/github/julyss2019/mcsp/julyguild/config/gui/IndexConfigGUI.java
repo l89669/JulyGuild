@@ -11,8 +11,8 @@ import com.github.julyss2019.mcsp.julyguild.util.Util;
 import com.github.julyss2019.mcsp.julylibrary.inventory.InventoryBuilder;
 import com.github.julyss2019.mcsp.julylibrary.inventory.ItemListener;
 import me.clip.placeholderapi.PlaceholderAPI;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -26,12 +26,12 @@ public class IndexConfigGUI {
             return fromConfig(section, null, placeholderContainer);
         }
 
-        public Builder fromConfig(@NotNull ConfigurationSection section, @Nullable OfflinePlayer papiPlayer) {
+        public Builder fromConfig(@NotNull ConfigurationSection section, @Nullable Player papiPlayer) {
             return fromConfig(section, papiPlayer, null);
         }
 
         // 实现方法
-        public Builder fromConfig(@NotNull ConfigurationSection section, @Nullable OfflinePlayer papiPlayer, @Nullable PlaceholderContainer placeholderContainer) {
+        public Builder fromConfig(@NotNull ConfigurationSection section, @Nullable Player papiPlayer, @Nullable PlaceholderContainer placeholderContainer) {
             row(section.getInt( "row"));
 
             String finalTitle = section.getString("title");
@@ -40,7 +40,7 @@ public class IndexConfigGUI {
                 finalTitle = PlaceholderText.replacePlaceholders(section.getString("title"), placeholderContainer);
             }
 
-            if (JulyGuild.getInstance().isPlaceHolderAPIEnabled() && papiPlayer != null) {
+            if (JulyGuild.inst().isPlaceHolderAPIEnabled() && papiPlayer != null) {
                 finalTitle = PlaceholderAPI.setPlaceholders(papiPlayer, finalTitle);
             }
 
@@ -55,7 +55,7 @@ public class IndexConfigGUI {
             return this;
         }
 
-        private Builder setOtherItems(@NotNull ConfigurationSection section, @Nullable OfflinePlayer papiPlayer, @Nullable PlaceholderContainer placeholderContainer) {
+        private Builder setOtherItems(@NotNull ConfigurationSection section, @Nullable Player papiPlayer, @Nullable PlaceholderContainer placeholderContainer) {
             for (String key : section.getKeys(false)) {
                 ConfigurationSection keySection = section.getConfigurationSection(key);
 

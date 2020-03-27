@@ -67,6 +67,19 @@ public abstract class PageableGUI extends BasePlayerGUI {
 
     public void setPageCount(int pageCount) {
         this.pageCount = pageCount;
+
+        // 如果当前页数不合法，则进行调整
+        if (!isValidPage(currentPage)) {
+            if (pageCount == 0) {
+                setCurrentPage(-1);
+            } else if (isValidPage(currentPage - 1) ){
+                setCurrentPage(currentPage - 1);
+            } else if (isValidPage(currentPage + 1)) {
+                setCurrentPage(currentPage + 1);
+            } else {
+                setCurrentPage(0);
+            }
+        }
     }
 
     // 得到当前页数
@@ -91,21 +104,6 @@ public abstract class PageableGUI extends BasePlayerGUI {
     @Override
     public void open() {
         update();
-
-        if (pageCount != 0) {
-            if (currentPage == -1) {
-                setCurrentPage(0);
-            } else if (isValidPage(currentPage - 1) ){
-                setCurrentPage(currentPage - 1);
-            } else if (isValidPage(currentPage + 1)) {
-                setCurrentPage(currentPage + 1);
-            } else {
-                setCurrentPage(0);
-            }
-
-        } else {
-            setCurrentPage(-1);
-        }
 
         super.open();
     }

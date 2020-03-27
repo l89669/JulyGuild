@@ -1,8 +1,8 @@
 package com.github.julyss2019.mcsp.julyguild.guild;
 
 import com.github.julyss2019.mcsp.julyguild.JulyGuild;
-import com.github.julyss2019.mcsp.julyguild.api.event.GuildCreateEvent;
-import com.github.julyss2019.mcsp.julyguild.log.guild.GuildCreateLog;
+import com.github.julyss2019.mcsp.julyguild.api.event.GuildCreatedEvent;
+import com.github.julyss2019.mcsp.julyguild.guild.member.GuildPosition;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
 import com.github.julyss2019.mcsp.julylibrary.utils.YamlUtil;
 import org.bukkit.Bukkit;
@@ -16,7 +16,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class GuildManager {
-    private final JulyGuild plugin = JulyGuild.getInstance();
+    private final JulyGuild plugin = JulyGuild.inst();
     private final Map<UUID, Guild> guildMap = new HashMap<>();
 
     public GuildManager() {}
@@ -45,8 +45,7 @@ public class GuildManager {
 
         loadGuild(file); // 载入公会
         // 触发 Bukkit 事件
-        Bukkit.getPluginManager().callEvent(new GuildCreateEvent(getGuild(uuid), ownerPlayer));
-        plugin.writeGuildLog(new GuildCreateLog(uuid, guildName, ownerPlayer.getName()));
+        Bukkit.getPluginManager().callEvent(new GuildCreatedEvent(getGuild(uuid), ownerPlayer));
     }
 
     public int getGuildCount() {
@@ -84,7 +83,7 @@ public class GuildManager {
 
         guildMap.remove(guild.getUuid());
         guild.setValid(false);
-        JulyGuild.getInstance().getCacheGuildManager().updateSortedGuilds();
+        JulyGuild.inst().getCacheGuildManager().updateSortedGuilds();
     }
 
     /**
@@ -104,7 +103,7 @@ public class GuildManager {
         }
 
         guildMap.put(guild.getUuid(), guild);
-        JulyGuild.getInstance().getCacheGuildManager().updateSortedGuilds();
+        JulyGuild.inst().getCacheGuildManager().updateSortedGuilds();
     }
 
     /**

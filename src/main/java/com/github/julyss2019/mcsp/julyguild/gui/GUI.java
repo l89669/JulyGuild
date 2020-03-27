@@ -2,7 +2,9 @@ package com.github.julyss2019.mcsp.julyguild.gui;
 
 import com.github.julyss2019.mcsp.julyguild.JulyGuild;
 import com.github.julyss2019.mcsp.julyguild.gui.entities.MainGUI;
+import com.github.julyss2019.mcsp.julyguild.logger.GuildLogger;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
+import com.github.julyss2019.mcsp.julyguild.util.Util;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -21,15 +23,17 @@ public interface GUI {
         MAIN,
         PLAYER_JOIN_CHECK,
         MEMBER_MANAGE,
-        PROMOTE,
         DONATE,
         SHOP,
         CONFIRM,
-        PAY,
         SHOP_CONFIRM,
         ICON_REPOSITORY
     }
 
+    /**
+     * 决定GUI能否被看到
+     * @return
+     */
     boolean canUse();
 
     GUI getLastGUI();
@@ -50,12 +54,14 @@ public interface GUI {
             public void run() {
                 open();
             }
-        }.runTaskLater(JulyGuild.getInstance(), tick);
+        }.runTaskLater(JulyGuild.inst(), tick);
     }
 
     default void open() {
         // 检查能否使用
         if (!canUse()) {
+            Util.sendMsg(getBukkitPlayer(), "&f当前 GUI 暂时无法使用.");
+
             GUI lastGUI = getLastGUI();
 
             if (lastGUI != null) {
@@ -67,14 +73,26 @@ public interface GUI {
             return;
         }
 
+        String className = this.getClass().getSimpleName();
+
+        if (className.equalsIgnoreCase("")) {
+            className = this.getClass().getTypeName();
+        }
+
+        GuildLogger.debug("=== 尝试创建GUI " + className + " ===");
+
         Inventory inventory = createInventory();
 
         if (inventory == null) {
             throw new RuntimeException("getInventory() 不能返回 null");
         }
 
+        GuildLogger.debug("=== 创建GUI " + className + " 完毕 ===");
+
         getGuildPlayer().getBukkitPlayer().openInventory(inventory);
         getGuildPlayer().setUsingGUI(this);
+
+        GuildLogger.debug("玩家 '" + getGuildPlayer().getName() + "' 打开了 GUI '" + className + "'.");
     }
 
     default boolean canBack() {
@@ -103,7 +121,7 @@ public interface GUI {
             public void run() {
                 lastGUI.open();
             }
-        }.runTaskLater(JulyGuild.getInstance(), later);
+        }.runTaskLater(JulyGuild.inst(), later);
     }
 
     default void close() {
@@ -135,6 +153,6 @@ public interface GUI {
             public void run() {
                 open();
             }
-        }.runTaskLater(JulyGuild.getInstance(), later);
+        }.runTaskLater(JulyGuild.inst(), later);
     }
 }

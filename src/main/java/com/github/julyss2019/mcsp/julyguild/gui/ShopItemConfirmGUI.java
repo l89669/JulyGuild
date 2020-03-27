@@ -2,7 +2,7 @@ package com.github.julyss2019.mcsp.julyguild.gui;
 
 import com.github.julyss2019.mcsp.julyguild.guild.Guild;
 import com.github.julyss2019.mcsp.julyguild.guild.GuildBank;
-import com.github.julyss2019.mcsp.julyguild.guild.GuildMember;
+import com.github.julyss2019.mcsp.julyguild.guild.member.GuildMember;
 import com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.NotNull;

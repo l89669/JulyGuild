@@ -6,8 +6,8 @@ import com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer;
 import com.github.julyss2019.mcsp.julyguild.util.Util;
 import com.github.julyss2019.mcsp.julylibrary.inventory.ItemListener;
 import org.apache.commons.lang3.Validate;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -25,14 +25,14 @@ public class PriorityConfigGUI {
         public Builder() {}
 
         @Override
-        public PriorityConfigGUI.Builder fromConfig(@NotNull ConfigurationSection section, @NotNull OfflinePlayer papiPlayer) {
+        public PriorityConfigGUI.Builder fromConfig(@NotNull ConfigurationSection section, @NotNull Player papiPlayer) {
             availableIndexes(Util.getIndexes(section.getString("indexes")));
             super.fromConfig(section, papiPlayer);
             return this;
         }
 
         @Override
-        public PriorityConfigGUI.Builder fromConfig(@NotNull ConfigurationSection section, @Nullable OfflinePlayer papiPlayer, @Nullable PlaceholderContainer placeholderContainer) {
+        public PriorityConfigGUI.Builder fromConfig(@NotNull ConfigurationSection section, @Nullable Player papiPlayer, @Nullable PlaceholderContainer placeholderContainer) {
             availableIndexes(Util.getIndexes(section.getString("indexes")));
             super.fromConfig(section, papiPlayer, placeholderContainer);
             return this;

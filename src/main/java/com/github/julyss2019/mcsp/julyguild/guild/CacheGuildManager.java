@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CacheGuildManager {
-    private final JulyGuild plugin = JulyGuild.getInstance();
+    private final JulyGuild plugin = JulyGuild.inst();
     private final GuildManager guildManager = plugin.getGuildManager();
     private List<Guild> sortedGuilds = new ArrayList<>();
 

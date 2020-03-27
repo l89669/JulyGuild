@@ -10,6 +10,6 @@ public interface Receiver {
     }
 
     default List<Request> getReceivedRequests() {
-        return JulyGuild.getInstance().getRequestManager().getReceivedRequests(this);
+        return JulyGuild.inst().getRequestManager().getReceivedRequests(this);
     }
 }

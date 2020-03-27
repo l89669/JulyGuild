@@ -1,15 +1,17 @@
 package com.github.julyss2019.mcsp.julyguild.gui.entities;
 
-import com.github.julyss2019.mcsp.julyguild.config.gui.IndexConfigGUI;
-import com.github.julyss2019.mcsp.julyguild.guild.Guild;
-import com.github.julyss2019.mcsp.julyguild.guild.GuildIcon;
-import com.github.julyss2019.mcsp.julyguild.util.Util;
 import com.github.julyss2019.mcsp.julyguild.JulyGuild;
+import com.github.julyss2019.mcsp.julyguild.DebugMessage;
+import com.github.julyss2019.mcsp.julyguild.config.gui.IndexConfigGUI;
 import com.github.julyss2019.mcsp.julyguild.config.gui.item.GUIItemManager;
 import com.github.julyss2019.mcsp.julyguild.config.setting.MainSettings;
-import com.github.julyss2019.mcsp.julyguild.gui.BasePlayerPageableGUI;
+import com.github.julyss2019.mcsp.julyguild.gui.PageableGUI;
+import com.github.julyss2019.mcsp.julyguild.guild.Guild;
+import com.github.julyss2019.mcsp.julyguild.guild.GuildIcon;
+import com.github.julyss2019.mcsp.julyguild.logger.GuildLogger;
 import com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
+import com.github.julyss2019.mcsp.julyguild.util.Util;
 import com.github.julyss2019.mcsp.julylibrary.chat.ChatInterceptor;
 import com.github.julyss2019.mcsp.julylibrary.chat.ChatListener;
 import com.github.julyss2019.mcsp.julylibrary.inventory.InventoryListener;
@@ -24,7 +26,9 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 /*
 返回时强制更新，手动强制更新
  */
@@ -33,19 +37,23 @@ import java.util.*;
  * 主GUI
  * @version 1.0.0
  */
-public class MainGUI extends BasePlayerPageableGUI {
-    private final JulyGuild plugin = JulyGuild.getInstance();
+public class MainGUI extends PageableGUI {
+    private final JulyGuild plugin = JulyGuild.inst();
     private final Player bukkitPlayer = guildPlayer.getBukkitPlayer();
     private final String playerName = bukkitPlayer.getName();
     private final ConfigurationSection thisGUISection = plugin.getGUIYaml("MainGUI");
     private final ConfigurationSection thisLangSection = plugin.getLangYaml().getConfigurationSection("MainGUI");
-    private final List<Integer> itemIndexes = Util.getIndexes(thisGUISection.getString("items.guild.indexes")); // 得到所有可供公会设置的位置
-    private final int itemIndexCount = itemIndexes.size();
+    private final List<Integer> itemIndexes; // 得到所有可供公会设置的位置
+    private final int itemIndexCount;
     private List<Guild> guilds;
     private int guildCount;
 
     public MainGUI(@NotNull GuildPlayer guildPlayer) {
         super(null, Type.MAIN, guildPlayer);
+
+        GuildLogger.debug("加载 'items.guild.indexes'.");
+        this.itemIndexes = Util.getIndexes(thisGUISection.getString("items.guild.indexes"));
+        this.itemIndexCount = itemIndexes.size();
     }
 
     @Override
@@ -59,16 +67,20 @@ public class MainGUI extends BasePlayerPageableGUI {
     @Override
     public Inventory createInventory() {
         Map<Integer, Guild> indexMap = new HashMap<>(); // slot 对应的公会uuid
+        IndexConfigGUI.Builder guiBuilder = new IndexConfigGUI.Builder();
 
-        IndexConfigGUI.Builder guiBuilder = (IndexConfigGUI.Builder) new IndexConfigGUI.Builder()
-                .fromConfig(thisGUISection, bukkitPlayer, new PlaceholderContainer()
+        GuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_BASIC);
+        guiBuilder.fromConfig(thisGUISection, bukkitPlayer, new PlaceholderContainer()
                         .add("page", String.valueOf(getCurrentPage() + 1))
-                        .add("total_page", String.valueOf(getPageCount())))
+                        .add("total_page", String.valueOf(getPageCount())));
+        GuildLogger.debug(DebugMessage.END_GUI_LOAD_BASIC);
+
+        guiBuilder
                 .colored()
                 .listener(new InventoryListener() {
                     @Override
                     public void onClick(InventoryClickEvent event) {
-                        int slot = event.getSlot();
+                        int slot = event.getRawSlot();
 
                         if (indexMap.containsKey(slot)) {
                             close();
@@ -89,9 +101,13 @@ public class MainGUI extends BasePlayerPageableGUI {
                     }
                 });
 
+
+        GuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, "items.page_items");
         guiBuilder.pageItems(thisGUISection.getConfigurationSection("items.page_items"), this);
 
+
         if (guildPlayer.isInGuild()) {
+			GuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, "items.my_guild");
             guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.my_guild"), bukkitPlayer, new PlaceholderContainer()
                     .add("%PLAYER%", playerName)), new ItemListener() {
                 @Override
@@ -100,7 +116,9 @@ public class MainGUI extends BasePlayerPageableGUI {
                     new GuildMineGUI(MainGUI.this, guildPlayer.getGuild().getMember(guildPlayer)).open();
                 }
             });
+            GuildLogger.debug(DebugMessage.END_GUI_LOAD_ITEM, "items.my_guild");
         } else {
+            GuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, "items.create_guild");
             guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.create_guild"), bukkitPlayer), new ItemListener() {
                 @Override
                 public void onClick(InventoryClickEvent event) {
@@ -139,7 +157,7 @@ public class MainGUI extends BasePlayerPageableGUI {
                                     }
 
                                     if (guildName.contains("§") && !bukkitPlayer.hasPermission("JulyGuild.create.colored")) {
-                                        Util.sendMsg(bukkitPlayer, thisLangSection.getString("create.no_colored_name_permission"));
+                                        Util.sendMsg(bukkitPlayer, thisLangSection.getString("create.input.no_colored_name_permission"));
                                         return;
                                     }
 
@@ -158,16 +176,19 @@ public class MainGUI extends BasePlayerPageableGUI {
                             }).build().register();
                 }
             });
+            GuildLogger.debug(DebugMessage.END_GUI_LOAD_ITEM, "items.create_guild");
         }
 
-        if (getCurrentPage() != -1) {
-            int itemCounter = getCurrentPage() * itemIndexes.size();
-            int loopCount = guildCount - itemCounter < itemIndexCount ? guildCount - itemCounter : itemIndexCount; // 循环次数，根据当前能够显示的数量决定
+        int guildCounter = getCurrentPage() * itemIndexCount;
+        int loopCount = guildCount - guildCounter < itemIndexCount ? guildCount - guildCounter : itemIndexCount; // 循环次数，根据当前能够显示的数量决定
 
+        if (getPageCount() > 0) {
             // 公会图标
             for (int i = 0; i < loopCount; i++) {
-                Guild guild = guilds.get(itemCounter++);
+                Guild guild = guilds.get(guildCounter++);
+                GuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, "items.guild.icon");
                 ItemBuilder itemBuilder = GUIItemManager.getItemBuilder(thisGUISection.getConfigurationSection("items.guild.icon"), bukkitPlayer, new PlaceholderContainer().addGuildPlaceholders(guild));
+                GuildLogger.debug(DebugMessage.END_GUI_LOAD_ITEM, "items.guild.icon");
                 GuildIcon guildIcon = guild.getCurrentIcon();
 
                 if (guildIcon != null) {

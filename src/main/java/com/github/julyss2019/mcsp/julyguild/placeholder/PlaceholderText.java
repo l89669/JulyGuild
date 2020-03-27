@@ -16,7 +16,7 @@ public class PlaceholderText {
      * @return
      */
     public static List<String> replacePlaceholders(@NotNull List<String> list, @NotNull Player player) {
-        return JulyGuild.getInstance().isPlaceHolderAPIEnabled() ? PlaceholderAPI.setPlaceholders(player, list) : list;
+        return JulyGuild.inst().isPlaceHolderAPIEnabled() ? PlaceholderAPI.setPlaceholders(player, list) : list;
     }
 
     /**
@@ -24,7 +24,7 @@ public class PlaceholderText {
      * @return
      */
     public static String replacePlaceholders(@NotNull String s, @NotNull Player player) {
-        return JulyGuild.getInstance().isPlaceHolderAPIEnabled() ? PlaceholderAPI.setPlaceholders(player, s) : s;
+        return JulyGuild.inst().isPlaceHolderAPIEnabled() ? PlaceholderAPI.setPlaceholders(player, s) : s;
     }
 
     public static List<String> replacePlaceholders(List<String> list, PlaceholderContainer placeholderContainer) {

@@ -1,13 +1,15 @@
 package com.github.julyss2019.mcsp.julyguild.gui.entities;
 
+import com.github.julyss2019.mcsp.julyguild.DebugMessage;
 import com.github.julyss2019.mcsp.julyguild.JulyGuild;
 import com.github.julyss2019.mcsp.julyguild.config.gui.IndexConfigGUI;
 import com.github.julyss2019.mcsp.julyguild.config.gui.item.GUIItemManager;
 import com.github.julyss2019.mcsp.julyguild.gui.BasePlayerGUI;
 import com.github.julyss2019.mcsp.julyguild.gui.GUI;
 import com.github.julyss2019.mcsp.julyguild.guild.Guild;
-import com.github.julyss2019.mcsp.julyguild.guild.GuildMember;
-import com.github.julyss2019.mcsp.julyguild.guild.GuildPermission;
+import com.github.julyss2019.mcsp.julyguild.guild.member.GuildMember;
+import com.github.julyss2019.mcsp.julyguild.guild.member.GuildPermission;
+import com.github.julyss2019.mcsp.julyguild.logger.GuildLogger;
 import com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
 import com.github.julyss2019.mcsp.julyguild.request.entities.JoinRequest;
@@ -29,7 +31,7 @@ import java.util.stream.Collectors;
 public class GuildInfoGUI extends BasePlayerGUI {
     private final Player bukkitPlayer;
     private final Guild guild;
-    private final JulyGuild plugin = JulyGuild.getInstance();
+    private final JulyGuild plugin = JulyGuild.inst();
     private final ConfigurationSection thisGUISection = plugin.getGUIYaml("GuildInfoGUI");
     private final ConfigurationSection thisLangSection = plugin.getLangYaml().getConfigurationSection("GuildInfoGUI");
 
@@ -42,40 +44,53 @@ public class GuildInfoGUI extends BasePlayerGUI {
 
     @Override
     public Inventory createInventory() {
-        IndexConfigGUI.Builder guiBuilder = new IndexConfigGUI.Builder()
-                .fromConfig(thisGUISection, bukkitPlayer, new PlaceholderContainer().addGuildPlaceholders(guild))
-                .item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.request_join"), bukkitPlayer, new PlaceholderContainer().addGuildPlaceholders(guild)), new ItemListener() {
-                    @Override
-                    public void onClick(InventoryClickEvent event) {
-                        close();
+        IndexConfigGUI.Builder guiBuilder = new IndexConfigGUI.Builder();
 
-                        if (guild.getMemberCount() >= guild.getMaxMemberCount()) {
-                            Util.sendMsg(bukkitPlayer, thisLangSection.getString("request_join.guild_full"));
-                            return;
-                        }
+        GuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_BASIC);
+        guiBuilder.fromConfig(thisGUISection, bukkitPlayer, new PlaceholderContainer().addGuildPlaceholders(guild));
+        GuildLogger.debug(DebugMessage.END_GUI_LOAD_BASIC);
 
-                        for (JoinRequest joinRequest : guildPlayer.getSentRequests().stream().filter(request -> request instanceof JoinRequest).map(request -> (JoinRequest) request).collect(Collectors.toList())) {
-                            if (joinRequest.getReceiver().equals(guild)) {
-                                Util.sendMsg(bukkitPlayer, thisLangSection.getString("request_join.already_have"));
-                                return;
-                            }
-                        }
+        GuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, "items.request_join");
+        guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.request_join"), bukkitPlayer, new PlaceholderContainer().addGuildPlaceholders(guild)), new ItemListener() {
+            @Override
+            public void onClick(InventoryClickEvent event) {
+                close();
 
-                        new JoinRequest(guildPlayer, guild).send();
+                if (guild.getMemberCount() >= guild.getMaxMemberCount()) {
+                    Util.sendMsg(bukkitPlayer, thisLangSection.getString("request_join.guild_full"));
+                    return;
+                }
 
-                        guild.getMembers().stream().filter(guildMember -> guildMember.hasPermission(GuildPermission.PLAYER_JOIN_CHECK)).filter(GuildMember::isOnline).forEach(guildMember -> {
-                            Util.sendMsg(guildMember.getGuildPlayer().getBukkitPlayer(), thisLangSection.getString("request_join.received"), new PlaceholderContainer().add("sender", bukkitPlayer.getName()));
-                        });
-
-                        Util.sendMsg(bukkitPlayer, thisLangSection.getString("request_join.success"));
+                for (JoinRequest joinRequest : guildPlayer.getSentRequests().stream().filter(request -> request instanceof JoinRequest).map(request -> (JoinRequest) request).collect(Collectors.toList())) {
+                    if (joinRequest.getReceiver().equals(guild)) {
+                        Util.sendMsg(bukkitPlayer, thisLangSection.getString("request_join.already_have"));
+                        return;
                     }
-                }).item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.members"), bukkitPlayer, new PlaceholderContainer().addGuildPlaceholders(guild)), new ItemListener() {
+                }
+
+                new JoinRequest(guildPlayer, guild).send();
+
+                guild.getMembers().stream().filter(guildMember -> guildMember.hasPermission(GuildPermission.PLAYER_JOIN_CHECK)).filter(GuildMember::isOnline).forEach(guildMember -> {
+                    Util.sendMsg(guildMember.getGuildPlayer().getBukkitPlayer(), thisLangSection.getString("request_join.received"), new PlaceholderContainer().add("sender", bukkitPlayer.getName()));
+                });
+
+                Util.sendMsg(bukkitPlayer, thisLangSection.getString("request_join.success"));
+                    }
+                });
+        GuildLogger.debug(DebugMessage.END_GUI_LOAD_ITEM, "items.request_join");
+
+        GuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, "items.members");
+        guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.members"), bukkitPlayer, new PlaceholderContainer().addGuildPlaceholders(guild)), new ItemListener() {
                     @Override
                     public void onClick(InventoryClickEvent event) {
                         close();
                         new GuildMemberListGUI(GuildInfoGUI.this, guild, guildPlayer).open();
                     }
-                }).item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.back"), bukkitPlayer, new PlaceholderContainer().addGuildPlaceholders(guild)), new ItemListener() {
+                });
+        GuildLogger.debug(DebugMessage.END_GUI_LOAD_ITEM, "items.members");
+
+        GuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, "items.back");
+        guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.back"), bukkitPlayer, new PlaceholderContainer().addGuildPlaceholders(guild)), new ItemListener() {
                     @Override
                     public void onClick(InventoryClickEvent event) {
                         if (canBack()) {
@@ -83,6 +98,7 @@ public class GuildInfoGUI extends BasePlayerGUI {
                         }
                     }
                 });
+        GuildLogger.debug(DebugMessage.END_GUI_LOAD_ITEM, "items.back");
 
         return guiBuilder.build();
     }

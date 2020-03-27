@@ -6,10 +6,10 @@ import com.github.julyss2019.mcsp.julyguild.player.GuildPlayerManager;
 
 public class JulyGuildAPI {
     public static GuildManager getGuildManager() {
-        return JulyGuild.getInstance().getGuildManager();
+        return JulyGuild.inst().getGuildManager();
     }
 
     public static GuildPlayerManager getGuildPlayerManager() {
-        return JulyGuild.getInstance().getGuildPlayerManager();
+        return JulyGuild.inst().getGuildPlayerManager();
     }
 }

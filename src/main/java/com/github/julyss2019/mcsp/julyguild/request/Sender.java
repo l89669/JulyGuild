@@ -10,6 +10,6 @@ public interface Sender {
     }
 
     default List<Request> getSentRequests() {
-        return JulyGuild.getInstance().getRequestManager().getSentRequests(this);
+        return JulyGuild.inst().getRequestManager().getSentRequests(this);
     }
 }

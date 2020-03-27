@@ -2,6 +2,7 @@ package com.github.julyss2019.mcsp.julyguild.guild;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.NotNull;
 
@@ -53,6 +54,12 @@ public class GuildSpawn {
     }
 
     public Location getLocation() {
-        return new Location(Bukkit.getWorld(worldName), x, y, z, yaw, pitch);
+        World world = Bukkit.getWorld(worldName);
+
+        if (world == null) {
+            return null;
+        }
+
+        return new Location(world, x, y, z, yaw, pitch);
     }
 }

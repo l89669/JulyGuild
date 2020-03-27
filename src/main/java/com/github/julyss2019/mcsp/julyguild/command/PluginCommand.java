@@ -9,17 +9,17 @@ import org.bukkit.command.CommandSender;
 
 @MainCommand(firstArg = "plugin", description = "插件相关")
 public class PluginCommand implements JulyCommand {
-    private JulyGuild plugin = JulyGuild.getInstance();
+    private JulyGuild plugin = JulyGuild.inst();
 
     @SubCommand(firstArg = "reload", description = "重载插件配置", length = 0, permission = "JulyGuild.admin")
     public void onReload(CommandSender cs, String[] args) {
-        plugin.reloadPluginConfig();
+        plugin.reloadPlugin();
         Util.sendMsg(cs, "&f配置重载完毕.");
     }
 
     @SubCommand(firstArg = "version", description = "插件版本", length = 0)
     public void onVersion(CommandSender cs, String[] args) {
-        Util.sendMsg(cs, "&f插件版本: " + JulyGuild.VERSION + ".");
-        Util.sendMsg(cs, "&f作者: 柒 月, 插件交流群: 786184610.");
+        Util.sendMsg(cs, "&f插件版本: v" + JulyGuild.inst().getDescription().getVersion() + ".");
+        Util.sendMsg(cs, "&f插件交流群: 786184610.");
     }
 }

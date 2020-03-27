@@ -2,35 +2,45 @@ package com.github.julyss2019.mcsp.julyguild.config.setting;
 
 import com.github.julyss2019.mcsp.julylibrary.config.Config;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainSettings {
+    @Config(path = "guild.sign.reward.gmoney")
+    private static double guildSignRewardGMoney;
+
+    @Config(path = "guild.sign.reward.commands")
+    private static List<String> guildSignRewardCommands;
+
     @Config(path = "metrics_enabled")
     private static boolean metricsEnabled;
 
     @Config(path = "guild.create.name_regex")
     private static String guildCreateNameRegex;
 
-    @Config(path = "guild.create.cost.money.amount")
-    private static double guildCreateCostMoneyAmount;
+    @Config(path = "guild.create.price.money.amount")
+    private static double guildCreatePriceMoneyAmount;
 
-    @Config(path = "guild.create.cost.points.amount")
-    private static int guildCreateCostPointsAmount;
+    @Config(path = "guild.create.price.points.amount")
+    private static int guildCreatePricePointsAmount;
 
-    @Config(path = "guild.announcement.split_char")
-    private static String guildAnnouncementSplitChar;
+    @Config(path = "guild.announcement.split_str")
+    private static String guildAnnouncementSplitStr;
 
     @Config(path = "guild.announcement.max_count")
     private static int guildAnnouncementMaxCount;
+
+    @Config(path = "guild.announcement.default")
+    private static List<String> guildAnnouncementDefault;
+
+    @Config(path = "guild.announcement.input.cancel_str")
+    private static String guildAnnouncementInputCancelStr;
 
     @Config(path = "guild.request.join.timeout")
     private static int guildRequestJoinTimeout;
 
     @Config(path = "guild.default_max_member_count")
     private static int guildDefaultMaxMemberCount;
-
-    @Config(path = "guild.announcement.default")
-    private static List<String> guildAnnouncementDefault;
 
     @Config(path = "guild.rank.formula")
     private static String guildRankFormula;
@@ -104,12 +114,31 @@ public class MainSettings {
     @Config(path = "guild.tp_all.receive_worlds")
     private static List<String> guildTpAllReceiveWorlds;
 
+    @Config(path = "guild.ess_chat.non_str")
+    private static String guildEssChatNotStr;
+
+    public static String getGuildEssChatNotStr() {
+        return guildEssChatNotStr;
+    }
+
+    public static String getGuildAnnouncementInputCancelStr() {
+        return guildAnnouncementInputCancelStr;
+    }
+
+    public static double getGuildSignRewardGMoney() {
+        return guildSignRewardGMoney;
+    }
+
+    public static List<String> getGuildSignRewardCommands() {
+        return new ArrayList<>(guildSignRewardCommands);
+    }
+
     public static List<String> getGuildTpAllSendWorlds() {
-        return guildTpAllSendWorlds;
+        return new ArrayList<>(guildTpAllSendWorlds);
     }
 
     public static List<String> getGuildTpAllReceiveWorlds() {
-        return guildTpAllReceiveWorlds;
+        return new ArrayList<>(guildTpAllReceiveWorlds);
     }
 
     public static int getGuildTpAllTimeout() {
@@ -196,16 +225,16 @@ public class MainSettings {
         return guildCreateNameRegex;
     }
 
-    public static double getGuildCreateCostMoneyAmount() {
-        return guildCreateCostMoneyAmount;
+    public static double getGuildCreatePriceMoneyAmount() {
+        return guildCreatePriceMoneyAmount;
     }
 
-    public static int getGuildCreateCostPointsAmount() {
-        return guildCreateCostPointsAmount;
+    public static int getGuildCreatePricePointsAmount() {
+        return guildCreatePricePointsAmount;
     }
 
-    public static String getGuildAnnouncementSplitChar() {
-        return guildAnnouncementSplitChar;
+    public static String getGuildAnnouncementSplitStr() {
+        return guildAnnouncementSplitStr;
     }
 
     public static int getGuildAnnouncementMaxCount() {
@@ -221,7 +250,7 @@ public class MainSettings {
     }
 
     public static List<String> getGuildAnnouncementDefault() {
-        return guildAnnouncementDefault;
+        return new ArrayList<>(guildAnnouncementDefault);
     }
 
     public static String getGuildRankFormula() {

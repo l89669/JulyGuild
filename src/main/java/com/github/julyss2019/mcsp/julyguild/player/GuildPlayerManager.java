@@ -10,7 +10,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class GuildPlayerManager {
-    private JulyGuild plugin = JulyGuild.getInstance();
+    private JulyGuild plugin = JulyGuild.inst();
     private Map<UUID, GuildPlayer> guildPlayerMap = new HashMap<>();
 
     public GuildPlayer getGuildPlayer(UUID uuid) {

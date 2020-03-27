@@ -1,7 +1,10 @@
 package com.github.julyss2019.mcsp.julyguild.gui;
 
+import com.github.julyss2019.mcsp.julyguild.DebugMessage;
+import com.github.julyss2019.mcsp.julyguild.JulyGuild;
 import com.github.julyss2019.mcsp.julyguild.config.gui.IndexConfigGUI;
 import com.github.julyss2019.mcsp.julyguild.config.gui.item.GUIItemManager;
+import com.github.julyss2019.mcsp.julyguild.logger.GuildLogger;
 import com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
 import com.github.julyss2019.mcsp.julylibrary.inventory.ItemListener;
@@ -15,21 +18,21 @@ import org.jetbrains.annotations.Nullable;
 public abstract class BaseConfirmGUI extends BasePlayerGUI {
     private final ConfigurationSection section;
     private final Player bukkitPlayer = getBukkitPlayer();
-    private final PlaceholderContainer placeholderContainer;
+    private final PlaceholderContainer confirmPlaceholderContainer;
 
     protected BaseConfirmGUI(@Nullable GUI lastGUI, @NotNull GuildPlayer guildPlayer, @NotNull ConfigurationSection section) {
         this(lastGUI, guildPlayer, section, null);
     }
 
-    protected BaseConfirmGUI(@Nullable GUI lastGUI, @NotNull GuildPlayer guildPlayer, @NotNull ConfigurationSection section, @Nullable PlaceholderContainer placeholderContainer) {
+    protected BaseConfirmGUI(@Nullable GUI lastGUI, @NotNull GuildPlayer guildPlayer, @NotNull ConfigurationSection section, @Nullable PlaceholderContainer confirmPlaceholderContainer) {
         super(lastGUI, Type.CONFIRM, guildPlayer);
 
         this.section = section;
-        this.placeholderContainer = placeholderContainer;
+        this.confirmPlaceholderContainer = confirmPlaceholderContainer;
     }
 
-    public PlaceholderContainer getPlaceholderContainer() {
-        return placeholderContainer;
+    public PlaceholderContainer getConfirmPlaceholderContainer() {
+        return confirmPlaceholderContainer;
     }
 
     @Override
@@ -41,20 +44,29 @@ public abstract class BaseConfirmGUI extends BasePlayerGUI {
 
     @Override
     public Inventory createInventory() {
-        IndexConfigGUI.Builder guiBuilder = new IndexConfigGUI.Builder()
-                .fromConfig(section, placeholderContainer)
-                .item(GUIItemManager.getIndexItem(section.getConfigurationSection("items.cancel"), bukkitPlayer, placeholderContainer), new ItemListener() {
+        IndexConfigGUI.Builder guiBuilder = new IndexConfigGUI.Builder();
+
+        GuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_BASIC);
+        guiBuilder.fromConfig(section, confirmPlaceholderContainer);
+        GuildLogger.debug(DebugMessage.END_GUI_LOAD_BASIC);
+
+        GuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, "items.cancel");
+        guiBuilder.item(GUIItemManager.getIndexItem(section.getConfigurationSection("items.cancel"), bukkitPlayer), new ItemListener() {
                     @Override
                     public void onClick(InventoryClickEvent event) {
                         onCancel();
                     }
-                })
-                .item(GUIItemManager.getIndexItem(section.getConfigurationSection("items.confirm"), bukkitPlayer, placeholderContainer), new ItemListener() {
-                    @Override
-                    public void onClick(InventoryClickEvent event) {
-                        onConfirm();
-                    }
                 });
+        GuildLogger.debug(DebugMessage.END_GUI_LOAD_ITEM, "items.cancel");
+
+        GuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, "items.confirm");
+        guiBuilder.item(GUIItemManager.getIndexItem(section.getConfigurationSection("items.confirm"), bukkitPlayer, confirmPlaceholderContainer), new ItemListener() {
+            @Override
+            public void onClick(InventoryClickEvent event) {
+                onConfirm();
+            }
+        });
+        GuildLogger.debug(DebugMessage.END_GUI_LOAD_ITEM, "items.confirm");
 
         return guiBuilder.build();
     }

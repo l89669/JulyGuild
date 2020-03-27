@@ -12,7 +12,7 @@ import org.bukkit.entity.Player;
 
 @MainCommand(firstArg = "gui", description = "界面相关")
 public class GUICommand implements JulyCommand {
-    private JulyGuild plugin = JulyGuild.getInstance();
+    private JulyGuild plugin = JulyGuild.inst();
     private GuildPlayerManager guildPlayerManager = plugin.getGuildPlayerManager();
 
     @SubCommand(firstArg = "main", description = "打开主界面", length = 0, senders = SenderType.PLAYER)

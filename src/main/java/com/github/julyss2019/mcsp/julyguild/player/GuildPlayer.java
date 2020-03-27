@@ -12,6 +12,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
@@ -19,10 +20,10 @@ import java.util.*;
 
 public class GuildPlayer implements Sender, Receiver {
     private final File file;
-    private UUID uuid;
     private YamlConfiguration yaml;
-    private UUID guildUuid;
     private String name;
+    private UUID uuid;
+    private UUID guildUuid;
     private GUI usingGUI;
     private GuildPlayerMessageBox messageBox;
     private BukkitTask teleportTask;
@@ -46,15 +47,22 @@ public class GuildPlayer implements Sender, Receiver {
         this.uuid = UUID.fromString(yaml.getString("uuid"));
         this.guildUuid = Optional.ofNullable(yaml.getString("guild")).map(UUID::fromString).orElse(null);
         this.name = Optional
-                .ofNullable(Bukkit.getOfflinePlayer(getUuid()))
-                .map(OfflinePlayer::getName)
-                .orElse(uuid.toString());
+                .ofNullable(yaml.getString("known_name"))
+                .orElse(Optional.ofNullable(Bukkit.getOfflinePlayer(uuid))
+                        .map(offlinePlayer -> getName())
+                        .orElse(uuid.toString()));
 
         if (!yaml.contains("message_box")) {
             yaml.createSection("message_box");
         }
 
         this.messageBox = new GuildPlayerMessageBox(this);
+    }
+
+    public void setKnownName(@NotNull String knownName) {
+        yaml.set("known_name", knownName);
+        this.name = knownName;
+        save();
     }
 
     public boolean hasTeleportTask() {
@@ -90,7 +98,7 @@ public class GuildPlayer implements Sender, Receiver {
     }
 
     public Guild getGuild() {
-        return guildUuid == null ? null : JulyGuild.getInstance().getGuildManager().getGuild(guildUuid);
+        return guildUuid == null ? null : JulyGuild.inst().getGuildManager().getGuild(guildUuid);
     }
 
     /**

@@ -14,7 +14,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 
 public class TeleportListener implements Listener {
-    private JulyGuild plugin = JulyGuild.getInstance();
+    private JulyGuild plugin = JulyGuild.inst();
     private ConfigurationSection langSection = plugin.getLangYaml();
     private GuildPlayerManager guildPlayerManager = plugin.getGuildPlayerManager();
 
@@ -34,11 +34,11 @@ public class TeleportListener implements Listener {
             guildPlayer.getTeleportTask().cancel();
             guildPlayer.setTeleportTask(null);
 
-            if (JulyMessage.canUseTitle()) {
+            if (JulyMessage.isTitleEnabled()) {
                 JulyMessage.sendTitle(bukkitPlayer, new Title.Builder().text(langSection.getString("GuildMineGUI.guild_spawn.cancelled.title")).colored().build());
                 JulyMessage.sendTitle(bukkitPlayer, new Title.Builder().type(Title.Type.SUBTITLE).text(langSection.getString("GuildMineGUI.guild_spawn.cancelled.subtitle")).colored().build());
             } else {
-                Util.sendMsg(bukkitPlayer, langSection.getString("GuildMineGUI.cancelled.msg"));
+                Util.sendMsg(bukkitPlayer, langSection.getString("GuildMineGUI.guild_spawn.cancelled.msg"));
             }
         }
     }

@@ -1,7 +1,9 @@
 package com.github.julyss2019.mcsp.julyguild.gui.entities;
 
+import com.github.julyss2019.mcsp.julyguild.DebugMessage;
 import com.github.julyss2019.mcsp.julyguild.config.gui.IndexConfigGUI;
 import com.github.julyss2019.mcsp.julyguild.guild.Guild;
+import com.github.julyss2019.mcsp.julyguild.logger.GuildLogger;
 import com.github.julyss2019.mcsp.julyguild.util.Util;
 import com.github.julyss2019.mcsp.julyguild.JulyGuild;
 import com.github.julyss2019.mcsp.julyguild.config.gui.item.GUIItemManager;
@@ -9,7 +11,7 @@ import com.github.julyss2019.mcsp.julyguild.gui.BaseConfirmGUI;
 import com.github.julyss2019.mcsp.julyguild.gui.BasePlayerGUI;
 import com.github.julyss2019.mcsp.julyguild.gui.GUI;
 import com.github.julyss2019.mcsp.julyguild.guild.GuildBank;
-import com.github.julyss2019.mcsp.julyguild.guild.GuildMember;
+import com.github.julyss2019.mcsp.julyguild.guild.member.GuildMember;
 import com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer;
 import com.github.julyss2019.mcsp.julyguild.thirdparty.economy.PlayerPointsEconomy;
 import com.github.julyss2019.mcsp.julyguild.thirdparty.economy.VaultEconomy;
@@ -29,7 +31,7 @@ public class GuildDonateGUI extends BasePlayerGUI {
         MONEY, POINTS
     }
 
-    private JulyGuild plugin = JulyGuild.getInstance();
+    private JulyGuild plugin = JulyGuild.inst();
     private final GuildMember guildMember;
     private final Guild guild;
     private final Player bukkitPlayer = getBukkitPlayer();
@@ -56,6 +58,7 @@ public class GuildDonateGUI extends BasePlayerGUI {
         IndexConfigGUI.Builder guiBuilder = new IndexConfigGUI.Builder()
                 .fromConfig(thisGUISection, bukkitPlayer);
 
+        GuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, "items.back");
         guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.back"), bukkitPlayer), new ItemListener() {
             @Override
             public void onClick(InventoryClickEvent event) {
@@ -64,6 +67,7 @@ public class GuildDonateGUI extends BasePlayerGUI {
                 }
             }
         });
+        GuildLogger.debug(DebugMessage.END_GUI_LOAD_ITEM, "items.back");
 
         if (thisGUISection.contains("donate_items")) {
             for (String itemName : thisGUISection.getConfigurationSection("donate_items").getKeys(false)) {
@@ -75,12 +79,19 @@ public class GuildDonateGUI extends BasePlayerGUI {
                 double reward = donateItemSection.getDouble("reward");
                 ConfigurationSection confirmGUISection = donateItemSection.getConfigurationSection("ConfirmGUI");
 
+                GuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, "donate_items." + itemName);
                 guiBuilder.item(GUIItemManager.getIndexItem(itemSection, bukkitPlayer, new PlaceholderContainer()
                         .add("price", price)
                         .add("reward", reward)), new ItemListener() {
                     @Override
                     public void onClick(InventoryClickEvent event) {
                         if (payType == PayType.POINTS) {
+                            if (playerPointsEconomy == null) {
+                                Util.sendMsg(bukkitPlayer, "&cPlayerPoints 未启用.");
+                                reopen(40L);
+                                return;
+                            }
+
                             if (!playerPointsEconomy.has(bukkitPlayer, (int) price)) {
                                 Util.sendMsg(bukkitPlayer, thisLangSection.getString("points.not_enough"), new PlaceholderContainer()
                                         .add("need", price - playerPointsEconomy.getBalance(bukkitPlayer)));
@@ -167,6 +178,7 @@ public class GuildDonateGUI extends BasePlayerGUI {
                         }
                     }
                 });
+                GuildLogger.debug(DebugMessage.END_GUI_LOAD_ITEM, "donate_items." + itemName);
             }
         }
 

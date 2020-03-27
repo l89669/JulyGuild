@@ -13,7 +13,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 
 public class GUIListener implements Listener {
-    private static JulyGuild plugin = JulyGuild.getInstance();
+    private static JulyGuild plugin = JulyGuild.inst();
     private static GuildPlayerManager guildPlayerManager = plugin.getGuildPlayerManager();
 
     @EventHandler

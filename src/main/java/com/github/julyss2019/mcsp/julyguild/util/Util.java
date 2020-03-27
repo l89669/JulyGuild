@@ -11,10 +11,13 @@ import parsii.eval.Parser;
 import parsii.tokenizer.ParseException;
 
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Util {
+    public static final SimpleDateFormat YYYY_MM_DD_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+    public static final SimpleDateFormat HH_MM_SS_FORMAT = new SimpleDateFormat("HH:mm:ss");
     public static final DecimalFormat SIMPLE_DECIMAL_FORMAT = new DecimalFormat("0.00");
 
     /**
@@ -58,13 +61,5 @@ public class Util {
 
     public static void sendConsoleMsg(@NotNull String msg) {
         JulyMessage.sendColoredMessage(Bukkit.getConsoleSender(), "&a[JulyGuild] &f" + msg);
-    }
-
-    public static double calculate(@NotNull String formula) {
-        try {
-            return Parser.parse(formula).evaluate();
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
-        }
     }
 }

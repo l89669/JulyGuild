@@ -1,16 +1,18 @@
 package com.github.julyss2019.mcsp.julyguild.gui.entities;
 
-import com.github.julyss2019.mcsp.julyguild.config.gui.IndexConfigGUI;
-import com.github.julyss2019.mcsp.julyguild.guild.Guild;
-import com.github.julyss2019.mcsp.julyguild.guild.GuildPermission;
-import com.github.julyss2019.mcsp.julyguild.util.Util;
+import com.github.julyss2019.mcsp.julyguild.DebugMessage;
 import com.github.julyss2019.mcsp.julyguild.JulyGuild;
+import com.github.julyss2019.mcsp.julyguild.config.gui.IndexConfigGUI;
 import com.github.julyss2019.mcsp.julyguild.config.gui.item.GUIItemManager;
-import com.github.julyss2019.mcsp.julyguild.gui.BasePlayerPageableGUI;
 import com.github.julyss2019.mcsp.julyguild.gui.GUI;
-import com.github.julyss2019.mcsp.julyguild.guild.GuildMember;
+import com.github.julyss2019.mcsp.julyguild.gui.PageableGUI;
+import com.github.julyss2019.mcsp.julyguild.guild.Guild;
+import com.github.julyss2019.mcsp.julyguild.guild.member.GuildMember;
+import com.github.julyss2019.mcsp.julyguild.guild.member.GuildPermission;
+import com.github.julyss2019.mcsp.julyguild.logger.GuildLogger;
 import com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
+import com.github.julyss2019.mcsp.julyguild.util.Util;
 import com.github.julyss2019.mcsp.julylibrary.inventory.InventoryListener;
 import com.github.julyss2019.mcsp.julylibrary.inventory.ItemListener;
 import com.github.julyss2019.mcsp.julylibrary.item.ItemBuilder;
@@ -23,16 +25,16 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
-public class GuildMemberListGUI extends BasePlayerPageableGUI {
+public class GuildMemberListGUI extends PageableGUI {
     private enum ViewerType {PLAYER, MANAGER}
     private static final List<GuildPermission> MANAGER_GUILD_PERMISSIONS = Arrays.asList(GuildPermission.MEMBER_KICK, GuildPermission.MANAGE_PERMISSION);
-    private final JulyGuild plugin = JulyGuild.getInstance();
+    private final JulyGuild plugin = JulyGuild.inst();
     private final ViewerType viewerType;
     private final Guild guild;
     private final Player bukkitPlayer = getBukkitPlayer();
     private ConfigurationSection thisGUISection;
-    private List<Integer> positions;
-    private int positionCount;
+    private List<Integer> itemIndexes;
+    private int itemIndexCount;
     private List<GuildMember> members;
     private int memberCount;
 
@@ -61,9 +63,13 @@ public class GuildMemberListGUI extends BasePlayerPageableGUI {
             viewerType = ViewerType.PLAYER;
         }
 
-        this.thisGUISection = plugin.getGUIYaml("GuildMemberListGUI").getConfigurationSection(viewerType.name());
-        this.positions = Util.getIndexes(thisGUISection.getString( "items.member.indexes")); // 得到所有可供公会设置的位置
-        this.positionCount = positions.size();
+        this.thisGUISection = plugin.getGUIYaml("GuildMemberListGUI").getConfigurationSection(viewerType.name().toLowerCase());
+
+        GuildLogger.debug("开始: 加载 'items.member.indexes'.");
+        this.itemIndexes = Util.getIndexes(thisGUISection.getString( "items.member.indexes")); // 得到所有可供公会设置的位置
+        GuildLogger.debug("结束: 加载 'items.member.indexes'.");
+
+        this.itemIndexCount = itemIndexes.size();
     }
 
     @Override
@@ -72,31 +78,41 @@ public class GuildMemberListGUI extends BasePlayerPageableGUI {
         this.members.sort(Comparator.comparingLong(GuildMember::getJoinTime));
         this.memberCount = members.size();
 
-        setPageCount(memberCount % positionCount == 0 ? memberCount / positionCount : memberCount / positionCount + 1);
+        setPageCount(memberCount % itemIndexCount == 0 ? memberCount / itemIndexCount : memberCount / itemIndexCount + 1);
     }
 
     @Override
     public Inventory createInventory() {
         Map<Integer, GuildMember> indexMap = new HashMap<>();
-        IndexConfigGUI.Builder guiBuilder = new IndexConfigGUI.Builder()
-                .fromConfig(thisGUISection, bukkitPlayer, new PlaceholderContainer()
+        IndexConfigGUI.Builder guiBuilder = new IndexConfigGUI.Builder();
+
+        GuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_BASIC);
+        guiBuilder.fromConfig(thisGUISection, bukkitPlayer, new PlaceholderContainer()
                         .add("page", getCurrentPage() + 1)
-                        .add("total_page", getPageCount()))
-                .pageItems(thisGUISection.getConfigurationSection("items.page_items"), this)
-                .item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.back"), bukkitPlayer, new PlaceholderContainer().addGuildPlaceholders(guild)), new ItemListener() {
-                    @Override
-                    public void onClick(InventoryClickEvent event) {
-                        if (canBack()) {
-                            back();
-                        }
-                    }
-                });
+                        .add("total_page", getPageCount()));
+        GuildLogger.debug(DebugMessage.END_GUI_LOAD_BASIC);
+
+        GuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, "items.page_items");
+        guiBuilder.pageItems(thisGUISection.getConfigurationSection("items.page_items"), this);
+        GuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, "items.page_items");
+
+        GuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, "items.back");
+        guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.back"), bukkitPlayer, new PlaceholderContainer().addGuildPlaceholders(guild)), new ItemListener() {
+            @Override
+            public void onClick(InventoryClickEvent event) {
+                if (canBack()) {
+                    back();
+                }
+            }
+        });
+        GuildLogger.debug(DebugMessage.END_GUI_LOAD_ITEM, "items.back");
+
 
         if (viewerType == ViewerType.MANAGER) {
             guiBuilder.listener(new InventoryListener() {
                         @Override
                         public void onClick(InventoryClickEvent event) {
-                            int slot = event.getSlot();
+                            int slot = event.getRawSlot();
 
                             if (indexMap.containsKey(slot)) {
                                 GuildMember guildMember = indexMap.get(slot);
@@ -114,21 +130,25 @@ public class GuildMemberListGUI extends BasePlayerPageableGUI {
                     });
         }
 
-        int itemCounter = getCurrentPage() * positions.size();
-        int loopCount = memberCount - itemCounter < memberCount ? memberCount - itemCounter : memberCount;
+        if (getPageCount() > 0) {
+            int memberCounter = getCurrentPage() * itemIndexes.size();
+            int loopCount = memberCount - memberCounter < itemIndexCount ? memberCount - memberCounter : itemIndexCount;
 
-        for (int i = 0; i < loopCount; i++) {
-            GuildMember guildMember = members.get(itemCounter++);
-            ItemBuilder itemBuilder = GUIItemManager.getItemBuilder(thisGUISection.getConfigurationSection("items.member.icon"), bukkitPlayer, new PlaceholderContainer()
-                    .addGuildPlaceholders(guild)
-                    .addGuildMemberPlaceholders(guildMember));
+            for (int i = 0; i < loopCount; i++) {
+                GuildMember guildMember = members.get(memberCounter++);
+                GuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, "items.member.icon");
+                ItemBuilder itemBuilder = GUIItemManager.getItemBuilder(thisGUISection.getConfigurationSection("items.member.icon"), bukkitPlayer, new PlaceholderContainer()
+                        .addGuildPlaceholders(guild)
+                        .addGuildMemberPlaceholders(guildMember));
+                GuildLogger.debug(DebugMessage.END_GUI_LOAD_ITEM, "items.member.icon");
 
-            // 管理模式
-            if (viewerType == ViewerType.MANAGER) {
-                indexMap.put(positions.get(i), guildMember);
+                // 管理模式
+                if (viewerType == ViewerType.MANAGER) {
+                    indexMap.put(itemIndexes.get(i), guildMember);
+                }
+
+                guiBuilder.item(itemIndexes.get(i), itemBuilder.build());
             }
-
-            guiBuilder.item(positions.get(i), itemBuilder.build());
         }
 
         return guiBuilder.build();

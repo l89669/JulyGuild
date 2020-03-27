@@ -1,15 +1,17 @@
 package com.github.julyss2019.mcsp.julyguild.gui.entities;
 
+import com.github.julyss2019.mcsp.julyguild.DebugMessage;
 import com.github.julyss2019.mcsp.julyguild.config.gui.PriorityConfigGUI;
 import com.github.julyss2019.mcsp.julyguild.config.gui.item.PriorityItem;
 import com.github.julyss2019.mcsp.julyguild.guild.Guild;
-import com.github.julyss2019.mcsp.julyguild.guild.GuildPermission;
+import com.github.julyss2019.mcsp.julyguild.guild.member.GuildPermission;
 import com.github.julyss2019.mcsp.julyguild.JulyGuild;
 import com.github.julyss2019.mcsp.julyguild.config.gui.item.GUIItemManager;
 import com.github.julyss2019.mcsp.julyguild.gui.BaseConfirmGUI;
 import com.github.julyss2019.mcsp.julyguild.gui.BasePlayerGUI;
 import com.github.julyss2019.mcsp.julyguild.gui.GUI;
-import com.github.julyss2019.mcsp.julyguild.guild.GuildMember;
+import com.github.julyss2019.mcsp.julyguild.guild.member.GuildMember;
+import com.github.julyss2019.mcsp.julyguild.logger.GuildLogger;
 import com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer;
 import com.github.julyss2019.mcsp.julylibrary.inventory.ItemListener;
 import org.bukkit.configuration.ConfigurationSection;
@@ -19,15 +21,17 @@ import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.HashSet;
 import java.util.Set;
 
 public class GuildMemberManageGUI extends BasePlayerGUI {
-    private final JulyGuild plugin = JulyGuild.getInstance();
+    private final JulyGuild plugin = JulyGuild.inst();
     private final ConfigurationSection thisGUISection = plugin.getGUIYaml("GuildMemberManageGUI");
     private final Guild guild;
     private final GuildMember managerGuildMember;
     private final GuildMember targetGuildMember;
     private final Player targetBukkitPlayer;
+    private Set<GuildPermission> ownedPermissions;
 
 
     public GuildMemberManageGUI(@Nullable GUI lastGUI, @NotNull GuildMember mangerGuildMember, @NotNull GuildMember targetGuildMember) {
@@ -41,28 +45,37 @@ public class GuildMemberManageGUI extends BasePlayerGUI {
 
     @Override
     public Inventory createInventory() {
-        PriorityConfigGUI.Builder guiBuilder = (PriorityConfigGUI.Builder) new PriorityConfigGUI.Builder()
-                .fromConfig(thisGUISection, targetBukkitPlayer, new PlaceholderContainer().addGuildMemberPlaceholders(targetGuildMember))
-                .item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.back"), targetBukkitPlayer), new ItemListener() {
-                    @Override
-                    public void onClick(InventoryClickEvent event) {
-                        if (canBack()) {
-                            back();
-                        }
-                    }
-                });
+        this.ownedPermissions = targetGuildMember.getPermissions(); // 确保设置的和界面显示的一直（期间可能会被修改）
 
-        // 如果管理者和被管理员一样
+        PriorityConfigGUI.Builder guiBuilder = new PriorityConfigGUI.Builder();
+
+        GuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_BASIC);
+        guiBuilder.fromConfig(thisGUISection, targetBukkitPlayer, new PlaceholderContainer().addGuildMemberPlaceholders(targetGuildMember));
+        GuildLogger.debug(DebugMessage.END_GUI_LOAD_BASIC);
+
+        GuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, "items.back");
+        guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.back"), targetBukkitPlayer), new ItemListener() {
+            @Override
+            public void onClick(InventoryClickEvent event) {
+                if (canBack()) {
+                    back();
+                }
+            }
+        });
+        GuildLogger.debug(DebugMessage.END_GUI_LOAD_ITEM, "items.back");
+
+        // 如果管理者和目标玩家一样
         if (managerGuildMember.equals(targetGuildMember)) {
             return guiBuilder.build();
         }
 
-        // 是主人或自己有权限且对方无踢人权限
+        // 是会长或自己有权限且对方无踢人权限
         if (guild.isOwner(managerGuildMember) || managerGuildMember.hasPermission(GuildPermission.MEMBER_KICK) && !targetGuildMember.hasPermission(GuildPermission.MEMBER_KICK)) {
+            GuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, "items.member_kick");
             guiBuilder.item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.member_kick"), targetBukkitPlayer, new PlaceholderContainer().addGuildMemberPlaceholders(targetGuildMember)), new ItemListener() {
                 @Override
                 public void onClick(InventoryClickEvent event) {
-                    if (checkManagerPerOrReopen(GuildPermission.MEMBER_KICK)) {
+                    if (!checkManagerPerOrReopen(GuildPermission.MEMBER_KICK)) {
                         return;
                     }
 
@@ -73,7 +86,8 @@ public class GuildMemberManageGUI extends BasePlayerGUI {
                         @Override
                         public boolean canUse() {
                             return targetGuildMember.isValid() && managerGuildMember.isValid()
-                                    && (guild.isOwner(managerGuildMember) || (managerGuildMember.hasPermission(GuildPermission.MEMBER_KICK) && !targetGuildMember.hasPermission(GuildPermission.MEMBER_KICK)));
+                                    && (guild.isOwner(managerGuildMember) ||
+                                    (managerGuildMember.hasPermission(GuildPermission.MEMBER_KICK) && !targetGuildMember.hasPermission(GuildPermission.MEMBER_KICK)));
                         }
 
                         @Override
@@ -89,64 +103,16 @@ public class GuildMemberManageGUI extends BasePlayerGUI {
                     }.open();
                 }
             });
+            GuildLogger.debug(DebugMessage.END_GUI_LOAD_ITEM, "items.member_kick");
         }
 
         if (managerGuildMember.hasPermission(GuildPermission.MANAGE_PERMISSION)) {
-            guiBuilder.item(getPerToggleItem(thisGUISection.getConfigurationSection("items.per_member_kick"), GuildPermission.MEMBER_KICK), new ItemListener() {
-                @Override
-                public void onClick(InventoryClickEvent event) {
-                    if (!checkManagerPerOrReopen(GuildPermission.MANAGE_PERMISSION)) {
-                        return;
-                    }
-
-                    targetGuildMember.setPermission(GuildPermission.MEMBER_KICK, !targetGuildMember.hasPermission(GuildPermission.MEMBER_KICK));
-                    reopen();
-                }
-            });
-            guiBuilder.item(getPerToggleItem(thisGUISection.getConfigurationSection("items.per_set_member_damage"), GuildPermission.SET_MEMBER_DAMAGE), new ItemListener() {
-                @Override
-                public void onClick(InventoryClickEvent event) {
-                    if (!checkManagerPerOrReopen(GuildPermission.MANAGE_PERMISSION)) {
-                        return;
-                    }
-
-                    targetGuildMember.setPermission(GuildPermission.SET_MEMBER_DAMAGE, !targetGuildMember.hasPermission(GuildPermission.SET_MEMBER_DAMAGE));
-                    reopen();
-                }
-            });
-            guiBuilder.item(getPerToggleItem(thisGUISection.getConfigurationSection("items.per_player_join_check"), GuildPermission.PLAYER_JOIN_CHECK), new ItemListener() {
-                @Override
-                public void onClick(InventoryClickEvent event) {
-                    if (!checkManagerPerOrReopen(GuildPermission.MANAGE_PERMISSION)) {
-                        return;
-                    }
-
-                    targetGuildMember.setPermission(GuildPermission.PLAYER_JOIN_CHECK, !targetGuildMember.hasPermission(GuildPermission.PLAYER_JOIN_CHECK));
-                    reopen();
-                }
-            });
-            guiBuilder.item(getPerToggleItem(thisGUISection.getConfigurationSection("items.per_use_shop"), GuildPermission.USE_SHOP), new ItemListener() {
-                @Override
-                public void onClick(InventoryClickEvent event) {
-                    if (!checkManagerPerOrReopen(GuildPermission.MANAGE_PERMISSION)) {
-                        return;
-                    }
-
-                    targetGuildMember.setPermission(GuildPermission.USE_SHOP, !targetGuildMember.hasPermission(GuildPermission.USE_SHOP));
-                    reopen();
-                }
-            });
-            guiBuilder.item(getPerToggleItem(thisGUISection.getConfigurationSection("items.per_use_icon_repository"), GuildPermission.USE_ICON_REPOSITORY), new ItemListener() {
-                @Override
-                public void onClick(InventoryClickEvent event) {
-                    if (!checkManagerPerOrReopen(GuildPermission.MANAGE_PERMISSION)) {
-                        return;
-                    }
-
-                    targetGuildMember.setPermission(GuildPermission.USE_ICON_REPOSITORY, !targetGuildMember.hasPermission(GuildPermission.USE_ICON_REPOSITORY));
-                    reopen();
-                }
-            });
+            setPermissionItem(guiBuilder, GuildPermission.MEMBER_KICK);
+            setPermissionItem(guiBuilder, GuildPermission.SET_MEMBER_DAMAGE);
+            setPermissionItem(guiBuilder, GuildPermission.PLAYER_JOIN_CHECK);
+            setPermissionItem(guiBuilder, GuildPermission.SET_ANNOUNCEMENTS);
+            setPermissionItem(guiBuilder, GuildPermission.USE_SHOP);
+            setPermissionItem(guiBuilder, GuildPermission.USE_ICON_REPOSITORY);
         }
 
         return guiBuilder.build();
@@ -166,12 +132,35 @@ public class GuildMemberManageGUI extends BasePlayerGUI {
         return true;
     }
 
+    private void setPermissionItem(@NotNull PriorityConfigGUI.Builder guiBuilder, @NotNull GuildPermission guildPermission) {
+        guiBuilder.item(getPermissionItem(guildPermission), getPermissionItemListener(guildPermission));
+    }
+
+    private ItemListener getPermissionItemListener(@NotNull GuildPermission guildPermission) {
+        return new ItemListener() {
+            @Override
+            public void onClick(InventoryClickEvent event) {
+                if (!checkManagerPerOrReopen(GuildPermission.MANAGE_PERMISSION)) {
+                    return;
+                }
+
+                targetGuildMember.setPermission(guildPermission, !ownedPermissions.contains(guildPermission));
+                reopen();
+            }
+        };
+    }
+
     /**
      * 得到权限状态物品（give，take两种状态）
-     * @param section
      */
-    private PriorityItem getPerToggleItem(@NotNull ConfigurationSection section, @NotNull GuildPermission guildPermission) {
-        return GUIItemManager.getPriorityItem(section.getConfigurationSection(targetGuildMember.hasPermission(guildPermission) ? "take" : "give"), targetBukkitPlayer, new PlaceholderContainer().addGuildMemberPlaceholders(targetGuildMember));
+    private PriorityItem getPermissionItem(@NotNull GuildPermission guildPermission) {
+        String path = "items.per_" + guildPermission.name().toLowerCase() + "." + (targetGuildMember.hasPermission(guildPermission) ? "take" : "give");
+        ConfigurationSection section = thisGUISection.getConfigurationSection(path);
+
+        GuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, path);
+        PriorityItem priorityItem = GUIItemManager.getPriorityItem(section, targetBukkitPlayer, new PlaceholderContainer().addGuildMemberPlaceholders(targetGuildMember));;
+        GuildLogger.debug(DebugMessage.END_GUI_LOAD_ITEM, path);
+        return priorityItem;
     }
 
     @Override
@@ -180,8 +169,6 @@ public class GuildMemberManageGUI extends BasePlayerGUI {
             return false;
         }
 
-        Set<GuildPermission> guildPermissions = managerGuildMember.getGuildPermissions(); // 最新的权限
-
-        return guildPermissions.contains(GuildPermission.MEMBER_KICK) || guildPermissions.contains(GuildPermission.MANAGE_PERMISSION);
+        return managerGuildMember.getPermissions().size() > 0;
     }
 }

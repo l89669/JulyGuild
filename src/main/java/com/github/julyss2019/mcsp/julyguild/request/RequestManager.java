@@ -10,7 +10,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public class RequestManager {
-    private final JulyGuild plugin = JulyGuild.getInstance();
+    private final JulyGuild plugin = JulyGuild.inst();
     private Map<UUID, Request> requestMap = new HashMap<>();
     private Map<Sender, List<Request>> sentMap = new HashMap<>();
     private Map<Receiver, List<Request>> receiveMap = new HashMap<>();

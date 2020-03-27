@@ -1,7 +1,7 @@
 package com.github.julyss2019.mcsp.julyguild;
 
-import com.github.julyss2019.mcsp.julyguild.guild.GuildMember;
-import com.github.julyss2019.mcsp.julyguild.guild.GuildPosition;
+import com.github.julyss2019.mcsp.julyguild.guild.member.GuildMember;
+import com.github.julyss2019.mcsp.julyguild.guild.member.GuildPosition;
 import com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer;
 import com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderText;
 import com.github.julyss2019.mcsp.julylibrary.message.DateTimeUnit;
@@ -12,21 +12,21 @@ import java.text.SimpleDateFormat;
 public class LangHelper {
     public static class Global {
         public static DateTimeUnit getDateTimeUnit() {
-            ConfigurationSection section = JulyGuild.getInstance().getLangYaml().getConfigurationSection("Global");
+            ConfigurationSection section = JulyGuild.inst().getLangYaml().getConfigurationSection("Global");
 
             return new DateTimeUnit(section.getString("year"), section.getString("month"), section.getString("day"), section.getString("hour"), section.getString("minute"), section.getString("second"));
         }
 
         public static SimpleDateFormat getDateTimeFormat() {
-            return new SimpleDateFormat(JulyGuild.getInstance().getLangYaml().getString("Global.date_time_format"));
+            return new SimpleDateFormat(JulyGuild.inst().getLangYaml().getString("Global.date_time_format"));
         }
 
         public static String getPrefix() {
-            return JulyGuild.getInstance().getLangYaml().getString("Global.prefix");
+            return JulyGuild.inst().getLangYaml().getString("Global.prefix");
         }
 
         public static String getNickName(GuildMember guildMember) {
-            ConfigurationSection langSection = JulyGuild.getInstance().getLangYaml();
+            ConfigurationSection langSection = JulyGuild.inst().getLangYaml();
             String format = langSection.getString("Global.nick_name");
 
             return PlaceholderText.replacePlaceholders(format, new PlaceholderContainer()
@@ -35,7 +35,7 @@ public class LangHelper {
         }
 
         public static String getPositionName(GuildPosition guildPosition) {
-            return JulyGuild.getInstance().getLangYaml().getString("Guild.Position." + guildPosition.name().toLowerCase());
+            return JulyGuild.inst().getLangYaml().getString("Guild.Position." + guildPosition.name().toLowerCase());
         }
     }
 }

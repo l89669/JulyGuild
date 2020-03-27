@@ -1,7 +1,6 @@
 package com.github.julyss2019.mcsp.julyguild.guild;
 
 import com.github.julyss2019.mcsp.julyguild.JulyGuild;
-import com.github.julyss2019.mcsp.julyguild.log.guild.GuildBalanceChangedLog;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.NotNull;
 
@@ -14,7 +13,6 @@ public class GuildBank {
         GMONEY // 公会币
     }
 
-    private final JulyGuild plugin = JulyGuild.getInstance();
     private final Guild guild;
     private final Map<BalanceType, BigDecimal> balanceMap = new HashMap<>();
     private ConfigurationSection section;
@@ -43,7 +41,7 @@ public class GuildBank {
      * @param value 值
      * @return
      */
-    public boolean has(@NotNull GuildBank.BalanceType balanceType, double value) {
+    public synchronized boolean has(@NotNull GuildBank.BalanceType balanceType, double value) {
         return has(balanceType, new BigDecimal(value));
     }
 
@@ -53,7 +51,7 @@ public class GuildBank {
      * @param valueBigDecimal BigDecimal
      * @return
      */
-    public boolean has(@NotNull GuildBank.BalanceType balanceType, BigDecimal valueBigDecimal) {
+    public synchronized boolean has(@NotNull GuildBank.BalanceType balanceType, @NotNull BigDecimal valueBigDecimal) {
         return getBalance(balanceType).compareTo(valueBigDecimal) >= 0;
     }
 
@@ -62,7 +60,7 @@ public class GuildBank {
      * @param balanceType 类型
      * @param amount 数量
      */
-    public void deposit(@NotNull GuildBank.BalanceType balanceType, double amount) {
+    public synchronized void deposit(@NotNull GuildBank.BalanceType balanceType, double amount) {
         deposit(balanceType, new BigDecimal(amount));
     }
 
@@ -71,7 +69,7 @@ public class GuildBank {
      * @param balanceType 类型
      * @param amountBigDecimal BigDecimal
      */
-    public void deposit(@NotNull GuildBank.BalanceType balanceType, BigDecimal amountBigDecimal) {
+    public synchronized void deposit(@NotNull GuildBank.BalanceType balanceType, @NotNull BigDecimal amountBigDecimal) {
         if (amountBigDecimal.compareTo(new BigDecimal(0)) <= 0) {
             throw new IllegalArgumentException("数量必须大于0");
         }
@@ -84,7 +82,7 @@ public class GuildBank {
      * @param balanceType 类型
      * @param amount 数量
      */
-    public void withdraw(@NotNull GuildBank.BalanceType balanceType, double amount) {
+    public synchronized void withdraw(@NotNull GuildBank.BalanceType balanceType, double amount) {
         withdraw(balanceType, new BigDecimal(amount));
     }
 
@@ -93,7 +91,7 @@ public class GuildBank {
      * @param balanceType 类型
      * @param amountBigDecimal BigDecimal
      */
-    public void withdraw(@NotNull GuildBank.BalanceType balanceType, BigDecimal amountBigDecimal) {
+    public synchronized void withdraw(@NotNull GuildBank.BalanceType balanceType, @NotNull BigDecimal amountBigDecimal) {
         if (amountBigDecimal.compareTo(new BigDecimal(0)) <= 0) {
             throw new IllegalArgumentException("数量必须大于0");
         }
@@ -110,13 +108,12 @@ public class GuildBank {
      * @param balanceType 类型
      * @param bigDecimal BigDecimal
      */
-    public void setBalance(@NotNull GuildBank.BalanceType balanceType, BigDecimal bigDecimal) {
+    public synchronized void setBalance(@NotNull GuildBank.BalanceType balanceType, @NotNull BigDecimal bigDecimal) {
         BigDecimal old = getBalance(balanceType);
 
         section.set(balanceType.name(), bigDecimal.toString());
         guild.save();
         balanceMap.put(balanceType, bigDecimal);
-        plugin.writeGuildLog(new GuildBalanceChangedLog(guild.getUuid(), balanceType, old, bigDecimal));
     }
 
     /**
@@ -124,7 +121,7 @@ public class GuildBank {
      * @param balanceType
      * @return
      */
-    public BigDecimal getBalance(@NotNull GuildBank.BalanceType balanceType) {
+    public synchronized BigDecimal getBalance(@NotNull GuildBank.BalanceType balanceType) {
         return balanceMap.getOrDefault(balanceType, new BigDecimal("0"));
     }
 }

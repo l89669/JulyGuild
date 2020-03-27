@@ -1,7 +1,7 @@
 package com.github.julyss2019.mcsp.julyguild.listener;
 
 import com.github.julyss2019.mcsp.julyguild.JulyGuild;
-import com.github.julyss2019.mcsp.julyguild.guild.GuildMember;
+import com.github.julyss2019.mcsp.julyguild.guild.member.GuildMember;
 import com.github.julyss2019.mcsp.julyguild.request.Request;
 import com.github.julyss2019.mcsp.julyguild.request.entities.TpAllRequest;
 import com.github.julyss2019.mcsp.julyguild.util.Util;
@@ -23,7 +23,7 @@ import java.util.Map;
 import java.util.UUID;
 
 public class TpAllListener implements Listener {
-    private JulyGuild plugin = JulyGuild.getInstance();
+    private JulyGuild plugin = JulyGuild.inst();
     private GuildPlayerManager guildPlayerManager = plugin.getGuildPlayerManager();
     private Map<UUID, Long> lastSneakMap = new HashMap<>();
     private Map<UUID, Integer> sneakCountMap = new HashMap<>();
@@ -61,7 +61,7 @@ public class TpAllListener implements Listener {
 
                 bukkitPlayer.teleport(senderBukkitPlayer.getLocation());
 
-                if (JulyMessage.canUseTitle()) {
+                if (JulyMessage.isTitleEnabled()) {
                     new Title.Builder().text(tpAllLangSection.getString("teleported.title")).build().send(bukkitPlayer);
                     new Title.Builder().type(Title.Type.SUBTITLE).text(tpAllLangSection.getString("teleported.subtitle")).build().send(bukkitPlayer);
                 } else {
@@ -76,7 +76,7 @@ public class TpAllListener implements Listener {
                 if (!lastSneakMap.containsKey(uuid) || (System.currentTimeMillis() - lastSneakMap.get(uuid) < MainSettings.getGuildTpAllSneakCountInterval())) {
                     PlaceholderContainer placeholderContainer = new PlaceholderContainer().add("count", MainSettings.getGuildTpAllSneakCount() - sneakCount);
 
-                    if (JulyMessage.canUseTitle()) {
+                    if (JulyMessage.isTitleEnabled()) {
                         new Title.Builder().text(
                                 PlaceholderText.replacePlaceholders(tpAllLangSection.getString("sneak_counter.title"), placeholderContainer)).build().send(bukkitPlayer);
                         new Title.Builder().type(Title.Type.SUBTITLE).text(
