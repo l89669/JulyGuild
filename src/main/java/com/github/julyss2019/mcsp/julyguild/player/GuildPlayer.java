@@ -2,7 +2,7 @@ package com.github.julyss2019.mcsp.julyguild.player;
 
 import com.github.julyss2019.mcsp.julyguild.JulyGuild;
 import com.github.julyss2019.mcsp.julyguild.gui.GUI;
-import com.github.julyss2019.mcsp.julyguild.gui.PageableGUI;
+import com.github.julyss2019.mcsp.julyguild.gui.BasePageableGUI;
 import com.github.julyss2019.mcsp.julyguild.guild.Guild;
 import com.github.julyss2019.mcsp.julyguild.request.Receiver;
 import com.github.julyss2019.mcsp.julyguild.request.Sender;
@@ -146,8 +146,8 @@ public class GuildPlayer implements Sender, Receiver {
             GUI lastGUI = usingGUI;
 
             while ((lastGUI = lastGUI.getLastGUI()) != null) {
-                if (lastGUI.canUse() && lastGUI instanceof PageableGUI) {
-                    ((PageableGUI) lastGUI).update();
+                if (lastGUI.canUse() && lastGUI instanceof BasePageableGUI) {
+                    ((BasePageableGUI) lastGUI).update();
                 }
             }
         }

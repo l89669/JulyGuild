@@ -6,7 +6,7 @@ import com.github.julyss2019.mcsp.julyguild.LangHelper;
 import com.github.julyss2019.mcsp.julyguild.config.gui.IndexConfigGUI;
 import com.github.julyss2019.mcsp.julyguild.config.gui.item.GUIItemManager;
 import com.github.julyss2019.mcsp.julyguild.gui.GUI;
-import com.github.julyss2019.mcsp.julyguild.gui.PageableGUI;
+import com.github.julyss2019.mcsp.julyguild.gui.BasePageableGUI;
 import com.github.julyss2019.mcsp.julyguild.guild.Guild;
 import com.github.julyss2019.mcsp.julyguild.guild.member.GuildMember;
 import com.github.julyss2019.mcsp.julyguild.logger.GuildLogger;
@@ -33,7 +33,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class GuildJoinCheckGUI extends PageableGUI {
+public class GuildJoinCheckGUI extends BasePageableGUI {
     private final JulyGuild plugin = JulyGuild.inst();
     private final RequestManager requestManager = plugin.getRequestManager();
     private final ConfigurationSection thisGUISection = plugin.getGUIYaml("GuildJoinCheckGUI");

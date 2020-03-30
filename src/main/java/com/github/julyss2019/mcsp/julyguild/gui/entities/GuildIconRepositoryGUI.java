@@ -6,7 +6,7 @@ import com.github.julyss2019.mcsp.julyguild.config.gui.IndexConfigGUI;
 import com.github.julyss2019.mcsp.julyguild.config.gui.item.GUIItemManager;
 import com.github.julyss2019.mcsp.julyguild.config.setting.MainSettings;
 import com.github.julyss2019.mcsp.julyguild.gui.GUI;
-import com.github.julyss2019.mcsp.julyguild.gui.PageableGUI;
+import com.github.julyss2019.mcsp.julyguild.gui.BasePageableGUI;
 import com.github.julyss2019.mcsp.julyguild.guild.Guild;
 import com.github.julyss2019.mcsp.julyguild.guild.GuildIcon;
 import com.github.julyss2019.mcsp.julyguild.guild.member.GuildMember;
@@ -26,7 +26,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
-public class GuildIconRepositoryGUI extends PageableGUI {
+public class GuildIconRepositoryGUI extends BasePageableGUI {
     private JulyGuild plugin = JulyGuild.inst();
     private final ConfigurationSection thisGUISection = plugin.getGUIYaml("GuildIconRepositoryGUI");
     private final List<Integer> itemIndexes; // 得到所有可供公会设置的位置

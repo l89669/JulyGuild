@@ -6,11 +6,11 @@ import org.jetbrains.annotations.Nullable;
 /**
  *
  */
-public abstract class PageableGUI extends BasePlayerGUI {
+public abstract class BasePageableGUI extends BasePlayerGUI {
     private int currentPage = -1;
     private int pageCount;
 
-    public PageableGUI(@Nullable GUI lastGUI, GUI.Type guiType, GuildPlayer guildPlayer) {
+    public BasePageableGUI(@Nullable GUI lastGUI, GUI.Type guiType, GuildPlayer guildPlayer) {
         super(lastGUI, guiType, guildPlayer);
     }
 

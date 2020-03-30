@@ -5,7 +5,7 @@ import com.github.julyss2019.mcsp.julyguild.DebugMessage;
 import com.github.julyss2019.mcsp.julyguild.config.gui.IndexConfigGUI;
 import com.github.julyss2019.mcsp.julyguild.config.gui.item.GUIItemManager;
 import com.github.julyss2019.mcsp.julyguild.config.setting.MainSettings;
-import com.github.julyss2019.mcsp.julyguild.gui.PageableGUI;
+import com.github.julyss2019.mcsp.julyguild.gui.BasePageableGUI;
 import com.github.julyss2019.mcsp.julyguild.guild.Guild;
 import com.github.julyss2019.mcsp.julyguild.guild.GuildIcon;
 import com.github.julyss2019.mcsp.julyguild.logger.GuildLogger;
@@ -37,7 +37,7 @@ import java.util.Map;
  * 主GUI
  * @version 1.0.0
  */
-public class MainGUI extends PageableGUI {
+public class MainGUI extends BasePageableGUI {
     private final JulyGuild plugin = JulyGuild.inst();
     private final Player bukkitPlayer = guildPlayer.getBukkitPlayer();
     private final String playerName = bukkitPlayer.getName();

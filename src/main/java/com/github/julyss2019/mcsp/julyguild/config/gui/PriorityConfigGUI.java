@@ -1,7 +1,7 @@
 package com.github.julyss2019.mcsp.julyguild.config.gui;
 
 import com.github.julyss2019.mcsp.julyguild.config.gui.item.PriorityItem;
-import com.github.julyss2019.mcsp.julyguild.gui.PageableGUI;
+import com.github.julyss2019.mcsp.julyguild.gui.BasePageableGUI;
 import com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer;
 import com.github.julyss2019.mcsp.julyguild.util.Util;
 import com.github.julyss2019.mcsp.julylibrary.inventory.ItemListener;
@@ -39,9 +39,9 @@ public class PriorityConfigGUI {
         }
 
         @Override
-        public PriorityConfigGUI.Builder pageItems(@NotNull ConfigurationSection section, @NotNull PageableGUI pageableGUI) {
+        public PriorityConfigGUI.Builder pageItems(@NotNull ConfigurationSection section, @NotNull BasePageableGUI basePageableGUI) {
             availableIndexes(Util.getIndexes(section.getString("indexes")));
-            super.pageItems(section, pageableGUI);
+            super.pageItems(section, basePageableGUI);
             return this;
         }
 

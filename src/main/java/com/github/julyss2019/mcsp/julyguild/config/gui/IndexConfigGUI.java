@@ -4,7 +4,7 @@ import com.github.julyss2019.mcsp.julyguild.JulyGuild;
 import com.github.julyss2019.mcsp.julyguild.config.gui.item.GUIItemManager;
 import com.github.julyss2019.mcsp.julyguild.config.gui.item.IndexItem;
 import com.github.julyss2019.mcsp.julyguild.config.setting.MainSettings;
-import com.github.julyss2019.mcsp.julyguild.gui.PageableGUI;
+import com.github.julyss2019.mcsp.julyguild.gui.BasePageableGUI;
 import com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer;
 import com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderText;
 import com.github.julyss2019.mcsp.julyguild.util.Util;
@@ -71,17 +71,17 @@ public class IndexConfigGUI {
             return this;
         }
 
-        public Builder pageItems(@NotNull ConfigurationSection section, @NotNull PageableGUI pageableGUI) {
-            item(GUIItemManager.getIndexItem(section.getConfigurationSection("precious_page").getConfigurationSection(pageableGUI.hasPreciousPage() ? "have" : "not_have")), !pageableGUI.hasPreciousPage() ? null : new ItemListener() {
+        public Builder pageItems(@NotNull ConfigurationSection section, @NotNull BasePageableGUI basePageableGUI) {
+            item(GUIItemManager.getIndexItem(section.getConfigurationSection("precious_page").getConfigurationSection(basePageableGUI.hasPreciousPage() ? "have" : "not_have")), !basePageableGUI.hasPreciousPage() ? null : new ItemListener() {
                 @Override
                 public void onClick(InventoryClickEvent event) {
-                    pageableGUI.previousPage();
+                    basePageableGUI.previousPage();
                 }
             });
-            item(GUIItemManager.getIndexItem(section.getConfigurationSection("next_page").getConfigurationSection(pageableGUI.hasNextPage() ? "have" : "not_have")), !pageableGUI.hasNextPage() ? null : new ItemListener() {
+            item(GUIItemManager.getIndexItem(section.getConfigurationSection("next_page").getConfigurationSection(basePageableGUI.hasNextPage() ? "have" : "not_have")), !basePageableGUI.hasNextPage() ? null : new ItemListener() {
                 @Override
                 public void onClick(InventoryClickEvent event) {
-                    pageableGUI.nextPage();
+                    basePageableGUI.nextPage();
                 }
             });
 

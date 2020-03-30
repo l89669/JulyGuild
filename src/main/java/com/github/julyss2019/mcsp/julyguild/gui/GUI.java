@@ -27,7 +27,9 @@ public interface GUI {
         SHOP,
         CONFIRM,
         SHOP_CONFIRM,
-        ICON_REPOSITORY
+        ICON_REPOSITORY,
+        BAG,
+        WAR
     }
 
     /**

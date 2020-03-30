@@ -4,6 +4,7 @@ import com.github.julyss2019.mcsp.julyguild.JulyGuild;
 import com.github.julyss2019.mcsp.julylibrary.utils.YamlUtil;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.*;
@@ -13,7 +14,7 @@ public class GuildPlayerManager {
     private JulyGuild plugin = JulyGuild.inst();
     private Map<UUID, GuildPlayer> guildPlayerMap = new HashMap<>();
 
-    public GuildPlayer getGuildPlayer(UUID uuid) {
+    public GuildPlayer getGuildPlayer(@NotNull UUID uuid) {
         if (!guildPlayerMap.containsKey(uuid)) {
             guildPlayerMap.put(uuid, isRegistered(uuid) ? new GuildPlayer(getGuildPlayerFile(uuid)) : registerGuildPlayer(uuid));
         }
@@ -22,7 +23,7 @@ public class GuildPlayerManager {
         return guildPlayerMap.get(uuid);
     }
 
-    public GuildPlayer registerGuildPlayer(UUID uuid) {
+    public GuildPlayer registerGuildPlayer(@NotNull UUID uuid) {
         if (isRegistered(uuid)) {
             throw new IllegalArgumentException("该玩家已注册 GuildPlayer");
         }
@@ -36,19 +37,19 @@ public class GuildPlayerManager {
         return new GuildPlayer(file);
     }
 
-    public boolean isRegistered(Player player) {
+    public boolean isRegistered(@NotNull Player player) {
         return isRegistered(player.getUniqueId());
     }
 
-    public boolean isRegistered(UUID uuid) {
+    public boolean isRegistered(@NotNull UUID uuid) {
         return getGuildPlayerFile(uuid).exists();
     }
 
-    private File getGuildPlayerFile(UUID uuid) {
+    private File getGuildPlayerFile(@NotNull UUID uuid) {
         return new File(plugin.getDataFolder(), "data" + File.separator + "players" + File.separator + uuid + ".yml");
     }
 
-    public GuildPlayer getGuildPlayer(Player player) {
+    public GuildPlayer getGuildPlayer(@NotNull Player player) {
         return getGuildPlayer(player.getUniqueId());
     }
 
