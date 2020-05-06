@@ -40,7 +40,7 @@ public class GuildBank {
      * @param value 值
      * @return
      */
-    public synchronized boolean has(@NotNull GuildBank.BalanceType balanceType, double value) {
+    public boolean has(@NotNull GuildBank.BalanceType balanceType, double value) {
         return has(balanceType, new BigDecimal(value));
     }
 
@@ -50,7 +50,7 @@ public class GuildBank {
      * @param valueBigDecimal BigDecimal
      * @return
      */
-    public synchronized boolean has(@NotNull GuildBank.BalanceType balanceType, @NotNull BigDecimal valueBigDecimal) {
+    public boolean has(@NotNull GuildBank.BalanceType balanceType, @NotNull BigDecimal valueBigDecimal) {
         return getBalance(balanceType).compareTo(valueBigDecimal) >= 0;
     }
 
@@ -59,7 +59,7 @@ public class GuildBank {
      * @param balanceType 类型
      * @param amount 数量
      */
-    public synchronized void deposit(@NotNull GuildBank.BalanceType balanceType, double amount) {
+    public void deposit(@NotNull GuildBank.BalanceType balanceType, double amount) {
         deposit(balanceType, new BigDecimal(amount));
     }
 
@@ -68,7 +68,7 @@ public class GuildBank {
      * @param balanceType 类型
      * @param amountBigDecimal BigDecimal
      */
-    public synchronized void deposit(@NotNull GuildBank.BalanceType balanceType, @NotNull BigDecimal amountBigDecimal) {
+    public void deposit(@NotNull GuildBank.BalanceType balanceType, @NotNull BigDecimal amountBigDecimal) {
         if (amountBigDecimal.compareTo(new BigDecimal(0)) <= 0) {
             throw new IllegalArgumentException("数量必须大于0");
         }
@@ -81,7 +81,7 @@ public class GuildBank {
      * @param balanceType 类型
      * @param amount 数量
      */
-    public synchronized void withdraw(@NotNull GuildBank.BalanceType balanceType, double amount) {
+    public void withdraw(@NotNull GuildBank.BalanceType balanceType, double amount) {
         withdraw(balanceType, new BigDecimal(amount));
     }
 
@@ -90,16 +90,18 @@ public class GuildBank {
      * @param balanceType 类型
      * @param amountBigDecimal BigDecimal
      */
-    public synchronized void withdraw(@NotNull GuildBank.BalanceType balanceType, @NotNull BigDecimal amountBigDecimal) {
+    public void withdraw(@NotNull GuildBank.BalanceType balanceType, @NotNull BigDecimal amountBigDecimal) {
         if (amountBigDecimal.compareTo(new BigDecimal(0)) <= 0) {
             throw new IllegalArgumentException("数量必须大于0");
         }
 
-        if (!has(balanceType, amountBigDecimal)) {
-            throw new RuntimeException("余额不足");
-        }
+        synchronized (this) {
+            if (!has(balanceType, amountBigDecimal)) {
+                throw new RuntimeException("余额不足");
+            }
 
-        setBalance(balanceType, getBalance(balanceType).subtract(amountBigDecimal));
+            setBalance(balanceType, getBalance(balanceType).subtract(amountBigDecimal));
+        }
     }
 
     /**
@@ -107,12 +109,14 @@ public class GuildBank {
      * @param balanceType 类型
      * @param bigDecimal BigDecimal
      */
-    public synchronized void setBalance(@NotNull GuildBank.BalanceType balanceType, @NotNull BigDecimal bigDecimal) {
-        BigDecimal old = getBalance(balanceType);
+    public void setBalance(@NotNull GuildBank.BalanceType balanceType, @NotNull BigDecimal bigDecimal) {
+        synchronized (this) {
+            BigDecimal old = getBalance(balanceType);
 
-        section.set(balanceType.name(), bigDecimal.toString());
-        guild.save();
-        balanceMap.put(balanceType, bigDecimal);
+            section.set(balanceType.name(), bigDecimal.toString());
+            guild.save();
+            balanceMap.put(balanceType, bigDecimal);
+        }
     }
 
     /**
@@ -120,7 +124,9 @@ public class GuildBank {
      * @param balanceType
      * @return
      */
-    public synchronized BigDecimal getBalance(@NotNull GuildBank.BalanceType balanceType) {
-        return balanceMap.getOrDefault(balanceType, new BigDecimal("0"));
+    public BigDecimal getBalance(@NotNull GuildBank.BalanceType balanceType) {
+        synchronized (this) {
+            return balanceMap.getOrDefault(balanceType, new BigDecimal("0"));
+        }
     }
 }
